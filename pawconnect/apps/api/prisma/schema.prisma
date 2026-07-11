@@ -1,0 +1,356 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//
+// User (회원)
+//
+
+model User {
+  id         String     @id @default(uuid()) @db.Uuid
+  shelterId  String?    @db.Uuid
+  email      String     @unique @db.VarChar(255)
+  password   String     @db.VarChar(255) // 해시 저장
+  nickname   String     @db.VarChar(20)
+  role       Role
+  imgProfile String // 기본 이미지 사용
+  status     UserStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shelter        Shelter?        @relation(fields: [shelterId], references: [id])
+  adoptions      Adoption[]
+  petPosts       PetPost[]
+  userAgreements UserAgreement[]
+
+  @@index([shelterId])
+}
+
+//
+// Shelter (보호소)
+//
+
+model Shelter {
+  id             String @id @default(uuid()) @db.Uuid
+  name           String @db.VarChar(100)
+  adress         String @db.VarChar(255)
+  adressDetail   String @db.VarChar(255)
+  phone          String @db.VarChar(20) // - 없이 숫자만
+  operatingHours String @db.VarChar(100)
+  description    String @db.VarChar(500)
+  imgBanner      String // 기본 이미지 사용
+
+  imges   ShelterImage[] // 이미지 필수 아님
+  animals Animal[]
+  staff   User[] // 보호소 관리자 다수 등록 가능
+}
+
+model ShelterImage {
+  id        String @id @default(uuid()) @db.Uuid
+  shelterId String @db.Uuid
+  img       String
+
+  shelter Shelter @relation(fields: [shelterId], references: [id], onDelete: Cascade)
+
+  @@index([shelterId])
+}
+
+//
+// Animal (보호동물)
+//
+
+model AnimalSpecies {
+  id   Int    @id @default(autoincrement()) @db.SmallInt
+  name String @db.VarChar(30)
+
+  breeds  AnimalBreed[]
+  animals Animal[]
+}
+
+model AnimalBreed {
+  id      Int    @id @default(autoincrement()) @db.SmallInt
+  species Int    @db.SmallInt
+  name    String @db.VarChar(30)
+
+  animalSpecies AnimalSpecies @relation(fields: [species], references: [id])
+  animals       Animal[]
+
+  @@unique([id, species])
+  @@index([species])
+}
+
+model Animal {
+  id             String       @id @default(uuid()) @db.Uuid
+  shelterId      String       @db.Uuid
+  name           String       @db.VarChar(50)
+  species        Int          @db.SmallInt
+  breed          Int          @db.SmallInt
+  gender         AnimalGender
+  isNeutered     Boolean
+  age            Int          @db.SmallInt // 개월 수
+  isEstimatedAge Boolean
+  animalStatus   AnimalStatus @default(PROTECTED)
+  weight         Decimal      @db.Decimal(5, 2)
+  imgThumbnail   String // 이미지 필수
+  detailId       String       @unique @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shelter       Shelter       @relation(fields: [shelterId], references: [id])
+  animalSpecies AnimalSpecies @relation(fields: [species], references: [id])
+  animalBreed   AnimalBreed   @relation(fields: [breed, species], references: [id, species])
+  detail        AnimalDetail  @relation(fields: [detailId], references: [id])
+  images        AnimalImage[] // 이미지 필수
+  adoptions     Adoption[]
+
+  @@index([shelterId])
+  @@index([species])
+  @@index([breed])
+}
+
+model AnimalDetail {
+  id              String   @id @default(uuid()) @db.Uuid
+  noticeStartDate DateTime @db.Date
+  noticeEndDate   DateTime @db.Date
+  foundLocation   String   @db.VarChar(50)
+  specialNotes    String   @db.VarChar(100)
+  description     String   @db.VarChar(500)
+  healthStatus    String   @db.VarChar(500)
+  updatedAt       DateTime @updatedAt
+
+  animal Animal?
+}
+
+model AnimalImage {
+  id       String @id @default(uuid()) @db.Uuid
+  animalId String @db.Uuid
+  img      String
+
+  animal Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
+
+  @@index([animalId])
+}
+
+//
+// Adoption (입양)
+//
+
+model Adoption {
+  id             String         @id @default(uuid()) @db.Uuid
+  userId         String         @db.Uuid
+  animalId       String         @db.Uuid
+  adoptionStatus AdoptionStatus @default(PENDING)
+  detailId       String         @unique @db.Uuid
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User                @relation(fields: [userId], references: [id])
+  animal     Animal              @relation(fields: [animalId], references: [id])
+  detail     AdoptionDetail      @relation(fields: [detailId], references: [id])
+  agreements AdoptionAgreement[]
+
+  @@index([userId])
+  @@index([animalId])
+}
+
+model AdoptionDetail {
+  id                             String               @id @default(uuid()) @db.Uuid
+  userName                       String               @db.VarChar(30)
+  email                          String               @db.VarChar(255)
+  phone                          String               @db.VarChar(20) // - 없이 숫자만
+  adress                         String               @db.VarChar(255)
+  adressDetail                   String?              @db.VarChar(255)
+  petExperience                  PetExperience
+  petsDescription                String?              @db.VarChar(100)
+  petExperiencePeriod            PetExperiencePeriod?
+  residenceType                  ResidenceType
+  petAllowedStatus               PetAllowedStatus
+  familySize                     FamilySize
+  youngChildStatus               YoungChildStatus
+  isFamilyConsent                Boolean
+  adoptionPurpose                String               @db.VarChar(100)
+  isCanVaccinate                 Boolean
+  isCanProvideMedicalCare        Boolean
+  isCanProvideExercise           Boolean
+  isAcceptLifetimeResponsibility Boolean
+  additionalNotes                String               @db.VarChar(500)
+  updatedAt                      DateTime             @updatedAt
+
+  adoption Adoption?
+}
+
+//
+// Agreement (약관/동의)
+//
+
+model Agreement {
+  id      Int     @id @default(autoincrement()) @db.SmallInt
+  title   String  @db.VarChar(50)
+  content String?
+
+  userAgreements     UserAgreement[]
+  adoptionAgreements AdoptionAgreement[]
+}
+
+model UserAgreement {
+  id          String   @id @default(uuid()) @db.Uuid
+  agreementId Int      @db.SmallInt
+  userId      String   @db.Uuid
+  isAgreed    Boolean
+  agreedAt    DateTime @default(now())
+
+  agreement Agreement @relation(fields: [agreementId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([agreementId])
+  @@index([userId])
+}
+
+model AdoptionAgreement {
+  id          String   @id @default(uuid()) @db.Uuid
+  agreementId Int      @db.SmallInt
+  adoptionId  String   @db.Uuid
+  isAgreed    Boolean
+  agreedAt    DateTime @default(now())
+
+  agreement Agreement @relation(fields: [agreementId], references: [id])
+  adoption  Adoption  @relation(fields: [adoptionId], references: [id], onDelete: Cascade)
+
+  @@index([agreementId])
+  @@index([adoptionId])
+}
+
+//
+// PetPost (반려동물 자랑 게시글)
+//
+
+model PetPost {
+  id       Int    @id @default(autoincrement())
+  authorId String @db.Uuid
+  title    String @db.VarChar(50)
+  content  String @db.VarChar(500)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author User           @relation(fields: [authorId], references: [id])
+  images PetPostImage[]
+
+  @@index([authorId])
+}
+
+model PetPostImage {
+  id        String @id @default(uuid()) @db.Uuid
+  petPostId Int
+  img       String
+
+  petPost PetPost @relation(fields: [petPostId], references: [id], onDelete: Cascade)
+
+  @@index([petPostId])
+}
+
+// 
+// Enums
+//
+
+// 회원 역할
+enum Role {
+  USER // 알반 사용자
+  SHELTER // 보호소 관리자
+  ADMIN // 홈페이지 관리자
+}
+
+// 회원 상태
+enum UserStatus {
+  ACTIVE // 정상 이용
+  INACTIVE // 이용 정지
+  SUSPENDED // 휴먼 상태
+  WITHDRAWN // 탈퇴
+}
+
+// 보호동물 입양 상태
+enum AnimalStatus {
+  PROTECTED // 보호중
+  AVAILABLE // 공고중(입양 가능)
+  ADOPTED // 입양 완료
+  REUNITED // 귀가 완료
+  DECEASED // 자연사
+  EUTHANIZED // 안락사
+}
+
+// 보호동물 성별
+enum AnimalGender {
+  MALE // 남아
+  FEMALE // 여아
+  UNKNOWN // 미확인
+}
+
+// 입양 신청 상태
+enum AdoptionStatus {
+  PENDING // 대기
+  COUNSELING // 상담
+  INTERVIEW // 면접
+  ADDITIONAL_INTERVIEW // 추가 면접
+  FOSTERING // 임시 보호
+  FINAL_REVIEW // 최종 심사
+  APPROVED // 승인
+  REJECTED // 거절
+  CANCELED // 신청 취수
+}
+
+// 반려동물 양육 경험 여부
+enum PetExperience {
+  NONE // 처음 키움
+  PAST // 과거에 키움
+  CURRENT // 현재도 키움
+}
+
+// 반려동물 양육 경험 기간
+enum PetExperiencePeriod {
+  LESS_THAN_1_YEAR // 1년 미만
+  ONE_TO_THREE_YEARS // 1~3년
+  THREE_TO_FIVE_YEARS // 3~5년
+  OVER_FIVE_YEARS // 5년 이상
+}
+
+// 거주 형태
+enum ResidenceType {
+  APARTMENT // 아파트
+  VILLA // 빌라
+  DETACHED_HOUSE // 단독주택
+  OFFICETEL // 오피스텔
+  DORMITORY // 기숙사
+}
+
+// 반려동물 사육 가능 여부
+enum PetAllowedStatus {
+  ALLOWED // 가능
+  NOT_ALLOWED // 불가능
+  NEED_CONFIRMATION // 확인 필요
+}
+
+// 가족 구성
+enum FamilySize {
+  ONE // 1명
+  TWO // 2명
+  THREE // 3명
+  FOUR_OR_MORE // 4명 이상
+}
+
+// 어린 아이 여부
+enum YoungChildStatus {
+  NONE // 없음
+  UNDER_SEVEN // 7세 미만
+  SEVEN_OR_OLDER // 7세 이상
+}
