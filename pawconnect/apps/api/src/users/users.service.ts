@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { USER_SELECT } from './users.select';
@@ -7,14 +7,21 @@ import { USER_SELECT } from './users.select';
 export class UsersService {
     constructor (private readonly prisma: PrismaService) {}
 
-    async existsEmail(email: string) {
+    async findByEmail(email: string) {
         const user = await this.prisma.user.findUnique({ where: { email }});
-        if (user) throw new ConflictException();
+        if (!user) throw new UnauthorizedException();
+        
+        return user;
+    }
+
+    async existsByEmail(email: string) {
+        const user = await this.prisma.user.findUnique({ where: { email }});
+        if (user) throw new UnauthorizedException();
     }
 
     // CREATE
     async create(createUserDto: CreateUserDto) {
-        await this.existsEmail(createUserDto.email);
+        await this.existsByEmail(createUserDto.email);
 
         const user = await this.prisma.user.create({
             data: {

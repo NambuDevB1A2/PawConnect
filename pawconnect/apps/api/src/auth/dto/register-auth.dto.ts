@@ -7,7 +7,7 @@ export class RegisterAuthDto {
     @IsString()
     email: string;
 
-    @ApiProperty({ example: "example@email.com" })
+    @ApiProperty({ example: "a123456789!" })
     @IsString()
     @Length(6, 30)
     password: string;

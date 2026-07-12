@@ -9,7 +9,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         super();
     }
 
-    async canActivate(context: ExecutionContext): Promise<boolean> {
+    async canActivate(context: ExecutionContext) {
         const isPublic = this.reflector.getAllAndOverride<boolean>(
             IS_PUBLIC_KEY,
             [
@@ -17,18 +17,10 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
                 context.getClass(),
             ],
         );
-
         if (isPublic) return true;
-        
+
         const isValid = await super.canActivate(context);
         if (!isValid) throw new UnauthorizedException();
-
-        const req = context.switchToHttp().getRequest();
-        const authorization = req.heafers.authorization;
-        if (!authorization || !authorization.startsWith('Bearer ')) throw new UnauthorizedException();
-
-        const token = authorization.split(' ')[1];
-        if (!token) throw new UnauthorizedException();
 
         return true;
     }

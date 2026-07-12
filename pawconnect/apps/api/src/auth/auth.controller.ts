@@ -5,6 +5,8 @@ import { RegisterAuthDto } from './dto/register-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Public } from '../common/decorators/public.decorator';
+import { CurrentAuth } from './decorators/current-auth.decorator';
+import { type AuthRequest } from './interfaces/auth-request.interface';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -40,7 +42,7 @@ export class AuthController {
     // 로그아웃
     @ApiOperation({ summary: "로그아웃" })
     @Post('logout')
-    logout() {
-        return this.authService.logout();
+    logout(@CurrentAuth() auth: AuthRequest) {
+        return this.authService.logout(auth);
     }
 }
