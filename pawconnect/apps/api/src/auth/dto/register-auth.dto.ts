@@ -22,5 +22,7 @@ export class RegisterAuthDto {
     role: Role;
 
     // TODO : 이미지 추가
-    // imgProfile: string;
+    @ApiProperty({ example: "/defualt_profile.png" })
+    @IsString()
+    imgProfile: string;
 }
