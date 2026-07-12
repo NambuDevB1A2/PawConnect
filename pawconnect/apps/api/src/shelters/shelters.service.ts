@@ -16,8 +16,16 @@ export class SheltersService {
         return shelter;
     }
 
+    // 보호소 중복 검사 (이름)
+    async existsByName(name: string) {
+        const shelter = await this.prisma.shelter.findUnique({ where: { name }});
+        if (shelter) throw new UnauthorizedException();
+    }
+
     // CREATE
     async create(tx: Prisma.TransactionClient, createShelterDto: CraeteShelterDto) {
+        await this.existsByName(createShelterDto.name);
+
         const shelter = await tx.shelter.create({
             data: {
                 name: createShelterDto.name,
