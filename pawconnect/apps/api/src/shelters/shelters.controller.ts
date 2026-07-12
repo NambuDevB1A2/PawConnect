@@ -1,4 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
+import { SheltersService } from './shelters.service';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@ApiTags('Shelter')
 @Controller('shelters')
-export class SheltersController {}
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
+export class SheltersController {
+    constructor (private readonly sheltersService: SheltersService) {}
+
+}

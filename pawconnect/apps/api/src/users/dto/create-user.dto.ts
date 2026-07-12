@@ -6,4 +6,6 @@ export class CreateUserDto {
     nickname: string;
     role: Role;
     imgProfile: string;
+    
+    shelterId?: string;
 }

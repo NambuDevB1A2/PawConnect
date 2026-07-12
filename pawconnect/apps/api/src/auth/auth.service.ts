@@ -1,37 +1,51 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterAuthDto } from './dto/register-auth.dto';
+import { RegisterAuthDto, RegisterShelterAuthDto } from './dto/register-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { AuthRequest } from './interfaces/auth-request.interface';
+import { SheltersService } from '../shelters/shelters.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { Prisma, Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
+        private readonly prisma: PrismaService,
         private readonly usersService: UsersService,
+        private readonly sheltersService: SheltersService,
     ) {}
 
-    // 회원가입 - 일반 사용자
-    async registerUser(registerAuthDto: RegisterAuthDto) {
+    // 회원가입 - 공통
+    async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterAuthDto, shelterId?: string) {
         const passwordHash = await bcrypt.hash(registerAuthDto.password, 10);
         
-        const user = await this.usersService.create({
-            email: registerAuthDto.email,
-            passwordHash: passwordHash,
-            nickname: registerAuthDto.nickname,
-            role: registerAuthDto.role,
-            imgProfile: registerAuthDto.imgProfile,
+        const user = await this.usersService.create(tx, {
+            role,
+            ...registerAuthDto,
+            passwordHash,
+            shelterId,
         });
 
         return user;
     }
 
+    // 회원가입 - 일반 사용자
+    async registerUser(registerAuthDto: RegisterAuthDto) {
+        return await this.register(this.prisma, Role.USER, registerAuthDto);
+    }
+
     // 회원가입 - 보호소 관리자
-    async registerShelter(registerAuthDto: RegisterAuthDto) {
-        return this.registerUser(registerAuthDto);
+    async registerShelter(registerShelterAuthDto: RegisterShelterAuthDto) {
+        return await this.prisma.$transaction(async (tx) => {
+            const shelter = await this.sheltersService.create(tx, registerShelterAuthDto);
+            const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, shelter.id);
+
+            return { user, shelter };
+        });
     }
 
     // 로그인

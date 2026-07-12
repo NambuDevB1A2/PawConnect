@@ -1,12 +1,14 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { USER_SELECT } from './users.select';
+import { USER_SELECT } from './user.select';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
     constructor (private readonly prisma: PrismaService) {}
 
+    // 회원 검색 (이메일)
     async findByEmail(email: string) {
         const user = await this.prisma.user.findUnique({ where: { email }});
         if (!user) throw new UnauthorizedException();
@@ -14,22 +16,24 @@ export class UsersService {
         return user;
     }
 
+    // 회원 중복 검사 (이메일)
     async existsByEmail(email: string) {
         const user = await this.prisma.user.findUnique({ where: { email }});
         if (user) throw new UnauthorizedException();
     }
 
     // CREATE
-    async create(createUserDto: CreateUserDto) {
+    async create(tx: Prisma.TransactionClient, createUserDto: CreateUserDto) {
         await this.existsByEmail(createUserDto.email);
 
-        const user = await this.prisma.user.create({
+        const user = await tx.user.create({
             data: {
                 email: createUserDto.email,
                 password: createUserDto.passwordHash,
                 nickname: createUserDto.nickname,
                 role: createUserDto.role,
                 imgProfile: createUserDto.imgProfile,
+                shelterId: createUserDto.shelterId,
             },
             select: USER_SELECT,
         });

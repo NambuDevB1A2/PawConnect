@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { RegisterAuthDto } from './dto/register-auth.dto';
+import { RegisterAuthDto, RegisterShelterAuthDto } from './dto/register-auth.dto';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Public } from '../common/decorators/public.decorator';
@@ -27,8 +27,8 @@ export class AuthController {
     @ApiOperation({ summary: "회원가입 - 보호소 관리자" })
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/shelter')
-    registerShelter(@Body() registerAuthDto: RegisterAuthDto) {
-        return this.authService.registerShelter(registerAuthDto);
+    registerShelter(@Body() registerShelterAuthDto: RegisterShelterAuthDto) {
+        return this.authService.registerShelter(registerShelterAuthDto);
     }
 
     // 로그인
