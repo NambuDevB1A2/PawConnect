@@ -12,12 +12,14 @@ import { TestsModule } from '@/tests/tests.module';
 import { PetpostsModule } from '@/petposts/petposts.module';
 import { AiModule } from '@/ai/ai.module';
 import commonConfig from '@/config/common.config';
+import jwtConfig from '@/config/jwt.config';
+import bcryptConfig from '@/config/bcrypt.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [commonConfig],
+      load: [commonConfig, jwtConfig, bcryptConfig],
       envFilePath: `.env`,
       validationSchema: envValidationSchema,
       validationOptions: {

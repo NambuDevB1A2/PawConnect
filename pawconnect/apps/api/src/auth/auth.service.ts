@@ -9,11 +9,13 @@ import { RegisterAuthDto, RegisterShelterAuthDto } from '@/auth/dto/register-aut
 import { LoginAuthDto } from '@/auth/dto/login-auth.dto';
 import { JwtPayload } from '@/auth/interfaces/jwt-payload.interface';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
+        private readonly configService: ConfigService,
         private readonly prisma: PrismaService,
         private readonly usersService: UsersService,
         private readonly sheltersService: SheltersService,
@@ -21,7 +23,8 @@ export class AuthService {
 
     // 회원가입 - 공통
     async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterAuthDto, shelterId?: string) {
-        const passwordHash = await bcrypt.hash(registerAuthDto.password, 10);
+        const bcryptRound = this.configService.getOrThrow('bcrypt.bcrypt_round');
+        const passwordHash = await bcrypt.hash(registerAuthDto.password, bcryptRound);
         
         const user = await this.usersService.create(tx, {
             role,

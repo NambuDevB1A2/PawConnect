@@ -1,15 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConfigType } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from '@/app.module';
-import commonConfig from '@/config/common.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  const common = app.get<ConfigType<typeof commonConfig>>(commonConfig.KEY);
-  
+  // Config
+  const configService = app.get(ConfigService);
+  const commonConfig = configService.getOrThrow('common');
+
   // Validator
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
@@ -24,11 +25,11 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: `${common.webDomain}:${common.webPort}`,
+    origin: `${commonConfig.webDomain}:${commonConfig.webPort}`,
     credentials: true,
   });
 
-  await app.listen(common.port);
-  console.log(`Start to Server: ${common.domain}:${common.port} (swagger: ${common.domain}:${common.port}/api)`);
+  await app.listen(commonConfig.port);
+  console.log(`Start to Server: ${commonConfig.domain}:${commonConfig.port} (swagger: ${commonConfig.domain}:${commonConfig.port}/api)`);
 }
 bootstrap();
