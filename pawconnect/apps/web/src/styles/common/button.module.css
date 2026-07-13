@@ -1,0 +1,193 @@
+/* Buttons */
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--button-gap);
+
+    padding: var(--button-padding);
+
+    border-radius: var(--button-radius);
+
+    font-size: var(--font-size-body1);
+    font-weight: var(--font-weight-body1);
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        color 0.15s;
+}
+
+.button:disabled {
+    background-color: var(--color-border);
+    color: var(--color-text-disabled);
+}
+
+/* Size */
+
+.large {
+    width: var(--button-width-l);
+    height: var(--button-height-l);
+}
+
+.medium {
+    width: var(--button-width-m);
+    height: var(--button-height-m);
+}
+
+.small {
+    width: var(--button-width-s);
+    height: var(--button-height-s);
+}
+
+/* Type */
+
+.primary {
+    background-color: var(--color-primary);
+    color: var(--color-suface);
+    border: none;
+}
+
+.primary:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.primary:active {
+    background-color: var(--color-primary-pressed);
+}
+
+.secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-suface);
+    border: none;
+}
+
+.secondary:hover {
+    background-color: var(--color-secondary-200);
+}
+
+.secondary:active {
+    background-color: var(--color-secondary-300);
+}
+
+.outline {
+    background-color: var(--color-suface);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.outline:hover {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+
+.outline:active {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-pressed);
+    border-color: var(--color-primary-pressed);
+}
+
+.outline:disabled {
+    background-color: var(--color-suface);
+    color: var(--color-text-disabled);
+    border-color: var(--color-border);
+}
+
+.modal {
+    background-color: var(--color-suface);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+
+.modal:hover {
+    background-color: var(--color-background);
+    color: var(--color-text-secondary);
+    border-color: var(--color-text-disabled);
+}
+
+.modal:active {
+    background-color: var(--color-text-disabled);
+    color: var(--color-text-primary);
+    border-color: var(--color-text-secondary);
+}
+
+.modal:disabled {
+    background-color: var(--color-suface);
+    color: var(--color-text-disabled);
+    border-color: var(--color-border);
+}
+
+.ghost {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: none;
+}
+
+.ghost:hover {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-hover);
+}
+
+.ghost:active {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-pressed);
+}
+
+.ghost:disabled {
+    background-color: transparent;
+    color: var(--color-text-disabled);
+}
+
+.text {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    gap: var(--button-gap);
+
+    height: var(--button-height-m);
+
+    padding: var(--button-text-padding);
+
+    border: none;
+    border-radius: var(--button-radius);
+
+    color: var(--color-primary);
+
+    font-size: var(--font-size-body1);
+    font-weight: var(--font-weight-body1);
+    line-height: var(--line-height-body1);
+
+    transition:
+        color 0.15s,
+        text-decoration-color 0.15s;
+}
+
+.text:hover {
+    color: var(--color-primary-hover);
+
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.text:active {
+    color: var(--color-primary-pressed);
+}
+
+.text:disabled {
+    color: var(--color-text-disabled);
+}
+
+.success {
+    background-color: var(--color-success);
+}
+
+.danger {
+    background-color: var(--color-error);
+}
+
+.warning {
+    background-color: var(--color-warning);
+}

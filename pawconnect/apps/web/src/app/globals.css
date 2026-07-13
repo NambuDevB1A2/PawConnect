@@ -1,0 +1,255 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: var(--font-size-body1);
+    font-weight: var(--font-weight-body1);
+    line-height: var(--line-height-body1);
+
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family:
+        -apple-system, 
+        BlinkMacSystemFont, 
+        'Segoe UI', 
+        'Malgun Gothic', 
+        sans-serif;
+    
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+:root {
+    /* z-index */
+    --z-index-tooltip: 999;
+    --z-index-overlay: 1000;
+    --z-index-modal: 1001;
+    --z-index-toast: 1001;
+
+    /* Colors */
+    --color-primary: #F59E0B;
+    --color-primary-100: #FFF7E6;
+    --color-primary-200: #FEE6D1;
+    --color-primary-300: #FDDEBA;
+    --color-primary-400: var(--color-primary);
+    --color-primary-hover: #D97706;
+    --color-primary-pressed: #B45309;
+
+    --color-secondary: #60A5FA;
+    --color-secondary-100: var(--color-secondary);
+    --color-secondary-200: #3B82F6;
+    --color-secondary-300: #2563EB;
+
+    --color-success: #22C55E;
+    --color-warning: #FACC15;
+    --color-error: #EF4444;
+
+    --color-badge-success-background-color: #DCFCE7;
+    --color-badge-success-text-color: #15803D;
+    --color-badge-warning-background-color: #FEF3C7;
+    --color-badge-warning-text-color: var(--color-primary-pressed);
+    --color-badge-completed-background-color: #F3F4F6;
+    --color-badge-completed-text-color: var(--color-primary-pressed);
+    --color-badge-error-background-color: #FEE2E2;
+    --color-badge-error-text-color: #B91C1C;
+    --color-badge-info-background-color: #DBEAFE;
+    --color-badge-info-text-color: #1D4ED8;
+    --color-badge-dog-background-color: var(--color-primary-100);
+    --color-badge-dog-text-color: var(--color-primary-hover);
+    --color-badge-cat-background-color: #EFF6FF;
+    --color-badge-cat-text-color: var(--color-secondary-300);
+
+    --color-background: #FFFDF8;
+    --color-suface: #FFFFFF;
+    --color-border: #E5E7EB;
+
+    --color-text-primary: #222222;
+    --color-text-secondary: #666666;
+    --color-text-placeholder: #9CA3AF;
+    --color-text-disabled: #BDBDBD;
+
+    /* Grid, Spacing */
+    --spacing: 24px;
+    --spacing-100: 8px;
+    --spacing-200: 14px;
+    --spacing-300: 16px;
+    --spacing-400: var(--spacing);
+    --spacing-500: 32px;
+    --spacing-600: 40px;
+    --spacing-700: 48px;
+    --spacing-800: 80px;
+    --spacing-900: 120px;
+
+    /* Radius, Shadow */
+    --radius-100: 6px;
+    --radius-200: 10px;
+    --radius-300: 12px;
+    --radius-400: 16px;
+    --radius-500: 20px;
+    --radius-600: 24px;
+    --radius-900: 999px;
+
+    --radius-input: var(--radius-200);
+    --radius-button: var(--radius-300);
+    --radius-card: var(--radius-400);
+
+    --shadow-small: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.10);
+    --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.16);
+    --shadow-xxl: 0 20px 48px rgba(0, 0, 0, 0.12);
+    
+    /* Typography */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    --font-weight-display: var(--font-weight-bold);
+    --line-height-display: 56px;
+    --font-size-display: 40px;
+    
+    --font-weight-heading: var(--font-weight-bold);
+    --line-height-heading: 44px;
+    --font-size-heading: 32px;
+    
+    --font-weight-title: var(--font-weight-bold);
+    --line-height-title: 36px;
+    --font-size-title: 24px;
+    
+    --font-weight-modaltitle: var(--font-weight-bold);
+    --line-height-modaltitle: 28px;
+    --font-size-modaltitle: 18px;
+    
+    --font-weight-subtitle: var(--font-weight-semibold);
+    --line-height-subtitle: 30px;
+    --font-size-subtitle: 20px;
+    
+    --font-weight-menutitle: var(--font-weight-medium);
+    --line-height-menutitle: 28px;
+    --font-size-menutitle: 18px;
+    
+    --font-weight-body1: var(--font-weight-regular);
+    --line-height-body1: 24px;
+    --font-size-body1: 16px;
+    
+    --font-weight-body2: var(--font-weight-regular);
+    --line-height-body2: 22px;
+    --font-size-body2: 14px;
+    
+    --font-weight-body3: var(--font-weight-regular);
+    --line-height-body3: 20px;
+    --font-size-body3: 13px;
+    
+    --font-weight-caption: var(--font-weight-regular);
+    --line-height-caption: 18px;
+    --font-size-caption: 12px;
+
+    /* Buttons */
+    --button-radius: var(--radius-button);
+    --button-padding: var(--spacing-200) var(--spacing-400);
+    --button-text-padding: 0 var(--spacing-200);
+    --button-gap: 8px;
+
+    --button-height-l: 56px;
+    --button-height-m: 48px;
+    --button-height-s: 40px;
+
+    --button-width-l: 200px;
+    --button-width-m: 160px;
+    --button-width-s: 120px;
+
+    /* Inputs */
+    --input-height: 48px;
+    --input-width: 320px;
+    --input-radius: var(--radius-input);
+    --input-padding: 0 var(--spacing-300);
+
+    --input-border-width: 1px;
+    --input-border-color: var(--color-border);
+    --input-hover-border-color: var(--color-text-placeholder);
+    --input-focus-border-color: var(--color-primary);
+    --input-error-border-color: var(--color-error);
+    --input-disabled-border-color: var(--color-text-disabled);
+
+    --input-backgound-color: var(--color-suface);
+    --input-disabled-backgound-color: var(--color-border);
+
+    --input-text-color: var(--color-text-primary);
+    --input-placeholder-text-color: var(--color-text-placeholder);
+    --input-disabled-text-color: var(--color-text-disabled);
+
+    --input-font-size: var(--font-size-body1);
+    --input-font-weight: var(--font-weight-regular);
+    --input-line-height: var(--line-height-body1);
+    --input-label-gap: 8px;
+    --input-helper-gap: 8px;
+
+    /* Badges */
+    --badge-small-height: 24px;
+    --badge-medium-height: 28px;
+
+    --badge-small-width: 80px;
+    --badge-medium-width: 80px;
+    
+    --badge-small-padding: 4px 10px;
+    --badge-medium-padding: 6px 12px;
+
+    --badge-radius: var(--radius-900);
+
+    --badge-font-size: var(--font-size-caption);
+    --badge-font-weight: var(--font-weight-caption);
+    --badge-line-height: var(--line-height-caption);
+
+    /* Overlay (Backdrop) */
+    --overlay-backdrop-color: rgba(0, 0, 0, 0.30);
+    --overlay-backdrop-opacity: 0.3;
+
+    /* Modal */
+    --modal-background-color: var(--color-suface);
+    --modal-shadow: var(--shadow-xxl);
+    --modal-radius: var(--radius-500);
+    --modal-padding: var(--spacing-500);
+
+    --modal-width-s: 420px;
+    --modal-width-m: 560px;
+    --modal-width-l: 720px;
+    --modal-width-xl: 960px;
+
+    /* Toast */
+    --toast-height: 72px;
+    --toast-width: 360px;
+    --toast-radius: 12px;
+    --toast-padding: 20px;
+    --toast-shadow: var(--shadow-large);
+
+    /* Icons */
+    --icon-box-radius: var(--radius-300);
+    --icon-padding: var(--spacing-100);
+    --icon-label-gap: var(--spacing-100);
+
+    --icon-box-size-badge: 26.67px;
+    --icon-box-size-input: 33.33px;
+    --icon-box-size-default: 40px;
+    --icon-box-size-status: 53.33px;
+    --icon-box-size-hero: 66.67px;
+    
+    --icon-size-badge: 16px;
+    --icon-size-input: 20px;
+    --icon-size-default: 24px;
+    --icon-size-status: 32px;
+    --icon-size-hero: 40px;
+}

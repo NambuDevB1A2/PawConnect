@@ -1,0 +1,77 @@
+/* Icon */
+
+.wrapper_icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: var(--icon-padding);
+
+    border-color: var(--color-primary);
+    border-radius: var(--icon-box-radius);
+}
+
+.img_icon {
+    display: block;
+
+    width: var(--icon-size-default);
+    height: var(--icon-size-default);
+
+    object-fit: contain;
+
+    user-select: none;
+}
+
+/* Size */
+
+.badge {
+    width: var(--icon-box-size-badge);
+    height: var(--icon-box-size-badge);
+}
+
+.badge .img_icon {
+    width: var(--icon-size-badge);
+    height: var(--icon-size-badge);
+}
+
+.input {
+    width: var(--icon-box-size-input);
+    height: var(--icon-box-size-input);
+}
+
+.input .img_icon {
+    width: var(--icon-size-input);
+    height: var(--icon-size-input);
+}
+
+.default {
+    width: var(--icon-box-size-default);
+    height: var(--icon-box-size-default);
+}
+
+.default .img_icon {
+    width: var(--icon-size-default);
+    height: var(--icon-size-default);
+}
+
+.status {
+    width: var(--icon-box-size-status);
+    height: var(--icon-box-size-status);
+}
+
+.status .img_icon {
+    width: var(--icon-size-status);
+    height: var(--icon-size-status);
+}
+
+.hero {
+    width: var(--icon-box-size-hero);
+    height: var(--icon-box-size-hero);
+}
+
+.hero .img_icon {
+    width: var(--icon-size-hero);
+    height: var(--icon-size-hero);
+}
