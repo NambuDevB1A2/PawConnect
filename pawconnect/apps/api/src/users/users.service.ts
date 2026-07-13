@@ -1,7 +1,7 @@
+import { PrismaService } from '@/prisma/prisma.service';
+import { CreateUserDto } from '@/users/dto/create-user.dto';
+import { USER_SELECT } from '@/users/user.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { USER_SELECT } from './user.select';
 import { Prisma } from '@prisma/client';
 
 @Injectable()

@@ -1,14 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterAuthDto, RegisterShelterAuthDto } from './dto/register-auth.dto';
-import { LoginAuthDto } from './dto/login-auth.dto';
 import * as bcrypt from 'bcrypt';
-import { UsersService } from '../users/users.service';
-import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { AuthRequest } from './interfaces/auth-request.interface';
-import { SheltersService } from '../shelters/shelters.service';
-import { PrismaService } from '../prisma/prisma.service';
 import { Prisma, Role } from '@prisma/client';
+import { PrismaService } from '@/prisma/prisma.service';
+import { UsersService } from '@/users/users.service';
+import { SheltersService } from '@/shelters/shelters.service';
+import { RegisterAuthDto, RegisterShelterAuthDto } from '@/auth/dto/register-auth.dto';
+import { LoginAuthDto } from '@/auth/dto/login-auth.dto';
+import { JwtPayload } from '@/auth/interfaces/jwt-payload.interface';
+import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 
 @Injectable()
 export class AuthService {

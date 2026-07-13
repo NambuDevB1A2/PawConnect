@@ -1,6 +1,6 @@
+import { PetpostsController } from '@/petposts/petposts.controller';
+import { PetpostsService } from '@/petposts/petposts.service';
 import { Module } from '@nestjs/common';
-import { PetpostsService } from './petposts.service';
-import { PetpostsController } from './petposts.controller';
 
 @Module({
   providers: [PetpostsService],

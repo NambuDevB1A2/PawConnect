@@ -1,12 +1,12 @@
+import { AuthService } from '@/auth/auth.service';
+import { CurrentAuth } from '@/auth/decorators/current-auth.decorator';
+import { LoginAuthDto } from '@/auth/dto/login-auth.dto';
+import { RegisterAuthDto, RegisterShelterAuthDto } from '@/auth/dto/register-auth.dto';
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import type { AuthRequest } from '@/auth/interfaces/auth-request.interface';
+import { Public } from '@/common/decorators/public.decorator';
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthService } from './auth.service';
-import { RegisterAuthDto, RegisterShelterAuthDto } from './dto/register-auth.dto';
-import { LoginAuthDto } from './dto/login-auth.dto';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { Public } from '../common/decorators/public.decorator';
-import { CurrentAuth } from './decorators/current-auth.decorator';
-import { type AuthRequest } from './interfaces/auth-request.interface';
 
 @ApiTags('Auth')
 @Controller('auth')

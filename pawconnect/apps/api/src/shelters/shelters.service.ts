@@ -1,7 +1,7 @@
+import { PrismaService } from '@/prisma/prisma.service';
+import { CraeteShelterDto } from '@/shelters/dto/create-shelter.dto';
+import { SHELTER_SELECT } from '@/shelters/shelter.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { CraeteShelterDto } from './dto/create-shelter.dto';
-import { SHELTER_SELECT } from './shelter.select';
 import { Prisma } from '@prisma/client';
 
 @Injectable()

@@ -1,5 +1,5 @@
+import { AuthRequest } from "@/auth/interfaces/auth-request.interface";
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
-import { AuthRequest } from "../interfaces/auth-request.interface";
 
 export const CurrentAuth = createParamDecorator(
     (field: keyof AuthRequest, ctx: ExecutionContext) => {

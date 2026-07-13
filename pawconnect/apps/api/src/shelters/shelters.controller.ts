@@ -1,7 +1,7 @@
+import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { SheltersService } from '@/shelters/shelters.service';
 import { Controller, UseGuards } from '@nestjs/common';
-import { SheltersService } from './shelters.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Shelter')
 @Controller('shelters')
