@@ -1,0 +1,31 @@
+.wrapper_header {
+    width: 100%;
+    height: 80px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+
+    padding: 0 32px 0 32px;
+    
+    background-color: var(--color-suface);
+
+    box-shadow: var(--shadow-small)
+}
+
+.box_logo {
+    width: 190px;
+}
+
+.box_link {
+    flex: 1;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.box_mypage {
+
+}

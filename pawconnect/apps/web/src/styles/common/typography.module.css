@@ -1,0 +1,55 @@
+/* Typography */
+
+.display {
+    font-weight: var(--font-weight-display);
+    line-height: var(--line-height-display);
+    font-size: var(--font-size-display);
+}
+
+.heading {
+    font-weight: var(--font-weight-heading);
+    line-height: var(--line-height-heading);
+    font-size: var(--font-size-heading);
+}
+
+.title {
+    font-weight: var(--font-weight-title);
+    line-height: var(--line-height-title);
+    font-size: var(--font-size-title);
+}
+
+.modaltitle {
+    font-weight: var(--font-weight-modaltitle);
+    line-height: var(--line-height-modaltitle);
+    font-size: var(--font-size-modaltitle);
+}
+
+.subtitle {
+    font-weight: var(--font-weight-subtitle);
+    line-height: var(--line-height-subtitle);
+    font-size: var(--font-size-subtitle);
+}
+
+.menutitle {
+    font-weight: var(--font-weight-menutitle);
+    line-height: var(--line-height-menutitle);
+    font-size: var(--font-size-menutitle);
+}
+
+.body1 {
+    font-weight: var(--font-weight-body1);
+    line-height: var(--line-height-body1);
+    font-size: var(--font-size-body1);
+}
+
+.body2 {
+    font-weight: var(--font-weight-body2);
+    line-height: var(--line-height-body2);
+    font-size: var(--font-size-body2);
+}
+
+.body3 {
+    font-weight: var(--font-weight-body3);
+    line-height: var(--line-height-body3);
+    font-size: var(--font-size-body3);
+}
