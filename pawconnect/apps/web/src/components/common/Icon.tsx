@@ -8,7 +8,7 @@ export type IconGrade = -25 | 0 | 200;
 export type IconColor = "color_default" | "primary" | "secondary" | "disabled" | "success" | "warning" | "error" | "color_true" | "color_false" | "white";
 
 interface IconProps extends HTMLAttributes<HTMLSpanElement> {
-    name: string; // material sumbols 아이콘 이름
+    name: string; // material sumbols 아이콘 이름 (https://fonts.google.com/icons)
     variant?: IconVariant;
     size?: IconSize;
     fill?: boolean;
