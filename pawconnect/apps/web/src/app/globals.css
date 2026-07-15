@@ -32,6 +32,10 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+main {
+    margin: var(--spacing);
+}
+
 :root {
     /* z-index */
     --z-index-tooltip: 999;
