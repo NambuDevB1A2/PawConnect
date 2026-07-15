@@ -96,7 +96,7 @@
 
 /* Colors */
 
-.defaultColor {
+.color_default {
     color: var(--color-icon-default)
 }
 
@@ -124,10 +124,10 @@
     color: var(--color-error);
 }
 
-.trueColor {
+.color_true {
     color: var(--color-icon-button-true);
 }
 
-.falseColor {
+.color_false {
     color: var(--color-icon-button-false);
 }

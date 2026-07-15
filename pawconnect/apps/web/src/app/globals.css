@@ -106,10 +106,11 @@ body {
     --radius-600: 24px;
     --radius-900: 999px;
 
-    --radius-input: var(--radius-200);
+    --radius-input: var(--radius-300);
     --radius-button: var(--radius-300);
     --radius-card: var(--radius-400);
 
+    /* Shadows */
     --shadow-small: 0 2px 8px rgba(0, 0, 0, 0.08);
     --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.10);
     --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.12);

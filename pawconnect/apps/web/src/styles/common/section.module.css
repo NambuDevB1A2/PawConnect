@@ -1,0 +1,17 @@
+/* Section */
+
+.wrapper_section {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    gap: var(--spacing);
+}
+
+.box_section {
+    background-color: var(--color-suface);
+
+    padding: var(--spacing);
+
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+}

@@ -10,7 +10,8 @@ type TypographyVariant =
     "menutitle" |
     "body1" |
     "body2" |
-    "body3";
+    "body3" |
+    "caption";
 
 interface TypographyProps extends HTMLAttributes<HTMLParagraphElement> {
     children: React.ReactNode;

@@ -4,15 +4,15 @@ import { ButtonHTMLAttributes } from "react";
 type ButtonSize = "large" | "medium" | "small";
 
 type ButtonVariant =
-  | "primary"
-  | "secondary"
-  | "outline"
-  | "modal"
-  | "ghost"
-  // "success" |
-  // "danger" |
-  // "warning" |
-  | "text";
+  "primary" |
+  "secondary" |
+  "outline" |
+  "modal" |
+  "ghost" |
+  "success" |
+  "danger" |
+  "warning" |
+  "text";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;

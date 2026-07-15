@@ -18,7 +18,7 @@ export default function IconButton({
     size = "default",
     weight = 400,
     grade = 0,
-    color = "trueColor",
+    color = "color_true",
     wrapperBorder = false,
     wrapperClassName = "",
     buttonClassName = "",
@@ -30,7 +30,7 @@ export default function IconButton({
         <button className={`${styles.button} ${buttonClassName}`} {...props}>
             <Icon
                 name={name} variant="outlined" size={size} 
-                fill={disabled ? false : true} weight={weight} grade={grade} color={disabled ? "falseColor" : color}
+                fill={!disabled} weight={weight} grade={grade} color={disabled ? "color_false" : color}
                 wrapperBorder={wrapperBorder} wrapperClassName={wrapperClassName}
                 className={className}/>
         </button>

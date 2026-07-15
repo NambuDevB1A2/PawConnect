@@ -50,7 +50,8 @@
 .input:disabled {
     border-color: var(--input-disabled-border-color);
     background-color: var(--input-disabled-backgound-color);
-    color: var(--input-disabled-text-color);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-primary);
 
     cursor: not-allowed;
 }
@@ -62,8 +63,6 @@
 .input::placeholder {
     font-weight: var(--font-weight-regular);
     color: var(--color-text-placeholder);
-
-    margin: var(--input-helper-gap);
 }
 
 .error_text {

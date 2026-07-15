@@ -5,7 +5,7 @@ export type IconVariant = "outlined" | "rounded" | "sharp";
 export type IconSize = "badge" | "input" | "default" | "status" | "hero";
 export type IconWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700;
 export type IconGrade = -25 | 0 | 200;
-export type IconColor = "defaultColor" | "primary" | "secondary" | "disabled" | "success" | "warning" | "error" | "trueColor" | "falseColor";
+export type IconColor = "color_default" | "primary" | "secondary" | "disabled" | "success" | "warning" | "error" | "color_true" | "color_false";
 
 interface IconProps extends HTMLAttributes<HTMLSpanElement> {
     name: string; // material sumbols 아이콘 이름
@@ -26,7 +26,7 @@ export default function Icon({
     fill = false,
     weight = 400,
     grade = 0,
-    color = "defaultColor",
+    color = "color_default",
     wrapperBorder = false,
     wrapperClassName = "",
     className = "",
