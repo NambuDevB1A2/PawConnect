@@ -8,11 +8,11 @@ interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {
     text?: string;
 }
 
-export default function CheckBox({ children, text, ...props }: CheckBoxProps) {
+export default function CheckBox({ children, text, className = "", ...props }: CheckBoxProps) {
     return (
         <div className={styles.wrapper_checkbox}>
             <span className={styles.box_input}>
-                <input className={styles.input} type="checkbox" {...props}/>
+                <input className={`${styles.input} ${className}`} type="checkbox" {...props}/>
                 <Icon name="check"
                 size="badge"
                 wrapperClassName={styles.wrapper_check_icon}

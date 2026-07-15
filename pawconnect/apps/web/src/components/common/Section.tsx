@@ -11,6 +11,8 @@ interface SectionProps extends HTMLAttributes<HTMLDivElement> {
     fullWidth?: boolean
     titleText?: string;
     align?: SectionAlign;
+    wrapperClassName?: string;
+    
 }
 
 export default function Section({
@@ -18,12 +20,14 @@ export default function Section({
     size,
     titleText,
     fullWidth = true,
+    wrapperClassName = "",
+    className = "",
     align = "center",
 }: SectionProps) {
     return (
-        <div className={styles.wrapper_section}>
+        <div className={`${styles.wrapper_section} ${wrapperClassName}`}>
             {titleText && <Typography variant="title">{titleText}</Typography>}
-            <div className={`${styles.box_section} ${styles[align]} ${size ? styles[size] : ""}`}
+            <div className={`${styles.box_section} ${styles[align]} ${size ? styles[size] : ""} ${className}`}
                 style={{ width: !size && fullWidth ? "100%" : undefined }}>
                 {children}
             </div>

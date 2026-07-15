@@ -151,8 +151,6 @@
     align-items: center;
     gap: var(--button-gap);
 
-    height: var(--button-height-m);
-
     padding: 0;
 
     border: none;
