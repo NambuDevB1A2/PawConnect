@@ -1,6 +1,7 @@
 'use client';
 
 import Button from "@/components/common/Button";
+import Icon from "@/components/common/Icon";
 import Typography from "@/components/common/Typography";
 import styles from "@/styles/layout/Header.module.css"
 import { useRouter } from "next/navigation";
@@ -10,7 +11,8 @@ export default function Header() {
 
     return (
         <div className={styles.wrapper_header}>
-            <div className={styles.box_logo}>
+            <div className={styles.box_logo} onClick={() => router.push(`/`)}>
+                <Icon name="pets" color="primary"/>
                 <Typography variant="subtitle">PawConnect</Typography>
             </div>
 

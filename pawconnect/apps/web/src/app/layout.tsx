@@ -1,4 +1,7 @@
 import "@/app/globals.css";
+import 'material-symbols/outlined.css';
+import "material-symbols/rounded.css";
+import "material-symbols/sharp.css";
 import Header from "@/components/header/Header";
 import AuthProvider from "@/providers/AuthProvider";
 

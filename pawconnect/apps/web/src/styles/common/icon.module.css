@@ -7,21 +7,44 @@
 
     flex-shrink: 0;
 
+    background-color: transparent;
+
     padding: var(--icon-padding);
 
-    border-color: var(--color-primary);
     border-radius: var(--icon-box-radius);
 }
 
-.img_icon {
-    display: block;
+.bordered {
+    border: 1px solid;
+    border-color: var(--color-primary);
+}
 
-    width: var(--icon-size-default);
-    height: var(--icon-size-default);
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
 
-    object-fit: contain;
+    font-variation-settings: 
+        "FILL" var(--icon-fill, 0),
+        "wght" var(--icon-wght, 400),
+        "GRAD" var(--icon-grad, 0),
+        "opsz" var(--icon-opsz, 24);
+
+    font-size: var(--icon-size-default);
 
     user-select: none;
+}
+
+.outlined {
+    font-family: "Material Symbols Outlined";
+}
+
+.rounded {
+    font-family: "Material Symbols Rounded";
+}
+
+.sharp {
+    font-family: "Material Symbols Sharp";
 }
 
 /* Size */
@@ -31,9 +54,8 @@
     height: var(--icon-box-size-badge);
 }
 
-.badge .img_icon {
-    width: var(--icon-size-badge);
-    height: var(--icon-size-badge);
+.badge .icon {
+    font-size: var(--icon-size-badge);
 }
 
 .input {
@@ -41,9 +63,8 @@
     height: var(--icon-box-size-input);
 }
 
-.input .img_icon {
-    width: var(--icon-size-input);
-    height: var(--icon-size-input);
+.input .icon {
+    font-size: var(--icon-size-input);
 }
 
 .default {
@@ -51,9 +72,8 @@
     height: var(--icon-box-size-default);
 }
 
-.default .img_icon {
-    width: var(--icon-size-default);
-    height: var(--icon-size-default);
+.default .icon {
+    font-size: var(--icon-size-default);
 }
 
 .status {
@@ -61,9 +81,8 @@
     height: var(--icon-box-size-status);
 }
 
-.status .img_icon {
-    width: var(--icon-size-status);
-    height: var(--icon-size-status);
+.status .icon {
+    font-size: var(--icon-size-status);
 }
 
 .hero {
@@ -71,7 +90,36 @@
     height: var(--icon-box-size-hero);
 }
 
-.hero .img_icon {
-    width: var(--icon-size-hero);
-    height: var(--icon-size-hero);
+.hero .icon {
+    font-size: var(--icon-size-hero);
+}
+
+/* Colors */
+
+.defaultColor {
+    color: var(--color-icon-default)
+}
+
+.primary {
+    color: var(--color-primary);
+}
+
+.secondary {
+    color: var(--color-secondary);
+}
+
+.disabled {
+    color: var(--color-text-disabled);
+}
+
+.success {
+    color: var(--color-success);
+}
+
+.warning {
+    color: var(--color-warning);
+}
+
+.error {
+    color: var(--color-error);
 }

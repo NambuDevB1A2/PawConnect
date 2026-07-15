@@ -1,4 +1,5 @@
 import styles from "@/styles/common/typography.module.css"
+import { HTMLAttributes } from "react";
 
 type TypographyVariant =
     "display" |
@@ -11,15 +12,16 @@ type TypographyVariant =
     "body2" |
     "body3";
 
-interface TypographyProps {
+interface TypographyProps extends HTMLAttributes<HTMLParagraphElement> {
     children: React.ReactNode;
     variant?: TypographyVariant;
     className?: string;
 }
 
-export default function Typography({ children, variant = "body1", className = "" }: TypographyProps) {
+export default function Typography({ children, variant = "body1", className = "", ...props }: TypographyProps) {
     return (
-        <p className={`${styles[variant]} ${className}`} >
+        <p className={`${styles[variant]} ${className}`}
+            {...props} >
             {children}
         </p>
     );

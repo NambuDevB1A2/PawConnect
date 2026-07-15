@@ -13,6 +13,8 @@
     font-size: var(--font-size-body1);
     font-weight: var(--font-weight-body1);
 
+    cursor: pointer;
+    
     transition:
         background-color 0.15s,
         border-color 0.15s,

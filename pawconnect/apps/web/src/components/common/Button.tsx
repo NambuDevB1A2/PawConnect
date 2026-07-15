@@ -1,36 +1,41 @@
-import styles from "@/styles/common/button.module.css"
+import styles from "@/styles/common/button.module.css";
 import { ButtonHTMLAttributes } from "react";
 
-type ButtonSize = 
-    "large" |
-    "medium" |
-    "small";
+type ButtonSize = "large" | "medium" | "small";
 
 type ButtonVariant =
-    "primary" |
-    "secondary" |
-    "outline" |
-    "modal" |
-    "ghost" |
-    // "success" |
-    // "danger" |
-    // "warning" |
-    "text";
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "modal"
+  | "ghost"
+  // "success" |
+  // "danger" |
+  // "warning" |
+  | "text";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    children: React.ReactNode;
-    size?: ButtonSize;
-    variant?: ButtonVariant;
-    fullWidth?: boolean;
+  children: React.ReactNode;
+  size?: ButtonSize;
+  variant?: ButtonVariant;
+  fullWidth?: boolean;
 }
 
-export default function Button({ children, size = "medium", variant = "primary", fullWidth = false, className = "", ...props }: ButtonProps) {
-    return (
-        <button
-            className={`${styles.button} ${variant !== "text" && styles[size]} ${styles[variant]} ${className}`}
-            style={{ width: fullWidth? "100%" : undefined }}
-            {...props}>
-            {children}
-        </button>
-    );
+export default function Button({
+    children,
+    size = "medium",
+    variant = "primary",
+    fullWidth = false,
+    className = "",
+    ...props
+}: ButtonProps) {
+  return (
+    <button
+      className={`${styles.button} ${variant !== "text" && styles[size]} ${styles[variant]} ${className}`}
+      style={{ width: fullWidth ? "100%" : undefined }}
+      {...props}
+    >
+      {children}
+    </button>
+  );
 }
