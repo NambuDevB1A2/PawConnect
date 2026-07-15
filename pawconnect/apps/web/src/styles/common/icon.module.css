@@ -123,3 +123,11 @@
 .error {
     color: var(--color-error);
 }
+
+.trueColor {
+    color: var(--color-icon-button-true);
+}
+
+.falseColor {
+    color: var(--color-icon-button-false);
+}

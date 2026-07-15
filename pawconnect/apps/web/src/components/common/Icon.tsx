@@ -1,11 +1,11 @@
 import { HTMLAttributes } from "react";
 import styles from "@/styles/common/icon.module.css"
 
-type IconVariant = "outlined" | "rounded" | "sharp";
-type IconSize = "badge" | "input" | "default" | "status" | "hero";
-type IconWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700;
-type IconGrade = -25 | 0 | 200;
-type IconColor = "defaultColor" | "primary" | "secondary" | "disabled" | "success" | "warning" | "error";
+export type IconVariant = "outlined" | "rounded" | "sharp";
+export type IconSize = "badge" | "input" | "default" | "status" | "hero";
+export type IconWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700;
+export type IconGrade = -25 | 0 | 200;
+export type IconColor = "defaultColor" | "primary" | "secondary" | "disabled" | "success" | "warning" | "error" | "trueColor" | "falseColor";
 
 interface IconProps extends HTMLAttributes<HTMLSpanElement> {
     name: string; // material sumbols 아이콘 이름

@@ -82,6 +82,8 @@ body {
     --color-text-disabled: #BDBDBD;
 
     --color-icon-default: #6B7280;
+    --color-icon-button-true: #1C1B1F;
+    --color-icon-button-false: var(--color-text-disabled);
 
     /* Grid, Spacing */
     --spacing: 24px;
