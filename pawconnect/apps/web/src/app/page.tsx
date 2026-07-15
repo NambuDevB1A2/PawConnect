@@ -8,9 +8,10 @@ import Section from "@/components/common/Section";
 import Typography from "@/components/common/Typography";
 import CheckBox from '../components/common/CheckBox';
 import { CSSProperties } from "react";
-import RadioButton from "@/components/common/RadioButton";
-import RadioButtonGroup from "@/components/common/RadioButtonGroup";
+import Radio from "@/components/common/Radio";
+import RadioGroup from "@/components/common/RadioGroup";
 import Tooltip from "@/components/common/Tooltip";
+import Toggle from "@/components/common/Toggle";
 
 export default function Home() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
@@ -135,7 +136,7 @@ export default function Home() {
             </Section>
 
 
-            <Typography variant="subtitle">CheckBox & Radio Button</Typography>
+            <Typography variant="subtitle">CheckBox & Radio & Toggle</Typography>
             <div style={boxColumnStyle}>
                 <CheckBox text="회원가입에 필요한 정보 수집에 동의하십니까?" disabled/>
                 <CheckBox text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
@@ -146,19 +147,23 @@ export default function Home() {
                     <Typography>에 동의합니까?</Typography>
                 </CheckBox>
 
-                <RadioButtonGroup name="register_agreement" defaultValue="disagree_info">
-                    <RadioButton value="disagree_info" text="회원가입에 필요한 정보 수집에 동의하십니까?" disabled/>
-                    <RadioButton value="agree_info1" text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
-                    <RadioButton value="agree_info2" text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
-                    <RadioButton value="agree_info3" text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
-                    <RadioButton value="agree_info4" text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
-                    <RadioButton value="agree_terms">
+                <RadioGroup name="register_agreement" defaultValue="disagree_info">
+                    <Radio value="disagree_info" text="회원가입에 필요한 정보 수집에 동의하십니까?" disabled/>
+                    <Radio value="agree_info1" text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
+                    <Radio value="agree_info2" text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
+                    <Radio value="agree_info3" text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
+                    <Radio value="agree_info4" text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
+                    <Radio value="agree_terms">
                         <Button variant="text">이용약관</Button>
                         <Typography>과 </Typography>
                         <Button variant="text">개인정보 처리방침</Button>
                         <Typography>에 동의합니까?</Typography>
-                    </RadioButton>
-                </RadioButtonGroup>
+                    </Radio>
+                </RadioGroup>
+
+                <Toggle/>
+                <Toggle text="야간모드 설정"/>
+                <Toggle>야간모드 설정</Toggle>
             </div>
 
 

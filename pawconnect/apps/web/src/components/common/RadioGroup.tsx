@@ -1,7 +1,7 @@
 'use client';
 
-import { createContext, isValidElement, ReactElement, useId, useState } from "react";
-import styles from "@/styles/common/RadioButton.module.css"
+import { createContext, useId, useState } from "react";
+import styles from "@/styles/common/Radio.module.css"
 
 interface RadioGroupContextType {
     name: string;
@@ -24,7 +24,7 @@ interface RadioGroupProps {
     className?: string;
 }
 
-export default function RadioButtonGroup({
+export default function RadioGroup({
     children,
     name,
     defaultValue,
