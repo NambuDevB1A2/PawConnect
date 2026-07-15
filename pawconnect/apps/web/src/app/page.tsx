@@ -10,6 +10,7 @@ import CheckBox from '../components/common/CheckBox';
 import { CSSProperties } from "react";
 import RadioButton from "@/components/common/RadioButton";
 import RadioButtonGroup from "@/components/common/RadioButtonGroup";
+import Tooltip from "@/components/common/Tooltip";
 
 export default function Home() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
@@ -161,8 +162,19 @@ export default function Home() {
             </div>
 
 
-            <Typography variant="subtitle">??</Typography>
-
+            <Typography variant="subtitle">ToolTip</Typography>
+            <div style={boxRowStyle}>
+                <Tooltip text="툴팁 텍스트 들어감"></Tooltip>
+                <Tooltip>
+                    <Badge variant="error">error</Badge>
+                    <Typography variant="caption" color="disabled">이렇게 여러 개의 요소를</Typography>
+                    <Typography variant="caption" color="disabled">넣을 수도 있습니다</Typography>
+                </Tooltip>
+                <Tooltip text="Top 툴팁" position="top"></Tooltip>
+                <Tooltip text="Bottom 툴팁" position="bottom"></Tooltip>
+                <Tooltip text="Left 툴팁" position="left" iconName="close"></Tooltip>
+                <Tooltip text="Right 툴팁" position="right" iconName="more_vert"></Tooltip>
+            </div>
 
         </div>
     );

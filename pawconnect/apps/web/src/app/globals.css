@@ -215,11 +215,15 @@ body {
     --input-label-gap: 8px;
     --input-helper-gap: 8px;
 
-    /* CheckBox */
+    /* CheckBox & RadioButton */
 
     --checkbox-size: 14px;
     --checkbox-color-border: #8E8E8E;
     --checkbox-color-checked: var(--color-secondary);
+
+    /* Tooltip */
+
+    --tooltip-size: 17px;
 
     /* Badges */
     --badge-small-height: 24px;
