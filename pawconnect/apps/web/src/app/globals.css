@@ -117,10 +117,15 @@ body {
     --shadow-xxl: 0 20px 48px rgba(0, 0, 0, 0.12);
     
     /* Typography */
-    --font-weight-regular: 500;
-    --font-weight-medium: 600;
-    --font-weight-semibold: 700;
+    --font-weight-thin: 100;
+    --font-weight-extralight: 200;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
     --font-weight-bold: 800;
+    --font-weight-extrabold: 700;
+    --font-weight-black: 900;
 
     --font-weight-display: var(--font-weight-bold);
     --line-height-display: 56px;
@@ -187,10 +192,10 @@ body {
     --input-hover-border-color: var(--color-text-placeholder);
     --input-focus-border-color: var(--color-primary);
     --input-error-border-color: var(--color-error);
-    --input-disabled-border-color: var(--color-text-disabled);
+    --input-disabled-border-color: var(--color-border);
 
     --input-backgound-color: var(--color-suface);
-    --input-disabled-backgound-color: var(--color-border);
+    --input-disabled-backgound-color: #F5F5F5;
 
     --input-text-color: var(--color-text-primary);
     --input-placeholder-text-color: var(--color-text-placeholder);

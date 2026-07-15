@@ -7,6 +7,11 @@
     gap: var(--input-label-gap);
 }
 
+.wrapper_input p {
+    font-size: var(--font-size-body1);
+    line-height: var(--line-height-body1);
+}
+
 .input {
     width: 100%;
     height: var(--input-height);
@@ -22,6 +27,8 @@
     font-weight: var(--input-font-weight);
     line-height: var(--input-line-height);
 
+    outline: none;
+    
     transition: 
         border-color 0.2s,
         background-color 0.2s,
@@ -48,6 +55,25 @@
     cursor: not-allowed;
 }
 
-.helper_text {
-    margin-top: var(--input-helper-gap);
+.label_text {
+    font-weight: var(--font-weight-bold);
+}
+
+.input::placeholder {
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-placeholder);
+
+    margin: var(--input-helper-gap);
+}
+
+.error_text {
+    font-weight: var(--font-weight-regular);
+}
+
+.correct {
+    color: var(--color-success);
+}
+
+.error {
+    color: var(--color-error);
 }
