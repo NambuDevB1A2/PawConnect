@@ -1,4 +1,43 @@
-import { Injectable } from '@nestjs/common';
+import { PrismaService } from '@/prisma/prisma.service';
+import { CreateUserDto } from '@/users/dto/create-user.dto';
+import { USER_SELECT } from '@/users/user.select';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
-export class UsersService {}
+export class UsersService {
+    constructor (private readonly prisma: PrismaService) {}
+
+    // 회원 검색 (이메일)
+    async findByEmail(email: string) {
+        const user = await this.prisma.user.findUnique({ where: { email }});
+        if (!user) throw new UnauthorizedException();
+        
+        return user;
+    }
+
+    // 회원 중복 검사 (이메일)
+    async existsByEmail(email: string) {
+        const user = await this.prisma.user.findUnique({ where: { email }});
+        if (user) throw new UnauthorizedException();
+    }
+
+    // CREATE
+    async create(tx: Prisma.TransactionClient, createUserDto: CreateUserDto) {
+        await this.existsByEmail(createUserDto.email);
+
+        const user = await tx.user.create({
+            data: {
+                email: createUserDto.email,
+                password: createUserDto.passwordHash,
+                nickname: createUserDto.nickname,
+                role: createUserDto.role,
+                imgProfile: createUserDto.imgProfile,
+                shelterId: createUserDto.shelterId,
+            },
+            select: USER_SELECT,
+        });
+
+        return user;
+    }
+}
