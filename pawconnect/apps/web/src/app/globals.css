@@ -80,7 +80,7 @@ body {
     --color-badge-cat-text-color: var(--color-secondary-300);
 
     --color-background: #FFFDF8;
-    --color-suface: #FFFFFF;
+    --color-surface: #FFFFFF;
     --color-border: #E5E7EB;
 
     --color-text-primary: #222222;
@@ -202,8 +202,8 @@ body {
     --input-error-border-color: var(--color-error);
     --input-disabled-border-color: var(--color-border);
 
-    --input-backgound-color: var(--color-suface);
-    --input-disabled-backgound-color: #F5F5F5;
+    --input-background-color: var(--color-surface);
+    --input-disabled-background-color: #F5F5F5;
 
     --input-text-color: var(--color-text-primary);
     --input-placeholder-text-color: var(--color-text-placeholder);
@@ -252,7 +252,7 @@ body {
     --overlay-backdrop-opacity: 0.3;
 
     /* Modal */
-    --modal-background-color: var(--color-suface);
+    --modal-background-color: var(--color-surface);
     --modal-shadow: var(--shadow-xxl);
     --modal-radius: var(--radius-500);
     --modal-padding: var(--spacing-500);

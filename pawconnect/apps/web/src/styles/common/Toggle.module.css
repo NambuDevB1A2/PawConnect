@@ -59,7 +59,7 @@ input:disabled {
     height: var(--toggle-track-size);
     border-radius: var(--radius-900);
 
-    background-color: var(--color-suface);
+    background-color: var(--color-surface);
 
     transition: 
         transform var(--transition-transform);

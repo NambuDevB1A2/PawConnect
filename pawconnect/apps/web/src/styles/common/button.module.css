@@ -31,17 +31,17 @@
 /* Size */
 
 .large {
-    width: var(--button-width-l);
+    min-width: var(--button-width-l);
     height: var(--button-height-l);
 }
 
 .medium {
-    width: var(--button-width-m);
+    min-width: var(--button-width-m);
     height: var(--button-height-m);
 }
 
 .small {
-    width: var(--button-width-s);
+    min-width: var(--button-width-s);
     height: var(--button-height-s);
 }
 
@@ -49,7 +49,7 @@
 
 .primary {
     background-color: var(--color-primary);
-    color: var(--color-suface);
+    color: var(--color-surface);
     border: none;
 }
 
@@ -63,7 +63,7 @@
 
 .secondary {
     background-color: var(--color-secondary);
-    color: var(--color-suface);
+    color: var(--color-surface);
     border: none;
 }
 
@@ -76,7 +76,7 @@
 }
 
 .outline {
-    background-color: var(--color-suface);
+    background-color: var(--color-surface);
     color: var(--color-primary);
     border: 1px solid var(--color-primary);
 }
@@ -94,13 +94,13 @@
 }
 
 .outline:disabled {
-    background-color: var(--color-suface);
+    background-color: var(--color-surface);
     color: var(--color-text-disabled);
     border-color: var(--color-border);
 }
 
 .modal {
-    background-color: var(--color-suface);
+    background-color: var(--color-surface);
     color: var(--color-text-secondary);
     border: 1px solid var(--color-border);
 }
@@ -118,7 +118,7 @@
 }
 
 .modal:disabled {
-    background-color: var(--color-suface);
+    background-color: var(--color-surface);
     color: var(--color-text-disabled);
     border-color: var(--color-border);
 }
@@ -193,18 +193,18 @@
 
 .success {
     background-color: var(--color-success);
-    color: var(--color-suface);
+    color: var(--color-surface);
     border: none;
 }
 
 .danger {
     background-color: var(--color-error);
-    color: var(--color-suface);
+    color: var(--color-surface);
     border: none;
 }
 
 .warning {
     background-color: var(--color-warning);
-    color: var(--color-suface);
+    color: var(--color-surface);
     border: none;
 }

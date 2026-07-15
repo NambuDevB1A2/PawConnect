@@ -28,10 +28,10 @@
     width: var(--checkbox-size);
     height: var(--checkbox-size);
 
-    background-color: var(--color-suface);
+    background-color: var(--color-surface);
     border: 1px solid var(--checkbox-color-border);
     border-radius: 2px;
-    color: var(--color-suface);
+    color: var(--color-surface);
 
     cursor: pointer;
 
