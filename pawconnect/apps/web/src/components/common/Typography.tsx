@@ -15,7 +15,6 @@ type TypographyVariant =
 interface TypographyProps extends HTMLAttributes<HTMLParagraphElement> {
     children: React.ReactNode;
     variant?: TypographyVariant;
-    className?: string;
 }
 
 export default function Typography({ children, variant = "body1", className = "", ...props }: TypographyProps) {
