@@ -6,11 +6,13 @@ import IconButton from "@/components/common/IconButton";
 import Input from "@/components/common/Input";
 import Section from "@/components/common/Section";
 import Typography from "@/components/common/Typography";
+import CheckBox from '../components/common/CheckBox';
+import { CSSProperties } from "react";
 
 export default function Home() {
-    const wrapperStyle = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
-    const boxColumnStyle = { display: "flex", paddingLeft: "50px", flexDirection: "column", gap: "10px" };
-    const boxRowStyle = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "center", gap: "10px" };
+    const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
+    const boxColumnStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "column", gap: "10px" };
+    const boxRowStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "center", gap: "10px" };
 
     return (
         <div style={wrapperStyle}>
@@ -107,11 +109,41 @@ export default function Home() {
 
 
             <Typography variant="subtitle">Section</Typography>
-            <Section titleText="내 정보">
+            <Section titleText="내 정보 (Small 왼쪽 정렬)" size="small" align="left">
                 <Input labelText="이메일" helperText="이메일을 입력해주세요" disabled value="example@email.com"></Input>
                 <Input labelText="닉네임" helperText="닉네임을 입력해주세요" disabled value="유저이름여덟글자"></Input>
+                <Button>버튼 primary</Button>
+                <Button variant="secondary">버튼 Secondary</Button>
+                <Button variant="outline">버튼 outline</Button>
+            </Section>
+            <Section titleText="내 정보 (large 오른쪽 정렬)" size="large" align="right">
+                <Input labelText="이메일" helperText="이메일을 입력해주세요" disabled value="example@email.com"></Input>
+                <Input labelText="닉네임" helperText="닉네임을 입력해주세요" disabled value="유저이름여덟글자"></Input>
+                <Button>버튼 primary</Button>
+                <Button variant="secondary">버튼 Secondary</Button>
+                <Button variant="outline">버튼 outline</Button>
+            </Section>
+            <Section titleText="내 정보 (기본값 FullWidth Center)">
+                <Input labelText="이메일" helperText="이메일을 입력해주세요" disabled value="example@email.com"></Input>
+                <Input labelText="닉네임" helperText="닉네임을 입력해주세요" disabled value="유저이름여덟글자"></Input>
+                <Button>버튼 primary</Button>
+                <Button variant="secondary">버튼 Secondary</Button>
+                <Button variant="outline">버튼 outline</Button>
             </Section>
 
+
+            <Typography variant="subtitle">CheckBox</Typography>
+            <div style={boxColumnStyle}>
+                <CheckBox text="회원가입에 필요한 정보 수집에 동의하십니까?"/>
+                <CheckBox>
+                    <Button variant="text">이용약관</Button>
+                    <Typography>과 </Typography>
+                    <Button variant="text">개인정보 처리방침</Button>
+                    <Typography>에 동의합니까?</Typography>
+                </CheckBox>
+            </div>
+
+            
 
         </div>
     );

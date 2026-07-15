@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from "react";
-import styles from "@/styles/common/input.module.css"
+import styles from "@/styles/common/Input.module.css"
 
 type InputErrorType = "correct" | "error";
 

@@ -39,6 +39,13 @@ body {
     --z-index-modal: 1001;
     --z-index-toast: 1001;
 
+    /* Transition Time */
+    --transition-border-color: 0.15s;
+    --transition-background-color: 0.15s;
+    --transition-color: 0.15s;
+    --transition-opacity: 0.2s;
+    --transition-transform: 0.2s;
+
     /* Colors */
     --color-primary: #F59E0B;
     --color-primary-100: #FFF7E6;
@@ -207,6 +214,12 @@ body {
     --input-line-height: var(--line-height-body1);
     --input-label-gap: 8px;
     --input-helper-gap: 8px;
+
+    /* CheckBox */
+
+    --checkbox-size: 14px;
+    --checkbox-color-border: #8E8E8E;
+    --checkbox-color-checked: var(--color-secondary);
 
     /* Badges */
     --badge-small-height: 24px;

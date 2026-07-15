@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import styles from "@/styles/common/badge.module.css"
+import styles from "@/styles/common/Badge.module.css"
 
 type BadgeVariant = "success" | "warning" | "completed" | "error" | "info" | "dog" | "cat";
 type BadgeSize = "small" | "medium";

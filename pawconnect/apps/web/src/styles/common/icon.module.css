@@ -131,3 +131,7 @@
 .color_false {
     color: var(--color-icon-button-false);
 }
+
+.white {
+    color: var(--color-suface);
+}

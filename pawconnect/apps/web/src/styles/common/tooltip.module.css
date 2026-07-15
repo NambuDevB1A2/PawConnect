@@ -35,8 +35,8 @@
     visibility: hidden;
 
     transition: 
-        opacity 0.15s ease,
-        transform 0.15s ease;
+        opacity var(--transition-opacity) ease,
+        transform var(--transition-transform) ease;
 }
 
 .wrapper_tooltip:hover .tooltip,

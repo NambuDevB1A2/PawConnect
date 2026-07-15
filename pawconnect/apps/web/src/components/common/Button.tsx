@@ -1,4 +1,4 @@
-import styles from "@/styles/common/button.module.css";
+import styles from "@/styles/common/Button.module.css";
 import { ButtonHTMLAttributes } from "react";
 
 type ButtonSize = "large" | "medium" | "small";

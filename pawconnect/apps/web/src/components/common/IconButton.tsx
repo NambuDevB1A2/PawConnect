@@ -1,6 +1,6 @@
-import Icon, { IconGrade, IconSize, IconVariant, IconWeight, IconColor } from "@/components/common/Icon";
+import Icon, { IconGrade, IconSize, IconWeight, IconColor } from "@/components/common/Icon";
 import { ButtonHTMLAttributes } from "react";
-import styles from "@/styles/common/iconButton.module.css"
+import styles from "@/styles/common/IconButton.module.css"
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     name: string; // material sumbols 아이콘 이름

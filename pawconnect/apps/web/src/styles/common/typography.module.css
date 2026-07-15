@@ -53,3 +53,41 @@
     line-height: var(--line-height-body3);
     font-size: var(--font-size-body3);
 }
+
+/* Weight */
+
+.thin {
+    font-weight: var(--font-weight-thin);
+}
+
+.extralight {
+    font-weight: var(--font-weight-extralight);
+}
+
+.light {
+    font-weight: var(--font-weight-light);
+}
+
+.regular {
+    font-weight: var(--font-weight-regular);
+}
+
+.medium {
+    font-weight: var(--font-weight-medium);
+}
+
+.semibold {
+    font-weight: var(--font-weight-semibold);
+}
+
+.bold {
+    font-weight: var(--font-weight-bold);
+}
+
+.extrabold {
+    font-weight: var(--font-weight-extrabold);
+}
+
+.black {
+    font-weight: var(--font-weight-black);
+}

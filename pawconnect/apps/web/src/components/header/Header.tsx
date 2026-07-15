@@ -13,7 +13,7 @@ export default function Header() {
         <div className={styles.wrapper_header}>
             <div className={styles.box_logo} onClick={() => router.push(`/`)}>
                 <Icon name="pets" color="primary"/>
-                <Typography variant="subtitle">PawConnect</Typography>
+                <Typography variant="subtitle" weight="extrabold">PawConnect</Typography>
             </div>
 
             <div className={styles.box_link}>
