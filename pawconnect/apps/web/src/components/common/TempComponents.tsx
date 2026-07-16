@@ -1,3 +1,5 @@
+'use client';
+
 import styles from "@/app/page.module.css"
 import Badge from "@/components/common/Badge";
 import Button from "@/components/common/Button";
@@ -7,16 +9,19 @@ import Input from "@/components/common/Input";
 import Section from "@/components/common/Section";
 import Typography from "@/components/common/Typography";
 import CheckBox from '@/components/common/CheckBox';
-import { CSSProperties } from "react";
+import { CSSProperties, useContext } from "react";
 import Radio from "@/components/common/Radio";
 import RadioGroup from "@/components/common/RadioGroup";
 import Tooltip from "@/components/common/Tooltip";
 import Toggle from "@/components/common/Toggle";
+import { ModalContext } from "@/providers/ModalProvider";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
     const boxColumnStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "column", gap: "10px" };
     const boxRowStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "center", gap: "10px" };
+
+    const { openModal } = useContext(ModalContext);
 
     return (
         <div style={wrapperStyle}>
@@ -180,6 +185,14 @@ export default function TempComponents() {
                 <Tooltip text="Left 툴팁" position="left" iconName="close"></Tooltip>
                 <Tooltip text="Right 툴팁" position="right" iconName="more_vert"></Tooltip>
             </div>
+
+
+            <Typography variant="subtitle">Modal</Typography>
+            <div style={boxRowStyle}>
+                <Button onClick={() => openModal("LoginRequired")}>로그인 확인</Button>
+                <Button onClick={() => openModal("ConfirmDelete")}>삭제 확인</Button>
+            </div>
+
 
         </div>
     );

@@ -15,6 +15,7 @@ html {
     line-height: var(--line-height-body1);
 
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 }
 
 body {

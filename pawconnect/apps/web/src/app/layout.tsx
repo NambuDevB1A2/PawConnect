@@ -4,27 +4,33 @@ import "material-symbols/rounded.css";
 import "material-symbols/sharp.css";
 import Header from "@/components/header/Header";
 import AuthProvider from "@/providers/AuthProvider";
+import ModalProvider from "@/providers/ModalProvider";
+import ModalRoot from "@/components/modal/ModalRoot";
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="ko">
-        <body>
-            <AuthProvider>
-                
-                <header>
-                    <Header />
-                </header>
+    return (
+        <html lang="ko">
+            <body>
+                <AuthProvider>
+                <ModalProvider>
+                    
+                    <header>
+                        <Header/>
+                    </header>
 
-            <main>{children}</main>
+                    <main>{children}</main>
 
-            <footer></footer>
+                    <footer></footer>
 
-            </AuthProvider>
-        </body>
-    </html>
-  );
+                    <ModalRoot/>
+
+                </ModalProvider>
+                </AuthProvider>
+            </body>
+        </html>
+    );
 }
