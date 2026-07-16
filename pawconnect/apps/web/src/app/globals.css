@@ -297,4 +297,15 @@ main {
     --icon-size-default: 24px;
     --icon-size-status: 32px;
     --icon-size-hero: 40px;
+
+    /* Uploader */
+    --uploader-dropzone-height: 200px;
+
+    --uploader-preview-width: 280px;
+    --uploader-preview-height: 210px;
+    
+    --uploader-banner-height: 320px;
+
+    --uploader-profile-width: 280px;
+    --uploader-profile-image-width: 210px;
 }

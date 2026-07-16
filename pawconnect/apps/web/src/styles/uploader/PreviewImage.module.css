@@ -1,0 +1,52 @@
+.box_preview {
+    position: relative;
+
+    width: 100%;
+    
+    display: inline-flex;
+    flex-direction: column;
+    align-self: flex-start;
+}
+
+.box_image {
+    position: relative;
+}
+
+.img_preview {
+    width: var(--uploader-preview-width);
+    height: var(--uploader-preview-height);
+
+    border-radius: var(--radius-200);
+
+    background-color: var(--color-surface);
+
+    box-shadow: var(--shadow-small);
+
+    object-fit: contain;
+}
+
+.box_upper {
+    width: var(--uploader-preview-width);
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.preview_text {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: var(--color-primary-hover);
+}
+
+.btn_remove {
+    
+}

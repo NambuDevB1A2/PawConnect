@@ -54,6 +54,12 @@
     font-size: var(--font-size-body3);
 }
 
+.caption {
+    font-weight: var(--font-weight-caption);
+    line-height: var(--line-height-caption);
+    font-size: var(--font-size-caption);
+}
+
 /* Weight */
 
 .thin {
