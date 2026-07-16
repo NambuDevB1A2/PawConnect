@@ -1,9 +1,10 @@
-import styles from "./page.module.css";
+import styles from "@/app/page.module.css"
+import TempComponents from "@/components/common/TempComponents";
 
 export default function Home() {
-  return (
-    <div>
-
-    </div>
-  );
+    return (
+        <div>
+            <TempComponents/>
+        </div>
+    );
 }

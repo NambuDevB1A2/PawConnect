@@ -1,0 +1,46 @@
+/* Overlay (backdrop) */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: var(--z-index-overlay);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--overlay-backdrop-color);
+}
+
+/* Modal */
+
+.modal {
+    width: var(--modal-width-m);
+
+    padding: var(--modal-padding);
+
+    border-radius: var(--modal-radius);
+
+    background-color: var(--modal-background-color);
+
+    box-shadow: var(--modal-shadow);
+}
+
+/* Size */
+
+.small {
+    width: var(--modal-width-s);
+}
+
+.medium {
+    width: var(--modal-width-m);
+}
+
+.large {
+    width: var(--modal-width-l);
+}
+
+.xlarge {
+    width: var(--modal-width-xl);
+}

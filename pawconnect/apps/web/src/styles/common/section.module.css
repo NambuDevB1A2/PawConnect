@@ -1,0 +1,58 @@
+/* Section */
+
+.wrapper_section {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing);
+    gap: var(--spacing);
+}
+
+.box_section {
+    width: 100%;
+
+    background-color: var(--color-surface);
+
+    padding: var(--spacing);
+
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+}
+
+/* Size */
+
+.small {
+    width: var(--modal-width-s);
+}
+
+.medium {
+    width: var(--modal-width-m);
+}
+
+.large {
+    width: var(--modal-width-l);
+}
+
+.xlarge {
+    width: var(--modal-width-xl);
+}
+
+/* Align */
+
+.left {
+    align-items: start;
+    justify-content: left;
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+}
+
+.right {
+    align-items: end;
+    justify-content: right;
+}
