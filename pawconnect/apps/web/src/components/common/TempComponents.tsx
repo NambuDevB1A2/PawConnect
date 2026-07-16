@@ -189,8 +189,8 @@ export default function TempComponents() {
 
             <Typography variant="subtitle">Modal</Typography>
             <div style={boxRowStyle}>
-                <Button onClick={() => openModal("LoginRequired")}>로그인 확인</Button>
-                <Button onClick={() => openModal("ConfirmDelete")}>삭제 확인</Button>
+                <Button onClick={() => openModal("loginRequired", undefined)}>로그인 확인</Button>
+                <Button onClick={() => openModal("confirmDelete", { onDelete: () => console.log("삭제 완료")})}>삭제 확인</Button>
             </div>
 
 
