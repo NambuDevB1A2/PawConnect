@@ -1,5 +1,6 @@
 import { InputHTMLAttributes } from "react";
 import styles from "@/styles/common/Input.module.css"
+import Typography from "@/components/common/Typography";
 
 export type InputErrorType = "correct" | "error";
 
@@ -24,12 +25,12 @@ export default function Input({
 
     return (
         <span className={`${styles.wrapper_input} ${wrapperClassname}`}>
-            <p className={`${styles.label_text}`}>{labelText}</p>
+            <Typography className={`${styles.label_text}`}>{labelText}</Typography>
             <input
                 className={`${styles.input} ${error ? styles.input_error : ""} ${className}`}
                 placeholder={helperText}
                 {...props}/>
-            <p className={`${styles.error_text} ${styles[errorType]}`}>{errorText}</p>
+            <Typography className={`${styles.error_text} ${styles[errorType]}`}>{errorText}</Typography>
         </span>
     );
 }

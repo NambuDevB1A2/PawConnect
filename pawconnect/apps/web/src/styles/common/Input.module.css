@@ -9,11 +9,6 @@
     width: 100%;
 }
 
-.wrapper_input p {
-    font-size: var(--font-size-body1);
-    line-height: var(--line-height-body1);
-}
-
 .input {
     width: 100%;
     height: var(--input-height);
@@ -30,6 +25,7 @@
     line-height: var(--input-line-height);
 
     outline: none;
+    cursor: pointer;
     
     transition: 
         border-color var(--transition-border-color),
@@ -42,6 +38,7 @@
 }
 
 .input:focus {
+    outline: none;
     border-color: var(--input-focus-border-color);
 }
 

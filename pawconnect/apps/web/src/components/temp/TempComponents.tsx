@@ -16,6 +16,7 @@ import Tooltip from "@/components/common/Tooltip";
 import Toggle from "@/components/common/Toggle";
 import { ModalContext } from "@/providers/ModalProvider";
 import InputPassword from "@/components/common/InputPassword";
+import Select from "@/components/common/Select";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
@@ -196,10 +197,53 @@ export default function TempComponents() {
 
 
             <Typography variant="subtitle">More</Typography>
+            <div style={boxRowStyle}>
+                
             <Section size="small">
                 <InputPassword/>
                 <InputPassword labelText="비밀번호 재확인" helperText="비밀번호를 다시 입력해주세요"/>
             </Section>
+
+            <Section size="large">
+                <Select 
+                    labelText="국가"
+                    labelPosition="top"
+                    helperText="국가를 선택하세요"
+                    options={[
+                        { label: "대한민국", value: "kr" },
+                        { label: "미국", value: "us" },
+                        { label: "일본", value: "jp" },
+                    ]}
+                    onChange={() => {}}
+                />
+
+                <Select 
+                    labelText="국가"
+                    labelPosition="top"
+                    helperText="국가를 선택하세요"
+                    options={[
+                        { label: "대한민국", value: "kr" },
+                        { label: "미국", value: "us" },
+                        { label: "일본", value: "jp" },
+                    ]}
+                    onChange={() => {}}
+                    disabled
+                />
+
+                <Select 
+                    labelText="반려동물 양육 경험 기간"
+                    helperText="선택하세요"
+                    options={[
+                        { label: "1년 미만", value: "lessOne" },
+                        { label: "1~3년", value: "oneToThree" },
+                        { label: "3~5년", value: "threeToFive" },
+                        { label: "5년이상", value: "overFive" },
+                    ]}
+                    onChange={() => {}}
+                />
+            </Section>
+
+            </div>
 
         </div>
     );

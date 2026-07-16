@@ -40,6 +40,7 @@ main {
 :root {
     /* z-index */
     --z-index-tooltip: 999;
+    --z-index-select-option: 999;
     --z-index-overlay: 1000;
     --z-index-modal: 1001;
     --z-index-toast: 1001;
@@ -99,6 +100,7 @@ main {
 
     /* Grid, Spacing */
     --spacing: 24px;
+    --spacing-050: 4px;
     --spacing-100: 8px;
     --spacing-200: 14px;
     --spacing-300: 16px;
