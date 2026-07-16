@@ -15,6 +15,7 @@ import RadioGroup from "@/components/common/RadioGroup";
 import Tooltip from "@/components/common/Tooltip";
 import Toggle from "@/components/common/Toggle";
 import { ModalContext } from "@/providers/ModalProvider";
+import InputPassword from "@/components/common/InputPassword";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
@@ -193,6 +194,12 @@ export default function TempComponents() {
                 <Button onClick={() => openModal("confirmDelete", { onDelete: () => console.log("삭제 완료")})}>삭제 확인</Button>
             </div>
 
+
+            <Typography variant="subtitle">More</Typography>
+            <Section size="small">
+                <InputPassword/>
+                <InputPassword labelText="비밀번호 재확인" helperText="비밀번호를 다시 입력해주세요"/>
+            </Section>
 
         </div>
     );

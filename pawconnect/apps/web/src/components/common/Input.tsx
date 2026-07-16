@@ -1,9 +1,9 @@
 import { InputHTMLAttributes } from "react";
 import styles from "@/styles/common/Input.module.css"
 
-type InputErrorType = "correct" | "error";
+export type InputErrorType = "correct" | "error";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     labelText?: string;
     errorText?: string;
     errorType?: InputErrorType;
@@ -18,8 +18,6 @@ export default function Input({
     helperText,
     wrapperClassname = "",
     className = "",
-    id,
-    disabled,
     ...props
 }: InputProps) {
     const error = errorText && errorType == "error";
@@ -27,9 +25,8 @@ export default function Input({
     return (
         <span className={`${styles.wrapper_input} ${wrapperClassname}`}>
             <p className={`${styles.label_text}`}>{labelText}</p>
-            <input id={id}
+            <input
                 className={`${styles.input} ${error ? styles.input_error : ""} ${className}`}
-                disabled={disabled}
                 placeholder={helperText}
                 {...props}/>
             <p className={`${styles.error_text} ${styles[errorType]}`}>{errorText}</p>
