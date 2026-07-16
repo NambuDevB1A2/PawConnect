@@ -17,6 +17,7 @@ import Toggle from "@/components/common/Toggle";
 import { ModalContext } from "@/providers/ModalProvider";
 import InputPassword from "@/components/common/InputPassword";
 import Select from "@/components/common/Select";
+import InputSearch from "@/components/common/InputSearch";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
@@ -202,6 +203,7 @@ export default function TempComponents() {
             <Section size="small">
                 <InputPassword/>
                 <InputPassword labelText="비밀번호 재확인" helperText="비밀번호를 다시 입력해주세요"/>
+                <InputSearch onClick={() => {}}/>
             </Section>
 
             <Section size="large">
