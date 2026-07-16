@@ -26,7 +26,7 @@ interface ModalContextType {
 export const ModalContext = createContext<ModalContextType>({
     activeModal: null,
     params: null,
-    openModal: (key) => {},
+    openModal: () => {},
     closeModal: () => {},
 });
 

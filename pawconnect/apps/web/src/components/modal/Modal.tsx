@@ -23,7 +23,8 @@ export default function Modal({
 }: ModalProps) {
     const [mounted, setMounted] = useState(false);
     const [render, setRender] = useState(isOpen);
-    const behavior = useModalBehavior(isOpen, onClose);
+
+    useModalBehavior(isOpen, onClose);
 
     useEffect(() => setMounted(true), []);
 
