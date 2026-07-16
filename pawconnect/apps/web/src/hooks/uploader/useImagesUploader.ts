@@ -5,7 +5,7 @@ export function useImagesUploader(
     errorText?: string,
     onChange?: (files: File[]) => void,
     maxSizeMB = 5,
-    maxFiles = 5,
+    maxFiles = 4,
     disabled = false,
 ) {
     const [isDragging, setIsDragging] = useState(false);
