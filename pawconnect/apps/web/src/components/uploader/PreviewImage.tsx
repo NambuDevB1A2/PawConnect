@@ -19,6 +19,9 @@ export default function PreviewImage({
 }: PreviewImageProps) {
     return (
         <div className={styles.box_preview}>
+            <div className={styles.box_image}>
+                <img className={`${styles.img_preview} ${previewImageClassName}`} src={previewUrl}/>
+            </div>
             <div className={`${styles.box_upper} ${previewBoxClassName}`}>
                 <Typography 
                     className={styles.preview_text} 
@@ -33,9 +36,6 @@ export default function PreviewImage({
                         onRemove?.();
                     }}/>
             </div> 
-            <div className={styles.box_image}>
-                <img className={`${styles.img_preview} ${previewImageClassName}`} src={previewUrl}/>
-            </div>
         </div>
     );
 }

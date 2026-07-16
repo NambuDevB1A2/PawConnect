@@ -1,5 +1,5 @@
 import { UPLOADER_MESSAGES } from "@/constants/messages/Uploader";
-import { ChangeEvent, DragEvent, useRef, useState } from "react";
+import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
 
 export function useImageUploader(
     errorText?: string,
@@ -9,16 +9,23 @@ export function useImageUploader(
 ) {
     const [isDragging, setIsDragging] = useState(false);
     const [internalFile, setInternalFile] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [internalError, setInternalError] = useState<string | null>(null);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const previewUrl = internalFile ? URL.createObjectURL(internalFile) : null;
     const displayError = errorText || internalError;
+
+    useEffect(() => {
+        const url = internalFile ? URL.createObjectURL(internalFile) : null;
+        setPreviewUrl(url);
+
+        return () => { if (url) URL.revokeObjectURL(url) };
+    }, [internalFile]);
 
     const validateAndSetFile = (file: File | null) => {
         if (!file) {
-            setInternalFile (null);
+            setInternalFile(null);
             setInternalError(null);
             onChange?.(null);
             return;
@@ -68,7 +75,8 @@ export function useImageUploader(
         validateAndSetFile(null);
     };
     
-    return {isDragging, inputRef, internalFile, previewUrl, displayError,
+    return { isDragging, inputRef, internalFile, previewUrl, displayError,
         handleFileChange, handleDrop, handleDragOver, handleDragLeave, handleRemove
     };
 }
+

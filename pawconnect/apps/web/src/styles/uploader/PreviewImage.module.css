@@ -1,7 +1,5 @@
 .box_preview {
     position: relative;
-
-    width: 100%;
     
     display: inline-flex;
     flex-direction: column;
@@ -13,7 +11,7 @@
 }
 
 .img_preview {
-    width: var(--uploader-preview-width);
+    max-width: var(--uploader-preview-width);
     height: var(--uploader-preview-height);
 
     border-radius: var(--radius-200);
@@ -45,8 +43,4 @@
     white-space: nowrap;
 
     color: var(--color-primary-hover);
-}
-
-.btn_remove {
-    
 }

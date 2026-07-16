@@ -23,6 +23,7 @@ import Pagination from "@/components/common/Pagination";
 import ImageUploader from "@/components/uploader/ImageUploader";
 import ProfileImageUploader from '../uploader/ProfileImageUploader';
 import BannerImageUploader from "@/components/uploader/BannerUploader";
+import ImagesUploader from "@/components/uploader/ImagesUploader";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
@@ -272,6 +273,7 @@ export default function TempComponents() {
             <Typography variant="subtitle">Image Uploader</Typography>
             <div style={boxColumnStyle}>
                 <ImageUploader labelText="이미지 업로드"/>
+                <ImagesUploader labelText="이미지 여러 장 업로드"/>
                 <BannerImageUploader labelText="배너 이미지 업로드"/>
                 <ProfileImageUploader labelText="프로필 업로드"/>
             </div>

@@ -78,3 +78,12 @@
     text-align: center;
     color: var(--color-icon-default);
 }
+
+.wrapper_preview {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: flex-start;
+    gap: var(--spacing-200);
+}
