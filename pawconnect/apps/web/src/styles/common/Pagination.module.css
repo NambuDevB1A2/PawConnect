@@ -1,0 +1,31 @@
+/* Pagination */
+
+.wrapper_pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing);
+}
+
+.wrapper_pages {
+    display: inline-flex;
+    gap: var(--spacing);
+}
+
+.text_button {
+    color: var(--color-icon-button-true);
+}
+
+.text_button:hover {
+    color: var(--color-icon-button-true);
+}
+
+.text_button:active {
+    color: var(--color-icon-button-true);
+}
+
+.current_button {
+    color: var(--color-primary-hover);
+
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}

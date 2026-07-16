@@ -9,7 +9,7 @@ import Input from "@/components/common/Input";
 import Section from "@/components/common/Section";
 import Typography from "@/components/common/Typography";
 import CheckBox from '@/components/common/CheckBox';
-import { CSSProperties, useContext } from "react";
+import { CSSProperties, useContext, useState } from "react";
 import Radio from "@/components/common/Radio";
 import RadioGroup from "@/components/common/RadioGroup";
 import Tooltip from "@/components/common/Tooltip";
@@ -19,11 +19,14 @@ import InputPassword from "@/components/common/InputPassword";
 import Select from "@/components/common/Select";
 import InputSearch from "@/components/common/InputSearch";
 import TextArea from "@/components/common/TextArea";
+import Pagination from "@/components/common/Pagination";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
     const boxColumnStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "column", gap: "10px" };
     const boxRowStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "center", gap: "10px" };
+
+    const [page, setPage] = useState(3);
 
     const { openModal } = useContext(ModalContext);
 
@@ -250,6 +253,17 @@ export default function TempComponents() {
                 />
             </Section>
 
+            </div>
+            
+
+            <Typography variant="subtitle">Pagination</Typography>
+            <div style={boxColumnStyle}>
+                <Pagination 
+                    page={page} maxPage={12} 
+                    onPrev={() => setPage((prev) => prev - 1)}
+                    onNext={() => setPage((prev) => prev + 1)}
+                    onPage={(value) => setPage(value)}
+                    />
             </div>
 
         </div>

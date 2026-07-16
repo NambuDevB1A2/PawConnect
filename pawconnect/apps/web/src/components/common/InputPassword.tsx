@@ -43,6 +43,7 @@ export default function InputPassword({
                         color="color_default"
                         size="input"
                         onClick={handleClick}
+                        buttonType="icon"
                         /> :
                     <IconButton 
                         wrapperClassName={styles.icon_visibility} 
@@ -50,6 +51,7 @@ export default function InputPassword({
                         color="color_default"
                         size="input"
                         onClick={handleClick}
+                        buttonType="icon"
                         />}
                 </Input>
             </div>

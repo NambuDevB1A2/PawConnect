@@ -77,7 +77,7 @@ export default function Select({
                     <Typography
                         className={`${selectedOption ? styles.value_text : styles.helper_text}`}
                         >{selectedOption ? selectedOption.label : helperText}</Typography>
-                    <Icon className={`${isOpen ? styles.icon_chevron_open : styles.icon_chevron}`} name="stat_minus_1"/>
+                    <Icon className={`${isOpen ? styles.icon_chevron_open : styles.icon_chevron}`} name="keyboard_arrow_down"/>
                 </button>
                 {isOpen && 
                     <ul ref={listRef} className={styles.box_options}>
