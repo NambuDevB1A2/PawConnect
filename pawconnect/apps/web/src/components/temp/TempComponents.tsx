@@ -18,6 +18,7 @@ import { ModalContext } from "@/providers/ModalProvider";
 import InputPassword from "@/components/common/InputPassword";
 import Select from "@/components/common/Select";
 import InputSearch from "@/components/common/InputSearch";
+import TextArea from "@/components/common/TextArea";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
@@ -205,6 +206,8 @@ export default function TempComponents() {
                 <InputPassword labelText="비밀번호 재확인" helperText="비밀번호를 다시 입력해주세요"/>
                 <InputSearch labelText="검색" onClick={() => {}}/>
                 <InputSearch onClick={() => {}}/>
+                <TextArea labelText="입양 목적" helperText="입양을 희망하는 이유를 작성해주세요" maxLength={100}/>
+                <TextArea maxLength={300} disabled/>
             </Section>
 
             <Section size="large">
