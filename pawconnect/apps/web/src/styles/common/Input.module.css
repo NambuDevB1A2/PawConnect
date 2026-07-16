@@ -9,6 +9,42 @@
     width: 100%;
 }
 
+.top {
+    flex-direction: column;
+}
+
+.left {
+    flex-direction: row;
+    align-items: center;
+}
+
+.label_text {
+    flex-shrink: 0;
+    font-weight: var(--font-weight-bold);
+}
+
+.small {
+    min-width: var(--input-label-width-small);
+}
+
+.medium {
+    min-width: var(--input-label-width-medium);
+}
+
+.large {
+    min-width: var(--input-label-width-large);
+}
+
+.xlarge {
+    min-width: var(--input-label-width-xlarge);
+}
+
+.box_input {
+    position: relative;
+
+    width: 100%;
+}
+
 .input {
     width: 100%;
     height: var(--input-height);
@@ -53,10 +89,6 @@
     color: var(--color-text-primary);
 
     cursor: not-allowed;
-}
-
-.label_text {
-    font-weight: var(--font-weight-bold);
 }
 
 .input::placeholder {

@@ -1,10 +1,10 @@
 'use client';
 
 import IconButton from "@/components/common/IconButton";
-import Input from "@/components/common/Input";
+import Input, { InputProps } from "@/components/common/Input";
 import styles from "@/styles/common/InputSearch.module.css"
 
-interface InputSearchProps {
+interface InputSearchProps extends InputProps {
     helperText?: string;
     onClick?: () => void;
     wrapperClassname?: string;
@@ -16,6 +16,7 @@ export default function InputSearch({
     onClick,
     wrapperClassname = "",
     className = "",
+    ...props
 }: InputSearchProps) {
     
     return (
@@ -25,7 +26,8 @@ export default function InputSearch({
                     helperText={helperText}
                     wrapperClassname={wrapperClassname}
                     className={`${styles.input} ${className}`}
-                    />
+                    {...props}
+                    >
                 <IconButton 
                     wrapperClassName={styles.icon_search} 
                     name="search" 
@@ -33,6 +35,7 @@ export default function InputSearch({
                     size="default"
                     onClick={onClick}
                     />
+                </Input>
             </div>
         </div>
     );

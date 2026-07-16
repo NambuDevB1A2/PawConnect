@@ -5,6 +5,7 @@ import Typography from "@/components/common/Typography";
 export type InputErrorType = "correct" | "error";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    children?: React.ReactNode;
     labelText?: string;
     errorText?: string;
     errorType?: InputErrorType;
@@ -13,6 +14,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function Input({
+    children,
     labelText,
     errorText,
     errorType = "error",
@@ -26,10 +28,13 @@ export default function Input({
     return (
         <span className={`${styles.wrapper_input} ${wrapperClassname}`}>
             <Typography className={`${styles.label_text}`}>{labelText}</Typography>
-            <input
-                className={`${styles.input} ${error ? styles.input_error : ""} ${className}`}
-                placeholder={helperText}
-                {...props}/>
+            <div className={styles.box_input}>
+                <input
+                    className={`${styles.input} ${error ? styles.input_error : ""} ${className}`}
+                    placeholder={helperText}
+                    {...props}/>
+                {children}
+            </div>
             <Typography className={`${styles.error_text} ${styles[errorType]}`}>{errorText}</Typography>
         </span>
     );

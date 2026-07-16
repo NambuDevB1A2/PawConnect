@@ -17,10 +17,24 @@
 }
 
 .label_text {
-    min-width: 180px;
     flex-shrink: 0;
-
     font-weight: var(--font-weight-bold);
+}
+
+.small {
+    min-width: var(--input-label-width-small);
+}
+
+.medium {
+    min-width: var(--input-label-width-medium);
+}
+
+.large {
+    min-width: var(--input-label-width-large);
+}
+
+.xlarge {
+    min-width: var(--input-label-width-xlarge);
 }
 
 .box_trigger {

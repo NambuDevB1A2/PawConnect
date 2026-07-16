@@ -222,6 +222,11 @@ main {
     --input-label-gap: 8px;
     --input-helper-gap: 8px;
 
+    --input-label-width-small: 120px;
+    --input-label-width-medium: 180px;
+    --input-label-width-large: 240px;
+    --input-label-width-xlarge: 320px;
+
     /* CheckBox & Radio & Toggle */
 
     --checkbox-size: 14px;

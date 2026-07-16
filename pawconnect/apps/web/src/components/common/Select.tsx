@@ -1,11 +1,12 @@
 'use client';
 
-import { HTMLAttributes, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "@/styles/common/Select.module.css"
 import Typography from "@/components/common/Typography";
 import Icon from "@/components/common/Icon";
 
-type SelectLabelPosition = "top" | "left";
+export type SelectLabelPosition = "top" | "left";
+export type SelectLabelSize = "small" | "medium" | "large" | "xlarge";
 
 export interface SelectOption {
     label: string;
@@ -19,6 +20,7 @@ interface SelectProps {
     onChange: (value: string) => void;
     labelText?: string;
     labelPosition?: SelectLabelPosition;
+    labelSize?: SelectLabelSize;
     helperText?: string;
     disabled?: boolean;
     wrapperClassName?: string;
@@ -31,6 +33,7 @@ export default function Select({
     onChange,
     labelText,
     labelPosition = "left",
+    labelSize = "medium",
     helperText = "선택해주세요",
     disabled,
     wrapperClassName = "",
@@ -65,7 +68,7 @@ export default function Select({
 
     return (
         <div className={`${styles.wrapper_select}  ${styles[labelPosition]} ${wrapperClassName}`}>
-            <Typography className={`${styles.label_text}`} weight="bold">{labelText}</Typography>
+            <Typography className={`${styles.label_text} ${styles[labelSize]}`} weight="bold">{labelText}</Typography>
             <div className={styles.box_trigger}>
                 <button
                     className={`${styles.trigger} ${className}`}

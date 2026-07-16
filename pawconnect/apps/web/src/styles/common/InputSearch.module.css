@@ -16,7 +16,7 @@
 
 .icon_search {
     position: absolute;
-    top: var(--spacing-500);
+    top: 50%;
     left: var(--spacing-100);
 
     transform: translateY(-50%);

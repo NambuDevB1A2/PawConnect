@@ -198,11 +198,12 @@ export default function TempComponents() {
 
 
             <Typography variant="subtitle">More</Typography>
-            <div style={boxRowStyle}>
+            <div style={boxColumnStyle}>
                 
-            <Section size="small">
+            <Section size="large">
                 <InputPassword/>
                 <InputPassword labelText="비밀번호 재확인" helperText="비밀번호를 다시 입력해주세요"/>
+                <InputSearch labelText="검색" onClick={() => {}}/>
                 <InputSearch onClick={() => {}}/>
             </Section>
 
@@ -221,7 +222,8 @@ export default function TempComponents() {
 
                 <Select 
                     labelText="국가"
-                    labelPosition="top"
+                    labelPosition="left"
+                    labelSize="small"
                     helperText="국가를 선택하세요"
                     options={[
                         { label: "대한민국", value: "kr" },
