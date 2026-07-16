@@ -4,16 +4,17 @@ import Typography from "@/components/common/Typography";
 import Modal from "@/components/modal/Modal";
 import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
+import { MODAL_MESSAGES } from "@/constants/messages/Modal";
 
 interface ConfirmDeleteModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onDelete?: () => void;
+    onConfirm?: () => void;
 }
 
-export default function ConfirmDeleteModal({ isOpen, onClose, onDelete }: ConfirmDeleteModalProps) {
-    const handleDelete = () => {
-        onDelete?.();
+export default function ConfirmDeleteModal({ isOpen, onClose, onConfirm }: ConfirmDeleteModalProps) {
+    const handleConfirm = () => {
+        onConfirm?.();
         onClose();
     };
 
@@ -21,14 +22,14 @@ export default function ConfirmDeleteModal({ isOpen, onClose, onDelete }: Confir
         <Modal isOpen={isOpen} onClose={onClose}>
             <Modal.Header>
                 <Icon name="error" color="error" size="hero"/>
-                <Typography variant="modaltitle">정말로 삭제하시겠습니까?</Typography>
+                <Typography variant="modaltitle">{MODAL_MESSAGES.confirmDelete.header}</Typography>
             </Modal.Header>
             <Modal.Body>
-                <Typography variant="body1">삭제 후에는 복구할 수 없습니다.</Typography>
+                <Typography variant="body1">{MODAL_MESSAGES.confirmDelete.body}</Typography>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="modal" onClick={onClose}>닫기</Button>
-                <Button variant="danger" onClick={handleDelete}>삭제</Button>
+                <Button variant="modal" onClick={onClose}>{MODAL_MESSAGES.confirmDelete.close}</Button>
+                <Button variant="danger" onClick={handleConfirm}>{MODAL_MESSAGES.confirmDelete.confirm}</Button>
             </Modal.Footer>
         </Modal>
     );

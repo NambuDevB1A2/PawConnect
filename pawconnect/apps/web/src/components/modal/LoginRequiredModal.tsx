@@ -7,6 +7,7 @@ import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
+import { MODAL_MESSAGES } from "@/constants/messages/Modal";
 
 interface LoginRequiredModalProps {
     isOpen: boolean;
@@ -25,11 +26,11 @@ export default function LoginRequiredModal({ isOpen, onClose }: LoginRequiredMod
         <Modal isOpen={isOpen} onClose={onClose}>
             <Modal.Header>
                 <Icon name="warning" color="primary" size="hero"/>
-                <Typography variant="modaltitle">로그인이 필요합니다.</Typography>
+                <Typography variant="modaltitle">{MODAL_MESSAGES.loginRequired.header}</Typography>
             </Modal.Header>
             <Modal.Footer>
-                <Button variant="modal" onClick={onClose}>닫기</Button>
-                <Button variant="primary" onClick={handleLogin}>로그인</Button>
+                <Button variant="modal" onClick={onClose}>{MODAL_MESSAGES.loginRequired.close}</Button>
+                <Button variant="primary" onClick={handleLogin}>{MODAL_MESSAGES.loginRequired.confirm}</Button>
             </Modal.Footer>
         </Modal>
     );

@@ -11,7 +11,7 @@ export type ModalKey =
 interface ModalParamsMap {
     loginRequired: undefined;
     confirmDelete: {
-        onDelete: () => void;
+        onConfirm: () => void;
         targetName?: string;
     };
 }
