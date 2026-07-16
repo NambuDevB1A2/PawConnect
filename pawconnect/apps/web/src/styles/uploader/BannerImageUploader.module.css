@@ -1,0 +1,10 @@
+.box_preview_banner {
+    width: 100%;
+}
+
+.box_image_banner {
+    width: 100%;
+    height: var(--uploader-banner-height);
+    
+    object-fit: cover;
+}

@@ -1,3 +1,5 @@
+'use client';
+
 import styles from "@/app/page.module.css"
 import Badge from "@/components/common/Badge";
 import Button from "@/components/common/Button";
@@ -7,16 +9,30 @@ import Input from "@/components/common/Input";
 import Section from "@/components/common/Section";
 import Typography from "@/components/common/Typography";
 import CheckBox from '@/components/common/CheckBox';
-import { CSSProperties } from "react";
+import { CSSProperties, useContext, useState } from "react";
 import Radio from "@/components/common/Radio";
 import RadioGroup from "@/components/common/RadioGroup";
 import Tooltip from "@/components/common/Tooltip";
 import Toggle from "@/components/common/Toggle";
+import { ModalContext } from "@/providers/ModalProvider";
+import InputPassword from "@/components/common/InputPassword";
+import Select from "@/components/common/Select";
+import InputSearch from "@/components/common/InputSearch";
+import TextArea from "@/components/common/TextArea";
+import Pagination from "@/components/common/Pagination";
+import ImageUploader from "@/components/uploader/ImageUploader";
+import ProfileImageUploader from '../uploader/ProfileImageUploader';
+import BannerImageUploader from "@/components/uploader/BannerUploader";
+import ImagesUploader from "@/components/uploader/ImagesUploader";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
     const boxColumnStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "column", gap: "10px" };
     const boxRowStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "center", gap: "10px" };
+
+    const [page, setPage] = useState(3);
+
+    const { openModal } = useContext(ModalContext);
 
     return (
         <div style={wrapperStyle}>
@@ -179,6 +195,87 @@ export default function TempComponents() {
                 <Tooltip text="Bottom 툴팁" position="bottom"></Tooltip>
                 <Tooltip text="Left 툴팁" position="left" iconName="close"></Tooltip>
                 <Tooltip text="Right 툴팁" position="right" iconName="more_vert"></Tooltip>
+            </div>
+
+
+            <Typography variant="subtitle">Modal</Typography>
+            <div style={boxRowStyle}>
+                <Button onClick={() => openModal("loginRequired", undefined)}>로그인 확인</Button>
+                <Button onClick={() => openModal("confirmDelete", { onConfirm: () => console.log("삭제 완료")})}>삭제 확인</Button>
+            </div>
+
+
+            <Typography variant="subtitle">More</Typography>
+            <div style={boxColumnStyle}>
+                
+            <Section size="large">
+                <InputPassword/>
+                <InputPassword labelText="비밀번호 재확인" helperText="비밀번호를 다시 입력해주세요"/>
+                <InputSearch labelText="검색" onClick={() => {}}/>
+                <InputSearch onClick={() => {}}/>
+                <TextArea labelText="입양 목적" helperText="입양을 희망하는 이유를 작성해주세요" maxLength={100}/>
+                <TextArea maxLength={300} disabled/>
+            </Section>
+
+            <Section size="large">
+                <Select 
+                    labelText="국가"
+                    labelPosition="top"
+                    helperText="국가를 선택하세요"
+                    options={[
+                        { label: "대한민국", value: "kr" },
+                        { label: "미국", value: "us" },
+                        { label: "일본", value: "jp" },
+                    ]}
+                    onChange={() => {}}
+                />
+
+                <Select 
+                    labelText="국가"
+                    labelPosition="left"
+                    labelSize="small"
+                    helperText="국가를 선택하세요"
+                    options={[
+                        { label: "대한민국", value: "kr" },
+                        { label: "미국", value: "us" },
+                        { label: "일본", value: "jp" },
+                    ]}
+                    onChange={() => {}}
+                    disabled
+                />
+
+                <Select 
+                    labelText="반려동물 양육 경험 기간"
+                    helperText="선택하세요"
+                    options={[
+                        { label: "1년 미만", value: "lessOne" },
+                        { label: "1~3년", value: "oneToThree" },
+                        { label: "3~5년", value: "threeToFive" },
+                        { label: "5년이상", value: "overFive" },
+                    ]}
+                    onChange={() => {}}
+                />
+            </Section>
+
+            </div>
+            
+
+            <Typography variant="subtitle">Pagination</Typography>
+            <div style={boxColumnStyle}>
+                <Pagination 
+                    page={page} maxPage={12} 
+                    onPrev={() => setPage((prev) => prev - 1)}
+                    onNext={() => setPage((prev) => prev + 1)}
+                    onPage={(value) => setPage(value)}
+                    />
+            </div>
+
+            <Typography variant="subtitle">Image Uploader</Typography>
+            <div style={boxColumnStyle}>
+                <ImageUploader labelText="이미지 업로드"/>
+                <ImagesUploader labelText="이미지 여러 장 업로드"/>
+                <BannerImageUploader labelText="배너 이미지 업로드"/>
+                <ProfileImageUploader labelText="프로필 업로드"/>
             </div>
 
         </div>

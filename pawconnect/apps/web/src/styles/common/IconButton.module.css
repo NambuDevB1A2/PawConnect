@@ -15,10 +15,18 @@
         background-color var(--transition-background-color);
 }
 
-.button:hover {
-    background-color: var(--color-primary-100)
+.box:hover{
+    background-color: var(--color-primary-100);
 }
 
-.button:active {
+.box:active {
     background-color: var(--color-badge-warning-background-color);
+}
+
+.icon:hover{
+    color: var(--color-primary-100);
+}
+
+.icon:active {
+    color: var(--color-badge-warning-background-color);
 }

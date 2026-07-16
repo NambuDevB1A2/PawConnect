@@ -1,0 +1,118 @@
+/* TextArea */
+
+.wrapper_input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--input-label-gap);
+
+    width: 100%;
+}
+
+.label_text {
+    font-weight: var(--font-weight-bold);
+}
+
+.box_textarea {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-200);
+
+    border: var(--input-border-width) solid var(--input-border-color);
+    border-radius: var(--input-radius);
+
+    background-color: var(--input-background-color);
+
+    transition:
+        border-color var(--transition-border-color),
+        background-color var(--transition-background-color);
+}
+
+.box_textarea:hover {
+    border-color: var(--input-hover-border-color);
+}
+
+.box_textarea:focus-within {
+    border-color: var(--input-focus-border-color);
+}
+
+.textarea {
+    width: 100%;
+    min-height: calc(var(--input-height) * 2);
+
+    border: none;
+    border-radius: var(--input-radius);
+
+    background-color: transparent;
+    color: var(--input-text-color);
+
+    font-family: inherit;
+    font-size: var(--input-font-size);
+    font-weight: var(--input-font-weight);
+    line-height: var(--input-line-height);
+
+    resize: vertical;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+
+.textarea:focus {
+    outline: none;
+}
+
+.textarea::placeholder {
+    color: var(--color-text-placeholder);
+}
+
+.textarea:disabled {
+    color: var(--input-disabled-text-color);
+    cursor: not-allowed;
+}
+
+.textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+.textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.textarea::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: var(--radius-900);
+}
+
+.textarea::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-text-disabled);
+}
+
+.textarea::-webkit-resizer {
+    background-color: transparent;
+    background-image: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 40%,
+        var(--color-border) 40%,
+        var(--color-border) 50%,
+        transparent 50%,
+        transparent 60%,
+        var(--color-border) 60%,
+        var(--color-border) 70%,
+        transparent 70%
+    );
+}
+
+.box_textarea:has(.textarea:disabled) {
+    border-color: var(--input-disabled-border-color);
+    background-color: var(--input-disabled-background-color);
+}
+
+.count_text {
+    align-self: flex-end;
+    padding-top: var(--spacing-100);
+
+    color: var(--color-text-placeholder);
+    pointer-events: none;
+}

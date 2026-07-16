@@ -1,0 +1,89 @@
+/* ImageUploader */
+
+.wrapper_uploader {
+    display: flex;
+    flex-direction: column;
+    gap: var(--input-label-gap);
+
+    width: 100%;
+}
+
+.dropzone {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: var(--uploader-dropzone-height);
+    padding: var(--spacing-200);
+
+    border: 1px dashed var(--input-border-color);
+    border-radius: var(--input-radius);
+
+    background-color: var(--input-background-color);
+
+    cursor: pointer;
+
+    transition:
+        border-color var(--transition-border-color),
+        background-color var(--transition-background-color);
+}
+
+.dropzone:hover {
+    border-color: var(--input-hover-border-color);
+}
+
+.dropzone_dragging {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-100);
+}
+
+.dropzone_error {
+    border-color: var(--input-error-border-color);
+}
+
+.dropzone_disabled {
+    border-color: var(--input-disabled-border-color);
+    background-color: var(--input-disabled-background-color);
+
+    cursor: not-allowed;
+}
+
+.input {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+    cursor: pointer;
+}
+
+.box_text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-100);
+}
+
+.error_text {
+    color: var(--color-error);
+}
+
+.helper_text {
+    white-space: pre-line;
+    text-align: center;
+    color: var(--color-icon-default);
+}
+
+.wrapper_preview {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: flex-start;
+    gap: var(--spacing-200);
+}

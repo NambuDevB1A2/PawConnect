@@ -8,12 +8,12 @@ export type AuthUser = {
     role: Enums.Role;
 };
 
-export type AuthContextType = {
+interface AuthContextType {
     login: boolean;
     user: AuthUser;
 };
 
-const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
     login: false,
     user: {
         sub: "",

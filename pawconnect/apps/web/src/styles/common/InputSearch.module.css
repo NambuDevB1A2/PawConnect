@@ -1,0 +1,25 @@
+/* Input Password */
+
+.wrapper_search {
+    display: inline-block;
+    width: 100%;
+}
+
+.wrapper_input {
+    position: relative;
+}
+
+.input {
+    border-radius: var(--radius-900);
+    padding-left: var(--spacing-700);
+}
+
+.icon_search {
+    position: absolute;
+    top: 50%;
+    left: var(--spacing-100);
+
+    transform: translateY(-50%);
+
+    z-index: 1;
+}

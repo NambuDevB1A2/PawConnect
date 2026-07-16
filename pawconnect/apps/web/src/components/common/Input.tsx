@@ -1,9 +1,11 @@
 import { InputHTMLAttributes } from "react";
 import styles from "@/styles/common/Input.module.css"
+import Typography from "@/components/common/Typography";
 
-type InputErrorType = "correct" | "error";
+export type InputErrorType = "correct" | "error";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    children?: React.ReactNode;
     labelText?: string;
     errorText?: string;
     errorType?: InputErrorType;
@@ -12,27 +14,28 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function Input({
+    children,
     labelText,
     errorText,
     errorType = "error",
     helperText,
     wrapperClassname = "",
     className = "",
-    id,
-    disabled,
     ...props
 }: InputProps) {
     const error = errorText && errorType == "error";
 
     return (
         <span className={`${styles.wrapper_input} ${wrapperClassname}`}>
-            <p className={`${styles.label_text}`}>{labelText}</p>
-            <input id={id}
-                className={`${styles.input} ${error ? styles.input_error : ""} ${className}`}
-                disabled={disabled}
-                placeholder={helperText}
-                {...props}/>
-            <p className={`${styles.error_text} ${styles[errorType]}`}>{errorText}</p>
+            <Typography className={`${styles.label_text}`}>{labelText}</Typography>
+            <div className={styles.box_input}>
+                <input
+                    className={`${styles.input} ${error ? styles.input_error : ""} ${className}`}
+                    placeholder={helperText}
+                    {...props}/>
+                {children}
+            </div>
+            <Typography className={`${styles.error_text} ${styles[errorType]}`}>{errorText}</Typography>
         </span>
     );
 }

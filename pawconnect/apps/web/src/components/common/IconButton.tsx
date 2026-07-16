@@ -2,12 +2,15 @@ import Icon, { IconGrade, IconSize, IconWeight, IconColor } from "@/components/c
 import { ButtonHTMLAttributes } from "react";
 import styles from "@/styles/common/IconButton.module.css"
 
+type IconButtonType = "box" | "icon";
+
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     name: string; // material sumbols 아이콘 이름
     size?: IconSize;
     weight?: IconWeight;
     grade?: IconGrade;
     color?: IconColor;
+    buttonType?: IconButtonType;
     wrapperBorder?: boolean;
     wrapperClassName?: string;
     buttonClassName?: string;
@@ -19,6 +22,7 @@ export default function IconButton({
     weight = 400,
     grade = 0,
     color = "color_true",
+    buttonType = "box",
     wrapperBorder = false,
     wrapperClassName = "",
     buttonClassName = "",
@@ -27,7 +31,7 @@ export default function IconButton({
     ...props
  }: IconButtonProps) {
     return (
-        <button className={`${styles.button} ${buttonClassName}`} {...props}>
+        <button className={`${styles.button} ${buttonClassName} ${styles[buttonType]}`} {...props}>
             <Icon
                 name={name} variant="outlined" size={size} 
                 fill={!disabled} weight={weight} grade={grade} color={disabled ? "color_false" : color}
