@@ -9,6 +9,7 @@ type ModalSize = "small" | "medium" | "large" | "xlarge";
 interface ModalProps extends HTMLAttributes<HTMLDivElement>  {
     children?: React.ReactNode;
     size?: ModalSize;
+    closeOnOverlayClick?: boolean;
     isOpen: boolean;
     onClose: () => void;
 }
@@ -16,6 +17,7 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement>  {
 export default function Modal({ 
     children,
     size = "small",
+    closeOnOverlayClick = true,
     className = "",
     isOpen,
     onClose,
@@ -40,10 +42,14 @@ export default function Modal({
     if (!mounted || !render) return null;
 
     return (
-        <div className={`${styles.overlay} ${isOpen ? styles.overlay_open : ""}`}>
-            <div className={`${styles.modal} ${isOpen ? styles.modal_open : ""} ${styles[size]} ${className}`} 
-                aria-modal="true"
-                {...props}>
+        <div 
+            className={`${styles.overlay} ${isOpen ? styles.overlay_open : ""}`}
+            onClick={(() => closeOnOverlayClick && onClose())}>
+            <div 
+                className={`${styles.modal} ${isOpen ? styles.modal_open : ""} ${styles[size]} ${className}`} 
+                onClick={(e) => e.stopPropagation()}
+                {...props}
+                >
                 {children}
             </div>
         </div>

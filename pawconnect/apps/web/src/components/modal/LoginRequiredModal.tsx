@@ -1,6 +1,5 @@
 'use client';
 
-import styles from "@/styles/modal/LoginModal.module.css"
 import Typography from "@/components/common/Typography";
 import Modal from "@/components/modal/Modal";
 import Button from "@/components/common/Button";
