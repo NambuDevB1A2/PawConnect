@@ -28,7 +28,7 @@ import ImagesUploader from "@/components/uploader/ImagesUploader";
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
     const boxColumnStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "column", gap: "10px" };
-    const boxRowStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "center", gap: "10px" };
+    const boxRowStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "stretch", gap: "10px" };
 
     const [page, setPage] = useState(3);
 
@@ -272,8 +272,10 @@ export default function TempComponents() {
 
             <Typography variant="subtitle">Image Uploader</Typography>
             <div style={boxColumnStyle}>
-                <ImageUploader labelText="이미지 업로드"/>
-                <ImagesUploader labelText="이미지 여러 장 업로드"/>
+                <div style={boxRowStyle}>
+                    <ImageUploader labelText="이미지 업로드"/>
+                    <ImagesUploader labelText="이미지 여러 장 업로드"/>
+                </div>
                 <BannerImageUploader labelText="배너 이미지 업로드"/>
                 <ProfileImageUploader labelText="프로필 업로드"/>
             </div>
