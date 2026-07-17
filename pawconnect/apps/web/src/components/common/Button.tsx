@@ -4,21 +4,21 @@ import { ButtonHTMLAttributes } from "react";
 type ButtonSize = "large" | "medium" | "small";
 
 type ButtonVariant =
-  "primary" |
-  "secondary" |
-  "outline" |
-  "modal" |
-  "ghost" |
-  "success" |
-  "danger" |
-  "warning" |
-  "text";
+    "primary" |
+    "secondary" |
+    "outline" |
+    "modal" |
+    "ghost" |
+    "success" |
+    "danger" |
+    "warning" |
+    "text";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-  size?: ButtonSize;
-  variant?: ButtonVariant;
-  fullWidth?: boolean;
+    children: React.ReactNode;
+    size?: ButtonSize;
+    variant?: ButtonVariant;
+    fullWidth?: boolean;
 }
 
 export default function Button({
@@ -29,13 +29,13 @@ export default function Button({
     className = "",
     ...props
 }: ButtonProps) {
-  return (
-    <button
-      className={`${styles.button} ${variant !== "text" && styles[size]} ${styles[variant]} ${className}`}
-      style={{ width: fullWidth ? "100%" : undefined }}
-      {...props}
-    >
-      {children}
-    </button>
-  );
+    return (
+        <button
+            className={`${styles.button} ${variant !== "text" && styles[size]} ${styles[variant]} ${className}`}
+            style={{ width: fullWidth ? "100%" : undefined }}
+            {...props}
+            >
+            {children}
+        </button>
+    );
 }

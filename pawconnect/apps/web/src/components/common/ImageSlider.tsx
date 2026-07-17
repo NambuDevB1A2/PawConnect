@@ -4,6 +4,7 @@ import IconButton from "@/components/common/IconButton";
 import { useContext, useState } from "react";
 import styles from "@/styles/common/ImageSlider.module.css"
 import { ModalContext } from "@/providers/ModalProvider";
+import { useSlider } from "@/hooks/common/useSlider";
 
 type ImageSliderSize = "small" | "medium" | "large" | "xlarge";
 
@@ -20,26 +21,14 @@ export default function ImageSlider({
     wrapperClassName = "",
     className = "",
 }: ImageSliderProps) {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const {
+        currentIndex,
+        isPrevActive,
+        isNextActive,
+        handlePrev,
+        handleNext, } = useSlider(images.length - 1);
 
     const { openModal } = useContext(ModalContext);
-
-    const isPrevActive = currentIndex > 0;
-    const isNextActive = currentIndex < images.length - 1;
-
-    const handlePrev = () => {
-        setCurrentIndex((prev) => {
-            if (currentIndex <= 0) return 0;
-            return prev - 1;
-        });
-    };
-
-    const handleNext = () => {
-        setCurrentIndex((prev) => {
-            if (currentIndex >= images.length - 1) return images.length - 1;
-            return prev + 1;
-        });
-    }
 
     const handleClick = () => {
         openModal("imageViewer", {
