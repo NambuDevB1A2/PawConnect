@@ -1,7 +1,7 @@
 export class CraeteShelterDto {
     name: string;
-    adress: string;
-    adressDetail: string;
+    address: string;
+    addressDetail: string;
     phone: string;
     operatingHours: string;
     description: string;
