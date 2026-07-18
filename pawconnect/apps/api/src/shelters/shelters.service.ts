@@ -29,8 +29,8 @@ export class SheltersService {
         const shelter = await tx.shelter.create({
             data: {
                 name: createShelterDto.name,
-                adress: createShelterDto.adress,
-                adressDetail: createShelterDto.adressDetail,
+                address: createShelterDto.address,
+                addressDetail: createShelterDto.addressDetail,
                 phone: createShelterDto.phone,
                 operatingHours: createShelterDto.operatingHours,
                 description: createShelterDto.description,

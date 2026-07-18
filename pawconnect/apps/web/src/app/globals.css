@@ -308,4 +308,7 @@ main {
 
     --uploader-profile-width: 280px;
     --uploader-profile-image-width: 210px;
+
+    /* Slider */
+    --slider-transition-transform: 0.3s;
 }

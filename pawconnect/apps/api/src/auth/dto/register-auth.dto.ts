@@ -30,11 +30,11 @@ export class RegisterShelterAuthDto extends RegisterAuthDto {
 
     @ApiProperty({ example: "서울시 금천구 독산로 50길 23" })
     @IsString()
-    adress: string;
+    address: string;
 
     @ApiProperty({ example: "교육관 203" })
     @IsString()
-    adressDetail: string;
+    addressDetail: string;
 
     @ApiProperty({ example: "01012345678" })
     @IsString()
