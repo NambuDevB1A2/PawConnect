@@ -1,0 +1,16 @@
+.modal {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.image {
+    box-shadow: var(--shadow-medium);
+
+    max-width: 90vw;
+    max-height: 85vh;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+}

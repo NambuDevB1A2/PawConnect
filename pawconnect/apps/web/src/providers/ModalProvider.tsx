@@ -5,7 +5,8 @@ import React, { createContext, useCallback, useState } from "react";
 // 모달이 추가 될 때마다 Key 추가
 export type ModalKey = 
     "loginRequired" | 
-    "confirmDelete";
+    "confirmDelete" |
+    "imageViewer";
 
 // 모달이 추가 될 때마다 ParamsMap 추가
 interface ModalParamsMap {
@@ -13,6 +14,10 @@ interface ModalParamsMap {
     confirmDelete: {
         onConfirm: () => void;
         targetName?: string;
+    };
+    imageViewer: {
+        images: string[];
+        currentIndex?: number;
     };
 }
 

@@ -67,7 +67,9 @@ export default function Select({
     const selectedOption = options.find((option) => option.value === currentValue);
 
     return (
-        <div className={`${styles.wrapper_select}  ${styles[labelPosition]} ${wrapperClassName}`}>
+        <div 
+            className={`${styles.wrapper_select}  ${styles[labelPosition]} ${wrapperClassName}`}
+            ref={containerRef}>
             <Typography className={`${styles.label_text} ${styles[labelSize]}`} weight="bold">{labelText}</Typography>
             <div className={styles.box_trigger}>
                 <button

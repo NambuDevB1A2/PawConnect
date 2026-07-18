@@ -24,11 +24,12 @@ import ImageUploader from "@/components/uploader/ImageUploader";
 import ProfileImageUploader from '../uploader/ProfileImageUploader';
 import BannerImageUploader from "@/components/uploader/BannerUploader";
 import ImagesUploader from "@/components/uploader/ImagesUploader";
+import ImageSlider from "@/components/common/ImageSlider";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
     const boxColumnStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "column", gap: "10px" };
-    const boxRowStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "center", gap: "10px" };
+    const boxRowStyle: CSSProperties = { display: "flex", paddingLeft: "50px", flexDirection: "row", alignItems: "stretch", gap: "10px" };
 
     const [page, setPage] = useState(3);
 
@@ -270,12 +271,29 @@ export default function TempComponents() {
                     />
             </div>
 
+
             <Typography variant="subtitle">Image Uploader</Typography>
             <div style={boxColumnStyle}>
-                <ImageUploader labelText="이미지 업로드"/>
-                <ImagesUploader labelText="이미지 여러 장 업로드"/>
+                <div style={boxRowStyle}>
+                    <ImageUploader labelText="이미지 업로드"/>
+                    <ImagesUploader labelText="이미지 여러 장 업로드"/>
+                </div>
                 <BannerImageUploader labelText="배너 이미지 업로드"/>
                 <ProfileImageUploader labelText="프로필 업로드"/>
+            </div>
+
+
+            <Typography variant="subtitle">Image Slider & Image Modal</Typography>
+            <div>
+                <ImageSlider
+                    images={[
+                        "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1783660168193.jpg",
+                        "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1783830728293.JPG",
+                        "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1784097651928.png",
+                        "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1784180215194.jpg",
+                        "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1783584010738.jpg",
+                    ]}
+                    />
             </div>
 
         </div>

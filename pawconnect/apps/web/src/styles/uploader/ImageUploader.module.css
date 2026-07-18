@@ -3,9 +3,11 @@
 .wrapper_uploader {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: var(--input-label-gap);
 
     width: 100%;
+    flex: 1; /* 부모 요소가 alignItems: "stretch" */
 }
 
 .dropzone {

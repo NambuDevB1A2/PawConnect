@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { ModalContext } from '../../providers/ModalProvider';
 import LoginRequiredModal from "@/components/modal/LoginRequiredModal";
 import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal";
+import ImageViewerModal from "@/components/modal/ImageViewerModal";
 
 export default function ModalRoot() {
     const { activeModal, params, closeModal } = useContext(ModalContext);
@@ -19,7 +20,14 @@ export default function ModalRoot() {
             <ConfirmDeleteModal 
                 isOpen={activeModal === "confirmDelete"} 
                 onClose={closeModal}
-                onDelete={activeModal === "confirmDelete" ? params?.onDelete : undefined}
+                onConfirm={activeModal === "confirmDelete" ? params?.onConfirm : undefined}
+                />
+            
+            <ImageViewerModal
+                isOpen={activeModal === "imageViewer"} 
+                onClose={closeModal}
+                images={activeModal === "imageViewer" ? params?.images : undefined}
+                currentIndex={activeModal === "imageViewer" ? params?.currentIndex : undefined}
                 />
         </div>
     );
