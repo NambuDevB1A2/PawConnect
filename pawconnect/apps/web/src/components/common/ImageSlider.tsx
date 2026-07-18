@@ -54,7 +54,7 @@ export default function ImageSlider({
                     style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                         
                     {images.map((src, index) =>
-                        <div className={styles.slide} key={src}>
+                        <div className={styles.slide} key={`${src}-${index}`}>
                             <img src={src} className={styles.img_slide} onClick={handleClick}/>
                         </div>
                     )}

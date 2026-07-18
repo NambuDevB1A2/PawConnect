@@ -12,14 +12,14 @@ export function useSlider(
 
     const handlePrev = () => {
         setCurrentIndex((prev) => {
-            if (currentIndex <= 0) return 0;
+            if (prev <= 0) return 0;
             return prev - 1;
         });
     };
 
     const handleNext = () => {
         setCurrentIndex((prev) => {
-            if (currentIndex >= maxIndex) return maxIndex;
+            if (prev >= maxIndex) return maxIndex;
             return prev + 1;
         });
     }
