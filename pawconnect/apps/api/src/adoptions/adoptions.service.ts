@@ -113,9 +113,20 @@ export class AdoptionsService {
     return adoption;
   }
 
-  // 입양신청 상태 수정(보호소관리자만)
-  update(id: string, updateAdoptionStatusDto: UpdateAdoptionStatusDto) {
-    return `This action updates a #${id} adoption`;
+  // 입양 신청 상태 수정(보호소관리자만)
+  async update(id: string, updateAdoptionStatusDto: UpdateAdoptionStatusDto) {
+    const adoption = await this.prisma.adoption.findUnique({
+      where: {id},
+    });
+
+    if(!adoption) throw new NotFoundException("입양 신청을 찾을 수 없습니다.")
+
+    return await this.prisma.adoption.update({
+      where: {id},
+      data:{
+        adoptionStatus: updateAdoptionStatusDto.adoptionStatus,
+      },
+    });
   }
 
   // remove(id: string) {

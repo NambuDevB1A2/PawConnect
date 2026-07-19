@@ -6,6 +6,7 @@ import type { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { UpdateAdoptionStatusDto } from './dto/update-adoption-status.dto';
+import { Role } from '@prisma/client';
 
 @Controller('adoptions')
 @UseGuards(JwtAuthGuard)
@@ -42,6 +43,8 @@ export class AdoptionsController {
   }
 
   @Patch(':id/status')
+  // @Role(Role.SHELTER)
+  // @UseGuards(Role)
   @ApiOperation({summary:"입양 신청 상태 변경"})
   update(@Param('id', new ParseUUIDPipe()) id: string, 
          @Body() updateAdoptionStatusDto: UpdateAdoptionStatusDto) {
