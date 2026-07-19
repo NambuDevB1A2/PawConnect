@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { ArrayMinSize, ArrayNotEmpty, IsBoolean, IsEmail, IsEnum, IsOptional, IsString, IsUUID, MaxLength, ValidateNested } from "class-validator";
+import {
+    ArrayMinSize, ArrayNotEmpty, IsBoolean, IsEmail, IsEnum,
+    IsNumber, IsOptional, IsString, MaxLength, ValidateNested} from "class-validator";
 import {
     PetExperience, PetExperiencePeriod, ResidenceType,
     PetAllowedStatus, FamilySize, YoungChildStatus,
@@ -11,11 +13,12 @@ import { Type } from "class-transformer";
 // 입양 신청 (animalId, 기본정보, 신청서, 약관)
 export class CreateAdoptionDto {
     @ApiProperty({
-        example: "4b5cbdb7-84e2-4a7f-aab6-6d5b9c0d9e7f",
+        example: 1,
         description: "입양 신청 대상 동물 ID",
     })
-    @IsUUID()
-    animalId: string;
+    @IsNumber()
+    @Type(() => Number)
+    animalId: number;
 
     @ApiProperty({ example: "김샛별", description: "신청자 이름", })
     @IsString()
