@@ -36,10 +36,8 @@
 
 .box_mypage {
     --header-user-image-size: 48px;
-    --header-user-nickname-gap: 20px;
+    --header-user-nickname-gap: 10px;
     --header-user-nickname-size: 120px;
-
-    width: 200px;
 
     display: inline-flex;
     justify-content: right;
@@ -70,11 +68,13 @@
 
 .nickname {
     padding-left: var(--header-user-nickname-gap);
+    padding-right: var(--header-user-nickname-gap);
 
     width: var(--header-user-nickname-size);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
 
     color: var(--color-text-secondary);
 }

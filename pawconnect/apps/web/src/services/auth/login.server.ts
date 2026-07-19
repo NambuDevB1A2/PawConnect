@@ -1,7 +1,7 @@
 'use server';
 
-import { setAccessToken } from "@/services/auth/auth";
-import { fetchClient } from "@/services/fetch/fetch.client";
+import { getAccessToken, setAccessToken } from "@/services/auth/auth";
+import { fetchServer } from "@/services/fetch/fetch.server";
 import { LoginState, ResponseLogin } from "@/types/auth/login.type";
 import { redirect } from "next/navigation";
 
@@ -18,7 +18,7 @@ export async function Login(prevState: LoginState, formdata: FormData): Promise<
     }
 
     try {
-        const result = await fetchClient.post<ResponseLogin>('/auth/login', {
+        const result = await fetchServer.post<ResponseLogin>('/auth/login', undefined, {
             email,
             password,
         });

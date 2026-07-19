@@ -6,14 +6,14 @@ import Button from "@/components/common/Button";
 import Typography from "@/components/common/Typography";
 import InputPassword from "@/components/common/InputPassword";
 import { useActionState } from "react";
-import { Login } from "@/services/auth/login.client";
+import { Login } from "@/services/auth/login.server";
 import { LoginState } from "@/types/auth/login.type";
 import { useRouter } from "next/navigation";
 
 const initialState: LoginState = { };
 
 export default function LoginForm() {
-    const [state, formAction, isPending] = useActionState(Login, initialState); // fetchClient 사용
+    const [state, formAction, isPending] = useActionState(Login, initialState);
     const router = useRouter();
 
     return (

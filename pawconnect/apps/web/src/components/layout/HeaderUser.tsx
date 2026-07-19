@@ -6,6 +6,7 @@ import { User } from "@/types/auth/user.type";
 import styles from "@/styles/layout/Header.module.css"
 import Button from "@/components/common/Button";
 import { useRouter } from "next/navigation";
+import { Logout } from "@/services/auth/logout.client";
 
 interface HeaderUserProps {
     user?: User;
@@ -22,7 +23,7 @@ export default function HeaderUser({
             <div className={styles.box_user}>
                 <img className={styles.img_profile} src={user.imgProfile}/>
                 <Typography className={styles.nickname} weight="semibold">{user.nickname}</Typography>
-                <IconButton className={styles.btn_menu} name="arrow_drop_down"/>
+                <IconButton className={styles.btn_menu} name="arrow_drop_down" onClick={() => Logout()}/>
             </div> :
             <Button onClick={() => router.push(`/login`)}>로그인</Button> }
         </div>
