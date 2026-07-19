@@ -1,3 +1,4 @@
+import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
 import { USER_SELECT } from '@/users/user.select';
@@ -9,8 +10,11 @@ export class UsersService {
     constructor (private readonly prisma: PrismaService) {}
 
     // 회원 검색 (이메일)
-    async findByEmail(email: string) {
-        const user = await this.prisma.user.findUnique({ where: { email }});
+    async findByEmail(email: string, select?: Prisma.UserSelect) {
+        const user = await this.prisma.user.findUnique({ 
+            where: { email }, 
+            select: select
+            });
         if (!user) throw new UnauthorizedException();
         
         return user;
@@ -39,5 +43,10 @@ export class UsersService {
         });
 
         return user;
+    }
+
+    // READ
+    async me(auth: AuthRequest) {
+        return this.findByEmail(auth.email, USER_SELECT);
     }
 }

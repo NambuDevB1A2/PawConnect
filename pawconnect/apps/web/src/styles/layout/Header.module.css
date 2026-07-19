@@ -35,5 +35,50 @@
 }
 
 .box_mypage {
+    --header-user-image-size: 48px;
+    --header-user-nickname-gap: 20px;
+    --header-user-nickname-size: 120px;
+
+    width: 200px;
+
+    display: inline-flex;
+    justify-content: right;
+}
+
+.box_user {
+    display: flex;
+    flex-direction: row;
+
+    height: 100%;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.img_profile {
+    width: var(--header-user-image-size);
+    height: var(--header-user-image-size);
+
+    border: none;
+
+    background-color: var(--color-border);
+
+    box-shadow: var(--shadow-small);
+
+    border-radius: var(--radius-900);
+}
+
+.nickname {
+    padding-left: var(--header-user-nickname-gap);
+
+    width: var(--header-user-nickname-size);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    color: var(--color-text-secondary);
+}
+
+.btn_menu {
 
 }
