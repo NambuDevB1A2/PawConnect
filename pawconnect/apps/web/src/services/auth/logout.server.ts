@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 
 export async function Logout(): Promise<FetchState> {
     try {
+        // server용 fetch 사용
         // use server로 서버에서 fetch 전송 (getAccessToken, deleteAccessToken 사용은 서버에서만 가능)
         const token = await getAccessToken();
         await fetchServer.post<ResponseLogout>('/auth/logout', token);

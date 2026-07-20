@@ -18,6 +18,7 @@ export async function Login(prevState: LoginState, formdata: FormData): Promise<
     }
 
     try {
+        // server용 fetch 사용
         // use server로 서버에서 fetch 전송 (setAccessToken 사용은 서버에서만 가능)
         const result = await fetchServer.post<ResponseLogin>('/auth/login', undefined, {
             email,
