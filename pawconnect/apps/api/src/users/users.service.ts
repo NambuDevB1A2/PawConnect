@@ -9,12 +9,23 @@ import { Prisma } from '@prisma/client';
 export class UsersService {
     constructor (private readonly prisma: PrismaService) {}
 
+    // 회원 검색 (아이디)
+    async find(id: string, select?: Prisma.UserSelect) {
+        const user = await this.prisma.user.findUnique({
+            where: { id },
+            select: select
+        });
+        if (!user) throw new UnauthorizedException();
+        
+        return user;
+    }
+
     // 회원 검색 (이메일)
     async findByEmail(email: string, select?: Prisma.UserSelect) {
         const user = await this.prisma.user.findUnique({ 
             where: { email }, 
             select: select
-            });
+        });
         if (!user) throw new UnauthorizedException();
         
         return user;
@@ -47,6 +58,15 @@ export class UsersService {
 
     // READ
     async me(auth: AuthRequest) {
-        return this.findByEmail(auth.email, USER_SELECT);
+        return { auth };
+        // return this.find(auth.id, USER_SELECT);
+    }
+
+    async meUser(auth: AuthRequest) {
+        return this.find(auth.id, USER_SELECT);
+    }
+
+    async meShelter(auth: AuthRequest) {
+        return this.find(auth.id, USER_SELECT);
     }
 }
