@@ -3,9 +3,12 @@ import { Roles } from '@/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/role.guard';
 import { type AuthRequest } from '@/auth/interfaces/auth-request.interface';
+import { cleanupOnError } from '@/common/utils/upload.util';
+import { createImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
 import { UsersService } from '@/users/users.service';
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 
 @ApiTags('User')

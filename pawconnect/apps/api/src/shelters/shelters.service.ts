@@ -1,5 +1,6 @@
+import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
-import { CraeteShelterDto } from '@/shelters/dto/create-shelter.dto';
+import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
 import { SHELTER_SELECT } from '@/shelters/shelter.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
@@ -23,8 +24,11 @@ export class SheltersService {
     }
 
     // CREATE
-    async create(tx: Prisma.TransactionClient, createShelterDto: CraeteShelterDto) {
+    async create(tx: Prisma.TransactionClient, createShelterDto: CreateShelterDto, imgBanner?: Express.Multer.File) {
         await this.existsByName(createShelterDto.name);
+
+        // 파일 path 저장 (기본값 설정 로직)
+        const imgBannerPath = imgBanner ? imgBanner.path : `${UPLOAD_DIR.shelterBannerDir}/default_banner.png`;
 
         const shelter = await tx.shelter.create({
             data: {
@@ -34,7 +38,7 @@ export class SheltersService {
                 phone: createShelterDto.phone,
                 operatingHours: createShelterDto.operatingHours,
                 description: createShelterDto.description,
-                imgBanner: createShelterDto.imgBanner,
+                imgBanner: imgBannerPath,
             },
             select: SHELTER_SELECT,
         });

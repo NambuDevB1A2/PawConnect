@@ -5,9 +5,13 @@ import { RegisterAuthDto, RegisterShelterAuthDto } from '@/auth/dto/register-aut
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/role.guard';
 import type { AuthRequest } from '@/auth/interfaces/auth-request.interface';
-import { Public } from '@/common/decorators/public.decorator';
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Public } from '@/auth/decorators/public.decorator';
+import { Body, Controller, Post, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import { createFieldsImageUploadOptions, createImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
+import { cleanupOnError } from '@/common/utils/upload.util';
+import { isDefined } from 'class-validator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -18,18 +22,48 @@ export class AuthController {
 
     // 회원가입 - 일반 사용자 (ROLE.USER)
     @ApiOperation({ summary: "회원가입 - 일반 사용자" })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({ type: RegisterAuthDto })
+    @UseInterceptors( 
+         // createImageUploadOptions로 파일 저장 위치 지정
+        FileInterceptor('imgProfile', createImageUploadOptions(UPLOAD_DIR.userProfileDir)))
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/user')
-    registerUser(@Body() registerAuthDto: RegisterAuthDto) {
-        return this.authService.registerUser(registerAuthDto);
+    create(
+        @Body() registerAuthDto: RegisterAuthDto,
+        @UploadedFile() imgProfile?: Express.Multer.File) {
+        return cleanupOnError([imgProfile].filter(isDefined), () => 
+            this.authService.registerUser(registerAuthDto, imgProfile));
     }
     
     // 회원가입 - 보호소 관리자 (ROLE.SHELTER)
     @ApiOperation({ summary: "회원가입 - 보호소 관리자" })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({ type: RegisterShelterAuthDto })
+    @UseInterceptors(
+        // createFieldsImageUploadOptions로 필드별 파일 저장 위치 지정
+        FileFieldsInterceptor([
+            // 파일을 필드명으로 구분
+            { name: 'imgProfile', maxCount: 1 },
+            { name: 'imgBanner', maxCount: 1 },
+        ], createFieldsImageUploadOptions({
+            // 파일 저장 위치, 옵션 지정
+            imgProfile: UPLOAD_DIR.userProfileDir,
+            imgBanner: UPLOAD_DIR.shelterBannerDir,
+        })))
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/shelter')
-    registerShelter(@Body() registerShelterAuthDto: RegisterShelterAuthDto) {
-        return this.authService.registerShelter(registerShelterAuthDto);
+    registerShelter(
+        @Body() registerShelterAuthDto: RegisterShelterAuthDto,
+        @UploadedFiles() file: { 
+            imgProfile?: Express.Multer.File[],
+            imgBanner?: Express.Multer.File[],
+        }) {
+        const imgProfile = file.imgProfile?.[0];
+        const imgBanner = file.imgBanner?.[0];
+
+        return cleanupOnError([imgProfile, imgBanner].filter(isDefined), () => 
+            this.authService.registerShelter(registerShelterAuthDto, imgProfile, imgBanner));
     }
 
     // 로그인

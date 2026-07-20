@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Prisma, Role } from '@prisma/client';
@@ -10,6 +10,7 @@ import { LoginAuthDto } from '@/auth/dto/login-auth.dto';
 import { JwtPayload } from '@/auth/interfaces/jwt-payload.interface';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { ConfigService } from '@nestjs/config';
+import { UPLOAD_DIR } from '@/config/upload.config';
 
 @Injectable()
 export class AuthService {
@@ -22,13 +23,17 @@ export class AuthService {
     ) {}
 
     // 회원가입 - 공통
-    async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterAuthDto, shelterId?: string) {
+    async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterAuthDto, imgProfile?: Express.Multer.File, shelterId?: string) {
         const bcryptRound = this.configService.getOrThrow('bcrypt.bcrypt_round');
         const passwordHash = await bcrypt.hash(registerAuthDto.password, bcryptRound);
+
+        // 파일 path 저장 (기본값 설정 로직)
+        const imgProfilePath = imgProfile ? imgProfile.path : `${UPLOAD_DIR.userProfileDir}/default_profile.png`;
         
         const user = await this.usersService.create(tx, {
             role,
             ...registerAuthDto,
+            imgProfile: imgProfilePath,
             passwordHash,
             shelterId,
         });
@@ -37,15 +42,16 @@ export class AuthService {
     }
 
     // 회원가입 - 일반 사용자
-    async registerUser(registerAuthDto: RegisterAuthDto) {
-        return await this.register(this.prisma, Role.USER, registerAuthDto);
+    async registerUser(registerAuthDto: RegisterAuthDto, imgProfile?: Express.Multer.File) {
+        return await this.register(this.prisma, Role.USER, registerAuthDto, imgProfile);
     }
 
     // 회원가입 - 보호소 관리자
-    async registerShelter(registerShelterAuthDto: RegisterShelterAuthDto) {
+    async registerShelter(registerShelterAuthDto: RegisterShelterAuthDto, 
+        imgProfile?: Express.Multer.File, imgBanner?: Express.Multer.File) {
         return await this.prisma.$transaction(async (tx) => {
-            const shelter = await this.sheltersService.create(tx, registerShelterAuthDto);
-            const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, shelter.id);
+            const shelter = await this.sheltersService.create(tx, registerShelterAuthDto, imgBanner);
+            const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, imgProfile, shelter.id);
 
             return { user, shelter };
         });

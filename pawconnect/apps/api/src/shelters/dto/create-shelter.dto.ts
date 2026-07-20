@@ -1,4 +1,4 @@
-export class CraeteShelterDto {
+export class CreateShelterDto {
     name: string;
     address: string;
     addressDetail: string;
