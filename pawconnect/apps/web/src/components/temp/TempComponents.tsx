@@ -294,6 +294,7 @@ export default function TempComponents() {
                         "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1783584010738.jpg",
                     ]}
                     />
+                <Typography>이미지 슬라이더 성공!</Typography>
             </div>
 
         </div>
