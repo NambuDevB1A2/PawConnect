@@ -1,6 +1,6 @@
 'use server';
 
-import { getAccessToken, setAccessToken } from "@/services/auth/auth";
+import { setAccessToken } from "@/services/auth/auth";
 import { fetchServer } from "@/services/fetch/fetch.server";
 import { LoginState, ResponseLogin } from "@/types/auth/login.type";
 import { redirect } from "next/navigation";
@@ -11,18 +11,20 @@ export async function Login(prevState: LoginState, formdata: FormData): Promise<
 
     if (!email || !password) {
         return {
-            email,
-            emailError: !email ? "이메일을 입력해주세요" : "",
-            passwordError: !password? "비밀번호를 입력해주세요" : "",
+            email, // 이메일 값 초기화 방지, 이전 이메일 값 저장
+            emailError: !email ? "이메일을 입력해주세요" : "", // 이메일 에러 발생시 
+            passwordError: !password? "비밀번호를 입력해주세요" : "", // 비밀번호 에러 발생시
         };
     }
 
     try {
+        // use server로 서버에서 fetch 전송 (setAccessToken 사용은 서버에서만 가능)
         const result = await fetchServer.post<ResponseLogin>('/auth/login', undefined, {
             email,
             password,
         });
         
+        // 토큰 저장
         await setAccessToken(result.accessToken);
     } catch (error) {
         return {
@@ -31,6 +33,5 @@ export async function Login(prevState: LoginState, formdata: FormData): Promise<
         };
     }
 
-    console.log(`login 성공`);
-    redirect("/");
+    redirect("/"); // 로그인 성공시 홈으로 이동
 }

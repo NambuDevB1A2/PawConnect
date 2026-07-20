@@ -6,7 +6,7 @@ import { User } from "@/types/auth/user.type";
 import styles from "@/styles/layout/Header.module.css"
 import Button from "@/components/common/Button";
 import { useRouter } from "next/navigation";
-import { Logout } from "@/services/auth/logout.client";
+import { Logout } from "@/services/auth/logout.server";
 
 interface HeaderUserProps {
     user?: User;

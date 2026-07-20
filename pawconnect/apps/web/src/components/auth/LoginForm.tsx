@@ -10,13 +10,14 @@ import { Login } from "@/services/auth/login.server";
 import { LoginState } from "@/types/auth/login.type";
 import { useRouter } from "next/navigation";
 
-const initialState: LoginState = { };
+const initialState: LoginState = { }; // useState를 사용할 수 없어서 전역 저장
 
 export default function LoginForm() {
-    const [state, formAction, isPending] = useActionState(Login, initialState);
+    const [state, formAction, isPending] = useActionState(Login, initialState); // Login에서 fetch
     const router = useRouter();
 
     return (
+        // formData로 body 전송
         <form action={formAction} className={styles.wrapper_section}>
         
             <div className={styles.wrapper_section}>
@@ -24,15 +25,20 @@ export default function LoginForm() {
 
                 <div className={styles.box_input}>
                     <Input 
+                        // name="email" 로 form 값 설정
+                        // defaultValue로 email값 유지
                         name="email" defaultValue={state.email}
                         labelText="이메일" helperText="이메일을 입력해주세요" errorText={state.emailError}/>
                     <InputPassword 
+                        // name="password" 로 form 값 설정
                         name="password"
                         labelText="비밀번호" helperText="비밀번호를 입력해주세요" errorText={state.passwordError}/>
                 </div>
 
                 <div className={styles.box_login}>
-                    <Button fullWidth type="submit" disabled={isPending}>
+                    <Button
+                        // 버튼 타입을 submit으로 form 전송 버튼 설정 
+                        fullWidth type="submit" disabled={isPending}>
                         {isPending ? "로그인 중..." : "로그인"}
                     </Button>
                 </div>

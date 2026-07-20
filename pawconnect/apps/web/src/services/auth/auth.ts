@@ -22,6 +22,7 @@ export async function deleteAccessToken() {
     cookieStore.delete('accessToken');
 }
 
+// 토큰 검사 미들웨어
 export async function checkAccessToken(req: NextRequest) {
     const token = await getAccessToken();
 

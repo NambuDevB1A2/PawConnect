@@ -1,5 +1,8 @@
+import { ENV } from "@/constants/env";
+import { redirect } from "next/navigation";
+
 function buildUrl(path: string) {
-    const base = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
+    const base = (ENV.API_URL ?? "").replace(/\/+$/, "");
     const cleanPath = path.replace(/^\/+/, "");
     return URL.parse(`${base}/${cleanPath}`);
 }
@@ -26,8 +29,8 @@ export async function fetchData<T>(url: string, token?: string, options?: Reques
 
     if (!response.ok) {
         if (response.status === 401) {
-            // TODO
-            throw new Error(`Authorization Error`);
+            // 401 에러 발생시 login 화면으로 이동
+            redirect('/login');
         }
 
         throw new Error(`HTTP Error: ${response.status}`);

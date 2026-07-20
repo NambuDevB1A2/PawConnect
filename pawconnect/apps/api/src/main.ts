@@ -17,7 +17,7 @@ async function bootstrap() {
 
   // Swagger 
   const config = new DocumentBuilder()
-    .setTitle("Echo API Document")
+    .setTitle("PawConnect API Document")
     .setDescription("사람과 유기동물을 연결하는 입양 플랫폼")
     .setVersion("1.0")
     .addBearerAuth()
