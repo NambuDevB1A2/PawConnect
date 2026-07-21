@@ -1,10 +1,9 @@
 import { ENV } from "@/constants/env";
-import { redirect } from "next/navigation";
 
 function buildUrl(path: string) {
     const base = (ENV.API_URL ?? "").replace(/\/+$/, "");
     const cleanPath = path.replace(/^\/+/, "");
-    return URL.parse(`${base}/${cleanPath}`);
+    return new URL(`${base}/${cleanPath}`);
 }
 
 export async function fetchData<T>(url: string, token?: string, options?: RequestInit) : Promise<T> {
@@ -28,12 +27,14 @@ export async function fetchData<T>(url: string, token?: string, options?: Reques
     });
 
     if (!response.ok) {
+        const data = await response.json();
+
         if (response.status === 401) {
-            // 401 에러 발생시 login 화면으로 이동
-            redirect('/login');
+            // TODO: 401 에러 발생시 예외처리 
+            throw new Error(`Unauthorized Error: [${response.status}] ${data ? data.message : ""}`);
         }
 
-        throw new Error(`HTTP Error: ${response.status}`);
+        throw new Error(`HTTP Error: [${response.status}] ${data ? data.message : ""}`);
     }
 
     if (response.status === 204){
