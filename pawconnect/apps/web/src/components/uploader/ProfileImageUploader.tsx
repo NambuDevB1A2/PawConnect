@@ -42,6 +42,7 @@ export default function ProfileImageUploader({
                     <Button
                         className={styles.btn_remove}
                         size="small"
+                        type="button"
                         onClick={(e) => {
                             e.stopPropagation();
                             handleRemove();
