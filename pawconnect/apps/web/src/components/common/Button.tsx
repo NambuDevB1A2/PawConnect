@@ -9,6 +9,7 @@ type ButtonVariant =
     "outline" |
     "modal" |
     "ghost" |
+    "ghostBlack" |
     "success" |
     "danger" |
     "warning" |
