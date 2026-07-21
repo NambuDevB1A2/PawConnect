@@ -1,15 +1,15 @@
 import { CurrentAuth } from '@/auth/decorators/current-auth.decorator';
-import { Roles } from '@/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/role.guard';
 import { type AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { cleanupOnError } from '@/common/utils/upload.util';
 import { createImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
+import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { UsersService } from '@/users/users.service';
-import { Controller, Get, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Patch, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Role } from '@prisma/client';
+import { isDefined } from 'class-validator';
 
 @ApiTags('User')
 @Controller('users')
@@ -22,23 +22,20 @@ export class UsersController {
     @ApiOperation({ summary: "내 정보 조회" })
     @Get('me')
     me(@CurrentAuth() auth: AuthRequest) { 
-        // Auth 검증이 필요한 경우 @CurrentAuth() 로 검증
         return this.usersService.me(auth);
     }
 
-    // 내 정보 조회(일반 사용자) - RolesGuard 테스트
-    @ApiOperation({ summary: "내 정보 조회(일반 사용자)"})
-    @Roles(Role.USER)
-    @Get('me/user')
-    meUser(@CurrentAuth() auth: AuthRequest) {
-        return this.usersService.meUser(auth);
-    }
-
-    // 내 정보 조회(보호소 관리자) - RolesGuard 테스트
-    @ApiOperation({ summary: "내 정보 조회(보호소 관리자)"})
-    @Roles(Role.SHELTER)
-    @Get('me/shelter')
-    meShelter(@CurrentAuth() auth: AuthRequest) {
-        return this.usersService.meShelter(auth);
+    // 내 정보 수정
+    @ApiOperation({ summary: "내 정보 수정" })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({ type: UpdateUserDto })
+    @UseInterceptors(FileInterceptor('imgProfile', createImageUploadOptions(UPLOAD_DIR.userProfileDir)))
+    @Patch('me')
+    update(
+        @CurrentAuth() auth: AuthRequest, 
+        @Body() updateUserDto: UpdateUserDto,
+        @UploadedFile() imgProfile?: Express.Multer.File) {
+        return cleanupOnError([imgProfile].filter(isDefined), () => 
+            this.usersService.update(auth, updateUserDto, imgProfile));
     }
 }

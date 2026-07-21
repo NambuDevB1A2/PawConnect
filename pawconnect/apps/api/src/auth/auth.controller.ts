@@ -1,7 +1,7 @@
 import { AuthService } from '@/auth/auth.service';
 import { CurrentAuth } from '@/auth/decorators/current-auth.decorator';
 import { LoginAuthDto } from '@/auth/dto/login-auth.dto';
-import { RegisterAuthDto, RegisterShelterAuthDto } from '@/auth/dto/register-auth.dto';
+import { RegisterUserAuthDto, RegisterShelterAuthDto } from '@/auth/dto/register-auth.dto';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/role.guard';
 import type { AuthRequest } from '@/auth/interfaces/auth-request.interface';
@@ -23,7 +23,7 @@ export class AuthController {
     // 회원가입 - 일반 사용자 (ROLE.USER)
     @ApiOperation({ summary: "회원가입 - 일반 사용자" })
     @ApiConsumes('multipart/form-data')
-    @ApiBody({ type: RegisterAuthDto })
+    @ApiBody({ type: RegisterUserAuthDto })
     @UseInterceptors( 
          // createImageUploadOptions로 파일 저장 위치 지정
         FileInterceptor(
@@ -33,7 +33,7 @@ export class AuthController {
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/user')
     create(
-        @Body() registerAuthDto: RegisterAuthDto,
+        @Body() registerAuthDto: RegisterUserAuthDto,
         @UploadedFile() imgProfile?: Express.Multer.File) {
 
         // cleanupOnError로 애러 발생시 업로드된 이미지 파일 삭제

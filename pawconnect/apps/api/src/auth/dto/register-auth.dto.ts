@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsOptional, IsString, Length, MaxLength } from "class-validator";
 
-export class RegisterAuthDto {
+export class RegisterUserAuthDto {
     @ApiProperty({ example: "example@email.com" })
     @IsString()
     email: string;
@@ -21,7 +21,7 @@ export class RegisterAuthDto {
     imgProfile: any;
 }
 
-export class RegisterShelterAuthDto extends RegisterAuthDto {
+export class RegisterShelterAuthDto extends RegisterUserAuthDto {
     @ApiProperty({ example: "서울행복동물보호소" })
     @IsString()
     @MaxLength(100)

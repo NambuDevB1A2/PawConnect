@@ -7,11 +7,6 @@ export const ALLOWED_MINE = ["image/jpeg", "image/png", "image/gif", "image/webp
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-// 파일 이름에서 아이디 추출 (Uuid)
-export function getImageId(file: Express.Multer.File) {
-    return parse(file.filename).name;
-}
-
 // 파일 이름, 아이디 대치 (Uuid)
 const imageFilename = (_req, file, callback) => {
     const unique = randomUUID();
