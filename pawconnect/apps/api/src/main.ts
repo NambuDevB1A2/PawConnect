@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from '@/app.module';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,7 +17,7 @@ async function bootstrap() {
 
   // Swagger 
   const config = new DocumentBuilder()
-    .setTitle("Echo API Document")
+    .setTitle("PawConnect API Document")
     .setDescription("사람과 유기동물을 연결하는 입양 플랫폼")
     .setVersion("1.0")
     .addBearerAuth()
@@ -24,6 +25,7 @@ async function bootstrap() {
   SwaggerModule.setup("api", app, SwaggerModule.createDocument(app, config));
 
   // CORS
+  app.use(cookieParser());
   app.enableCors({
     origin: `${commonConfig.webDomain}:${commonConfig.webPort}`,
     credentials: true,

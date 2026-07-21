@@ -5,7 +5,8 @@ export const CurrentAuth = createParamDecorator(
     (field: keyof AuthRequest, ctx: ExecutionContext) => {
         const request = ctx.switchToHttp().getRequest();
         const auth: AuthRequest = {
-            email: request.user.sub,
+            id: request.user.sub,
+            email: request.user.email,
             role: request.user.role,
         };
 

@@ -17,7 +17,7 @@ export class RegisterAuthDto {
     nickname: string;
 
     // TODO : 이미지 추가
-    @ApiProperty({ example: "/defualt_profile.png" })
+    @ApiProperty({ example: "/default_profile.png" })
     @IsString()
     imgProfile: string;
 }
@@ -52,7 +52,7 @@ export class RegisterShelterAuthDto extends RegisterAuthDto {
     description: string;
 
     // TODO : 이미지 추가
-    @ApiProperty({ example: "/defualt_banner.png" })
+    @ApiProperty({ example: "/default_banner.png" })
     @IsString()
     imgBanner: string;
 }
