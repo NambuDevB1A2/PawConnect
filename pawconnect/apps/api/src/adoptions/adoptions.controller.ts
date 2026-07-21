@@ -43,7 +43,7 @@ export class AdoptionsController {
   }
 
   @Patch(':id/status')
-  // @Role(Role.SHELTER)
+  // @Roles(Role.SHELTER)
   // @UseGuards(Role)
   @ApiOperation({summary:"입양 신청 상태 변경"})
   update(@Param('id', new ParseUUIDPipe()) id: string, 
