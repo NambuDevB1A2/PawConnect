@@ -5,7 +5,7 @@ import { IsEnum } from "class-validator";
 
 // 관리자 상태 변경
 export class UpdateAdoptionStatusDto {
-    @ApiProperty({enum: AdoptionStatus, example: "입양 상태"})
+    @ApiProperty({enum: AdoptionStatus, example: "COUNSELING"})
     @IsEnum(AdoptionStatus)
     adoptionStatus: AdoptionStatus;
 }

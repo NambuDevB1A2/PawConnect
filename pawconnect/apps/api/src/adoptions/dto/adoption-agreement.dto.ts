@@ -7,7 +7,7 @@ export class AdoptionAgreementDto{
     @IsNumber()
     agreementId: number;
 
-     @ApiProperty({example:true, description: "약관 동의 여부",})
+    @ApiProperty({example:true, description: "약관 동의 여부",})
     @IsBoolean()
     isAgreed: boolean;
 }
