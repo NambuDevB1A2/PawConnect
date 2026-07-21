@@ -1,0 +1,40 @@
+.wrapper_login {
+    display: flex;
+
+    width: 100%;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper_section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-600);
+
+    width: 100%;
+
+    padding: var(--spacing-600) var(--spacing) var(--spacing-600) var(--spacing);
+}
+
+.box_input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+
+    width: 100%;
+}
+
+.box_login {
+    padding-top: var(--spacing);
+}
+
+.box_register {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-100);
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}

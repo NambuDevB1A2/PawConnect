@@ -6,7 +6,6 @@ import { useCallback, useState } from "react";
 import styles from "@/styles/common/InputPassword.module.css"
 
 interface InputPasswordProps extends InputProps {
-    
 }
 
 export default function InputPassword({
@@ -44,6 +43,7 @@ export default function InputPassword({
                         size="input"
                         onClick={handleClick}
                         buttonType="icon"
+                        type="button"
                         /> :
                     <IconButton 
                         wrapperClassName={styles.icon_visibility} 
@@ -52,6 +52,7 @@ export default function InputPassword({
                         size="input"
                         onClick={handleClick}
                         buttonType="icon"
+                        type="button"
                         />}
                 </Input>
             </div>
