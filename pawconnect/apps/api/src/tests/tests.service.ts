@@ -40,7 +40,7 @@ export class TestsService {
     }
 
     // PawTI 테스트 결과 생성
-    async createPersonalityResult(dto: CreatePersonalityTestDto):Promise<PersonalityTestResultDto {
+    async createPersonalityResult(dto: CreatePersonalityTestDto):Promise<PersonalityTestResultDto> {
         // 1. MBTI 계산
         const mbti = this.calculateMbti(dto.answers);
         // 2. MBTI 유형 정보 조회 (PERSONALITY_TYPES  조회)

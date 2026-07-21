@@ -1,7 +1,12 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { ArrayMaxSize, ArrayMinSize, IsArray, IsInt, Max, Min } from "class-validator";
 
 // pawti 테스트 결과 생성
 export class CreatePersonalityTestDto {
+    @ApiProperty({
+        example: [1,2,1,2,1,1,2,2,1,2,1,1,2,2,1,2,1,1,2,2],
+        description: "성향테스트 답 숫자 배열로"
+    })
     @IsArray()
     @ArrayMinSize(20)
     @ArrayMaxSize(20)
