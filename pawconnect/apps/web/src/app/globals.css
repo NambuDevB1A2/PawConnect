@@ -14,7 +14,7 @@ html {
     font-weight: var(--font-weight-body1);
     line-height: var(--line-height-body1);
 
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     scrollbar-gutter: stable;
 }
 
@@ -311,4 +311,9 @@ main {
 
     /* Slider */
     --slider-transition-transform: 0.3s;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }

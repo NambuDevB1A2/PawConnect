@@ -59,7 +59,8 @@ export class AuthService {
         if (!isPasswordValid) throw new UnauthorizedException();
 
         const authPayload: JwtPayload = {
-            sub: user.email,
+            sub: user.id,
+            email: user.email,
             role: user.role,
         };
 
@@ -69,6 +70,6 @@ export class AuthService {
 
     // 로그아웃
     async logout(auth: AuthRequest) {
-        return { login: false };
+        return { login: false, auth };
     }
 }

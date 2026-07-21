@@ -2,7 +2,7 @@ import "@/app/globals.css";
 import 'material-symbols/outlined.css';
 import "material-symbols/rounded.css";
 import "material-symbols/sharp.css";
-import Header from "@/components/header/Header";
+import Header from "@/components/layout/Header";
 import AuthProvider from "@/providers/AuthProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ModalRoot from "@/components/modal/ModalRoot";
