@@ -4,6 +4,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { UpdateAdoptionStatusDto } from './dto/update-adoption-status.dto';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { AnimalStatus } from '@prisma/client';
+import { adoptionAnimalInclude } from './adoption.select';
 
 @Injectable()
 export class AdoptionsService {
@@ -64,17 +65,8 @@ export class AdoptionsService {
     const adoptions = await this.prisma.adoption.findMany({
       where: { userId: auth.id },
       orderBy: { createdAt: 'desc' },
-      include: {
-        animal: {
-          include: {
-            shelter: { select: { name: true } },
-            animalSpecies: { select: { name: true } },
-            animalBreed: { select: { name: true } },
-          }
-        }
-      }
-    }
-    );
+      include: adoptionAnimalInclude,
+    });
 
     return adoptions;
   }
@@ -85,13 +77,7 @@ export class AdoptionsService {
     const adoption = await this.prisma.adoption.findUnique({
       where: { id },
       include: {
-        animal: {
-          include: {
-            shelter: { select: { name: true } },
-            animalSpecies: { select: { name: true } },
-            animalBreed: { select: { name: true } },
-          },
-        },
+        ...adoptionAnimalInclude,
         detail: true,
         agreements: {
           include: { agreement: true },

@@ -18,6 +18,7 @@ export class AdoptionsController {
   constructor(private readonly adoptionsService: AdoptionsService) {}
 
   @Post()
+  @Roles(Role.USER)
   @ApiOperation({summary:"입양 신청 등록"})
   create(
     @CurrentAuth() auth:AuthRequest,
