@@ -27,12 +27,14 @@ export async function fetchData<T>(url: string, token?: string, options?: Reques
     });
 
     if (!response.ok) {
+        const data = await response.json();
+
         if (response.status === 401) {
             // TODO: 401 에러 발생시 예외처리 
-            throw new Error(`Unauthorized Error: ${response.status} ${response.message}`);
+            throw new Error(`Unauthorized Error: [${response.status}] ${data ? data.message : ""}`);
         }
 
-        throw new Error(`HTTP Error: ${response.status} ${response.message}`);
+        throw new Error(`HTTP Error: [${response.status}] ${data ? data.message : ""}`);
     }
 
     if (response.status === 204){
