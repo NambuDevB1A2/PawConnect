@@ -44,7 +44,13 @@ export class PersonalityTestResultDto {
     keywords: string[];
 
     @ApiProperty({
-        type: [RecommendAnimalDto],
-    })
+        type: [RecommendAnimalDto], description:'추천동물 들'})
     recommendAnimals: RecommendAnimalDto[];
+
+    @ApiProperty({example: true, description:'추천동물 존재 여부'})
+    hasRecommendAnimals: boolean;
+
+    @ApiProperty({example:null, nullable:true, 
+        description:'추천동물이 없을 경우 안내 메시지'})
+    message?: string|null;
 }
