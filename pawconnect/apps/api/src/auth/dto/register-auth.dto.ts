@@ -53,4 +53,8 @@ export class RegisterShelterAuthDto extends RegisterAuthDto {
     @ApiPropertyOptional({ type: 'string', format: 'binary' })
     @IsOptional()
     imgBanner: any;
+
+    @ApiPropertyOptional({ type: 'string', format: 'binary', isArray: true, })
+    @IsOptional()
+    imgShelter: any[];
 }

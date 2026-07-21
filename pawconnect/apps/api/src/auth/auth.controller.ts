@@ -26,12 +26,17 @@ export class AuthController {
     @ApiBody({ type: RegisterAuthDto })
     @UseInterceptors( 
          // createImageUploadOptions로 파일 저장 위치 지정
-        FileInterceptor('imgProfile', createImageUploadOptions(UPLOAD_DIR.userProfileDir)))
+        FileInterceptor(
+            'imgProfile', 
+            createImageUploadOptions(UPLOAD_DIR.userProfileDir)
+        ))
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/user')
     create(
         @Body() registerAuthDto: RegisterAuthDto,
         @UploadedFile() imgProfile?: Express.Multer.File) {
+
+        // cleanupOnError로 애러 발생시 업로드된 이미지 파일 삭제
         return cleanupOnError([imgProfile].filter(isDefined), () => 
             this.authService.registerUser(registerAuthDto, imgProfile));
     }
@@ -46,10 +51,12 @@ export class AuthController {
             // 파일을 필드명으로 구분
             { name: 'imgProfile', maxCount: 1 },
             { name: 'imgBanner', maxCount: 1 },
+            { name: 'imgShelter', maxCount: 4 },
         ], createFieldsImageUploadOptions({
             // 파일 저장 위치, 옵션 지정
             imgProfile: UPLOAD_DIR.userProfileDir,
             imgBanner: UPLOAD_DIR.shelterBannerDir,
+            imgShelter: UPLOAD_DIR.shelterImgDir,
         })))
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/shelter')
@@ -58,12 +65,15 @@ export class AuthController {
         @UploadedFiles() file: { 
             imgProfile?: Express.Multer.File[],
             imgBanner?: Express.Multer.File[],
+            imgShelter?: Express.Multer.File[],
         }) {
         const imgProfile = file.imgProfile?.[0];
         const imgBanner = file.imgBanner?.[0];
+        const imgShelter = file.imgShelter ? file.imgShelter : [];
 
-        return cleanupOnError([imgProfile, imgBanner].filter(isDefined), () => 
-            this.authService.registerShelter(registerShelterAuthDto, imgProfile, imgBanner));
+        // cleanupOnError로 애러 발생시 업로드된 이미지 파일 삭제
+        return cleanupOnError([imgProfile, imgBanner, ...imgShelter].filter(isDefined), () => 
+            this.authService.registerShelter(registerShelterAuthDto, imgProfile, imgBanner, imgShelter));
     }
 
     // 로그인

@@ -1,7 +1,7 @@
-import { UPLOAD_DIR } from '@/config/upload.config';
+import { getImageId, UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
-import { SHELTER_SELECT } from '@/shelters/shelter.select';
+import { SHELTER_IMAGE_SELECT, SHELTER_SELECT } from '@/shelters/shelter.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -24,6 +24,8 @@ export class SheltersService {
     }
 
     // CREATE
+
+    // 보호소 생성
     async create(tx: Prisma.TransactionClient, createShelterDto: CreateShelterDto, imgBanner?: Express.Multer.File) {
         await this.existsByName(createShelterDto.name);
 
@@ -44,5 +46,21 @@ export class SheltersService {
         });
 
         return shelter;
+    }
+
+    // 이미지 새로 저장
+    async createImage(tx: Prisma.TransactionClient, shelterId: string, files?: Express.Multer.File[]) {
+        if (!files || files.length === 0) return;
+
+        return Promise.all(files.map((file) => 
+            tx.shelterImage.create({
+                data: {
+                    id: getImageId(file),
+                    img: file.path,
+                    shelterId: shelterId,
+                },
+                select: SHELTER_IMAGE_SELECT,
+            })
+        ));
     }
 }
