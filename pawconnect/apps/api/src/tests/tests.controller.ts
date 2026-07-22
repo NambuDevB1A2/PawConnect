@@ -3,8 +3,8 @@ import { CreatePersonalityTestDto } from './dto/create-personality-test.dto';
 import { TestsService } from './tests.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PersonalityTestResultDto } from './dto/personality-test-result.dto';
-import { Public } from '@/common/decorators/public.decorator';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
+import { Public } from '@/auth/decorators/public.decorator';
 
 @ApiTags('Tests')
 @Controller('tests')
@@ -16,7 +16,7 @@ export class TestsController {
     @Post('personality')
     @ApiResponse({status: 201, description: 'PawTI 결과 생성', type: PersonalityTestResultDto})
     @ApiOperation({summary: 'PawTI 성향 테스트'})
-    @Public()   // 누구나 이용 가능한 성향 테스트
+    @Public()  // 누구나 이용 가능한 성향 테스트
     createPersonalityResult(@Body() dto: CreatePersonalityTestDto){
         return this.testsService.createPersonalityResult(dto);
     }
