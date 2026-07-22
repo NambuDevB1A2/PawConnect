@@ -1,4 +1,4 @@
-import { fetchData } from "@/services/fetch/fetch";
+import { fetchData, resolveBody } from "@/services/fetch/fetch";
 
 export const fetchClient = {
     get: <T>(url: string) =>
@@ -11,7 +11,7 @@ export const fetchClient = {
         fetchData<T>(url, undefined, {
             method: "POST",
             credentials: "include",
-            body: JSON.stringify(body),
+            body: resolveBody(body),
             cache: "no-store",
         }),
 
@@ -19,7 +19,7 @@ export const fetchClient = {
         fetchData<T>(url, undefined, {
             method: "PATCH",
             credentials: "include",
-            body: JSON.stringify(body),
+            body: resolveBody(body),
             cache: "no-store",
         }),
 

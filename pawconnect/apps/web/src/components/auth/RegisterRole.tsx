@@ -7,10 +7,12 @@ import Icon from "@/components/common/Icon";
 import Typography from "@/components/common/Typography";
 import styles from "@/styles/auth/register.module.css"
 import { Enums } from "@/types/enum";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function RegisterRole() {
     const [role, setRole] = useState<Enums.Role | undefined>(undefined);
+    const router = useRouter();
 
     if (!role) {
         return (
@@ -35,8 +37,12 @@ export default function RegisterRole() {
     }
     
     switch (role) {
-        case Enums.Role.USER: return <RegisterUserForm/>;
-        case Enums.Role.SHELTER: return <RegisterShelterForm/>;
-        default: return;
+        case Enums.Role.USER: 
+            return <RegisterUserForm/>;
+        case Enums.Role.SHELTER: 
+            return <RegisterShelterForm/>;
+        default: 
+            router.push('/');
+            break;
     }
 }

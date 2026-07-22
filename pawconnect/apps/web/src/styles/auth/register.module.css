@@ -1,7 +1,7 @@
 .wrapper_register {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-800);
+    gap: var(--spacing-700);
 
     padding: var(--spacing-700);
 

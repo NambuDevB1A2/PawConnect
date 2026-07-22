@@ -68,6 +68,8 @@
     box-shadow: var(--shadow-small);
 
     border-radius: var(--radius-900);
+
+    object-fit: cover;
 }
 
 .nickname {

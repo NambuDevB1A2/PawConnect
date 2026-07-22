@@ -5,7 +5,7 @@ import styles from "@/styles/auth/register.module.css"
 export default function Page() {
     return (
         <div className={styles.wrapper_register}>
-            <Typography variant="title">회원가입</Typography>
+            <Typography variant="heading">회원가입</Typography>
             <RegisterRole/>
         </div>
     );

@@ -43,7 +43,9 @@ export class AuthService {
 
     // 회원가입 - 일반 사용자
     async registerUser(registerAuthDto: RegisterUserAuthDto, imgProfile?: Express.Multer.File) {
-        return await this.register(this.prisma, Role.USER, registerAuthDto, imgProfile);
+        const user = await this.register(this.prisma, Role.USER, registerAuthDto, imgProfile);
+
+        return { user, success: true };
     }
 
     // 회원가입 - 보호소 관리자
@@ -57,7 +59,7 @@ export class AuthService {
             // 사용자 생성
             const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, imgProfile, shelter.id);
 
-            return { user, shelter, shelterImages };
+            return { user, shelter, shelterImages, success: true };
         });
     }
 

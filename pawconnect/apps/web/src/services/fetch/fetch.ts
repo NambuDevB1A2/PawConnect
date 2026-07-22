@@ -1,5 +1,10 @@
 import { ENV } from "@/constants/env";
 
+export function resolveBody(body?: any) {
+    if (body instanceof FormData) return body;
+    return body !== undefined ? JSON.stringify(body) : undefined;
+}
+
 function buildUrl(path: string) {
     const base = (ENV.API_URL ?? "").replace(/\/+$/, "");
     const cleanPath = path.replace(/^\/+/, "");
@@ -11,17 +16,13 @@ export async function fetchData<T>(url: string, token?: string, options?: Reques
 
     console.log(`fetch: [${options?.method ?? "GET"}] ${apiUrl}`);
 
-    if (!apiUrl) {
-        throw new Error(`Invalid URL: ${url}`);
-    }
+    const isFormData = options?.body instanceof FormData;
 
     const response = await fetch(apiUrl, {
         ...options,
         headers: {
-            "Content-Type": "application/json",
-            ...(token 
-                ? { Authorization: `Bearer ${token}` }
-                : {}),
+            ...(isFormData ? {} : { "Content-Type": "application/json" }),
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
             ...options?.headers,
         }
     });

@@ -58,6 +58,11 @@ export function useImageUploader(
 
         const file = e.dataTransfer.files?.[0] ?? null;
         validateAndSetFile(file);
+        if (!file) return;
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        if (inputRef.current) inputRef.current.files = dataTransfer.files;
     };
 
     const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
