@@ -10,49 +10,113 @@ import CheckBox from "@/components/common/CheckBox";
 import BannerImageUploader from "@/components/uploader/BannerUploader";
 import ImagesUploader from "@/components/uploader/ImagesUploader";
 import TextArea from "@/components/common/TextArea";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
+import { validateNickname, validatePassword, validateRePassword, validateShelterAdress, validateShelterName, validateShelterPhone } from "@/utils/auth/auth.validator";
+import { RegisterShelterState } from "@/types/auth/register.type";
+import { RegisterShelter } from "@/services/auth/register-shelter.client";
+
+const initialState: RegisterShelterState = { };
 
 export default function RegisterShelterForm() {
+    const [state, formAction, isPending] = useActionState(RegisterShelter, initialState);
+    const router = useRouter();
+
+    const [password, setPassword] = useState("");
+    const [clientErrors, setClientErrors] = useState<{
+        password?: string;
+        rePassword?: string;
+        nickname?: string;
+        shelterName?: string;
+        shelterAddress?: string;
+        shelterAddressDetail?: string;
+        shelterPhone?: string;
+    }>({});
+    
+    // 실시간 타이핑 유효성 검사
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setPassword(value);
+        setClientErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    };
+
+    const handleRePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, rePassword: validateRePassword(password, value) }));
+    };
+
+    const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, nickname: validateNickname(value) }));
+    };
+    
+    const handleShelterName = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, shelterName: validateShelterName(value) }));
+    };
+
+    const handleShelterAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, shelterAddress: validateShelterAdress(value) }));
+    };
+    
+    const handleShelterAddressDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, shelterAddressDetail: validateShelterAdress(value) }));
+    };
+    
+    const handleShelterPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, shelterPhone: validateShelterPhone(value) }));
+    };
+
+    // 성공 반환시 로그인 화면으로 이동
+    useEffect(() => {
+        if (state.response?.success) {
+            router.push("/login");
+            alert('회원가입에 성공했습니다');
+        }
+    }, [state]);
+
     return (
-        <form className={styles.wrapper_section}>
+        <form action={formAction} className={styles.wrapper_section}>
             
             <Section className={styles.wrapper_info} titleText="내 정보 입력">
 
                 <div className={styles.box_info}>
                     <div className={styles.box_uploader}>
-                        <ProfileImageUploader 
-                        name="imgProfile" labelText="프로필 이미지"/>
+                        <ProfileImageUploader
+                            name="imgProfile" labelText="프로필 이미지"/>
                     </div>
 
                     <div className={styles.box_input}>
                         <Input 
-                            name="email" 
-                            labelText="이메일" 
+                            name="email" defaultValue={state.email}
+                            labelText="이메일*"
                             helperText="이메일을 입력해주세요"
+                            errorText={state.emailError}
                             />
                         <InputPassword 
-                            name="password" 
-                            labelText="비밀번호" 
+                            name="password"
+                            labelText="비밀번호*"
                             helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 6~30자)"
+                            errorText={clientErrors.password ?? state.passwordError}
+                            onChange={handlePasswordChange}
                             />
                         <InputPassword 
-                            name="re_password" 
-                            labelText="비밀번호 확인" 
+                            name="rePassword"
+                            labelText="비밀번호 확인*"
                             helperText="비밀번호를 다시 입력해주세요"
+                            errorText={clientErrors.rePassword ?? state.rePasswordError}
+                            onChange={handleRePasswordChange}
                             />
                         <Input 
-                            name="nickname" 
-                            labelText="닉네임" 
-                            helperText="이메일을 입력해주세요(최대 16자, 공백 또는 특수문자 불가)"
+                            name="nickname" defaultValue={state.nickname}
+                            labelText="닉네임*"
+                            helperText="닉네임을 입력해주세요(공백 또는 특수문자 불가 2~16자)"
+                            errorText={clientErrors.nickname ?? state.nicknameError}
+                            onChange={handleNicknameChange}
                             />
-                        
-                        <div className={styles.box_agreement}>
-                            <CheckBox>
-                                <Button variant="text" type="button">이용약관</Button>
-                                &nbsp;및&nbsp;
-                                <Button variant="text" type="button">개인정보 처리방침</Button>
-                                에 동의합니다
-                            </CheckBox>
-                        </div>
                     </div>
                 </div>
 
@@ -61,20 +125,68 @@ export default function RegisterShelterForm() {
             <Section className={styles.wrapper_shelter_info} titleText="보호소 정보 입력">
                 <BannerImageUploader 
                     name="imgBanner"
-                    labelText="배너 이미지"/>
+                    labelText="배너 이미지"
+                    errorText={state.imgBannerError}/>
                 
-                <ImagesUploader labelText="보호소 이미지"/>
+                <ImagesUploader 
+                    name="imgShelter"
+                    labelText="보호소 이미지"
+                    errorText={state.imgShelterError}
+                    />
 
                 <div className={styles.box_shelter_input}>
-                        <Input name="name" labelText="보호소 이름" helperText="보호소 이름을 입력해주세요(최대 100자)"/>
-                        <Input name="address" labelText="주소" helperText="주소를 입력해주세요"/>
-                        <Input name="addressDetail" labelText="상세 주소" helperText="상세 주소를 입력해주세요"/>
-                        <Input name="phone" labelText="전화번호" helperText="전화번호를 입력해주세요(-없이 숫자만)"/>
-                        <TextArea labelText="운영 시간" helperText="보호소를 운영하는 시간과 요일을 입력해주세요(최대 100자)" maxLength={100}/>
-                        <TextArea labelText="보호소 소개말" helperText="보호소를 소개하는 말을 입력해주세요(최대 500자)" maxLength={500}/>
+                        <Input 
+                            name="name" 
+                            labelText="보호소 이름*" 
+                            helperText="보호소 이름을 입력해주세요(최대 100자)"
+                            errorText={clientErrors.shelterName ?? state.nameError}
+                            onChange={handleShelterName}
+                            />
+                        <Input 
+                            name="address" 
+                            labelText="주소*" 
+                            helperText="주소를 입력해주세요"
+                            errorText={clientErrors.shelterAddress ?? state.addressError}
+                            onChange={handleShelterAddress}
+                            />
+                        <Input 
+                            name="addressDetail" 
+                            labelText="상세 주소" 
+                            helperText="상세 주소를 입력해주세요"
+                            errorText={clientErrors.shelterAddress ?? state.addressDetailError}
+                            onChange={handleShelterAddressDetail}
+                            />
+                        <Input 
+                            name="phone" 
+                            labelText="전화번호*" 
+                            helperText="전화번호를 입력해주세요(-없이 숫자만)"
+                            errorText={clientErrors.shelterPhone ?? state.phoneError}
+                            onChange={handleShelterPhone}
+                            />
+                        <TextArea 
+                            labelText="운영 시간" 
+                            helperText="보호소를 운영하는 시간과 요일을 입력해주세요(최대 100자)" 
+                            maxLength={100}
+                            />
+                        <TextArea 
+                            labelText="보호소 소개말" 
+                            helperText="보호소를 소개하는 말을 입력해주세요(최대 500자)" 
+                            maxLength={500}
+                            />
                 </div>
 
-                <Button className={styles.btn_submit} type="submit">회원가입</Button>
+                <div className={styles.box_agreement}>
+                    <CheckBox>
+                        <Button variant="text" type="button">이용약관</Button>
+                        &nbsp;및&nbsp;
+                        <Button variant="text" type="button">개인정보 처리방침</Button>
+                        에 동의합니다
+                    </CheckBox>
+                </div>
+
+                <Button className={styles.btn_submit} type="submit">
+                    {isPending ? "회원가입 중..." : "회원가입"}
+                </Button>
             </Section>
         </form>
     );

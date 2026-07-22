@@ -62,3 +62,28 @@ export function validateAgreedToTerms(agreedToTerms: boolean) {
 
     return undefined;
 }
+
+export function validateShelterName(name: string) {
+    if (name.length > 100) {
+        return '너무 긴 이름은 사용할 수 없습니다';
+    }
+
+    return undefined;
+}
+
+export function validateShelterAdress(address: string) {
+    if (address.length > 255) {
+        return '올바르지 않은 주소입니다';
+    }
+
+    return undefined;
+}
+
+export function validateShelterPhone(phone: string) {
+    const validPattern = /^[0-9]+$/;
+    if (!validPattern.test(phone)) {
+        return "올바르지 않은 전화번호입니다";
+    }
+
+    return undefined;
+}

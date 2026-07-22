@@ -38,7 +38,7 @@ export class RegisterUserAuthDto {
 export class RegisterShelterAuthDto extends RegisterUserAuthDto {
     @ApiProperty({ example: "서울행복동물보호소" })
     @IsString()
-    @MaxLength(100, { message: "보호소 이름은 100자 이하여야 합니다" })
+    @MaxLength(100, { message: "너무 긴 이름은 사용할 수 없습니다" })
     name: string;
 
     @ApiProperty({ example: "서울시 금천구 독산로 50길 23" })

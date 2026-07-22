@@ -60,47 +60,50 @@ export default function RegisterUserForm() {
                     <div className={styles.box_uploader}>
                         <ProfileImageUploader
                             // name으로 파일 이름 지정
-                            name="imgProfile" labelText="프로필 이미지"/>
+                            name="imgProfile" 
+                            labelText="프로필 이미지"
+                            errorText={state.imgProfileError}
+                            />
                     </div>
 
                     <div className={styles.box_input}>
                         <Input 
                             name="email" defaultValue={state.email}
-                            labelText="이메일"
+                            labelText="이메일*"
                             helperText="이메일을 입력해주세요"
                             errorText={state.emailError}
                             />
                         <InputPassword 
                             name="password"
-                            labelText="비밀번호"
+                            labelText="비밀번호*"
                             helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 6~30자)"
                             errorText={clientErrors.password ?? state.passwordError}
                             onChange={handlePasswordChange}
                             />
                         <InputPassword 
                             name="rePassword"
-                            labelText="비밀번호 확인"
+                            labelText="비밀번호 확인*"
                             helperText="비밀번호를 다시 입력해주세요"
                             errorText={clientErrors.rePassword ?? state.rePasswordError}
                             onChange={handleRePasswordChange}
                             />
                         <Input 
                             name="nickname" defaultValue={state.nickname}
-                            labelText="닉네임"
+                            labelText="닉네임*"
                             helperText="닉네임을 입력해주세요(공백 또는 특수문자 불가 2~16자)"
                             errorText={clientErrors.nickname ?? state.nicknameError}
                             onChange={handleNicknameChange}
                             />
-                        
-                        <div className={styles.box_agreement}>
-                            <CheckBox name="agreedToTerms">
-                                <Button variant="text" type="button">이용약관</Button>
-                                &nbsp;및&nbsp;
-                                <Button variant="text" type="button">개인정보 처리방침</Button>
-                                에 동의합니다
-                            </CheckBox>
-                        </div>
                     </div>
+                </div>
+                
+                <div className={styles.box_agreement}>
+                    <CheckBox name="agreedToTerms">
+                        <Button variant="text" type="button">이용약관</Button>
+                        &nbsp;및&nbsp;
+                        <Button variant="text" type="button">개인정보 처리방침</Button>
+                        에 동의합니다
+                    </CheckBox>
                 </div>
 
                 <Button className={styles.btn_submit} type="submit">

@@ -1,6 +1,6 @@
 import { getAccessToken } from "@/services/auth/auth";
 import { fetchServer } from "@/services/fetch/fetch.server";
-import { User } from "@/types/auth/user.type";
+import { User } from "@/types/user.type";
 
 export async function Me() {
     const token = await getAccessToken();
