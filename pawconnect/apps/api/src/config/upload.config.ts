@@ -1,9 +1,9 @@
 import { diskStorage } from 'multer';
-import { extname, parse } from 'path';
+import { extname } from 'path';
 import { randomUUID } from 'crypto';
 import { BadRequestException } from '@nestjs/common';
 
-export const ALLOWED_MINE = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+export const ALLOWED_MIME = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
@@ -16,7 +16,7 @@ const imageFilename = (_req, file, callback) => {
 
 // 파일 타입 확인
 const imageFileFilter = (_req, file, callback) => {
-    if (!ALLOWED_MINE.includes(file.mimetype)) {
+    if (!ALLOWED_MIME.includes(file.mimetype)) {
         callback(new BadRequestException(), false);
         return;
     }
