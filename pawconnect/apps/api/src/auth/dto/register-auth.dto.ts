@@ -1,7 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString, Length, MaxLength } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsOptional, IsString, Length, MaxLength } from "class-validator";
 
-export class RegisterAuthDto {
+export class RegisterUserAuthDto {
     @ApiProperty({ example: "example@email.com" })
     @IsString()
     email: string;
@@ -16,13 +16,12 @@ export class RegisterAuthDto {
     @Length(2, 16)
     nickname: string;
 
-    // TODO : 이미지 추가
-    @ApiProperty({ example: "/default_profile.png" })
-    @IsString()
-    imgProfile: string;
+    @ApiPropertyOptional({ type: 'string', format: 'binary' })
+    @IsOptional()
+    imgProfile: any;
 }
 
-export class RegisterShelterAuthDto extends RegisterAuthDto {
+export class RegisterShelterAuthDto extends RegisterUserAuthDto {
     @ApiProperty({ example: "서울행복동물보호소" })
     @IsString()
     @MaxLength(100)
@@ -51,8 +50,11 @@ export class RegisterShelterAuthDto extends RegisterAuthDto {
     @MaxLength(500)
     description: string;
 
-    // TODO : 이미지 추가
-    @ApiProperty({ example: "/default_banner.png" })
-    @IsString()
-    imgBanner: string;
+    @ApiPropertyOptional({ type: 'string', format: 'binary' })
+    @IsOptional()
+    imgBanner: any;
+
+    @ApiPropertyOptional({ type: 'string', format: 'binary', isArray: true, })
+    @IsOptional()
+    imgShelter: any[];
 }

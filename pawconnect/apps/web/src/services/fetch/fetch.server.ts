@@ -1,4 +1,4 @@
-import { fetchData } from "@/services/fetch/fetch";
+import { fetchData, resolveBody } from "@/services/fetch/fetch";
 
 export const fetchServer = {
     get: <T>(url: string, token?: string, revalidate?: number | false) =>
@@ -12,14 +12,14 @@ export const fetchServer = {
     post: <T>(url: string, token?: string, body?: any) =>
         fetchData<T>(url, token, {
             method: "POST",
-            body: JSON.stringify(body),
+            body: resolveBody(body),
             cache: "no-store",
         }),
 
     patch: <T>(url: string, token?: string, body?: any) =>
         fetchData<T>(url, token, {
             method: "PATCH",
-            body: JSON.stringify(body),
+            body: resolveBody(body),
             cache: "no-store",
         }),
 

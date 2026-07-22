@@ -6,20 +6,23 @@ import Header from "@/components/layout/Header";
 import AuthProvider from "@/providers/AuthProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ModalRoot from "@/components/modal/ModalRoot";
+import { Me } from "@/services/auth/me.server";
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const user = await Me();
+
     return (
         <html lang="ko">
             <body>
-                <AuthProvider>
+                <AuthProvider initialUser={user}>
                 <ModalProvider>
                     
                     <header>
-                        <Header/>
+                        <Header user={user}/>
                     </header>
 
                     <main>{children}</main>

@@ -144,6 +144,27 @@
     color: var(--color-text-disabled);
 }
 
+.ghostBlack {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    border: none;
+}
+
+.ghostBlack:hover:not(:disabled) {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-hover);
+}
+
+.ghostBlack:active:not(:disabled) {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary-pressed);
+}
+
+.ghostBlack:disabled {
+    background-color: transparent;
+    color: var(--color-text-disabled);
+}
+
 .text {
     display: inline-flex;
     align-items: center;

@@ -2,13 +2,15 @@ import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
 import Typography from "@/components/common/Typography";
 import HeaderUser from "@/components/layout/HeaderUser";
-import { Me } from "@/services/auth/me.server";
 import styles from "@/styles/layout/Header.module.css"
+import { User } from "@/types/auth/user.type";
 import Link from "next/link";
 
-export default async function Header() {
-    const auth = await Me();
+interface HeaderProps {
+    user: User | undefined;
+}
 
+export default async function Header({ user }: HeaderProps) {
     return (
         <div className={styles.wrapper_header}>
 
@@ -18,13 +20,13 @@ export default async function Header() {
             </Link>
                 
             <div className={styles.box_link}>
-                <Link href={`/paw`}><Button variant="ghost">보호동물</Button></Link>
-                <Link href={`/shelter`}><Button variant="ghost">보호소</Button></Link>
-                <Link href={`/mypet`}><Button variant="ghost">반려동물 자랑</Button></Link>
-                <Link href={`/test/mbti`}><Button variant="ghost" >성향테스트</Button></Link>
+                <Link href={`/paw`}><Button variant="ghostBlack">보호동물</Button></Link>
+                <Link href={`/shelter`}><Button variant="ghostBlack">보호소</Button></Link>
+                <Link href={`/mypet`}><Button variant="ghostBlack">PawLog</Button></Link>
+                <Link href={`/test/mbti`}><Button variant="ghostBlack" >PawLab</Button></Link>
             </div>
 
-            <HeaderUser user={auth}/>
+            <HeaderUser user={user}/>
 
         </div>
     );

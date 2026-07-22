@@ -31,6 +31,7 @@ export default function PreviewImage({
                     wrapperClassName={styles.btn_remove}
                     name="close" 
                     size="input"
+                    type="button"
                     onClick={(e) => {
                         e.stopPropagation();
                         onRemove?.();

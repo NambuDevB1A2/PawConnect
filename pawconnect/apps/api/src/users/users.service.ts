@@ -1,8 +1,10 @@
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
+import { removeFile } from '@/common/utils/upload.util';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
+import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { USER_SELECT } from '@/users/user.select';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -58,15 +60,25 @@ export class UsersService {
 
     // READ
     async me(auth: AuthRequest) {
-        return { auth };
-        // return this.find(auth.id, USER_SELECT);
-    }
-
-    async meUser(auth: AuthRequest) {
         return this.find(auth.id, USER_SELECT);
     }
+    
+    // UPDATE
+    async update(auth: AuthRequest, updateUserDto: UpdateUserDto, imgProfile?: Express.Multer.File) {
+        const prevUser = await this.find(auth.id);
+        const imgProfilePath = imgProfile ? imgProfile.path : prevUser.imgProfile;
 
-    async meShelter(auth: AuthRequest) {
-        return this.find(auth.id, USER_SELECT);
+        const user = await this.prisma.user.update({
+            where: { id: auth.id },
+            data: {
+                ...updateUserDto,
+                imgProfile: imgProfilePath,
+            },
+            select: USER_SELECT,
+        });
+
+        if (imgProfile) await removeFile(prevUser.imgProfile);
+
+        return { user };
     }
 }
