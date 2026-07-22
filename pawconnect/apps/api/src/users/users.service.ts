@@ -1,5 +1,6 @@
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { removeFile } from '@/common/utils/upload.util';
+import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateUserDto } from '@/users/dto/create-user.dto';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
@@ -17,7 +18,9 @@ export class UsersService {
             where: { id },
             select: select
         });
-        if (!user) throw new UnauthorizedException();
+        if (!user) throw new UnauthorizedException({
+            message: "존재하지 않는 유저입니다",
+        });
         
         return user;
     }
@@ -28,7 +31,10 @@ export class UsersService {
             where: { email }, 
             select: select
         });
-        if (!user) throw new UnauthorizedException();
+        if (!user) throw new UnauthorizedException({
+            message: "존재하지 않는 이메일입니다",
+            fields: { email: "존재하지 않는 이메일입니다" },
+        });
         
         return user;
     }
@@ -36,20 +42,26 @@ export class UsersService {
     // 회원 중복 검사 (이메일)
     async existsByEmail(email: string) {
         const user = await this.prisma.user.findUnique({ where: { email }});
-        if (user) throw new UnauthorizedException();
+        if (user) throw new UnauthorizedException({
+            message: "이미 사용중인 이메일입니다",
+            fields: { email: "이미 사용중인 이메일입니다" },
+        });
     }
 
     // CREATE
-    async create(tx: Prisma.TransactionClient, createUserDto: CreateUserDto) {
+    async create(tx: Prisma.TransactionClient, createUserDto: CreateUserDto, imgProfile?: Express.Multer.File) {
         await this.existsByEmail(createUserDto.email);
 
+        // 파일 path 저장 (기본값 설정 로직)
+        const imgProfilePath = imgProfile ? imgProfile.path : `${UPLOAD_DIR.userProfileDir}/default_profile.png`;
+        
         const user = await tx.user.create({
             data: {
                 email: createUserDto.email,
                 password: createUserDto.passwordHash,
                 nickname: createUserDto.nickname,
                 role: createUserDto.role,
-                imgProfile: createUserDto.imgProfile,
+                imgProfile: imgProfilePath,
                 shelterId: createUserDto.shelterId,
             },
             select: USER_SELECT,

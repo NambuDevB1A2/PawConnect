@@ -10,7 +10,6 @@ import { LoginAuthDto } from '@/auth/dto/login-auth.dto';
 import { JwtPayload } from '@/auth/interfaces/jwt-payload.interface';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { ConfigService } from '@nestjs/config';
-import { UPLOAD_DIR } from '@/config/upload.config';
 
 @Injectable()
 export class AuthService {
@@ -27,16 +26,13 @@ export class AuthService {
         const bcryptRound = this.configService.getOrThrow('bcrypt.bcrypt_round');
         const passwordHash = await bcrypt.hash(registerAuthDto.password, bcryptRound);
 
-        // 파일 path 저장 (기본값 설정 로직)
-        const imgProfilePath = imgProfile ? imgProfile.path : `${UPLOAD_DIR.userProfileDir}/default_profile.png`;
-        
         const user = await this.usersService.create(tx, {
             role,
             ...registerAuthDto,
-            imgProfile: imgProfilePath,
             passwordHash,
             shelterId,
-        });
+        }, 
+        imgProfile);
 
         return user;
     }
@@ -45,7 +41,7 @@ export class AuthService {
     async registerUser(registerAuthDto: RegisterUserAuthDto, imgProfile?: Express.Multer.File) {
         const user = await this.register(this.prisma, Role.USER, registerAuthDto, imgProfile);
 
-        return { user, success: true };
+        return { success: true, user };
     }
 
     // 회원가입 - 보호소 관리자
@@ -59,7 +55,7 @@ export class AuthService {
             // 사용자 생성
             const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, imgProfile, shelter.id);
 
-            return { user, shelter, shelterImages, success: true };
+            return { success: true, user, shelter, shelterImages };
         });
     }
 
@@ -68,7 +64,10 @@ export class AuthService {
         const user = await this.usersService.findByEmail(loginAuthDto.email);
 
         const isPasswordValid = await bcrypt.compare(loginAuthDto.password, user.password);
-        if (!isPasswordValid) throw new UnauthorizedException();
+        if (!isPasswordValid) throw new UnauthorizedException({
+            message: "이메일 또는 비밀번호가 틀렸습니다",
+            fields: { email: "이메일 또는 비밀번호가 틀렸습니다" },
+        });
 
         const authPayload: JwtPayload = {
             sub: user.id,
@@ -77,11 +76,11 @@ export class AuthService {
         };
 
         const accessToken = this.jwtService.sign(authPayload);
-        return { login: true, accessToken };
+        return { success: true, accessToken };
     }
 
     // 로그아웃
     async logout(auth: AuthRequest) {
-        return { login: false, auth };
+        return { success: false, auth };
     }
 }
