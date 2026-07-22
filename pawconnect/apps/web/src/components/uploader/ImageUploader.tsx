@@ -8,6 +8,7 @@ import { UPLOADER_MESSAGES } from "@/constants/messages/Uploader";
 import PreviewImage from "@/components/uploader/PreviewImage";
 
 export interface ImageUploaderProps {
+    name: string;
     labelText?: string;
     helperText?: string;
     errorText?: string;
@@ -21,6 +22,7 @@ export interface ImageUploaderProps {
 }
 
 export default function ImageUploader({
+    name,
     labelText,
     helperText = UPLOADER_MESSAGES.default.helper,
     errorText,
@@ -60,6 +62,7 @@ export default function ImageUploader({
                     <input
                         ref={inputRef}
                         type="file"
+                        name={name}
                         accept={accept}
                         disabled={disabled}
                         onChange={handleFileChange}

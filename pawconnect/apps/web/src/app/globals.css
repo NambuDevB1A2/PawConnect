@@ -301,8 +301,8 @@ main {
     /* Uploader */
     --uploader-dropzone-height: 200px;
 
-    --uploader-preview-width: 280px;
-    --uploader-preview-height: 210px;
+    --uploader-preview-width: 240px;
+    --uploader-preview-height: 180px;
     
     --uploader-banner-height: 320px;
 
