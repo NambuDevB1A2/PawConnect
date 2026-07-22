@@ -19,14 +19,31 @@ export default function RegisterShelterForm() {
 
                 <div className={styles.box_info}>
                     <div className={styles.box_uploader}>
-                        <ProfileImageUploader labelText="프로필 이미지"/>
+                        <ProfileImageUploader 
+                        name="imgProfile" labelText="프로필 이미지"/>
                     </div>
 
                     <div className={styles.box_input}>
-                        <Input name="email" labelText="이메일" helperText="이메일을 입력해주세요"/>
-                        <InputPassword name="password" labelText="비밀번호" helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 포함 6~30자)"/>
-                        <InputPassword name="re_password" labelText="비밀번호 확인" helperText="비밀번호를 다시 입력해주세요"/>
-                        <Input name="nickname" labelText="닉네임" helperText="이메일을 입력해주세요(한글 최대 8자, 영문 최대 16자, 띄어쓰기, 특수문자 불가)"/>
+                        <Input 
+                            name="email" 
+                            labelText="이메일" 
+                            helperText="이메일을 입력해주세요"
+                            />
+                        <InputPassword 
+                            name="password" 
+                            labelText="비밀번호" 
+                            helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 6~30자)"
+                            />
+                        <InputPassword 
+                            name="re_password" 
+                            labelText="비밀번호 확인" 
+                            helperText="비밀번호를 다시 입력해주세요"
+                            />
+                        <Input 
+                            name="nickname" 
+                            labelText="닉네임" 
+                            helperText="이메일을 입력해주세요(최대 16자, 공백 또는 특수문자 불가)"
+                            />
                         
                         <div className={styles.box_agreement}>
                             <CheckBox>
@@ -42,7 +59,9 @@ export default function RegisterShelterForm() {
             </Section>
 
             <Section className={styles.wrapper_shelter_info} titleText="보호소 정보 입력">
-                <BannerImageUploader labelText="배너 이미지"/>
+                <BannerImageUploader 
+                    name="imgBanner"
+                    labelText="배너 이미지"/>
                 
                 <ImagesUploader labelText="보호소 이미지"/>
 

@@ -6,6 +6,5 @@ export class ApiError extends Error {
         super(message);
         this.statusCode = statusCode;
         this.fields = fields;
-        console.log("fields:", fields);
     }
 }

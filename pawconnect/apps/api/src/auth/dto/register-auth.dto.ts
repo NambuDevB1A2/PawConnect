@@ -1,26 +1,38 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsEmail, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
+import { Transform } from "class-transformer";
+import { Equals, IsBoolean, IsEmail, IsOptional, IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class RegisterUserAuthDto {
     @ApiProperty({ example: "example@email.com" })
     @IsEmail({}, { message: "올바른 이메일 형식이 아닙니다" })
     email: string;
 
-    @ApiProperty({ example: "a123456789!" })
+    @ApiProperty({ example: "Aa123456789!" })
     @IsString()
     @MinLength(6, { message: "비밀번호는 6자 이상이어야 합니다" })
     @MaxLength(30, { message: "비밀번호는 30자 이하여야 합니다" })
+    @Matches(/^(?=.*[a-z]).+$/, { message: "영문 소문자를 포함해주세요" })
+    @Matches(/^(?=.*[A-Z]).+$/, { message: "영문 대문자를 포함해주세요" })
+    @Matches(/^(?=.*\d).+$/, { message: "최소 1자 이상의 숫자를 포함해주세요" })
+    @Matches(/^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/, { message: "최소 1자 이상의 특수문자를 포함해주세요" })
     password: string;
 
     @ApiProperty({ example: "유저1234" })
     @IsString()
     @MinLength(2, { message: "닉네임은 2자 이상이어야 합니다" })
     @MaxLength(16, { message: "닉네임은 16자 이하여야 합니다" })
+    @Matches(/^[가-힣a-zA-Z0-9]+$/, { message: "닉네임에 공백 또는 특수문자를 사용할 수 없습니다" })
     nickname: string;
 
     @ApiPropertyOptional({ type: 'string', format: 'binary' })
     @IsOptional()
     imgProfile: any;
+
+    @ApiProperty({ example: true })
+    @Transform(({ value }) => value === "true" || value === true)
+    @IsBoolean()
+    @Equals(true, { message: "이용약관 및 개인정보 처리방침에 동의해주세요" })
+    agreedToTerms: boolean;
 }
 
 export class RegisterShelterAuthDto extends RegisterUserAuthDto {

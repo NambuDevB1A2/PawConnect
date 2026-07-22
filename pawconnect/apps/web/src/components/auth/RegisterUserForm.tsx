@@ -42,25 +42,29 @@ export default function RegisterUserForm() {
                             name="email" defaultValue={state.email}
                             labelText="이메일"
                             helperText="이메일을 입력해주세요"
-                            errorText={state.emailError}/>
+                            errorText={state.emailError}
+                            />
                         <InputPassword 
                             name="password"
                             labelText="비밀번호"
-                            helperText="비밀번호를 입력해주세요"
-                            errorText={state.passwordError}/>
+                            helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 6~30자)"
+                            errorText={state.passwordError}
+                            />
                         <InputPassword 
                             name="rePassword"
                             labelText="비밀번호 확인"
                             helperText="비밀번호를 다시 입력해주세요"
-                            errorText={state.rePasswordError}/>
+                            errorText={state.rePasswordError}
+                            />
                         <Input 
                             name="nickname" defaultValue={state.nickname}
                             labelText="닉네임"
-                            helperText="닉네임을 입력해주세요"
-                            errorText={state.nicknameError}/>
+                            helperText="닉네임을 입력해주세요(공백 또는 특수문자 불가 2~16자)"
+                            errorText={state.nicknameError}
+                            />
                         
                         <div className={styles.box_agreement}>
-                            <CheckBox>
+                            <CheckBox name="agreedToTerms">
                                 <Button variant="text" type="button">이용약관</Button>
                                 &nbsp;및&nbsp;
                                 <Button variant="text" type="button">개인정보 처리방침</Button>

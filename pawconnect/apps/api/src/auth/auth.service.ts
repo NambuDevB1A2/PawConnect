@@ -23,9 +23,11 @@ export class AuthService {
 
     // 회원가입 - 공통
     async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterUserAuthDto, imgProfile?: Express.Multer.File, shelterId?: string) {
+        // 비밀번호 해시
         const bcryptRound = this.configService.getOrThrow('bcrypt.bcrypt_round');
         const passwordHash = await bcrypt.hash(registerAuthDto.password, bcryptRound);
 
+        // UsersService에서 유저 생성
         const user = await this.usersService.create(tx, {
             role,
             ...registerAuthDto,
@@ -39,6 +41,7 @@ export class AuthService {
 
     // 회원가입 - 일반 사용자
     async registerUser(registerAuthDto: RegisterUserAuthDto, imgProfile?: Express.Multer.File) {
+        // 사용자 생성
         const user = await this.register(this.prisma, Role.USER, registerAuthDto, imgProfile);
 
         return { success: true, user };
@@ -63,24 +66,28 @@ export class AuthService {
     async login(loginAuthDto: LoginAuthDto) {
         const user = await this.usersService.findByEmail(loginAuthDto.email);
 
+        // 비밀번호 검증
         const isPasswordValid = await bcrypt.compare(loginAuthDto.password, user.password);
         if (!isPasswordValid) throw new UnauthorizedException({
             message: "이메일 또는 비밀번호가 틀렸습니다",
             fields: { email: "이메일 또는 비밀번호가 틀렸습니다" },
         });
 
+        // PayLoad 생성
         const authPayload: JwtPayload = {
             sub: user.id,
             email: user.email,
             role: user.role,
         };
 
+        // 토큰 생성
         const accessToken = this.jwtService.sign(authPayload);
         return { success: true, accessToken };
     }
 
     // 로그아웃
     async logout(auth: AuthRequest) {
+        // TODO: 블랙리스트 토큰 로직 구현
         return { success: false, auth };
     }
 }
