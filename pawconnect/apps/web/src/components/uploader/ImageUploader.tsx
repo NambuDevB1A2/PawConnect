@@ -8,7 +8,7 @@ import { UPLOADER_MESSAGES } from "@/constants/messages/Uploader";
 import PreviewImage from "@/components/uploader/PreviewImage";
 
 export interface ImageUploaderProps {
-    name: string;
+    name?: string;
     labelText?: string;
     helperText?: string;
     errorText?: string;

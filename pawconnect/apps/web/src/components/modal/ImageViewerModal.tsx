@@ -1,5 +1,6 @@
 'use client';
 
+import AppImage from "@/components/common/AppImage";
 import Modal from "@/components/modal/Modal";
 import styles from "@/styles/modal/ImageViewerModal.module.css"
 
@@ -21,7 +22,7 @@ export default function ImageViewerModal({
     return (
         <Modal isOpen={isOpen} onClose={onClose} className={styles.modal}>
             <Modal.Body>
-                <img className={styles.image} src={images[currentIndex]}/>
+                <AppImage className={styles.image} src={images[currentIndex]}/>
             </Modal.Body>
         </Modal>
     );

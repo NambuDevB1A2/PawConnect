@@ -25,6 +25,7 @@ import ProfileImageUploader from '../uploader/ProfileImageUploader';
 import BannerImageUploader from "@/components/uploader/BannerUploader";
 import ImagesUploader from "@/components/uploader/ImagesUploader";
 import ImageSlider from "@/components/common/ImageSlider";
+import AppImage from "@/components/common/AppImage";
 
 export default function TempComponents() {
     const wrapperStyle: CSSProperties = { margin: "20px", paddingBottom: "500px", display: "flex", flexDirection: "column", gap: "30px" };
@@ -286,6 +287,7 @@ export default function TempComponents() {
             <Typography variant="subtitle">Image Slider & Image Modal</Typography>
             <div>
                 <ImageSlider
+                    disabledDomain
                     images={[
                         "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1783660168193.jpg",
                         "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1783830728293.JPG",
@@ -293,6 +295,13 @@ export default function TempComponents() {
                         "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1784180215194.jpg",
                         "https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1783584010738.jpg",
                     ]}
+                    />
+
+                <AppImage
+                // 이미지 선언시 AppImage 사용(자동 도메인 적용)
+                // 도메인 없이 이미지 호출시 disabledDomain 매개변수 적용
+                    src={`https://d12l2mexpetzlh.cloudfront.net/images/shelter/more/more_1783830728293.JPG`}
+                    disabledDomain
                     />
             </div>
 

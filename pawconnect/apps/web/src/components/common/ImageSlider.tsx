@@ -1,16 +1,18 @@
 'use client';
 
 import IconButton from "@/components/common/IconButton";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import styles from "@/styles/common/ImageSlider.module.css"
 import { ModalContext } from "@/providers/ModalProvider";
 import { useSlider } from "@/hooks/common/useSlider";
+import AppImage from "@/components/common/AppImage";
 
 type ImageSliderSize = "small" | "medium" | "large" | "xlarge";
 
 interface ImageSliderProps {
     images: string[];
     size?: ImageSliderSize;
+    disabledDomain?: boolean;
     wrapperClassName?: string;
     className?: string;
 }
@@ -18,6 +20,7 @@ interface ImageSliderProps {
 export default function ImageSlider({
     images,
     size = "medium",
+    disabledDomain = false,
     wrapperClassName = "",
     className = "",
 }: ImageSliderProps) {
@@ -55,7 +58,7 @@ export default function ImageSlider({
                         
                     {images.map((src, index) =>
                         <div className={styles.slide} key={`${src}-${index}`}>
-                            <img src={src} className={styles.img_slide} onClick={handleClick}/>
+                            <AppImage src={src} className={styles.img_slide} onClick={handleClick} disabledDomain={disabledDomain}/>
                         </div>
                     )}
 
