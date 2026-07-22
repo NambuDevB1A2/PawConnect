@@ -43,9 +43,14 @@ export class PersonalityTestResultDto {
         ], })
     keywords: string[];
 
-    @ApiProperty({
-        type: [RecommendAnimalDto], description:'추천동물 들'})
-    recommendAnimals: RecommendAnimalDto[];
+    // @ApiProperty({
+    //     type: [RecommendAnimalDto], description:'추천동물 들'})
+    // recommendAnimals: RecommendAnimalDto[];
+    @ApiProperty({type: RecommendAnimalDto, nullable: true, description: '같은 품종 추천'})
+    representativeAnimal : RecommendAnimalDto | null;
+
+    @ApiProperty({type: RecommendAnimalDto, nullable: true, description: '잘 맞는 품종 추천'})
+    matchedAnimal: RecommendAnimalDto | null;
 
     @ApiProperty({example: true, description:'추천동물 존재 여부'})
     hasRecommendAnimals: boolean;
