@@ -18,6 +18,7 @@ export default function RegisterUserForm() {
     const router = useRouter();
     const [state, formAction, isPending] = useActionState(RegisterUser, initialState);
 
+    // 성공 반환시 로그인 화면으로 이동
     useEffect(() => {
         if (state.response?.success) {
             router.push("/login");
@@ -32,6 +33,7 @@ export default function RegisterUserForm() {
                 <div className={styles.box_info}>
                     <div className={styles.box_uploader}>
                         <ProfileImageUploader
+                            // name으로 파일 이름 지정
                             name="imgProfile" labelText="프로필 이미지"/>
                     </div>
 

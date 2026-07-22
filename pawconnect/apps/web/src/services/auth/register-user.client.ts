@@ -28,6 +28,7 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
     }
 
     try {
+        // FormData로 fetchClient 전송
         const submitData = new FormData();
         submitData.append('email', email);
         submitData.append('password', password);
@@ -37,6 +38,8 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
         }
 
         const result = await fetchClient.post<ResponseRegisterUser>('/auth/register/user', submitData);
+        
+        // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {
         return {
