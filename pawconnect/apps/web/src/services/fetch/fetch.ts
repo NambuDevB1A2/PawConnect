@@ -1,4 +1,5 @@
 import { ENV } from "@/constants/env";
+import { ApiError } from "@/services/fetch/api-error";
 
 export function resolveBody(body?: any) {
     if (body instanceof FormData) return body;
@@ -32,10 +33,9 @@ export async function fetchData<T>(url: string, token?: string, options?: Reques
 
         if (response.status === 401) {
             // TODO: 401 에러 발생시 예외처리 
-            throw new Error(`Unauthorized Error: [${response.status}] ${data ? data.message : ""}`);
         }
 
-        throw new Error(`HTTP Error: [${response.status}] ${data ? data.message : ""}`);
+        throw new ApiError(response.status, data?.message ?? "요청 중 오류가 발생했습니다", data?.fields);
     }
 
     if (response.status === 204){

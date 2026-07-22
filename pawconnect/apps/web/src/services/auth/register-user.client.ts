@@ -1,3 +1,4 @@
+import { ApiError } from "@/services/fetch/api-error";
 import { fetchClient } from "@/services/fetch/fetch.client";
 import { RegisterUserState, ResponseRegisterUser } from "@/types/auth/register.type";
 
@@ -33,15 +34,27 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
         submitData.append('email', email);
         submitData.append('password', password);
         submitData.append('nickname', nickname);
-        if (imgProfile && imgProfile.size > 0) {
-            submitData.append('imgProfile', imgProfile);
-        }
+        if (imgProfile && imgProfile.size > 0) submitData.append('imgProfile', imgProfile);
 
         const result = await fetchClient.post<ResponseRegisterUser>('/auth/register/user', submitData);
         
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {
+        console.log(error);
+
+        if (error instanceof ApiError && error.fields) {
+            // 서버에서 온 필드별 에러 매핑
+            return {
+                email,
+                nickname,
+                emailError: error.fields.email,
+                passwordError: error.fields.password,
+                nicknameError: error.fields.nickname,
+            };
+        }
+
+        // 필드 정보 없는 일반 에러 매핑 (네트워크 오류 등)
         return {
             email,
             nickname,

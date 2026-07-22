@@ -10,15 +10,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const res = exception.getResponse() as any;
 
         // class-validator 에러를 배열로 변환
-        // "password must be..." → "password"
-        const fields: Record<string, string> = {};
-
-        if (Array.isArray(res.message)) {
-            res.message.forEach((msg: string) => {
-                const field = msg.split(" ")[0];
-                fields[field] = msg;
-            });
-        }
+        const fields: Record<string, string> = res?.fields ?? {};
 
         response.status(status).json({
             statusCode: status,
@@ -31,6 +23,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         //     message: "이미 사용중일 이메일입니다",
         //     fields: { email: "이미 사용중인 이메일입니다" }.
         // });
-        // FE에서 필드 값을 각 input값에 넣어서 에러 메세지를 표시할 것
+        // FE에서 필드 값을 각 input값에 넣어서 에러 메세지를 표시
     }
 }
