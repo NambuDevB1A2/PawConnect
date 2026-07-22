@@ -15,6 +15,9 @@ import { AdoptionsModule } from './adoptions/adoptions.module';
 import commonConfig from '@/config/common.config';
 import jwtConfig from '@/config/jwt.config';
 import bcryptConfig from '@/config/bcrypt.config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { UPLOAD_DIR } from '@/config/upload.config';
 
 @Module({
   imports: [
@@ -26,6 +29,10 @@ import bcryptConfig from '@/config/bcrypt.config';
       validationOptions: {
         abortEarly: true,
       }
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), UPLOAD_DIR.dir),
+      serveRoot: `/${UPLOAD_DIR.dir}`,
     }),
     PrismaModule,
     AuthModule,

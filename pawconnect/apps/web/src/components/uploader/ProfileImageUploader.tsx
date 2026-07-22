@@ -12,6 +12,7 @@ interface ProfileImageUploaderProps extends ImageUploaderProps {
 }
 
 export default function ProfileImageUploader({
+    name,
     labelText,
     helperText = UPLOADER_MESSAGES.profile.helper,
     errorText,
@@ -42,6 +43,7 @@ export default function ProfileImageUploader({
                     <Button
                         className={styles.btn_remove}
                         size="small"
+                        type="button"
                         onClick={(e) => {
                             e.stopPropagation();
                             handleRemove();
@@ -59,6 +61,7 @@ export default function ProfileImageUploader({
                         <input
                             ref={inputRef}
                             type="file"
+                            name={name}
                             accept={accept}
                             disabled={disabled}
                             onChange={handleFileChange}

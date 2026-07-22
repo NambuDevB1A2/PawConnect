@@ -8,13 +8,12 @@ import InputPassword from "@/components/common/InputPassword";
 import { useActionState } from "react";
 import { Login } from "@/services/auth/login.server";
 import { LoginState } from "@/types/auth/login.type";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const initialState: LoginState = { }; // useState를 사용할 수 없어서 전역 저장
 
 export default function LoginForm() {
     const [state, formAction, isPending] = useActionState(Login, initialState); // Login에서 fetch
-    const router = useRouter();
 
     return (
         // formData로 body 전송
@@ -45,7 +44,9 @@ export default function LoginForm() {
 
                 <div className={styles.box_register}>
                     <Typography>아직 계정이 없으신가요?</Typography>
-                    <Button variant="text" type="button" onClick={() => router.push('/register')}>회원가입</Button>
+                    <Link href={`/register`}>
+                        <Button variant="text" type="button">회원가입</Button>
+                    </Link>
                 </div>
             </div>
             

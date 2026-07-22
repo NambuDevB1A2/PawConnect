@@ -1,37 +1,26 @@
 'use client';
 
-import { Enums } from "@/types/enum";
-import React, { createContext, useEffect, useState } from "react";
-
-export type AuthUser = {
-    sub: string;
-    role: Enums.Role;
-};
+import { User } from "@/types/auth/user.type";
+import React, { createContext, useState } from "react";
 
 interface AuthContextType {
     login: boolean;
-    user: AuthUser;
+    user: User | undefined;
+    setUser: (value: User | undefined) => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
     login: false,
-    user: {
-        sub: "",
-        role: Enums.Role.GUEST,
-    },
+    user: undefined,
+    setUser: () => {},
 });
 
-export default function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<AuthUser>({ sub: "", role: Enums.Role.GUEST });
-    const [login, setLogin] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    useEffect(() => {
-        
-    }, []);
+export default function AuthProvider({ children, initialUser }: { children: React.ReactNode, initialUser?: User }) {
+    const [user, setUser] = useState<User | undefined>(initialUser);
+    const login = user !== undefined;
     
     return (
-        <AuthContext.Provider value={{ login, user }}>
+        <AuthContext.Provider value={{ login, user, setUser }}>
             {children}
         </AuthContext.Provider>
     );

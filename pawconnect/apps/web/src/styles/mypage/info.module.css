@@ -1,0 +1,32 @@
+.wrapper_info {
+    display: flex;
+    align-items: start;
+
+}
+
+.box_info {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-900);
+    
+    padding: var(--spacing);
+}
+
+.box_input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    width: 500px;
+}
+
+.box_password {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing);
+    align-items: center;
+}
+
+.btn_save {
+    width: 250px;
+}
