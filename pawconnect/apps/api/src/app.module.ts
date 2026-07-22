@@ -11,6 +11,7 @@ import { AnimalsModule } from '@/animals/animals.module';
 import { TestsModule } from '@/tests/tests.module';
 import { PetpostsModule } from '@/petposts/petposts.module';
 import { AiModule } from '@/ai/ai.module';
+import { AdoptionsModule } from './adoptions/adoptions.module';
 import commonConfig from '@/config/common.config';
 import jwtConfig from '@/config/jwt.config';
 import bcryptConfig from '@/config/bcrypt.config';
@@ -34,6 +35,7 @@ import bcryptConfig from '@/config/bcrypt.config';
     TestsModule,
     PetpostsModule,
     AiModule,
+    AdoptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
