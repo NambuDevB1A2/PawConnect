@@ -17,8 +17,8 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
     const phone = formdata.get('phone') as string;
     const operatingHours  = formdata.get('operatingHours') as string;
     const description   = formdata.get('description') as string;
-    const imgBanner = formdata.get('imgProfile') as File;
-    const imgShelter = formdata.getAll('imgProfile') as File[];
+    const imgBanner = formdata.get('imgBanner') as File;
+    const imgShelter = formdata.getAll('imgShelter') as File[];
 
     console.log(name, address, phone);
 
