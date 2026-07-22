@@ -1,8 +1,8 @@
 import { User } from "@/types/auth/user.type";
+import { ApiResponse } from "@/types/response.type";
 
-export interface ResponseRegisterUser {
+export interface ResponseRegisterUser extends ApiResponse {
     user: User;
-    success: boolean;
 }
 
 export interface RegisterUserState {

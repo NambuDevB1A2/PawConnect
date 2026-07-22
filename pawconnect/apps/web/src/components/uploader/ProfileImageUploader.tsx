@@ -28,7 +28,7 @@ export default function ProfileImageUploader({
 
     return (
         <span className={`${styles.wrapper_uploader} ${wrapperClassName}`}>
-            {labelText && <Typography  variant="title">{labelText}</Typography>}
+            {labelText && <Typography  variant="subtitle">{labelText}</Typography>}
         
             <div className={styles.box_uploader}>
                 <div className={styles.box_image}>

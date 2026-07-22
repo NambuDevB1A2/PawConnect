@@ -16,8 +16,8 @@ import { validateNickname, validatePassword, validateRePassword } from "@/utils/
 const initialState: RegisterUserState = { };
 
 export default function RegisterUserForm() {
-    const router = useRouter();
     const [state, formAction, isPending] = useActionState(RegisterUser, initialState);
+    const router = useRouter();
 
     const [password, setPassword] = useState("");
     const [clientErrors, setClientErrors] = useState<{
@@ -47,6 +47,7 @@ export default function RegisterUserForm() {
     useEffect(() => {
         if (state.response?.success) {
             router.push("/login");
+            alert('회원가입에 성공했습니다');
         }
     }, [state]);
 

@@ -3,7 +3,6 @@
 import { setAccessToken } from "@/services/auth/auth";
 import { fetchServer } from "@/services/fetch/fetch.server";
 import { LoginState, ResponseLogin } from "@/types/auth/login.type";
-import { redirect } from "next/navigation";
 
 export async function Login(prevState: LoginState, formdata: FormData): Promise<LoginState> {
     const email = formdata.get('email') as string;
@@ -27,6 +26,8 @@ export async function Login(prevState: LoginState, formdata: FormData): Promise<
         
         // 토큰 저장
         await setAccessToken(result.accessToken);
+
+        return { response: result }
     } catch (error) {
         return {
             email,
@@ -34,5 +35,4 @@ export async function Login(prevState: LoginState, formdata: FormData): Promise<
         };
     }
 
-    redirect("/"); // 로그인 성공시 홈으로 이동
 }

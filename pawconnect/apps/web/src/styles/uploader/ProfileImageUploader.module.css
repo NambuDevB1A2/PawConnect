@@ -6,6 +6,9 @@
     gap: var(--input-label-gap);
 
     width: var(--uploader-profile-width);
+
+    align-items: center;
+    justify-content: center;
 }
 
 .box_uploader {
