@@ -136,39 +136,41 @@ export default function RegisterShelterForm() {
 
                 <div className={styles.box_shelter_input}>
                         <Input 
-                            name="name" 
-                            labelText="보호소 이름*" 
+                            name="name" defaultValue={state.name}
+                            labelText="보호소 이름*"
                             helperText="보호소 이름을 입력해주세요(최대 100자)"
                             errorText={clientErrors.shelterName ?? state.nameError}
                             onChange={handleShelterName}
                             />
                         <Input 
-                            name="address" 
+                            name="address" defaultValue={state.address}
                             labelText="주소*" 
                             helperText="주소를 입력해주세요"
                             errorText={clientErrors.shelterAddress ?? state.addressError}
                             onChange={handleShelterAddress}
                             />
                         <Input 
-                            name="addressDetail" 
+                            name="addressDetail" defaultValue={state.addressDetail}
                             labelText="상세 주소" 
                             helperText="상세 주소를 입력해주세요"
                             errorText={clientErrors.shelterAddress ?? state.addressDetailError}
                             onChange={handleShelterAddressDetail}
                             />
                         <Input 
-                            name="phone" 
+                            name="phone" defaultValue={state.phone}
                             labelText="전화번호*" 
                             helperText="전화번호를 입력해주세요(-없이 숫자만)"
                             errorText={clientErrors.shelterPhone ?? state.phoneError}
                             onChange={handleShelterPhone}
                             />
                         <TextArea 
-                            labelText="운영 시간" 
+                            name="operatingHours" defaultValue={state.operatingHours}
+                            labelText="운영 시간"
                             helperText="보호소를 운영하는 시간과 요일을 입력해주세요(최대 100자)" 
                             maxLength={100}
                             />
                         <TextArea 
+                            name="description" defaultValue={state.description}
                             labelText="보호소 소개말" 
                             helperText="보호소를 소개하는 말을 입력해주세요(최대 500자)" 
                             maxLength={500}
@@ -176,7 +178,7 @@ export default function RegisterShelterForm() {
                 </div>
 
                 <div className={styles.box_agreement}>
-                    <CheckBox>
+                    <CheckBox name="agreedToTerms">
                         <Button variant="text" type="button">이용약관</Button>
                         &nbsp;및&nbsp;
                         <Button variant="text" type="button">개인정보 처리방침</Button>

@@ -11,14 +11,16 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
     const imgProfile = formdata.get('imgProfile') as File;
     const agreedToTerms = formdata.get('agreedToTerms') as string === "on";
 
-    const name = formdata.get('') as string;
-    const address = formdata.get('') as string;
-    const addressDetail = formdata.get('') as string;
-    const phone = formdata.get('') as string;
-    const operatingHours  = formdata.get('') as string;
-    const description   = formdata.get('') as string;
+    const name = formdata.get('name') as string;
+    const address = formdata.get('address') as string;
+    const addressDetail = formdata.get('addressDetail') as string;
+    const phone = formdata.get('phone') as string;
+    const operatingHours  = formdata.get('operatingHours') as string;
+    const description   = formdata.get('description') as string;
     const imgBanner = formdata.get('imgProfile') as File;
     const imgShelter = formdata.getAll('imgProfile') as File[];
+
+    console.log(name, address, phone);
 
     // 1. 값 유무 검사
     if (!email || !password || !nickname ||
