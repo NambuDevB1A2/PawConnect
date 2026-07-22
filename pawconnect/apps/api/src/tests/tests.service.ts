@@ -6,7 +6,7 @@ import { PERSONALITY_TYPES } from './constants/personality-type.constant';
 import { PersonalityTestResultDto } from './dto/personality-test-result.dto';
 import { MBTI_MATCH_BREEDS } from './constants/personality-match-breeds.constant';
 import { animalSelect } from './testAnimal.select';
-import { Prisma } from '@prisma/client';
+import { AnimalStatus, Prisma } from '@prisma/client';
 
 // 타입지정
 type AnimalSelectType = Prisma.AnimalGetPayload<{select: typeof animalSelect}>;
@@ -99,7 +99,7 @@ export class TestsService {
 
         // 3. 대표 품종과 일치하는 보호동물 조회 (breed 얻기 대표 품종 조회)
         const representativeAnimals = await this.prisma.animal.findMany({
-            where: { breed: type.breedId, animalStatus: 'AVAILABLE'},
+            where: { breed: type.breedId, animalStatus: AnimalStatus.AVAILABLE},
             select: animalSelect,
         });
 
@@ -118,7 +118,7 @@ export class TestsService {
         // 매치된 동물 조회
         const matchAnimals = await this.prisma.animal.findMany({
             where:{breed: {in:matchBreeds},
-            animalStatus: 'AVAILABLE'},
+            animalStatus: AnimalStatus.AVAILABLE},
             select: animalSelect, //animalSelect
         });
         // 매치된 품종 보호동물 중 랜덤 1마리 선택
