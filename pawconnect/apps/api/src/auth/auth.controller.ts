@@ -32,7 +32,7 @@ export class AuthController {
         ))
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/user')
-    create(
+    registerUser(
         @Body() registerAuthDto: RegisterUserAuthDto,
         @UploadedFile() imgProfile?: Express.Multer.File) {
 
