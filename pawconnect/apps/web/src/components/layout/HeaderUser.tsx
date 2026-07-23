@@ -6,10 +6,10 @@ import { User } from "@/types/user.type";
 import styles from "@/styles/layout/Header.module.css"
 import Button from "@/components/common/Button";
 import { useRouter } from "next/navigation";
-import { Logout } from "@/services/auth/logout.server";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Enums } from "@/types/enum";
 import AppImage from "@/components/common/AppImage";
+import { ModalContext } from "@/providers/ModalProvider";
 
 interface HeaderUserProps {
     user: User | undefined;
@@ -22,6 +22,7 @@ interface MenuItem {
 
 export default function HeaderUser({ user }: HeaderUserProps) {
     const [isOpen, setIsOpen] = useState(false);
+    const { openModal } = useContext(ModalContext);
     const router = useRouter();
     const boxRef = useRef<HTMLDivElement>(null);
 
@@ -44,9 +45,8 @@ export default function HeaderUser({ user }: HeaderUserProps) {
     };
 
     const handleLogout = async () => {
-        await Logout();
+        openModal("confirmLogout", undefined);
         setIsOpen(false);
-        router.push('/');
     };
 
     const menuItemByRole: Partial<Record<Enums.Role, MenuItem[]>> = {

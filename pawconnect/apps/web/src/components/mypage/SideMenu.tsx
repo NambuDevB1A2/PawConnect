@@ -4,11 +4,11 @@ import { AuthContext } from "@/providers/AuthProvider";
 import { Enums } from "@/types/enum";
 import { useContext } from "react";
 import styles from "@/styles/mypage/SideMenu.module.css"
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Logout } from "@/services/auth/logout.server";
 import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
+import { ModalContext } from "@/providers/ModalProvider";
 
 interface MenuItem {
     label: string;
@@ -83,16 +83,16 @@ function MenuLink({
 
 export default function SideMenu() {
     const { user } = useContext(AuthContext);
-    const router = useRouter();
+    const { openModal } = useContext(ModalContext);
+
     const pathname = usePathname();
 
     if (!user?.role) return null;
 
     const menuItems = SIDE_MENU_CONFIG[user.role];
 
-    const handleLogout = async () => {
-        await Logout();
-        router.push("/");
+    const handleLogout = () => {
+        openModal("confirmLogout", undefined);
     };
 
     return (
