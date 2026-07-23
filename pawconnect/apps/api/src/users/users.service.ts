@@ -7,10 +7,14 @@ import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { USER_SELECT } from '@/users/user.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { AzureBlobService } from '../azure/azure-blob/azure-blob.service';
 
 @Injectable()
 export class UsersService {
-    constructor (private readonly prisma: PrismaService) {}
+    constructor (
+        private readonly prisma: PrismaService,
+        private readonly azureBlob: AzureBlobService,
+    ) {}
 
     // 회원 검색 (아이디)
     async find(id: string, select?: Prisma.UserSelect) {
@@ -51,9 +55,11 @@ export class UsersService {
     async create(tx: Prisma.TransactionClient, createUserDto: CreateUserDataDto, imgProfile?: Express.Multer.File) {
         await this.existsByEmail(createUserDto.email);
 
-        // 파일 path 저장 (기본값 설정 로직)
-        const imgProfilePath = imgProfile ? imgProfile.path : `${UPLOAD_DIR.userProfileDir}/default_profile.png`;
-        
+        // blob 스토리지에 이미지 업로드
+        const { blobName, url } = imgProfile ? 
+            await this.azureBlob.uploadPublic(imgProfile, UPLOAD_DIR.userProfileDir) : 
+            { blobName: `${UPLOAD_DIR.userProfileDir}/default_profile.png`};
+
         // 1. 신규 유저 생성
         const user = await tx.user.create({
             data: {
@@ -61,7 +67,7 @@ export class UsersService {
                 password: createUserDto.passwordHash,
                 nickname: createUserDto.nickname,
                 role: createUserDto.role,
-                imgProfile: imgProfilePath,
+                imgProfile: blobName,
                 shelterId: createUserDto.shelterId,
             },
             select: USER_SELECT,
@@ -103,8 +109,9 @@ export class UsersService {
             select: USER_SELECT,
         });
 
+        // TODO: blob 이미지 지우기
         // 2. 프로필 변경시 이전 프로필 이미지 삭제
-        if (imgProfile) await removeFile(prevUser.imgProfile);
+        // if (imgProfile) await removeFile(prevUser.imgProfile);
 
         return { user };
     }

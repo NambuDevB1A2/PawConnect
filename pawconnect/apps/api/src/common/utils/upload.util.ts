@@ -7,6 +7,10 @@ export function getImageId(file: Express.Multer.File) {
     return parse(file.filename).name;
 }
 
+export function getImageIdByString(blobName: string) {
+    return parse(blobName).name;
+}
+
 const IGNORE_IMAGES = [''];
 
 // 파일 삭제
