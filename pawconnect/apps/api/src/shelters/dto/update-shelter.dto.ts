@@ -55,6 +55,15 @@ export class UpdateShelterDto extends UpdateShelterDataDto {
 
     @ApiPropertyOptional()
     @IsOptional()
+    @Transform(({ value }) => {
+        if (value === undefined || value === null) return value;
+        if (Array.isArray(value)) return value;
+
+        const trimmed = value.trim();
+        if (trimmed === '') return [];
+
+        return trimmed.split(',').map((v: string) => v.trim());
+    })
     @IsArray()
     @IsString({ each: true })
     imgShelterKeeps?: string[];

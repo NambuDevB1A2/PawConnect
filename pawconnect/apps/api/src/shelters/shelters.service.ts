@@ -37,8 +37,8 @@ export class SheltersService {
     }
 
     // 보호소 이미지 검색
-    async findImages(id: string) {
-        const images = await this.prisma.shelterImage.findMany({ where: { shelterId: id }});
+    async findImages(id: string, select?: Prisma.ShelterImageSelect) {
+        const images = await this.prisma.shelterImage.findMany({ where: { shelterId: id }, select: select });
         return images;
     }
 
@@ -87,7 +87,7 @@ export class SheltersService {
     // 이미지 새로 저장
     async createImages(tx: Prisma.TransactionClient, shelterId: string, images: string[]) {
         // Promise.all로 한 번에 실행
-        return Promise.all(images.map((img) => 
+        return await Promise.all(images.map((img) => 
             tx.shelterImage.create({
                 data: {
                     id: getImageIdByString(img),
@@ -117,10 +117,14 @@ export class SheltersService {
         const shelterId = user.shelterId;
         if (!shelterId) throw new NotFoundException();
 
+        console.log(updateShelterDto.imgShelterKeeps);
+
         const prevShelter = await this.find(shelterId);
         const prevShelterImages = await this.findImages(shelterId);
         const keepSet = new Set(updateShelterDto.imgShelterKeeps ?? []);
         const toDelete = prevShelterImages.filter(img => !keepSet.has(img.img));
+
+        console.log(prevShelterImages);
 
         let imgBannerPath = prevShelter.imgBanner;
         let imgBannerOld: string | null = null;
@@ -160,9 +164,9 @@ export class SheltersService {
 
             // 보호소 이미지 업데이트
             await tx.shelterImage.deleteMany({ where: { id: { in: toDelete.map(img => img.id)}} });
-            const shelterImages = await this.createImages(tx, shelterId, uploadedImgShelter.map((img) => img.blobName));
+            await this.createImages(tx, shelterId, uploadedImgShelter.map((img) => img.blobName));
 
-            return { shelter, shelterImages };
+            return { shelter };
         });
 
         // 3. 트랜잭션 성공 후에 실제 파일 삭제
@@ -170,7 +174,9 @@ export class SheltersService {
         // 유지 목록에 없는 기존 이미지 전부 삭제
         await Promise.all(toDelete.map(img => this.azureBlob.deleteBlob(img.img)));
 
-        return { success: true, ...result };
+        const shelterImages = await this.findImages(shelterId, SHELTER_IMAGE_SELECT);
+        
+        return { success: true, ...result, shelterImages };
     }
 
     // DELETE
