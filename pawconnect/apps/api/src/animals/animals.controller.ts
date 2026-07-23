@@ -1,8 +1,9 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AnimalsService } from './animals.service';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/role.guard';
+import { GetAnimalsQueryDto, GetAnimalsResponseDto } from './dto/get-animals.dto';
 
 
 @ApiTags('Animals')
@@ -20,11 +21,12 @@ export class AnimalsController {
 //       return this.adoptionsService.create(auth, createAdoptionDto);
 //   }
 
-//   @Get()
-//   @ApiOperation({summary:"내 입양신청 목록 조회"})
-//   findAll(@CurrentAuth() auth:AuthRequest) {
-//     return this.adoptionsService.findAll(auth);
-//   }
+  @Get()
+  @ApiOkResponse({type: GetAnimalsResponseDto})
+  @ApiOperation({ summary:"보호동물 목록 조회"})
+  getAnimals(@Query() query: GetAnimalsQueryDto) {
+    return this.animalsService.getAnimals(query);
+  }
 
 //   @Get(':id')
 //   @ApiOperation({summary:"입양 신청 상세 조회"})
