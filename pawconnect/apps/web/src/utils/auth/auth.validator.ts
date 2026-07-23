@@ -71,7 +71,7 @@ export function validateShelterName(name: string) {
     return undefined;
 }
 
-export function validateShelterAdress(address: string) {
+export function validateShelterAddress(address: string) {
     if (address.length > 255) {
         return '올바르지 않은 주소입니다';
     }

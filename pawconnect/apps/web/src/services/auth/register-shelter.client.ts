@@ -1,7 +1,7 @@
 import { ApiError } from "@/services/fetch/api-error";
 import { fetchClient } from "@/services/fetch/fetch.client";
 import { RegisterShelterState, ResponseRegisterShelter } from "@/types/auth/register.type";
-import { validateAgreedToTerms, validateNickname, validatePassword, validateRePassword, validateShelterAdress, validateShelterName, validateShelterPhone } from "@/utils/auth/auth.validator";
+import { validateAgreedToTerms, validateNickname, validatePassword, validateRePassword, validateShelterAddress, validateShelterName, validateShelterPhone } from "@/utils/auth/auth.validator";
 
 export async function RegisterShelter(prevState: RegisterShelterState, formdata: FormData): Promise<RegisterShelterState> {
     const email = formdata.get('email') as string;
@@ -52,8 +52,8 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
     const agreedToTermsError = validateAgreedToTerms(agreedToTerms);
 
     const nameError = validateShelterName(name);
-    const addressError = validateShelterAdress(address);
-    const addressDetailError = validateShelterAdress(address);
+    const addressError = validateShelterAddress(address);
+    const addressDetailError = validateShelterAddress(address);
     const phoneError = validateShelterPhone(phone);
 
     if (passwordError || rePasswordError || nicknameError || agreedToTermsError) {

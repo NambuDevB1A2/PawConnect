@@ -28,27 +28,29 @@ export function useImageUploader(
             setInternalFile(null);
             setInternalError(null);
             onChange?.(null);
-            return;
+            return true;
         }
 
         if (!file.type.startsWith("image/")) {
             setInternalError(UPLOADER_MESSAGES.default.error.not_accept);
-            return;
+            return false;
         }
 
         if (file.size > maxSizeMB * 1024 * 1024) {
             setInternalError(maxSizeMB + UPLOADER_MESSAGES.default.error.not_size);
-            return;
+            return false;
         }
 
         setInternalError(null);
         setInternalFile(file);
         onChange?.(file);
+        return true;
     };
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] ?? null;
-        validateAndSetFile(file);
+        const isValid = validateAndSetFile(file);
+        if (!isValid && inputRef.current) inputRef.current.value = "";
     };
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -57,8 +59,11 @@ export function useImageUploader(
         if (disabled) return;
 
         const file = e.dataTransfer.files?.[0] ?? null;
-        validateAndSetFile(file);
-        if (!file) return;
+        const isValid = validateAndSetFile(file);
+        if (!file || !isValid) {
+            if (!isValid && inputRef.current) inputRef.current.value = "";
+            return;
+        }
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);

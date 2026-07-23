@@ -12,7 +12,7 @@ import ImagesUploader from "@/components/uploader/ImagesUploader";
 import TextArea from "@/components/common/TextArea";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
-import { validateNickname, validatePassword, validateRePassword, validateShelterAdress, validateShelterName, validateShelterPhone } from "@/utils/auth/auth.validator";
+import { validateNickname, validatePassword, validateRePassword, validateShelterAddress, validateShelterName, validateShelterPhone } from "@/utils/auth/auth.validator";
 import { RegisterShelterState } from "@/types/auth/register.type";
 import { RegisterShelter } from "@/services/auth/register-shelter.client";
 
@@ -57,12 +57,12 @@ export default function RegisterShelterForm() {
 
     const handleShelterAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setClientErrors((prev) => ({ ...prev, shelterAddress: validateShelterAdress(value) }));
+        setClientErrors((prev) => ({ ...prev, shelterAddress: validateShelterAddress(value) }));
     };
     
     const handleShelterAddressDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setClientErrors((prev) => ({ ...prev, shelterAddressDetail: validateShelterAdress(value) }));
+        setClientErrors((prev) => ({ ...prev, shelterAddressDetail: validateShelterAddress(value) }));
     };
     
     const handleShelterPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
