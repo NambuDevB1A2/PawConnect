@@ -5,14 +5,20 @@ import { InputHTMLAttributes } from "react";
 
 interface CheckBoxProps extends InputHTMLAttributes<HTMLInputElement> {
     children?: React.ReactNode;
+    name?: string;
     text?: string;
 }
 
-export default function CheckBox({ children, text, className = "", ...props }: CheckBoxProps) {
+export default function CheckBox({ children, name, text, className = "", ...props }: CheckBoxProps) {
     return (
         <div className={styles.wrapper_checkbox}>
             <span className={styles.box_input}>
-                <input className={`${styles.input} ${className}`} type="checkbox" {...props}/>
+                <input 
+                className={`${styles.input} ${className}`} 
+                type="checkbox" 
+                name={name}
+                {...props}
+                />
                 <Icon name="check"
                 size="badge"
                 wrapperClassName={styles.wrapper_check_icon}

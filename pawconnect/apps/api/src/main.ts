@@ -6,6 +6,7 @@ import { AppModule } from '@/app.module';
 import cookieParser from 'cookie-parser';
 import { mkdirSync } from 'fs';
 import { UPLOAD_DIR } from '@/config/upload.config';
+import { customValidationPipe } from '@/common/pipe/validation.pipe';
 
 async function bootstrap() {
   // Upload Dir
@@ -23,7 +24,7 @@ async function bootstrap() {
   const commonConfig = configService.getOrThrow('common');
 
   // Validator
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.useGlobalPipes(customValidationPipe);
 
   // Swagger 
   const config = new DocumentBuilder()

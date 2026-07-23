@@ -1,10 +1,11 @@
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { removeFile } from '@/common/utils/upload.util';
+import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
-import { CreateUserDto } from '@/users/dto/create-user.dto';
+import { CreateUserDataDto } from '@/users/dto/create-user.dto';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { USER_SELECT } from '@/users/user.select';
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 @Injectable()
@@ -17,7 +18,9 @@ export class UsersService {
             where: { id },
             select: select
         });
-        if (!user) throw new UnauthorizedException();
+        if (!user) throw new UnauthorizedException({
+            message: "존재하지 않는 유저입니다",
+        });
         
         return user;
     }
@@ -28,7 +31,9 @@ export class UsersService {
             where: { email }, 
             select: select
         });
-        if (!user) throw new UnauthorizedException();
+        if (!user) throw new UnauthorizedException({
+            message: "존재하지 않는 유저입니다",
+        });
         
         return user;
     }
@@ -36,23 +41,43 @@ export class UsersService {
     // 회원 중복 검사 (이메일)
     async existsByEmail(email: string) {
         const user = await this.prisma.user.findUnique({ where: { email }});
-        if (user) throw new UnauthorizedException();
+        if (user) throw new UnauthorizedException({
+            message: "이미 사용중인 이메일입니다",
+            fields: { email: "이미 사용중인 이메일입니다" },
+        });
     }
 
     // CREATE
-    async create(tx: Prisma.TransactionClient, createUserDto: CreateUserDto) {
+    async create(tx: Prisma.TransactionClient, createUserDto: CreateUserDataDto, imgProfile?: Express.Multer.File) {
         await this.existsByEmail(createUserDto.email);
 
+        // 파일 path 저장 (기본값 설정 로직)
+        const imgProfilePath = imgProfile ? imgProfile.path : `${UPLOAD_DIR.userProfileDir}/default_profile.png`;
+        
+        // 1. 신규 유저 생성
         const user = await tx.user.create({
             data: {
                 email: createUserDto.email,
                 password: createUserDto.passwordHash,
                 nickname: createUserDto.nickname,
                 role: createUserDto.role,
-                imgProfile: createUserDto.imgProfile,
+                imgProfile: imgProfilePath,
                 shelterId: createUserDto.shelterId,
             },
             select: USER_SELECT,
+        });
+
+        // 2. 약관 동의 생성
+        await tx.userAgreement.createMany({
+            data: [{
+                userId: user.id,
+                agreementId: 1,
+                isAgreed: createUserDto.agreedToTerms,
+            }, {
+                userId: user.id,
+                agreementId: 2,
+                isAgreed: createUserDto.agreedToTerms,
+            }]
         });
 
         return user;
@@ -68,6 +93,7 @@ export class UsersService {
         const prevUser = await this.find(auth.id);
         const imgProfilePath = imgProfile ? imgProfile.path : prevUser.imgProfile;
 
+        // 1. 유저 정보 업데이트
         const user = await this.prisma.user.update({
             where: { id: auth.id },
             data: {
@@ -77,6 +103,7 @@ export class UsersService {
             select: USER_SELECT,
         });
 
+        // 2. 프로필 변경시 이전 프로필 이미지 삭제
         if (imgProfile) await removeFile(prevUser.imgProfile);
 
         return { user };

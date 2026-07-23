@@ -7,6 +7,7 @@ import { useImageUploader } from "@/hooks/uploader/useImageUploader";
 import { UPLOADER_MESSAGES } from "@/constants/messages/Uploader";
 import Button from "@/components/common/Button";
 import { ImageUploaderProps } from "@/components/uploader/ImageUploader";
+import AppImage from "@/components/common/AppImage";
 
 interface ProfileImageUploaderProps extends ImageUploaderProps {
 }
@@ -28,12 +29,12 @@ export default function ProfileImageUploader({
 
     return (
         <span className={`${styles.wrapper_uploader} ${wrapperClassName}`}>
-            {labelText && <Typography  variant="title">{labelText}</Typography>}
+            {labelText && <Typography  variant="subtitle">{labelText}</Typography>}
         
             <div className={styles.box_uploader}>
                 <div className={styles.box_image}>
                     {previewUrl ?
-                    <img className={styles.img_preview} src={previewUrl}/> :
+                    <AppImage className={styles.img_preview} src={previewUrl} disabledDomain/> :
                     <div className={styles.box_null}>
                         <Icon name="account_circle" size="hero" color="color_default"/>
                     </div>}

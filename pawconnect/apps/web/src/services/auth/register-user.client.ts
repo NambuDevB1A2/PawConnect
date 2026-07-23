@@ -1,5 +1,7 @@
+import { ApiError } from "@/services/fetch/api-error";
 import { fetchClient } from "@/services/fetch/fetch.client";
 import { RegisterUserState, ResponseRegisterUser } from "@/types/auth/register.type";
+import { validateAgreedToTerms, validateNickname, validatePassword, validateRePassword } from "@/utils/auth/auth.validator";
 
 export async function RegisterUser(prevState: RegisterUserState, formdata: FormData): Promise<RegisterUserState> {
     const email = formdata.get('email') as string;
@@ -7,7 +9,9 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
     const rePassword = formdata.get('rePassword') as string;
     const nickname = formdata.get('nickname') as string;
     const imgProfile = formdata.get('imgProfile') as File;
+    const agreedToTerms = formdata.get('agreedToTerms') as string === "on";
 
+    // 1. 값 유무 검사
     if (!email || !password || !nickname) {
         return {
             email,
@@ -19,11 +23,20 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
         };
     }
 
-    if (password !== rePassword) {
+    // 2. 유효성 검사
+    const passwordError = validatePassword(password);
+    const rePasswordError = validateRePassword(password, rePassword);
+    const nicknameError = validateNickname(nickname);
+    const agreedToTermsError = validateAgreedToTerms(agreedToTerms);
+
+    if (passwordError || rePasswordError || nicknameError || agreedToTermsError) {
         return {
             email,
             nickname,
-            rePasswordError: "비밀번호가 일치하지 않습니다",
+            passwordError,
+            rePasswordError,
+            nicknameError,
+            emailError: agreedToTermsError,
         };
     }
 
@@ -33,15 +46,29 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
         submitData.append('email', email);
         submitData.append('password', password);
         submitData.append('nickname', nickname);
-        if (imgProfile && imgProfile.size > 0) {
-            submitData.append('imgProfile', imgProfile);
-        }
+        submitData.append('agreedToTerms', agreedToTerms ? "true" : "false");
+        if (imgProfile && imgProfile.size > 0) submitData.append('imgProfile', imgProfile);
 
         const result = await fetchClient.post<ResponseRegisterUser>('/auth/register/user', submitData);
         
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {
+        console.log(error);
+
+        if (error instanceof ApiError && error.fields) {
+            // 서버에서 온 필드별 에러 매핑
+            return {
+                email,
+                nickname,
+                emailError: error.fields.email || error.fields.agreedToTerms,
+                passwordError: error.fields.password,
+                nicknameError: error.fields.nickname,
+                imgProfileError: error.fields.imgProfile,
+            };
+        }
+
+        // 필드 정보 없는 일반 에러 매핑 (네트워크 오류 등)
         return {
             email,
             nickname,
