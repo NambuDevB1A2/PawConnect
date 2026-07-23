@@ -355,10 +355,10 @@ main {
     /* Uploader */
     --uploader-dropzone-height: 200px;
 
-    --uploader-preview-width: 240px;
-    --uploader-preview-height: 180px;
+    --uploader-preview-width: 210px;
+    --uploader-preview-height: 150px;
     
-    --uploader-banner-height: 320px;
+    --uploader-banner-height: 210px;
 
     --uploader-profile-width: 280px;
     --uploader-profile-image-width: 210px;

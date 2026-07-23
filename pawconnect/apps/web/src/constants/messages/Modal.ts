@@ -12,4 +12,8 @@ export const MODAL_MESSAGES = {
         close: "취소",
         confirm: "삭제",
     },
+
+    contentViewer: {
+        close: "닫기",
+    }
 }

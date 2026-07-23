@@ -7,6 +7,7 @@ interface PreviewImageProps {
     previewUrl: string;
     internalFileName: string;
     onRemove?: () => void;
+    previewClassName?: string;
     previewBoxClassName?: string;
     previewImageClassName?: string;
 }
@@ -15,11 +16,12 @@ export default function PreviewImage({
     previewUrl,
     internalFileName,
     onRemove,
+    previewClassName = "",
     previewBoxClassName = "",
     previewImageClassName = "",
 }: PreviewImageProps) {
     return (
-        <div className={styles.box_preview}>
+        <div className={`${styles.box_preview} ${previewClassName}`}>
             <div className={styles.box_image}>
                 <AppImage className={`${styles.img_preview} ${previewImageClassName}`} src={previewUrl} disabledDomain/>
             </div>

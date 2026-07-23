@@ -11,7 +11,7 @@
 }
 
 .img_preview {
-    max-width: var(--uploader-preview-width);
+    width: var(--uploader-preview-width);
     height: var(--uploader-preview-height);
 
     border-radius: var(--radius-200);
