@@ -1,5 +1,6 @@
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
-import { getImageId, removeFile, removeFiles } from '@/common/utils/upload.util';
+import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
+import { getImageIdByString, removeFile, removeFiles } from '@/common/utils/upload.util';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
@@ -13,6 +14,7 @@ import { Prisma } from '@prisma/client';
 export class SheltersService {
     constructor (
         private readonly prisma: PrismaService,
+        private readonly azureBlob: AzureBlobService,
         private readonly usersService: UsersService
     ) {}
     
@@ -42,8 +44,10 @@ export class SheltersService {
     async create(tx: Prisma.TransactionClient, createShelterDto: CreateShelterDto, imgBanner?: Express.Multer.File) {
         await this.existsByName(createShelterDto.name);
 
-        // 파일 path 저장 (기본값 설정 로직)
-        const imgBannerPath = imgBanner ? imgBanner.path : `${UPLOAD_DIR.shelterBannerDir}/default_banner.png`;
+        // blob 스토리지에 이미지 업로드
+        const { blobName, url } = imgBanner ? 
+            await this.azureBlob.uploadPublic(imgBanner, UPLOAD_DIR.shelterBannerDir) : 
+            { blobName: `${UPLOAD_DIR.shelterBannerDir}/default_banner.png`};
 
         const shelter = await tx.shelter.create({
             data: {
@@ -53,7 +57,7 @@ export class SheltersService {
                 phone: createShelterDto.phone,
                 operatingHours: createShelterDto.operatingHours,
                 description: createShelterDto.description,
-                imgBanner: imgBannerPath,
+                imgBanner: blobName,
             },
             select: SHELTER_SELECT,
         });
@@ -65,12 +69,15 @@ export class SheltersService {
     async createImages(tx: Prisma.TransactionClient, shelterId: string, files?: Express.Multer.File[]) {
         if (!files || files.length === 0) return;
 
+        // blob 스토리지에 이미지 업로드
+        const blobName = await this.azureBlob.uploadPublicMultiple(files, UPLOAD_DIR.shelterImgDir)
+
         // Promise.all로 한 번에 실행
-        return Promise.all(files.map((file) => 
+        return Promise.all(blobName.map((blob) => 
             tx.shelterImage.create({
                 data: {
-                    id: getImageId(file),
-                    img: file.path,
+                    id: getImageIdByString(blob.blobName),
+                    img: blob.blobName,
                     shelterId: shelterId,
                 },
                 select: SHELTER_IMAGE_SELECT,
@@ -125,8 +132,9 @@ export class SheltersService {
             return { shelter, shelterImages };
         });
 
-        if (imgBanner) await removeFile(prevShelter.imgBanner);
-        if (imgShelter) await removeFiles(prevShelterImages.map((img) => img.img));
+        // TODO: blob 이미지 지우기
+        // if (imgBanner) await removeFile(prevShelter.imgBanner);
+        // if (imgShelter) await removeFiles(prevShelterImages.map((img) => img.img));
 
         return { result };
     }

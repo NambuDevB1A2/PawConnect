@@ -18,6 +18,7 @@ import bcryptConfig from '@/config/bcrypt.config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UPLOAD_DIR } from '@/config/upload.config';
+import { AzureModule } from './azure/azure.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UPLOAD_DIR } from '@/config/upload.config';
       rootPath: join(process.cwd(), UPLOAD_DIR.dir),
       serveRoot: `/${UPLOAD_DIR.dir}`,
     }),
+    AzureModule,
     PrismaModule,
     AuthModule,
     UsersModule,
@@ -43,6 +45,7 @@ import { UPLOAD_DIR } from '@/config/upload.config';
     PetpostsModule,
     AiModule,
     AdoptionsModule,
+    AzureModule,
   ],
   controllers: [AppController],
   providers: [AppService],

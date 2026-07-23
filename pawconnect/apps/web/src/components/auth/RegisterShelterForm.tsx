@@ -11,15 +11,18 @@ import BannerImageUploader from "@/components/uploader/BannerUploader";
 import ImagesUploader from "@/components/uploader/ImagesUploader";
 import TextArea from "@/components/common/TextArea";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useContext, useEffect, useState } from "react";
 import { validateNickname, validatePassword, validateRePassword, validateShelterAddress, validateShelterName, validateShelterPhone } from "@/utils/auth/auth.validator";
 import { RegisterShelterState } from "@/types/auth/register.type";
 import { RegisterShelter } from "@/services/auth/register-shelter.client";
+import { TERMS_MESSAGES } from "@/constants/messages/Terms";
+import { ModalContext } from "@/providers/ModalProvider";
 
 const initialState: RegisterShelterState = { };
 
 export default function RegisterShelterForm() {
     const [state, formAction, isPending] = useActionState(RegisterShelter, initialState);
+    const { openModal } = useContext(ModalContext);
     const router = useRouter();
 
     const [password, setPassword] = useState("");
@@ -70,6 +73,15 @@ export default function RegisterShelterForm() {
         setClientErrors((prev) => ({ ...prev, shelterPhone: validateShelterPhone(value) }));
     };
 
+    // 이용약관, 개인정보 처리방침 모달
+    const handleOpenTermsOfService = () => {
+        openModal("contentViewer", { titleText: TERMS_MESSAGES.termsOfService.title, contentText: TERMS_MESSAGES.termsOfService.content });
+    }
+
+    const handleOpenPrivacyPolicy = () => {
+        openModal("contentViewer", { titleText: TERMS_MESSAGES.privacyPolicy.title, contentText: TERMS_MESSAGES.privacyPolicy.content });
+    }
+    
     // 성공 반환시 로그인 화면으로 이동
     useEffect(() => {
         if (state.response?.success) {
@@ -153,7 +165,7 @@ export default function RegisterShelterForm() {
                             name="addressDetail" defaultValue={state.addressDetail}
                             labelText="상세 주소" 
                             helperText="상세 주소를 입력해주세요"
-                            errorText={clientErrors.shelterAddress ?? state.addressDetailError}
+                            errorText={clientErrors.shelterAddressDetail ?? state.addressDetailError}
                             onChange={handleShelterAddressDetail}
                             />
                         <Input 
@@ -179,9 +191,9 @@ export default function RegisterShelterForm() {
 
                 <div className={styles.box_agreement}>
                     <CheckBox name="agreedToTerms">
-                        <Button variant="text" type="button">이용약관</Button>
+                        <Button variant="text" type="button" onClick={handleOpenTermsOfService}>이용약관</Button>
                         &nbsp;및&nbsp;
-                        <Button variant="text" type="button">개인정보 처리방침</Button>
+                        <Button variant="text" type="button" onClick={handleOpenPrivacyPolicy}>개인정보 처리방침</Button>
                         에 동의합니다
                     </CheckBox>
                 </div>

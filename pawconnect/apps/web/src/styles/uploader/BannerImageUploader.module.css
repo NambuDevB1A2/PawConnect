@@ -1,10 +1,21 @@
-.box_preview_banner {
+.wrapper_banner {
     width: 100%;
 }
 
-.box_image_banner {
+.box_preview_banner {
+    display: flex; /* inline-flex → flex, 그리고 width 100% 명시 */
     width: 100%;
+}
+
+.box_upper_banner {
+    width: 100% !important;
+}
+
+.box_image_banner.box_image_banner {
+    width: 100%;
+    max-width: none;
     height: var(--uploader-banner-height);
-    
+    max-height: none;
+
     object-fit: cover;
 }

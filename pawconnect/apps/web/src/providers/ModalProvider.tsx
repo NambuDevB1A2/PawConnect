@@ -5,20 +5,31 @@ import React, { createContext, useCallback, useState } from "react";
 // 모달이 추가 될 때마다 Key 추가
 export type ModalKey = 
     "loginRequired" | 
+    "confirmLogout" |
     "confirmDelete" |
-    "imageViewer";
+    "imageViewer" |
+    "contentViewer";
 
 // 모달이 추가 될 때마다 ParamsMap 추가
 interface ModalParamsMap {
     loginRequired: undefined;
+
+    confirmLogout: undefined;
+
     confirmDelete: {
         onConfirm: () => void;
         targetName?: string;
     };
+
     imageViewer: {
         images: string[];
         currentIndex?: number;
     };
+
+    contentViewer: {
+        titleText: string;
+        contentText: string;
+    }
 }
 
 interface ModalContextType {

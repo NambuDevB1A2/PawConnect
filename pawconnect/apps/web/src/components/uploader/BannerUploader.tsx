@@ -14,7 +14,9 @@ export default function BannerImageUploader({
     return (
         <ImageUploader
             helperText={helperText}
-            previewBoxClassName={styles.box_preview_banner}
+            wrapperClassName={styles.wrapper_banner}
+            previewClassName={styles.box_preview_banner}
+            previewBoxClassName={styles.box_upper_banner}
             previewImageClassName={styles.box_image_banner}
             {...props}
         />
