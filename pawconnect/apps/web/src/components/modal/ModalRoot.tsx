@@ -5,6 +5,7 @@ import { ModalContext } from '../../providers/ModalProvider';
 import LoginRequiredModal from "@/components/modal/LoginRequiredModal";
 import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal";
 import ImageViewerModal from "@/components/modal/ImageViewerModal";
+import ContentViewerModal from "@/components/modal/ContentViewerModal";
 
 export default function ModalRoot() {
     const { activeModal, params, closeModal } = useContext(ModalContext);
@@ -28,6 +29,13 @@ export default function ModalRoot() {
                 onClose={closeModal}
                 images={activeModal === "imageViewer" ? params?.images : undefined}
                 currentIndex={activeModal === "imageViewer" ? params?.currentIndex : undefined}
+                />
+            
+            <ContentViewerModal
+                isOpen={activeModal === "contentViewer"}
+                onClose={closeModal}
+                titleText={activeModal === "contentViewer" ? params?.titleText : undefined}
+                contentText={activeModal === "contentViewer" ? params?.contentText : undefined}
                 />
         </div>
     );

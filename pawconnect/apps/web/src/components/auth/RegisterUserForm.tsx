@@ -9,14 +9,17 @@ import Section from "@/components/common/Section";
 import CheckBox from "@/components/common/CheckBox";
 import { RegisterUserState } from "@/types/auth/register.type";
 import { RegisterUser } from "@/services/auth/register-user.client";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { validateNickname, validatePassword, validateRePassword } from "@/utils/auth/auth.validator";
+import { ModalContext } from "@/providers/ModalProvider";
+import { TERMS_MESSAGES } from "@/constants/messages/Terms";
 
 const initialState: RegisterUserState = { };
 
 export default function RegisterUserForm() {
     const [state, formAction, isPending] = useActionState(RegisterUser, initialState);
+    const { openModal } = useContext(ModalContext);
     const router = useRouter();
 
     const [password, setPassword] = useState("");
@@ -42,6 +45,15 @@ export default function RegisterUserForm() {
         const value = e.target.value;
         setClientErrors((prev) => ({ ...prev, nickname: validateNickname(value) }));
     };
+
+    // 이용약관, 개인정보 처리방침 모달
+    const handleOpenTermsOfService = () => {
+        openModal("contentViewer", { titleText: TERMS_MESSAGES.termsOfService.title, contentText: TERMS_MESSAGES.termsOfService.content });
+    }
+
+    const handleOpenPrivacyPolicy = () => {
+        openModal("contentViewer", { titleText: TERMS_MESSAGES.privacyPolicy.title, contentText: TERMS_MESSAGES.privacyPolicy.content });
+    }
 
     // 성공 반환시 로그인 화면으로 이동
     useEffect(() => {
@@ -99,9 +111,9 @@ export default function RegisterUserForm() {
                 
                 <div className={styles.box_agreement}>
                     <CheckBox name="agreedToTerms">
-                        <Button variant="text" type="button">이용약관</Button>
+                        <Button variant="text" type="button" onClick={handleOpenTermsOfService}>이용약관</Button>
                         &nbsp;및&nbsp;
-                        <Button variant="text" type="button">개인정보 처리방침</Button>
+                        <Button variant="text" type="button" onClick={handleOpenPrivacyPolicy}>개인정보 처리방침</Button>
                         에 동의합니다
                     </CheckBox>
                 </div>
