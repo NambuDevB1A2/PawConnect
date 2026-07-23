@@ -8,6 +8,7 @@ import { UPLOADER_MESSAGES } from "@/constants/messages/Uploader";
 import PreviewImage from "@/components/uploader/PreviewImage";
 
 export interface ImagesUploaderProps {
+    name?: string;
     labelText?: string;
     helperText?: string;
     errorText?: string;
@@ -20,6 +21,7 @@ export interface ImagesUploaderProps {
 }
 
 export default function ImagesUploader({
+    name,
     labelText,
     helperText = UPLOADER_MESSAGES.array.helper,
     errorText,
@@ -61,6 +63,7 @@ export default function ImagesUploader({
                     <input
                         ref={inputRef}
                         type="file"
+                        name={name}
                         multiple
                         accept={accept}
                         disabled={disabled}

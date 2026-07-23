@@ -1,13 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, Length } from "class-validator";
+import { IsEmail, IsString, MaxLength, MinLength } from "class-validator";
 
 export class LoginAuthDto {
     @ApiProperty({ example: "example@email.com" })
-    @IsString()
+    @IsEmail()
     email: string;
 
     @ApiProperty({ example: "a123456789!" })
     @IsString()
-    @Length(6, 30)
+    @MinLength(6)
+    @MaxLength(30)
     password: string;
 }

@@ -1,3 +1,4 @@
+import AppImage from "@/components/common/AppImage";
 import IconButton from "@/components/common/IconButton";
 import Typography from "@/components/common/Typography";
 import styles from "@/styles/uploader/PreviewImage.module.css"
@@ -20,7 +21,7 @@ export default function PreviewImage({
     return (
         <div className={styles.box_preview}>
             <div className={styles.box_image}>
-                <img className={`${styles.img_preview} ${previewImageClassName}`} src={previewUrl}/>
+                <AppImage className={`${styles.img_preview} ${previewImageClassName}`} src={previewUrl} disabledDomain/>
             </div>
             <div className={`${styles.box_upper} ${previewBoxClassName}`}>
                 <Typography 

@@ -24,6 +24,12 @@ export function useImagesUploader(
         return () => { urls.forEach((url) => URL.revokeObjectURL(url)) };
     }, [internalFiles]);
 
+    const syncInputFiles = (files: File[]) => {
+        const dataTransfer = new DataTransfer();
+        files.forEach((file) => dataTransfer.items.add(file));
+        if (inputRef.current) inputRef.current.files = dataTransfer.files;
+    }
+
     const validateFiles = (files: File[]) => {
         if (internalFiles.length + files?.length > maxFiles) {
             setInternalError(maxFiles + UPLOADER_MESSAGES.default.error.not_count);
@@ -51,16 +57,19 @@ export function useImagesUploader(
 
         const files = Array.from(fileList);
         const validated = validateFiles(files);
-        if (!validated) return;
+        if (!validated) {
+            syncInputFiles(internalFiles);
+            return;
+        }
 
         const nextFiles = [...internalFiles, ...validated];
         setInternalFiles(nextFiles);
+        syncInputFiles(nextFiles);
         onChange?.(nextFiles);
     }
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         addFile(e.target.files);
-        if (inputRef.current) inputRef.current.value = "";
     };
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -85,6 +94,7 @@ export function useImagesUploader(
         if (inputRef.current) inputRef.current.value = "";
         const nextFiles = internalFiles.filter((_, i) => i !== index);
         setInternalFiles(nextFiles);
+        syncInputFiles(nextFiles);
         setInternalError(null);
         onChange?.(nextFiles);
     };

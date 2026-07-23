@@ -2,13 +2,14 @@
 
 import IconButton from "@/components/common/IconButton";
 import Typography from "@/components/common/Typography";
-import { User } from "@/types/auth/user.type";
+import { User } from "@/types/user.type";
 import styles from "@/styles/layout/Header.module.css"
 import Button from "@/components/common/Button";
 import { useRouter } from "next/navigation";
 import { Logout } from "@/services/auth/logout.server";
 import { useEffect, useRef, useState } from "react";
 import { Enums } from "@/types/enum";
+import AppImage from "@/components/common/AppImage";
 
 interface HeaderUserProps {
     user: User | undefined;
@@ -74,7 +75,7 @@ export default function HeaderUser({ user }: HeaderUserProps) {
         <div className={styles.box_mypage} ref={boxRef}>
         {user ?
             <div className={styles.box_user}>
-                <img className={styles.img_profile} src={`http://localhost:3001/${user?.imgProfile}`}/>
+                <AppImage className={styles.img_profile} src={user?.imgProfile}/>
                 <Typography className={styles.nickname} weight="semibold">{user?.nickname}</Typography>
                 <IconButton 
                     className={`${styles.btn_menu} ${isOpen ? styles.icon_chevron_open : styles.icon_chevron}`} 
