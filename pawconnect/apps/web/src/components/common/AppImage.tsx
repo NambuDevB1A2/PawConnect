@@ -1,11 +1,21 @@
+'use client';
+
 import { ENV } from "@/constants/env";
-import { ImgHTMLAttributes, useState } from "react";
+import { ImgHTMLAttributes, useEffect, useState } from "react";
 
 interface AppImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> {
     src?: string | null;
     fallbackSrc?: string;
     disabledDomain?: boolean;
     alt?: string;
+}
+
+function resolveSrc(src: string, disabledDomain: boolean) {
+    if (disabledDomain || /^https?:\/\//.test(src) || /^http?:\/\//.test(src)) {
+        return src;
+    }
+
+    return `${ENV.API_URL}/${src}`;
 }
 
 export default function AppImage({
@@ -16,9 +26,12 @@ export default function AppImage({
     ...props
 }: AppImageProps) {
     const [hasError, setHasError] = useState(false);
-    const resolvedSrc = 
-        !src || hasError ? fallbackSrc : 
-        (!disabledDomain ? `${ENV.API_URL}/${src}` : src);
+
+    useEffect(() => {
+        setHasError(false);
+    }, [src]);
+
+    const resolvedSrc = !src || hasError ? fallbackSrc : resolveSrc(src, disabledDomain);
 
     return (
         <img

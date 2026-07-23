@@ -20,8 +20,6 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
     const imgBanner = formdata.get('imgBanner') as File;
     const imgShelter = formdata.getAll('imgShelter') as File[];
 
-    console.log(name, address, phone);
-
     // 1. 값 유무 검사
     if (!email || !password || !nickname ||
         !name || !address || !phone

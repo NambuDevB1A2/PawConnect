@@ -88,6 +88,6 @@ export class AuthService {
     // 로그아웃
     async logout(auth: AuthRequest) {
         // TODO: 블랙리스트 토큰 로직 구현
-        return { success: false, auth };
+        return { success: true, auth };
     }
 }
