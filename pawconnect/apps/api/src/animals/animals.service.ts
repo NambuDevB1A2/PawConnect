@@ -1,8 +1,7 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AnimalCardDto, GetAnimalsQueryDto, GetAnimalsResponseDto } from './dto/get-animals.dto';
 import { Prisma } from '@prisma/client';
-import { boolean } from 'joi';
 
 
 // 보호동물 목록 한 페이지당 조회 개수
@@ -30,9 +29,8 @@ export class AnimalsService {
     // status: animal.animalStatus
 
     // 보호동물 목록 조회
-    // GET /animals
-    // (페이지네이션 + 검색 + 필터)
-    async getAnimals(query: GetAnimalsQueryDto) : Promise<GetAnimalsResponseDto>{
+    // GET /animals (페이지네이션 + 검색 + 필터)
+    async getAnimals(query: GetAnimalsQueryDto): Promise<GetAnimalsResponseDto> {
 
         //(페이지네이션) 현재 Page 계산
         const page = query.page ?? 1;
@@ -45,7 +43,6 @@ export class AnimalsService {
         /**
          * 검색 조건
          */
-
         // keyword 검색(보호동물 이름 또는 보호소 이름 검색)
         if (query.keyword) {
             where.OR = [{
@@ -59,6 +56,9 @@ export class AnimalsService {
             ];
         }
 
+        /**
+         * 필터 조건
+         */
         // species 동물종류
         if (query.species) {
             where.species = query.species;
@@ -105,7 +105,7 @@ export class AnimalsService {
         }
 
         /**
-         * DB 조회
+         * 보호동물 목록 및 전체 개수 조회
          */
         const [animals, totalCount] = await Promise.all([
             this.prisma.animal.findMany({
@@ -124,27 +124,27 @@ export class AnimalsService {
             })
         ]);
 
-        // 동물카드 
+        // (동물카드) 응답 DTO변환
         const items: AnimalCardDto[] = animals.map((animal) => ({
-                id: animal.id,
-                imgThumbnail: animal.imgThumbnail,
-                status: animal.animalStatus,
-                species: animal.animalSpecies.name,
-                breed: animal.animalBreed.name,
-                name: animal.name,
-                gender: animal.gender,
-                isNeutered: animal.isNeutered,
-                age: animal.age,
-                isEstimatedAge: animal.isEstimatedAge,
-                weight: Number(animal.weight),
-                shelterName: animal.shelter.name,
-                createdAt: animal.createdAt,
-            }));
+            id: animal.id,
+            imgThumbnail: animal.imgThumbnail,
+            status: animal.animalStatus,
+            species: animal.animalSpecies.name,
+            breed: animal.animalBreed.name,
+            name: animal.name,
+            gender: animal.gender,
+            isNeutered: animal.isNeutered,
+            age: animal.age,
+            isEstimatedAge: animal.isEstimatedAge,
+            weight: Number(animal.weight),
+            shelterName: animal.shelter.name,
+            createdAt: animal.createdAt,
+        }));
         // 전체 페이지 수
         const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
         /**
-         * 응답 DTO 반환
+         * 페이지네이션 벙보와 함께 반환
          */
         return {
             items,
@@ -152,5 +152,11 @@ export class AnimalsService {
             totalPages,
             totalCount,
         };
+    }
+
+    // 보호동물 상세 조회
+    async findOne(){
+        
+        return ;
     }
 }

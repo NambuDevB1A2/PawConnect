@@ -21,13 +21,13 @@ export class GetAnimalsQueryDto {
     @IsString()
     keyword?: string;
     
-    @ApiPropertyOptional({example: 2, description: "동물 종류 ID"})
+    @ApiPropertyOptional({example: 1, description: "동물 종류 ID"})
     @IsOptional()
     @Type(()=> Number)
     @IsNumber()
     species?: number;
     
-    @ApiPropertyOptional({example: 13, description: "동물 품종 ID"})
+    @ApiPropertyOptional({example: 8, description: "동물 품종 ID"})
     @IsOptional()
     @Type(()=> Number)
     @IsNumber()
@@ -44,30 +44,23 @@ export class GetAnimalsQueryDto {
     @IsBoolean()
     isNeutered?:boolean;
     
-    // 나이 필터(프론트 드롭다운 값)
-    // 1: 0~6개월
-    // 2: 6개월~1년
-    // 3: 1~7세
-    // 4: 7세 이상
-    // 5: 확인 불가
-    @ApiPropertyOptional({example: 2, description: "나이 필터(1~5)"})  //enum: AnimalAgeFilter,
+    @ApiPropertyOptional({example: 2, description: "나이 필터(1~5)"})
     @IsOptional()
-    //@IsEnum(AnimalAgeFilter)
     @Type(() => Number)
     @IsNumber()
     ageFilter?: number;
     
-    @ApiPropertyOptional({example: AnimalStatus.ADOPTED, description: "입양 상태"})
+    @ApiPropertyOptional({example: AnimalStatus.AVAILABLE, description: "입양 상태"})
     @IsOptional()
     @IsEnum(AnimalStatus)
     status?: AnimalStatus;
     
-    @ApiPropertyOptional({example: 2, description: "페이지 번호 기본값 1"})
+    @ApiPropertyOptional({example: 1, default:1, description: "페이지 번호 기본값 1"})
     @IsOptional()
     @Type(() => Number)
     @IsNumber()
     @Min(1)
-    page = 1;
+    page?:number;
 }
 
 /**
