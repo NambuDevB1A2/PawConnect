@@ -37,6 +37,22 @@ export class AnimalsService {
             images?: Express.Multer.File[];
         },
     ){
+        // 썸네일 업로드
+        //const thumbnail = await this
+
+
+//         // 1. 썸네일 업로드
+// const thumbnail = await this.azureBlob.uploadPublic(
+//   files.imgThumbnail[0],
+//   UPLOAD_DIR.animalThumbnailDir,
+// );
+
+// // 2. 상세 이미지들 업로드
+// const images = await Promise.all(
+//   files.images.map(file =>
+//     this.azureBlob.uploadPublic(file, UPLOAD_DIR.animalImageDir),
+//   ),
+// );
         //1 보호소 관리자 조회
         // shelterId 확인
         // thumbnail 업로드
