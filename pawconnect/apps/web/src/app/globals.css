@@ -365,6 +365,9 @@ main {
 
     /* Slider */
     --slider-transition-transform: 0.3s;
+
+    /* Side Menu */
+    --sidemenu-width: 240px;
 }
 
 a {

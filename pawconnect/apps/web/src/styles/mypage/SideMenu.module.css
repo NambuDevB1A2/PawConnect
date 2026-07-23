@@ -1,0 +1,60 @@
+.wrapper_layout {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-900);
+    
+    width: var(--sidemenu-width);
+    padding-left: var(--spacing);
+
+    border-right: 1 solid;
+    border-color: var(--color-border);
+}
+
+.wrapper_side_menu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+}
+
+.box_menu_group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+}
+
+.btn_side {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: var(--spacing-100) var(--spacing-200);
+    border-radius: var(--button-radius);
+
+    width: var(--button-width-l);
+    height: var(--button-height-l);
+
+    color: var(--color-text-secondary);
+    text-decoration: none;
+
+    transition: 
+        background-color var(--transition-background-color), 
+        color var(--transition-color);
+}
+
+.btn_side:hover {
+    background-color: var(--color-background);
+}
+
+.btn_side_active {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+.box_submenu {
+    display: flex;
+    flex-direction: column;
+
+    margin-left: var(--spacing-500);
+    padding-right: -(var(--spacing-300));
+    gap: var(--spacing-100);
+}
