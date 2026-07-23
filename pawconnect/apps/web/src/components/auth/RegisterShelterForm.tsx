@@ -165,7 +165,7 @@ export default function RegisterShelterForm() {
                             name="addressDetail" defaultValue={state.addressDetail}
                             labelText="상세 주소" 
                             helperText="상세 주소를 입력해주세요"
-                            errorText={clientErrors.shelterAddress ?? state.addressDetailError}
+                            errorText={clientErrors.shelterAddressDetail ?? state.addressDetailError}
                             onChange={handleShelterAddressDetail}
                             />
                         <Input 
