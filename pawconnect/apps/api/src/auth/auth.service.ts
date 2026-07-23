@@ -50,11 +50,13 @@ export class AuthService {
     // 회원가입 - 보호소 관리자
     async registerShelter(registerShelterAuthDto: RegisterShelterAuthDto, 
         imgProfile?: Express.Multer.File, imgBanner?: Express.Multer.File, imgShelter?: Express.Multer.File[]) {
+        const shelterImagesBlob = await this.sheltersService.uploadImages(imgShelter);
+
         return await this.prisma.$transaction(async (tx) => {
             // 보호소 생성
             const shelter = await this.sheltersService.create(tx, registerShelterAuthDto, imgBanner);
             // 이미지 새로 저장
-            const shelterImages = await this.sheltersService.createImages(tx, shelter.id, imgShelter);
+            const shelterImages = await this.sheltersService.createImages(tx, shelter.id, shelterImagesBlob.map((img) => img.blobName));
             // 사용자 생성
             const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, imgProfile, shelter.id);
 

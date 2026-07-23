@@ -1,5 +1,6 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsOptional, IsString, MaxLength } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsArray, IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
 
 export class UpdateShelterDataDto {
     @ApiPropertyOptional({ example: "서울행복동물보호소" })
@@ -42,7 +43,19 @@ export class UpdateShelterDataDto {
 }
 
 export class UpdateShelterDto extends UpdateShelterDataDto {
+    @ApiPropertyOptional({ example: false })
+    @IsOptional()
+    @Transform(({ value }) => value === "true" || value === true)
+    @IsBoolean()
+    imgBannerRemoved?: boolean;
+    
     @ApiPropertyOptional({ type: 'string', format: 'binary', isArray: true, })
     @IsOptional()
     imgShelter: any[];
+
+    @ApiPropertyOptional()
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true })
+    imgShelterKeeps?: string[];
 }

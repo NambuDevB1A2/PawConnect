@@ -36,8 +36,7 @@ export class UsersController {
         @CurrentAuth() auth: AuthRequest, 
         @Body() updateUserDto: UpdateUserDto,
         @UploadedFile() imgProfile?: Express.Multer.File) {
-        return cleanupOnError([imgProfile].filter(isDefined), () => 
-            this.usersService.update(auth, updateUserDto, imgProfile));
+        return this.usersService.update(auth, updateUserDto, imgProfile);
     }
 
     // 비밀번호 변경

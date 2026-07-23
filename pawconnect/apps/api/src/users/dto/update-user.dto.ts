@@ -1,13 +1,8 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsOptional, IsString, Length } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsBoolean, IsOptional, IsString, Length } from "class-validator";
 
 export class UpdateUserDto {
-    @ApiPropertyOptional({ example: "a123456789!" })
-    @IsOptional()
-    @IsString()
-    @Length(6, 30)
-    password: string;
-
     @ApiPropertyOptional({ example: "유저1234" })
     @IsOptional()
     @IsString()
@@ -17,4 +12,10 @@ export class UpdateUserDto {
     @ApiPropertyOptional({ type: 'string', format: 'binary' })
     @IsOptional()
     imgProfile: any;
+    
+    @ApiPropertyOptional({ example: false })
+    @IsOptional()
+    @Transform(({ value }) => value === "true" || value === true)
+    @IsBoolean()
+    imgProfileRemoved?: boolean;
 }

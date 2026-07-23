@@ -35,10 +35,7 @@ export class AuthController {
     registerUser(
         @Body() registerAuthDto: RegisterUserAuthDto,
         @UploadedFile() imgProfile?: Express.Multer.File) {
-
-        // cleanupOnError로 애러 발생시 업로드된 이미지 파일 삭제
-        return cleanupOnError([imgProfile].filter(isDefined), () => 
-            this.authService.registerUser(registerAuthDto, imgProfile));
+        return this.authService.registerUser(registerAuthDto, imgProfile);
     }
     
     // 회원가입 - 보호소 관리자 (ROLE.SHELTER)
@@ -71,9 +68,7 @@ export class AuthController {
         const imgBanner = file.imgBanner?.[0];
         const imgShelter = file.imgShelter ? file.imgShelter : [];
 
-        // cleanupOnError로 애러 발생시 업로드된 이미지 파일 삭제
-        return cleanupOnError([imgProfile, imgBanner, ...imgShelter].filter(isDefined), () => 
-            this.authService.registerShelter(registerShelterAuthDto, imgProfile, imgBanner, imgShelter));
+        return this.authService.registerShelter(registerShelterAuthDto, imgProfile, imgBanner, imgShelter);
     }
 
     // 로그인

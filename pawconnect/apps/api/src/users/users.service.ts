@@ -1,5 +1,4 @@
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
-import { removeFile } from '@/common/utils/upload.util';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateUserDataDto } from '@/users/dto/create-user.dto';
@@ -11,6 +10,14 @@ import { AzureBlobService } from '../azure/azure-blob/azure-blob.service';
 import { ConfigService } from '@nestjs/config';
 import { UpdatePasswordDto } from '@/users/dto/update-password.dto';
 import * as bcrypt from 'bcrypt';
+
+function getDefaultProfile() {
+    return `${UPLOAD_DIR.userProfileDir}/default_profile.png`;
+}
+
+function isDefaultProfile(blobName: string) {
+    return blobName === getDefaultProfile();
+}
 
 @Injectable()
 export class UsersService {
@@ -61,8 +68,7 @@ export class UsersService {
 
         // blob 스토리지에 이미지 업로드
         const { blobName, url } = imgProfile ? 
-            await this.azureBlob.uploadPublic(imgProfile, UPLOAD_DIR.userProfileDir) : 
-            { blobName: `${UPLOAD_DIR.userProfileDir}/default_profile.png`};
+            await this.azureBlob.uploadPublic(imgProfile, UPLOAD_DIR.userProfileDir) : { blobName: getDefaultProfile() };
 
         // 1. 신규 유저 생성
         const user = await tx.user.create({
@@ -103,21 +109,37 @@ export class UsersService {
     // UPDATE
     async update(auth: AuthRequest, updateUserDto: UpdateUserDto, imgProfile?: Express.Multer.File) {
         const prevUser = await this.find(auth.id);
-        const imgProfilePath = imgProfile ? imgProfile.path : prevUser.imgProfile;
 
-        // 1. 유저 정보 업데이트
+        let imgProfilePath = prevUser.imgProfile;
+        let imgProfileOld: string | null = null;
+
+        // 1. 새로운 파일 업로드
+        // 새로운 이미지로 교체
+        if (imgProfile) {
+            const uploaded = await this.azureBlob.uploadPublic(imgProfile, UPLOAD_DIR.userProfileDir);
+            imgProfilePath = uploaded.blobName;
+            if (!isDefaultProfile(prevUser.imgProfile)) {
+                imgProfileOld = prevUser.imgProfile;
+            }
+        } 
+        // 기존 이미지만 삭제
+        else if (updateUserDto.imgProfileRemoved) {
+            imgProfileOld = prevUser.imgProfile;
+            imgProfilePath = getDefaultProfile();
+        }
+
+        // 2. 유저 정보 업데이트
         const user = await this.prisma.user.update({
             where: { id: auth.id },
             data: {
-                ...updateUserDto,
+                nickname: updateUserDto.nickname,
                 imgProfile: imgProfilePath,
             },
             select: USER_SELECT,
         });
 
-        // TODO: blob 이미지 지우기
-        // 2. 프로필 변경시 이전 프로필 이미지 삭제
-        // if (imgProfile) await removeFile(prevUser.imgProfile);
+        // 3. DB 저장 성공 후에 실제 파일 삭제
+        if (imgProfileOld) await this.azureBlob.deleteBlob(imgProfileOld);
 
         return { success: true, user };
     }
