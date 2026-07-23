@@ -1,7 +1,10 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AnimalCardDto, GetAnimalsQueryDto, GetAnimalsResponseDto } from './dto/get-animals.dto';
 import { Prisma } from '@prisma/client';
+import { AnimalDetailResponseDto } from './dto/get-animals-detail.dto';
+import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
+import { CreateAnimalDto } from './dto/create-animals.dto';
 
 
 // 보호동물 목록 한 페이지당 조회 개수
@@ -20,13 +23,39 @@ export enum AnimalAgeFilter {
 export class AnimalsService {
     constructor(private readonly prisma: PrismaService) { };
 
-    // GET /animals/:id
-    // POST /animals
     // PATCH /animals/:id
     // PATCH /animals/:id/status
     // DELETE /animals/:id
 
     // status: animal.animalStatus
+
+    // 보호동물 등록
+    // POST /animals
+    async create(auth: AuthRequest, createAnimalDto: CreateAnimalDto,
+        files:{
+            imgThumbnail?: Express.Multer.File[];
+            images?: Express.Multer.File[];
+        },
+    ){
+        //1 보호소 관리자 조회
+        // shelterId 확인
+        // thumbnail 업로드
+
+        // images 업로드
+        // Animal 생성
+
+        // AnimalDetail 생성
+        // AnimalImage createMany
+        // transaction commit
+
+        // Multipart 처리
+        // Transaction
+        // Azure 업로드
+        // Animal / Detail / Image 동시 생성
+        return{
+
+        };
+    }
 
     // 보호동물 목록 조회
     // GET /animals (페이지네이션 + 검색 + 필터)
@@ -155,8 +184,45 @@ export class AnimalsService {
     }
 
     // 보호동물 상세 조회
-    async findOne(){
-        
-        return ;
+    // GET /animals/:id
+    async findOne(id: number): Promise<AnimalDetailResponseDto> {
+        // 조회
+        const animal = await this.prisma.animal.findUnique({
+            where: {id},
+            include: {
+                shelter: true,
+                animalSpecies:true,
+                animalBreed:true,
+                images:true,
+                detail:true,
+            }
+        });
+        // 동물이 없으면 처리
+        if(!animal) throw new NotFoundException('보호동물을 찾을 수 없습니다');
+        // 동물 상세정보 없으면 처리
+        if (!animal.detail) throw new NotFoundException("보호동물 상세 정보가 없습니다.");
+
+        return {
+            id: animal.id,
+            shelterId: animal.shelter.id,     // 보호소 아이디
+            shelterName: animal.shelter.name, // 보호소 이름
+            thumbnail:animal.imgThumbnail,      //보호소 썸네일 이미지
+            images: animal.images.map(image => image.img) , // 보호소 이미지들
+            name: animal.name,      // 보호동물 이름
+            gender: animal.gender,  // 성별
+            isNeutered: animal.isNeutered,   // 중성화
+            species: animal.animalSpecies.name, // 동물종류 이름
+            breed: animal.animalBreed.name,  // 품종
+            age: animal.age,                 // 나이
+            isEstimatedAge: animal.isEstimatedAge,  //나이 추정
+            weight: Number(animal.weight),   // 몸무게
+            noticeStartDate: animal.detail?.noticeStartDate,    // 공고기간-시작일
+            noticeEndDate: animal.detail?.noticeEndDate,    // 공고기간-마감일
+            animalStatus: animal.animalStatus,      // 보호동물상태
+            foundLocation: animal.detail?.foundLocation,    // 발견장소
+            specialNotes: animal.detail?.specialNotes,      // 특이사항
+            description: animal.detail?.description,        // 소개말
+            healthStatus: animal.detail?.healthStatus,      // 건강상태
+        };
     }
 }
