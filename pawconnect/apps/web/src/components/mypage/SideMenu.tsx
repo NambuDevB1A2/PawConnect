@@ -20,13 +20,13 @@ interface MenuItem {
 
 const SIDE_MENU_CONFIG: Record<Enums.Role, MenuItem[]> = {
     [Enums.Role.USER]: [
-        { label: "마이페이지", activePath:"/mypage", path: "/mypage/info" },
-        { label: "내 정보", path: "/mypage/info" },
-        { label: "내 입양 신청", path: "/mypage/adopt" },
-        { label: "내 PawLog", path: "/mypage/pawlog" },
+        { label: "마이페이지", activePath:"/mypage", path: "/", icon: "arrow_left_alt"  },
+        { label: "내 정보", path: "/mypage/info", icon: "person" },
+        { label: "내 입양 신청", path: "/mypage/adopt", icon: "post" },
+        { label: "내 PawLog", path: "/mypage/pawlog", icon: "pets" },
     ],
     [Enums.Role.SHELTER]: [
-        { label: "마이페이지", path: "/mypage/info", icon: "arrow_left_alt" },
+        { label: "마이페이지", activePath:"/mypage", path: "/", icon: "arrow_left_alt"  },
         { label: "내 정보", path: "/mypage/info", icon: "person" },
         { label: "내 PawLog", path: "/mypage/pawlog", icon: "pets" },
         {
@@ -48,24 +48,37 @@ const SIDE_MENU_CONFIG: Record<Enums.Role, MenuItem[]> = {
 
 function isActive(itemPath: string, pathname: string, activePath?: string) {
     if (activePath) {
-        return activePath === itemPath || activePath.startsWith(`${itemPath}/`);
+        return pathname === activePath || pathname.startsWith(`${activePath}`);
     }
     
-    return pathname === itemPath || pathname.startsWith(`${itemPath}/`);
+    return pathname === itemPath || pathname.startsWith(`${itemPath}`);
 }
 
-function MenuLink({ item, pathname, activePath }: { item: MenuItem; pathname: string; activePath?: string; }) {
-    const active = isActive(item.path, pathname, activePath);
+function MenuLink({
+    item,
+    pathname,
+    activePath,
+    className = "",
+}: {
+    item: MenuItem;
+    pathname: string;
+    activePath?: string;
+    className?: string;
+}) {
+  const active = isActive(item.path, pathname, activePath);
 
-    return (
-        <Link
-            href={item.path}
-            className={`${styles.btn_side} ${active ? styles.btn_side_active : ""}`}
-            >
-            {item.icon && <Icon name={item?.icon}/>}
-            {item.label}
-        </Link>
-    );
+  return (
+    <Link
+      href={item.path}
+      className={`${styles.btn_side} ${active ? styles.btn_side_active : ""} ${className}`}
+    >
+      {item.icon && (
+        <Icon className={`${styles.icon_side} ${active ? styles.icon_side_active : ""}`} name={item?.icon}
+        />
+      )}
+      {item.label}
+    </Link>
+  );
 }
 
 export default function SideMenu() {
@@ -86,12 +99,17 @@ export default function SideMenu() {
         <nav className={styles.wrapper_side_menu}>
             {menuItems.map((item) => (
                 <div key={`${item.path}${item?.activePath}`} className={styles.box_menu_group}>
-                    <MenuLink item={item} pathname={pathname} />
+                    <MenuLink item={item} pathname={pathname} activePath={item.activePath} />
 
                     {item.children && (
                         <div className={styles.box_submenu}>
                             {item.children.map((child) => (
-                                <MenuLink key={`${child.path}${child?.activePath}`} item={child} pathname={pathname} />
+                                <MenuLink 
+                                    key={`${child.path}${child?.activePath}`}
+                                    className={styles.btn_child}
+                                    item={child} 
+                                    pathname={pathname} 
+                                    activePath={child.activePath} />
                             ))}
                         </div>
                     )}
@@ -103,7 +121,7 @@ export default function SideMenu() {
                 className={styles.btn_side}
                 onClick={handleLogout}
             >
-                <Icon name="exit_to_app"/>
+                <Icon className={styles.icon_side} name="exit_to_app"/>
                 로그아웃
             </Button>
         </nav>

@@ -41,7 +41,12 @@
 }
 
 .btn_side:hover {
-    background-color: var(--color-background);
+    background-color: var(--color-primary-200);
+    color: var(--color-primary);
+}
+
+.btn_side:hover .icon_side {
+    color: var(--color-primary);
 }
 
 .btn_side_active {
@@ -50,11 +55,21 @@
     font-weight: var(--font-weight-bold);
 }
 
+.icon_side_active {
+    color: var(--color-primary);
+}
+
 .box_submenu {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-100);
 
     margin-left: var(--spacing-500);
-    padding-right: -(var(--spacing-300));
-    gap: var(--spacing-100);
+    padding-left: var(--spacing-200);
+
+    border-left: 1px solid var(--color-border);
+}
+
+.btn_child {
+    width: 100%;
 }
