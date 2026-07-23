@@ -3,7 +3,7 @@
 
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { AnimalGender, AnimalStatus } from "@prisma/client";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsOptional, IsString, MaxLength, Min } from "class-validator";
 
 // GET /animals
@@ -16,11 +16,13 @@ export class GetAnimalsQueryDto {
     @ApiPropertyOptional({example: 2, description: "동물 종류ID"})
     @IsOptional()
     @Type(()=> Number)
+    @IsNumber()
     species?: number;
     
     @ApiPropertyOptional({example: 13, description: "동물 품종 선택(리트리버, 코숏 등)"})
     @IsOptional()
     @Type(()=> Number)
+    @IsNumber()
     breed?: number;
     
     @ApiPropertyOptional({example: AnimalGender.MALE, description: "동물 성별 선택(남아, 여아)"})
@@ -30,16 +32,21 @@ export class GetAnimalsQueryDto {
 
     @ApiPropertyOptional({example: true, description: "동물 중성화 여부"})
     @IsOptional()
-    @Type(()=> Boolean)
+    @Transform(({value}) => value === 'true')
     isNeutered?:boolean;
     
-    @ApiPropertyOptional({example: 3,
-            description: "나이 필터",
-            })  //enum: AnimalAgeFilter,
+    // 프론트 드롭다운 값
+  // 1: 0~6개월
+  // 2: 6개월~1년
+  // 3: 1~7세
+  // 4: 7세 이상
+  // 5: 확인 불가
+    @ApiPropertyOptional({example: 2, description: "나이 필터(1~5)"})  //enum: AnimalAgeFilter,
     @IsOptional()
     //@IsEnum(AnimalAgeFilter)
     @Type(() => Number)
-    age?: number;
+    @IsNumber()
+    ageFilter?: number;
     
     @ApiPropertyOptional({example: AnimalStatus.ADOPTED, description: "입양 상태"})
     @IsOptional()
@@ -49,6 +56,7 @@ export class GetAnimalsQueryDto {
     @ApiPropertyOptional({example: 2, description: "페이지 번호 기본값 1"})
     @IsOptional()
     @Type(() => Number)
+    @IsNumber()
     @Min(1)
     page = 1;
 }
@@ -56,7 +64,6 @@ export class GetAnimalsQueryDto {
 //동물 카드용 Response 응답
 export class AnimalCardDto {
     @ApiProperty({example: 1, description: "동물 카드 아이디"})
-    @IsNumber()
     id: number;
 
     @ApiProperty({example: "/uploads/animal/thumbnail.jpg", 
