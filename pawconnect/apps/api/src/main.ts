@@ -4,18 +4,21 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from '@/app.module';
 import cookieParser from 'cookie-parser';
-import { mkdirSync } from 'fs';
-import { UPLOAD_DIR } from '@/config/upload.config';
+// import { mkdirSync } from 'fs';
+// import { UPLOAD_DIR } from '@/config/upload.config';
 import { customValidationPipe } from '@/common/pipe/validation.pipe';
+import { config as loadEnv } from 'dotenv';
+
+loadEnv();
 
 async function bootstrap() {
   // Upload Dir
-  mkdirSync(UPLOAD_DIR.dir, { recursive: true });
-  mkdirSync(UPLOAD_DIR.userProfileDir, { recursive: true });
-  mkdirSync(UPLOAD_DIR.shelterBannerDir, { recursive: true });
-  mkdirSync(UPLOAD_DIR.shelterImgDir, { recursive: true });
-  mkdirSync(UPLOAD_DIR.animalImgDir, { recursive: true });
-  mkdirSync(UPLOAD_DIR.petpostImgDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.dir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.userProfileDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.shelterBannerDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.shelterImgDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.animalImgDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.petpostImgDir, { recursive: true });
 
   const app = await NestFactory.create(AppModule);
   

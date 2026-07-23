@@ -7,6 +7,7 @@ import { SheltersModule } from '@/shelters/shelters.module';
 import { AuthService } from '@/auth/auth.service';
 import { JwtStrategy } from '@/auth/strategies/jwt.strategy';
 import { AuthController } from '@/auth/auth.controller';
+import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
 
 @Module({
   imports: [

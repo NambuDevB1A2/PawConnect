@@ -6,6 +6,7 @@ import LoginRequiredModal from "@/components/modal/LoginRequiredModal";
 import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal";
 import ImageViewerModal from "@/components/modal/ImageViewerModal";
 import ContentViewerModal from "@/components/modal/ContentViewerModal";
+import ConfirmLogoutModal from "@/components/modal/ConfirmLogoutModal";
 
 export default function ModalRoot() {
     const { activeModal, params, closeModal } = useContext(ModalContext);
@@ -15,6 +16,11 @@ export default function ModalRoot() {
         <div>
             <LoginRequiredModal 
                 isOpen={activeModal === "loginRequired"} 
+                onClose={closeModal}
+                />
+
+            <ConfirmLogoutModal
+                isOpen={activeModal === "confirmLogout"} 
                 onClose={closeModal}
                 />
 

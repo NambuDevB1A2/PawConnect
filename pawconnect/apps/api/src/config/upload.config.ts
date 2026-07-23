@@ -1,4 +1,4 @@
-import { diskStorage } from 'multer';
+import { diskStorage, memoryStorage } from 'multer';
 import { extname } from 'path';
 import { randomUUID } from 'crypto';
 import { BadRequestException } from '@nestjs/common';
@@ -25,10 +25,11 @@ const imageFileFilter = (_req, file, callback) => {
 
 export function createImageUploadOptions(destination: string) {
     return {
-        storage: diskStorage({
-            destination: destination,
-            filename: imageFilename,
-        }),
+        // storage: diskStorage({
+        //     destination: destination,
+        //     filename: imageFilename,
+        // }),
+        storage: memoryStorage(),
         fileFilter: imageFileFilter,
         limits: { fileSize: MAX_FILE_SIZE },
     };
@@ -36,28 +37,29 @@ export function createImageUploadOptions(destination: string) {
 
 export function createFieldsImageUploadOptions(fieldDestinationMap: Record<string, string>) {
     return {
-        storage: diskStorage({
-            destination: (_req, file, callback) => {
-                const dest = fieldDestinationMap[file.fieldname];
-                if (!dest) {
-                    callback(new BadRequestException(), '');
-                    return;
-                }
-                callback(null, dest);
-            },
-            filename: imageFilename,
-        }),
+        // storage: diskStorage({
+        //     destination: (_req, file, callback) => {
+        //         const dest = fieldDestinationMap[file.fieldname];
+        //         if (!dest) {
+        //             callback(new BadRequestException(), '');
+        //             return;
+        //         }
+        //         callback(null, dest);
+        //     },
+        //     filename: imageFilename,
+        // }),
+        storage: memoryStorage(),
         fileFilter: imageFileFilter,
         limits: { fileSize: MAX_FILE_SIZE },
     };
 }
 
 export const UPLOAD_DIR = {
-    dir: "uploads",
-    testDir: "uploads/test",
-    userProfileDir: "uploads/user/profile",
-    shelterBannerDir: "uploads/shelter/banner",
-    shelterImgDir: "uploads/shelter/img",
-    animalImgDir: "uploads/animal/img",
-    petpostImgDir: "uploads/petpost/img",
+    dir: "",
+    testDir: "test",
+    userProfileDir: "user/profile",
+    shelterBannerDir: "shelter/banner",
+    shelterImgDir: "shelter/img",
+    animalImgDir: "animal/img",
+    petpostImgDir: "petpost/img",
 }
