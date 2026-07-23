@@ -9,7 +9,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     helperText?: string;
     defaultValue?: string;
     maxLength?: number;
-    disabledCount: boolean;
+    disabledCount?: boolean;
     wrapperClassname?: string;
 }
 
