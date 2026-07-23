@@ -15,7 +15,7 @@ function resolveSrc(src: string, disabledDomain: boolean) {
         return src;
     }
 
-    return `${ENV.API_URL}/${src}`;
+    return `${ENV.AZURE_STORAGE_DOMAIN}/${ENV.AZURE_PUBLIC_CONTAINER}/${src}`;
 }
 
 export default function AppImage({
