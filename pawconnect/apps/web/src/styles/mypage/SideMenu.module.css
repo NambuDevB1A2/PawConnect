@@ -2,18 +2,19 @@
     display: flex;
     flex-direction: row;
     gap: var(--spacing-900);
-    
-    width: var(--sidemenu-width);
+    width: 100%;
     padding-left: var(--spacing);
-
-    border-right: 1 solid;
-    border-color: var(--color-border);
 }
 
 .wrapper_side_menu {
+    flex-shrink: 0;
+    width: var(--sidemenu-width);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-100);
+
+    padding-right: var(--spacing-500); 
+    border-right: 1px solid var(--color-border);
 }
 
 .box_menu_group {
@@ -29,7 +30,6 @@
     padding: var(--spacing-100) var(--spacing-200);
     border-radius: var(--button-radius);
 
-    width: var(--button-width-l);
     height: var(--button-height-l);
 
     color: var(--color-text-secondary);

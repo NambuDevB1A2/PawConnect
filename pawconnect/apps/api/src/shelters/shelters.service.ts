@@ -21,7 +21,9 @@ export class SheltersService {
     // 보호소 검색 (id)
     async find(id: string, select?: Prisma.ShelterSelect) {
         const shelter = await this.prisma.shelter.findUnique({ where: { id }, select: select});
-        if (!shelter) throw new UnauthorizedException();
+        if (!shelter) throw new UnauthorizedException({
+            message: "존재하지 않는 보호소입니다",
+        });
         
         return shelter;
     }
@@ -35,7 +37,10 @@ export class SheltersService {
     // 보호소 중복 검사 (이름)
     async existsByName(name: string) {
         const shelter = await this.prisma.shelter.findUnique({ where: { name }});
-        if (shelter) throw new UnauthorizedException();
+        if (shelter) throw new UnauthorizedException({
+            message: "이미 사용중인 보호소 이름입니다",
+            fields: { name: "이미 사용중인 보호소 이름입니다" },
+        });
     }
 
     // CREATE
