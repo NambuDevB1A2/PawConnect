@@ -6,7 +6,7 @@ export async function Me() {
     const token = await getAccessToken();
 
     try {
-        return await fetchServer.get<ResponseMe>('/users/me', token, false);
+        return await fetchServer.get<ResponseMe>('/users/me', token, 0);
     } catch (error) {
 
     }
