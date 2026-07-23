@@ -1,7 +1,7 @@
 .wrapper_layout {
     display: flex;
     flex-direction: row;
-    gap: var(--spacing-900);
+    gap: var(--spacing);
     width: 100%;
     padding-left: var(--spacing);
 }

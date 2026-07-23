@@ -54,8 +54,6 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {
-        console.log(error);
-
         if (error instanceof ApiError && error.fields) {
             // 서버에서 온 필드별 에러 매핑
             return {

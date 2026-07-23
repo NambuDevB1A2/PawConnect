@@ -51,6 +51,12 @@
     transform: scale(1) translateY(0);
 }
 
+.box_form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+}
+
 .box_header {
     display: flex;
     flex-direction: column;

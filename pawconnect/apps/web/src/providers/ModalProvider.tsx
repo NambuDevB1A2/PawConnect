@@ -8,7 +8,8 @@ export type ModalKey =
     "confirmLogout" |
     "confirmDelete" |
     "imageViewer" |
-    "contentViewer";
+    "contentViewer" |
+    "changePassword";
 
 // 모달이 추가 될 때마다 ParamsMap 추가
 interface ModalParamsMap {
@@ -29,7 +30,11 @@ interface ModalParamsMap {
     contentViewer: {
         titleText: string;
         contentText: string;
-    }
+    };
+
+    changePassword: {
+
+    };
 }
 
 interface ModalContextType {

@@ -1,10 +1,14 @@
+'use client';
+
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Section from "@/components/common/Section";
 import Typography from "@/components/common/Typography";
 import ProfileImageUploader from "@/components/uploader/ProfileImageUploader";
+import { ModalContext } from "@/providers/ModalProvider";
 import styles from "@/styles/mypage/info.module.css"
 import { User } from "@/types/user.type";
+import { useContext } from "react";
 
 interface InfoFormProps {
     user?: User;
@@ -13,6 +17,12 @@ interface InfoFormProps {
 export default function InfoForm({
     user
 }: InfoFormProps) {
+    const { openModal } = useContext(ModalContext);
+
+    const handleChangePassword = () => {
+        openModal("changePassword", undefined);
+    }
+
     return (
         <Section className={styles.wrapper_info} titleText="내 정보 입력">
 
@@ -41,7 +51,7 @@ export default function InfoForm({
                         />
                     <div className={styles.box_password}>
                         <Typography weight="bold">비밀번호</Typography>
-                        <Button className={styles.btn_password}>변경하기</Button>
+                        <Button className={styles.btn_password} onClick={handleChangePassword}>변경하기</Button>
                     </div>
                 </div>
             </div>

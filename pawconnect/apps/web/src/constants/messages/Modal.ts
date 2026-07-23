@@ -21,5 +21,11 @@ export const MODAL_MESSAGES = {
 
     contentViewer: {
         close: "닫기",
-    }
+    },
+
+    changePassword: {
+        close: "닫기",
+        confirm: "변경하기",
+        changingPassword: "변경하는 중...",
+    },
 }

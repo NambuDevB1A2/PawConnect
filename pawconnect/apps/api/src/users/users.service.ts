@@ -8,11 +8,15 @@ import { USER_SELECT } from '@/users/user.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AzureBlobService } from '../azure/azure-blob/azure-blob.service';
+import { ConfigService } from '@nestjs/config';
+import { UpdatePasswordDto } from '@/users/dto/update-password.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
     constructor (
         private readonly prisma: PrismaService,
+        private readonly configService: ConfigService,
         private readonly azureBlob: AzureBlobService,
     ) {}
 
@@ -91,7 +95,9 @@ export class UsersService {
 
     // READ
     async me(auth: AuthRequest) {
-        return this.find(auth.id, USER_SELECT);
+        const user = await this.find(auth.id, USER_SELECT);
+
+        return { success: true, user };
     }
     
     // UPDATE
@@ -113,6 +119,30 @@ export class UsersService {
         // 2. 프로필 변경시 이전 프로필 이미지 삭제
         // if (imgProfile) await removeFile(prevUser.imgProfile);
 
-        return { user };
+        return { success: true, user };
+    }
+
+    // 비밀번호 변경
+    async updatePassword(auth: AuthRequest, updatePasswordDto: UpdatePasswordDto) {
+        const prevUser = await this.find(auth.id);
+        
+        const isPasswordValid = await bcrypt.compare(updatePasswordDto.prevPassword, prevUser.password);
+        if (!isPasswordValid) throw new UnauthorizedException({
+            message: "비밀번호가 틀렸습니다",
+            fields: { prevPassword: "비밀번호가 틀렸습니다" },
+        });
+
+        const bcryptRound = this.configService.getOrThrow('bcrypt.bcrypt_round');
+        const passwordHash = await bcrypt.hash(updatePasswordDto.newPassword, bcryptRound);
+
+        const user = await this.prisma.user.update({
+            where: { id: auth.id },
+            data: {
+                password: passwordHash,
+            },
+            select: USER_SELECT,
+        });
+
+        return { success: true };
     }
 }
