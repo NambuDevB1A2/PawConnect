@@ -17,6 +17,7 @@ export interface ImageUploaderProps {
     maxSizeMB?: number;
     disabled?: boolean;
     wrapperClassName?: string;
+    previewClassName?: string;
     previewBoxClassName?: string;
     previewImageClassName?: string;
 }
@@ -31,6 +32,7 @@ export default function ImageUploader({
     maxSizeMB = 5,
     disabled = false,
     wrapperClassName = "",
+    previewClassName = "",
     previewBoxClassName = "",
     previewImageClassName = "",
 }: ImageUploaderProps) {
@@ -46,6 +48,7 @@ export default function ImageUploader({
                 <PreviewImage
                     previewUrl={previewUrl}
                     internalFileName={internalFile ? internalFile.name : ""}
+                    previewClassName={previewClassName}
                     previewBoxClassName={previewBoxClassName}
                     previewImageClassName={previewImageClassName}
                     onRemove={handleRemove}/>}
