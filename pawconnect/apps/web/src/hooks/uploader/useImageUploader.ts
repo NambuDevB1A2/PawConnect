@@ -23,6 +23,14 @@ export function useImageUploader(
         return () => { if (url) URL.revokeObjectURL(url) };
     }, [internalFile]);
 
+    useEffect(() => {
+        if (internalFile && inputRef.current?.files?.length === 0) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(internalFile);
+            inputRef.current.files = dataTransfer.files;
+        }
+    });
+
     const validateAndSetFile = (file: File | null) => {
         if (!file) {
             setInternalFile(null);

@@ -52,7 +52,7 @@
 .btn_side_active {
     background-color: var(--color-primary-100);
     color: var(--color-primary);
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
 }
 
 .icon_side_active {

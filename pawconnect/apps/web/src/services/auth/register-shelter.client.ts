@@ -96,6 +96,10 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
         if (imgBanner && imgBanner.size > 0) submitData.append('imgBanner', imgBanner);
         if (imgShelter.length > 0) imgShelter.forEach((file) => { if (file.size > 0) submitData.append('imgShelter', file); })
 
+        console.log(`imgProfile:`, imgProfile);
+        console.log(`imgBanner:`, imgBanner);
+        console.log(`imgShelter:`, imgShelter);
+
         const result = await fetchClient.post<ResponseRegisterShelter>('/auth/register/shelter', submitData);
         
         // Response를 state에 담아서 반환
