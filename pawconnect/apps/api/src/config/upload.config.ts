@@ -60,7 +60,7 @@ export const UPLOAD_DIR = {
     userProfileDir: "user/profile",
     shelterBannerDir: "shelter/banner",
     shelterImgDir: "shelter/img",
-    animalThumbnail: "animal/thumbnail",
+    animalThumbnailDir: "animal/thumbnail",
     animalImgDir: "animal/img",
     petpostImgDir: "petpost/img",
 }

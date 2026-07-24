@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AnimalsService } from './animals.service';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/role.guard';
 import { GetAnimalsQueryDto, GetAnimalsResponseDto } from './dto/get-animals.dto';
@@ -12,6 +12,7 @@ import { CurrentAuth } from '@/auth/decorators/current-auth.decorator';
 import type { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { CreateAnimalDto } from './dto/create-animals.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { createFieldsImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
 
 
 @ApiTags('Animals')
@@ -21,24 +22,35 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 export class AnimalsController {
   constructor(private readonly animalsService: AnimalsService) { }
 
+  // 보호동물 등록
   @Post()
   @Roles(Role.SHELTER)
-  @UseInterceptors(FileFieldsInterceptor([
-    { name: 'imgThumbnail', maxCount: 1 },
-    { name: 'images', maxCount: 10 },
-  ]))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: CreateAnimalDto })
+  @UseInterceptors(
+    // createFieldsImageUploadOptions로 필드별 파일 저장 위치 지정
+    FileFieldsInterceptor([
+      // 파일 필드명으로 구분
+      { name: 'imgThumbnail', maxCount: 1 },
+      { name: 'images', maxCount: 4 },
+    ], createFieldsImageUploadOptions({
+      // 파일 저장 위치, 옵션 지정
+      imgThumbnail: UPLOAD_DIR.animalThumbnailDir,
+      images: UPLOAD_DIR.animalImgDir,
+    })))
   @ApiOperation({ summary: "보호동물 등록" })
   create(
     @CurrentAuth() auth: AuthRequest,
-     @UploadedFiles()
-     files: {
-      imgThumbnail?: Express.Multer.File[];
-      images?: Express.Multer.File[];
-     },
+    @UploadedFiles()
+    files: {
+      imgThumbnail: Express.Multer.File;
+      images: Express.Multer.File[];
+    },
     @Body() createAnimalDto: CreateAnimalDto) {
     return this.animalsService.create(auth, createAnimalDto, files);
   }
 
+  // 보호동물 목록 조회
   @Get()
   @ApiOkResponse({ type: GetAnimalsResponseDto })
   @ApiOperation({ summary: "보호동물 목록 조회" })
@@ -48,6 +60,7 @@ export class AnimalsController {
     return this.animalsService.getAnimals(query);
   }
 
+  // 보호동물 상세조회
   @Get(':id')
   @ApiOkResponse({ type: AnimalDetailResponseDto })
   @ApiOperation({ summary: "보호동물 상세조회" })
@@ -57,14 +70,6 @@ export class AnimalsController {
     return this.animalsService.findOne(id);
   }
 
-
-  //   @Get(':id')
-  //   @ApiOperation({summary:"입양 신청 상세 조회"})
-  //   findOne(
-  //     @CurrentAuth() auth: AuthRequest,
-  //     @Param('id', new ParseUUIDPipe()) id: string) {
-  //     return this.adoptionsService.findOne(auth, id);
-  //   }
 
   //   @Patch(':id/status')
   //   @Roles(Role.SHELTER)

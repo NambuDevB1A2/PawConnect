@@ -7,6 +7,7 @@ import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { CreateAnimalDto } from './dto/create-animals.dto';
 import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
 import { UPLOAD_DIR } from '@/config/upload.config';
+import { error } from 'console';
 
 
 // 보호동물 목록 한 페이지당 조회 개수
@@ -31,9 +32,19 @@ export class AnimalsService {
     // DELETE /animals/:id
     // status: animal.animalStatus
 
+
+    // 썸네일 이미지 업로드
+    private async uploadThumbnail(file:Express.Multer.File){
+        if(!file) throw new BadRequestException("썸네일은 필수입니다");
+
+        return this.azureBlob.uploadPublic(
+            file,
+            UPLOAD_DIR.animalThumbnailDir );
+    }
+
     // 동물 이미지들 업로드
     async uploadImage(files: Express.Multer.File[]) {
-        // 이미지 없으면 예외처리
+        // 이미지 없으면 예외처리(최소1장 이상)
         if (!files || files.length == 0) {
             throw new BadRequestException("동물 이미지는 필수 1장이상입니다");
         }
@@ -45,51 +56,67 @@ export class AnimalsService {
 
     // 보호동물 등록
     // POST /animals
-    async create(auth: AuthRequest, tx: Prisma.TransactionClient, 
-        createAnimalDto: CreateAnimalDto,
+    async create(auth: AuthRequest, createAnimalDto: CreateAnimalDto,
         files: {
             imgThumbnail: Express.Multer.File;
             images: Express.Multer.File[];
         },
     ) {
         // 보호소 관리자 조회
-        const shelterUser = await this.prisma.user.findUnique({
-            where: { id: auth.id },
-            select: { shelterId: true },
-        });
+        const shelterId = auth.shelterId;
 
         // shelterId 확인
-        if (!shelterUser?.shelterId) {
+        if (!shelterId) {
             throw new BadRequestException("보호소 관리자만 등록할 수 있습니다.");
         }
 
+        // azure 업로드
         // 썸네일 업로드
-        if (!files.imgThumbnail) {
-            throw new BadRequestException("썸네일 이미지는 필수입니다");
-        }
-        const thumbnail = await this.azureBlob.uploadPublic(
-            files.imgThumbnail,
-            UPLOAD_DIR.animalThumbnail,
-        );
-
+        const thumbnail = await this.uploadThumbnail(files.imgThumbnail);
         // 상세 이미지들 업로드
         const images = await this.uploadImage(files.images);
 
-        // const images = await Promise.all(
-        //     (files.images ?? []).map(file =>
-        //         this.azureBlob.uploadPublic(file, UPLOAD_DIR.animalImgDir),
-        //     )
-        // );
+        // Azure 업로드 실패 시 롤백 되게 try 처리
+        try {
+            // DB 트랜잭션(Transaction), Animal / Detail / Image 동시 생성
+            return this.prisma.$transaction(async (tx) => {
+                // Animal 생성
+                const animal = await this.createAnimal(
+                    tx,
+                    shelterId,
+                    createAnimalDto,
+                    thumbnail.blobName,
+                );
 
-        // Multipart 처리
+                // AnimalDetail 생성
+                await this.createAnimalDetail(tx, animal.id, createAnimalDto);
 
-        // Transaction
-        // Azure 업로드
-        // Animal / Detail / Image 동시 생성
-        // Animal 생성
-        const animal = await tx.animal.create({
+                // AnimalImage 생성
+                await this.createAnimalImages(tx, animal.id, images.map(img => img.blobName));
+
+                return {
+                    success: true,
+                    animalId: animal.id,
+                };
+            });
+        } catch (error) {
+            // DB실패 - Azure 파일 삭제
+            // 썸네일 삭제
+            await this.azureBlob.deleteBlob(thumbnail.blobName);
+            // 상세 이미지들 삭제
+            await Promise.all(
+                images.map(img => this.azureBlob.deleteBlob(img.blobName))
+            );
+            throw error;
+        }
+    }
+
+    // 애니멀 생성
+    private async createAnimal(tx: Prisma.TransactionClient, shelterId: string,
+        createAnimalDto: CreateAnimalDto, thumbnail: string) {
+        return await tx.animal.create({
             data: {
-                shelterId: shelterUser.shelterId,
+                shelterId,
                 name: createAnimalDto.name,
                 species: createAnimalDto.species,
                 breed: createAnimalDto.breed,
@@ -100,34 +127,41 @@ export class AnimalsService {
                 isEstimatedAge: createAnimalDto.isEstimatedAge,
 
                 weight: createAnimalDto.weight,
-                imgThumbnail: thumbnail.blobName,
+                imgThumbnail: thumbnail,
+            },
+            select: { id: true }
+        });
+    }
+
+    // 애니멀 상세 생성
+    private async createAnimalDetail(tx: Prisma.TransactionClient,
+        animalId: number, createAnimalDto: CreateAnimalDto) {
+        return await tx.animalDetail.create({
+            data: {
+                animalId,
+
+                noticeStartDate: createAnimalDto.noticeStartDate,
+                noticeEndDate: createAnimalDto.noticeEndDate,
+
+                foundLocation: createAnimalDto.foundLocation,
+                specialNotes: createAnimalDto.specialNotes,
+                description: createAnimalDto.description,
+                healthStatus: createAnimalDto.healthStatus,
             },
         });
+    }
 
-        // // AnimalDetail 생성
-        // await tx.animalDetail.create({
-        //     data: {
+    // 애니멀 이미지 생성
+    private async createAnimalImages(tx: Prisma.TransactionClient,
+        animalId: number, images: string[]) {
+        if (images.length === 0) return;
 
-        //     },
-        // });
-
-        // AnimalImage createMany
-        // if (images.length) {
-        //     await tx.animalImage.createMany({
-        //         data: images.map((img) => ({
-        //             img: img.blobName,
-        //             animalId: animal.id,
-        //         })),
-        //     });
-        // }
-
-        // // 트랜잭션
-        // return this.prisma.$transaction(async (tx) => {
-        //     return ;
-        // });
-
-        //return animal;
-        return ;
+        return await tx.animalImage.createMany({
+            data: images.map((img) => ({
+                animalId,
+                img,
+            }))
+        });
     }
 
     // 보호동물 목록 조회
@@ -299,3 +333,110 @@ export class AnimalsService {
         };
     }
 }
+
+
+
+
+// async create(auth: AuthRequest, createAnimalDto: CreateAnimalDto,
+//     files: {
+//         imgThumbnail: Express.Multer.File;
+//         images: Express.Multer.File[];
+//     },
+// ) {
+//     // 보호소 관리자 조회
+//     const shelterId = auth.shelterId;
+
+//     // shelterId 확인
+//     if (!shelterId) {
+//         throw new BadRequestException("보호소 관리자만 등록할 수 있습니다.");
+//     }
+
+//     // azure 업로드
+//     // 썸네일 업로드
+//     if (!files.imgThumbnail) {
+//         throw new BadRequestException("썸네일 이미지는 필수입니다");
+//     }
+//     const thumbnail = await this.azureBlob.uploadPublic(
+//         files.imgThumbnail,
+//         UPLOAD_DIR.animalThumbnailDir,
+//     );
+
+//     // 상세 이미지들 업로드
+//     const images = await this.uploadImage(files.images);
+
+//     // const images = await Promise.all(
+//     //     (files.images ?? []).map(file =>
+//     //         this.azureBlob.uploadPublic(file, UPLOAD_DIR.animalImgDir),
+//     //     )
+//     // );
+
+//     // Multipart 처리 controller 에서 @ApiConsumes('multipart/form-data')
+
+//     // Azure 업로드 실패 시 롤백 되게 try 처리
+//     try{
+//         // DB 트랜잭션(Transaction)
+//     return await this.prisma.$transaction(async (tx) => {
+//         // Animal / Detail / Image 동시 생성
+//         // Animal 생성
+//         const animal = await tx.animal.create({
+//             data: {
+//                 shelterId,
+//                 name: createAnimalDto.name,
+//                 species: createAnimalDto.species,
+//                 breed: createAnimalDto.breed,
+//                 gender: createAnimalDto.gender,
+//                 isNeutered: createAnimalDto.isNeutered,
+
+//                 age: createAnimalDto.age,
+//                 isEstimatedAge: createAnimalDto.isEstimatedAge,
+
+//                 weight: createAnimalDto.weight,
+//                 imgThumbnail: thumbnail.blobName,
+//             },
+//             select:{
+//                 id:true,
+//             }
+//         });
+
+//         // AnimalDetail 생성
+//         await tx.animalDetail.create({
+//             data: {
+//                 animalId: animal.id,
+
+//                 noticeStartDate: createAnimalDto.noticeStartDate,
+//                 noticeEndDate: createAnimalDto.noticeEndDate,
+
+//                 foundLocation: createAnimalDto.foundLocation,
+//                 specialNotes: createAnimalDto.specialNotes,
+//                 description: createAnimalDto.description,
+//                 healthStatus: createAnimalDto.healthStatus,
+//             },
+//         });
+
+//         // AnimalImage createMany
+//         if (images.length > 0) {
+//             await tx.animalImage.createMany({
+//                 data: images.map((img) => ({
+//                     animalId: animal.id,
+//                     img: img.blobName,
+//                 })),
+//             });
+//         }
+
+//         return {
+//             success: true,
+//             animalId: animal.id,
+//         };
+//     });
+//     }
+//     catch (error) {
+//         // DB실패 - Azure 파일 삭제
+//         // 썸네일 삭제
+//         await this.azureBlob.deleteBlob(thumbnail.blobName);
+//         // 상세 이미지들 삭제
+//         await Promise.all(
+//             images.map(img => this.azureBlob.deleteBlob(img.blobName))
+//         );
+//     }
+//     throw error;
+// }
