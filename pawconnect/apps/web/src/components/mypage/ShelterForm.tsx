@@ -13,6 +13,7 @@ import { useActionState, useEffect, useState } from "react";
 import { UpdateShelter } from "@/services/shelters/update-shelter.client";
 import { UpdateShelterState } from "@/types/mypage/update-shelter.type";
 import { validateShelterAddress, validateShelterPhone } from "@/utils/auth/auth.validator";
+import { useRouter } from "next/navigation";
 
 interface ShelterFormProps {
     shelter?: Shelter;
@@ -24,6 +25,7 @@ export default function ShelterForm({
     shelter
 }: ShelterFormProps) {
     const [state, formAction, isPending] = useActionState(UpdateShelter, initialState);
+    const router = useRouter();
 
     const [clientErrors, setClientErrors] = useState<{
         shelterName?: string;
@@ -51,7 +53,7 @@ export default function ShelterForm({
     useEffect(() => {
         if (state.response?.success) {
             alert('정보 변경에 성공했습니다');
-            window.location.reload();
+            router.refresh();
         }
     }, [state]);
     
