@@ -25,6 +25,7 @@ export default function InfoForm({
 }: InfoFormProps) {
     const [state, formAction, isPending] = useActionState(UpdateUser, initialState);
     const { openModal } = useContext(ModalContext);
+    const router = useRouter();
 
     const handleChangePassword = () => {
         openModal("changePassword", undefined);
@@ -43,7 +44,7 @@ export default function InfoForm({
     useEffect(() => {
         if (state.response?.success) {
             alert('정보 변경에 성공했습니다');
-            window.location.reload();
+            router.refresh();
         }
     }, [state]);
 
