@@ -1,10 +1,12 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { AnimalCardDto, GetAnimalsQueryDto, GetAnimalsResponseDto } from './dto/get-animals.dto';
 import { Prisma } from '@prisma/client';
 import { AnimalDetailResponseDto } from './dto/get-animals-detail.dto';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { CreateAnimalDto } from './dto/create-animals.dto';
+import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
+import { UPLOAD_DIR } from '@/config/upload.config';
 
 
 // 보호동물 목록 한 페이지당 조회 개수
@@ -21,56 +23,111 @@ export enum AnimalAgeFilter {
 
 @Injectable()
 export class AnimalsService {
-    constructor(private readonly prisma: PrismaService) { };
+    constructor(private readonly prisma: PrismaService,
+        private readonly azureBlob: AzureBlobService) { };
 
     // PATCH /animals/:id
     // PATCH /animals/:id/status
     // DELETE /animals/:id
-
     // status: animal.animalStatus
+
+    // 동물 이미지들 업로드
+    async uploadImage(files: Express.Multer.File[]) {
+        // 이미지 없으면 예외처리
+        if (!files || files.length == 0) {
+            throw new BadRequestException("동물 이미지는 필수 1장이상입니다");
+        }
+        // 애저 blob 스토리지에 이미지 업로드
+        return this.azureBlob.uploadPublicMultiple(
+            files, UPLOAD_DIR.animalImgDir,
+        );
+    }
 
     // 보호동물 등록
     // POST /animals
-    async create(auth: AuthRequest, createAnimalDto: CreateAnimalDto,
-        files:{
-            imgThumbnail?: Express.Multer.File[];
-            images?: Express.Multer.File[];
+    async create(auth: AuthRequest, tx: Prisma.TransactionClient, 
+        createAnimalDto: CreateAnimalDto,
+        files: {
+            imgThumbnail: Express.Multer.File;
+            images: Express.Multer.File[];
         },
-    ){
-        // 썸네일 업로드
-        //const thumbnail = await this
+    ) {
+        // 보호소 관리자 조회
+        const shelterUser = await this.prisma.user.findUnique({
+            where: { id: auth.id },
+            select: { shelterId: true },
+        });
 
-
-//         // 1. 썸네일 업로드
-// const thumbnail = await this.azureBlob.uploadPublic(
-//   files.imgThumbnail[0],
-//   UPLOAD_DIR.animalThumbnailDir,
-// );
-
-// // 2. 상세 이미지들 업로드
-// const images = await Promise.all(
-//   files.images.map(file =>
-//     this.azureBlob.uploadPublic(file, UPLOAD_DIR.animalImageDir),
-//   ),
-// );
-        //1 보호소 관리자 조회
         // shelterId 확인
-        // thumbnail 업로드
+        if (!shelterUser?.shelterId) {
+            throw new BadRequestException("보호소 관리자만 등록할 수 있습니다.");
+        }
 
-        // images 업로드
-        // Animal 생성
+        // 썸네일 업로드
+        if (!files.imgThumbnail) {
+            throw new BadRequestException("썸네일 이미지는 필수입니다");
+        }
+        const thumbnail = await this.azureBlob.uploadPublic(
+            files.imgThumbnail,
+            UPLOAD_DIR.animalThumbnail,
+        );
 
-        // AnimalDetail 생성
-        // AnimalImage createMany
-        // transaction commit
+        // 상세 이미지들 업로드
+        const images = await this.uploadImage(files.images);
+
+        // const images = await Promise.all(
+        //     (files.images ?? []).map(file =>
+        //         this.azureBlob.uploadPublic(file, UPLOAD_DIR.animalImgDir),
+        //     )
+        // );
 
         // Multipart 처리
+
         // Transaction
         // Azure 업로드
         // Animal / Detail / Image 동시 생성
-        return{
+        // Animal 생성
+        const animal = await tx.animal.create({
+            data: {
+                shelterId: shelterUser.shelterId,
+                name: createAnimalDto.name,
+                species: createAnimalDto.species,
+                breed: createAnimalDto.breed,
+                gender: createAnimalDto.gender,
+                isNeutered: createAnimalDto.isNeutered,
 
-        };
+                age: createAnimalDto.age,
+                isEstimatedAge: createAnimalDto.isEstimatedAge,
+
+                weight: createAnimalDto.weight,
+                imgThumbnail: thumbnail.blobName,
+            },
+        });
+
+        // // AnimalDetail 생성
+        // await tx.animalDetail.create({
+        //     data: {
+
+        //     },
+        // });
+
+        // AnimalImage createMany
+        // if (images.length) {
+        //     await tx.animalImage.createMany({
+        //         data: images.map((img) => ({
+        //             img: img.blobName,
+        //             animalId: animal.id,
+        //         })),
+        //     });
+        // }
+
+        // // 트랜잭션
+        // return this.prisma.$transaction(async (tx) => {
+        //     return ;
+        // });
+
+        //return animal;
+        return ;
     }
 
     // 보호동물 목록 조회
@@ -204,17 +261,17 @@ export class AnimalsService {
     async findOne(id: number): Promise<AnimalDetailResponseDto> {
         // 조회
         const animal = await this.prisma.animal.findUnique({
-            where: {id},
+            where: { id },
             include: {
                 shelter: true,
-                animalSpecies:true,
-                animalBreed:true,
-                images:true,
-                detail:true,
+                animalSpecies: true,
+                animalBreed: true,
+                images: true,
+                detail: true,
             }
         });
         // 동물이 없으면 처리
-        if(!animal) throw new NotFoundException('보호동물을 찾을 수 없습니다');
+        if (!animal) throw new NotFoundException('보호동물을 찾을 수 없습니다');
         // 동물 상세정보 없으면 처리
         if (!animal.detail) throw new NotFoundException("보호동물 상세 정보가 없습니다.");
 
@@ -222,8 +279,8 @@ export class AnimalsService {
             id: animal.id,
             shelterId: animal.shelter.id,     // 보호소 아이디
             shelterName: animal.shelter.name, // 보호소 이름
-            thumbnail:animal.imgThumbnail,      //보호소 썸네일 이미지
-            images: animal.images.map(image => image.img) , // 보호소 이미지들
+            thumbnail: animal.imgThumbnail,      //보호소 썸네일 이미지
+            images: animal.images.map(image => image.img), // 보호소 이미지들
             name: animal.name,      // 보호동물 이름
             gender: animal.gender,  // 성별
             isNeutered: animal.isNeutered,   // 중성화
