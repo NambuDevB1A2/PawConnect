@@ -78,10 +78,10 @@ export class SheltersController {
     }
 
     // 보호소 상세 조회 (보호소 이름)
-    @ApiOperation({ summary: "보호소 상세 조회" })
+    @ApiOperation({ summary: "보호소 상세 조회 (보호소 이름)" })
     @Public()
-    @Get(':id')
-    getShelter(@Param('id') id: string) {
-        return this.sheltersService.getShelter(id);
+    @Get(':name')
+    getShelterByName(@Param('name') name: string) {
+        return this.sheltersService.getShelterByName(name);
     }
 }

@@ -30,9 +30,8 @@ export class SheltersService {
     ) {}
     
     // 보호소 검색 (id)
-    async find<T extends Prisma.ShelterSelect = Prisma.ShelterSelect>(
-        id: string | null, select?: T
-    ): Promise<Prisma.ShelterGetPayload<{ select: T }>> {
+    async find<T extends Prisma.ShelterSelect = Prisma.ShelterSelect>(id: string | null, select?: T)
+        : Promise<Prisma.ShelterGetPayload<{ select: T }>> {
         if (!id) throw new UnauthorizedException({
             message: "존재하지 않는 보호소입니다",
         });
@@ -155,6 +154,16 @@ export class SheltersService {
     // 보호소 상세 조회 (id)
     async getShelter(id: string) {
         const shelter = await this.find(id, { 
+            ...SHELTER_DETAIL_SELECT, 
+            animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
+        });
+
+        return { success: true, shelter };
+    }
+
+    // 보호소 상세 조회 (name)
+    async getShelterByName(name: string) {
+        const shelter = await this.findByName(name, { 
             ...SHELTER_DETAIL_SELECT, 
             animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
         });
