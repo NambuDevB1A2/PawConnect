@@ -10,8 +10,9 @@ import { UpdateUser } from "@/services/users/update-user.client";
 import styles from "@/styles/mypage/info.module.css"
 import { UpdateUserState } from "@/types/mypage/update-user.type";
 import { User } from "@/types/user.type";
+import { validateNickname } from "@/utils/auth/auth.validator";
 import { useRouter } from "next/navigation";
-import { useActionState, useContext, useEffect } from "react";
+import { useActionState, useContext, useEffect, useState } from "react";
 
 interface InfoFormProps {
     user?: User;
@@ -30,10 +31,20 @@ export default function InfoForm({
         openModal("changePassword", undefined);
     }
     
+    const [clientErrors, setClientErrors] = useState<{
+        nickname?: string;
+    }>({});
+    
+    // 실시간 타이핑 유효성 검사
+    const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, nickname: validateNickname(value) }));
+    };
+    
     useEffect(() => {
         if (state.response?.success) {
             alert('정보 변경에 성공했습니다');
-            window.location.reload();
+            router.refresh();
         }
     }, [state]);
 
@@ -47,7 +58,7 @@ export default function InfoForm({
                             name="imgProfile" 
                             labelText="프로필 이미지"
                             initialImageUrl={user?.imgProfile}
-                            //errorText={state.imgProfileError}
+                            errorText={state.imgProfileError}
                             />
                     </div>
 
@@ -61,8 +72,8 @@ export default function InfoForm({
                             name="nickname" defaultValue={user?.nickname}
                             labelText="닉네임"
                             helperText="닉네임을 입력해주세요(공백 또는 특수문자 불가 2~16자)"
-                            // errorText={clientErrors.nickname ?? state.nicknameError}
-                            // onChange={handleNicknameChange}
+                            errorText={clientErrors.nickname ?? state.nicknameError}
+                            onChange={handleNicknameChange}
                             />
                         <div className={styles.box_password}>
                             <Typography weight="bold">비밀번호</Typography>

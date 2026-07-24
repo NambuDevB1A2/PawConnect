@@ -31,10 +31,6 @@ export async function UpdateUser(prevState: UpdateUserState, formdata: FormData)
         if (imgProfile && imgProfile.size > 0) submitData.append('imgProfile', imgProfile);
         submitData.append('imgProfileRemoved', imgProfileRemoved ? "true" : "false");
 
-        console.log(submitData.get('imgProfileRemoved'));
-        console.log(submitData.get('imgProfile'));
-        console.log(submitData.get('nickname'));
-
         const result = await fetchClient.patch<ApiResponse>('/users/me', submitData);
 
         console.log(result);
