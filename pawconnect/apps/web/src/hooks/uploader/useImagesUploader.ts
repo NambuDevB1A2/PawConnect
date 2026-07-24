@@ -46,7 +46,7 @@ export function useImagesUploader(
         if (initialImageUrls.length > 0 && managedFiles.length === 0 && existingImages.length === 0) {
             setExistingImages(initialImageUrls);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        
     }, [initialImageUrls]);
 
     // 언마운트 시에만 남아있는 모든 url 정리 (개별 파일 url은 각자 생성/삭제 시점에 관리)
@@ -55,6 +55,15 @@ export function useImagesUploader(
             managedFilesRef.current.forEach((m) => URL.revokeObjectURL(m.url));
         };
     }, []);
+
+    useEffect(() => {
+        if (managedFiles.length === 0 || !inputRef.current) return;
+
+        const currentFiles = inputRef.current.files;
+        if (!currentFiles || currentFiles.length !== managedFiles.length) {
+            syncInputFiles(managedFiles.map((m) => m.file));
+        }
+    }); // 불필요한 deps 배열 제거
 
     const previewItems: ImagePreviewItem[] = [
         ...existingImages.map((url) => ({ url, isExisting: true, name: "기존 이미지" })),

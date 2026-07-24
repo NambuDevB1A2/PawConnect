@@ -25,7 +25,7 @@ export default function ProfileImageUploader({
     removedFieldName,
     wrapperClassName = "",
 }: ProfileImageUploaderProps) {
-    const {isDragging, inputRef, internalFile, previewUrl, displayError, removed, isExistingImage,
+    const {isDragging, inputRef, internalFile, previewItem, displayError, removed, isExistingImage,
         handleFileChange, handleDrop, handleDragOver, handleDragLeave, handleRemove
      } = useImageUploader(errorText, onChange, maxSizeMB, disabled, initialImageUrl);
 
@@ -41,18 +41,18 @@ export default function ProfileImageUploader({
 
             <div className={styles.box_uploader}>
                 <div className={styles.box_image}>
-                    {previewUrl ?
+                    {previewItem ?
                     <AppImage
                         className={styles.img_preview}
-                        src={previewUrl}
-                        disabledDomain={!isExistingImage} // 기존 이미지면 도메인 붙이고(false), 새 파일이면 그대로(true)
+                        src={previewItem.url}
+                        disabledDomain={!previewItem.isExisting} // 기존 이미지면 도메인 붙이고(false), 새 파일이면 그대로(true)
                     /> :
                     <div className={styles.box_null}>
                         <Icon name="account_circle" size="hero" color="color_default"/>
                     </div>}
                 </div>
 
-                {previewUrl && 
+                {previewItem && 
                     <Button
                         className={styles.btn_remove}
                         size="small"

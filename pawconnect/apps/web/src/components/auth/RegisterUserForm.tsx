@@ -121,7 +121,7 @@ export default function RegisterUserForm() {
                     </CheckBox>
                 </div>
 
-                <Button className={styles.btn_submit} type="submit">
+                <Button className={styles.btn_submit} type="submit" disabled={isPending}>
                     {isPending ? "회원가입 중..." : "회원가입"}
                 </Button>
             </Section>

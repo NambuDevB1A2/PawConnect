@@ -31,6 +31,8 @@
 .img_shelter {
     height: 160px;
     background-color: var(--color-border);
+    
+    object-fit: cover;
 }
 
 .box_shelter_box {

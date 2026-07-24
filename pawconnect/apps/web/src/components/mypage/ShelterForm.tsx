@@ -121,7 +121,7 @@ export default function ShelterForm({
                             />
                 </div>
 
-                <Button className={styles.btn_save} type="submit">
+                <Button className={styles.btn_save} type="submit" disabled={isPending}>
                     {isPending ? "저장 중..." : "저장하기"}
                 </Button>
                 
