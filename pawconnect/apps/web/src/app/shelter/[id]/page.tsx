@@ -24,7 +24,7 @@ export default async function Page({ params }: PageProps) {
                     <ImageSlider
                         wrapperClassName={styles.wrapper_image_slider}
                         size="small"
-                        images={shelter?.shelter.images.map((img) => img.img) ?? ['']} />
+                        images={shelter?.shelter.images.map((img) => img.img) ?? []} />
                     
                     <div className={styles.box_info}>
                         <div className={styles.box_typo}>
