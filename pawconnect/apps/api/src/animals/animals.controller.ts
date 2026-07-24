@@ -13,6 +13,7 @@ import type { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { CreateAnimalDto } from './dto/create-animals.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { createFieldsImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
+import { CreateAnimalRequestDto } from './dto/create-animals-swagger.dto';
 
 
 @ApiTags('Animals')
@@ -26,7 +27,7 @@ export class AnimalsController {
   @Post()
   @Roles(Role.SHELTER)
   @ApiConsumes('multipart/form-data')
-  @ApiBody({ type: CreateAnimalDto })
+  @ApiBody({ type: CreateAnimalRequestDto })
   @UseInterceptors(
     // createFieldsImageUploadOptions로 필드별 파일 저장 위치 지정
     FileFieldsInterceptor([

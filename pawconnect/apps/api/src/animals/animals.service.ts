@@ -7,7 +7,6 @@ import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { CreateAnimalDto } from './dto/create-animals.dto';
 import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
 import { UPLOAD_DIR } from '@/config/upload.config';
-import { error } from 'console';
 
 
 // 보호동물 목록 한 페이지당 조회 개수
