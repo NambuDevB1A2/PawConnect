@@ -1,7 +1,7 @@
 import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { getPagination, getTotalPage } from '@/common/utils/pagination.util';
-import { PETPOST_DETAIL_SELECT, PETPOST_ORDERBY, PETPOST_SELECT } from '@/petposts/petpost.select';
+import { PETPOST_ORDERBY, PETPOST_SELECT } from '@/petposts/petpost.select';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
@@ -49,7 +49,7 @@ export class PetpostsService {
 
     // 게시글 상세 조회
     async getPetpost(id: number) {
-        const petPost = await this.find(id, PETPOST_DETAIL_SELECT);
+        const petPost = await this.find(id, PETPOST_SELECT);
 
         return { success: true, petPost };
     }

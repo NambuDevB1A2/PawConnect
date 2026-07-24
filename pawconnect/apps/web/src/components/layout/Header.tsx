@@ -22,8 +22,8 @@ export default async function Header({ user }: HeaderProps) {
             <div className={styles.box_link}>
                 <Link href={`/paw`}><Button variant="ghostBlack">보호동물</Button></Link>
                 <Link href={`/shelter`}><Button variant="ghostBlack">보호소</Button></Link>
-                <Link href={`/mypet`}><Button variant="ghostBlack">PawLog</Button></Link>
-                <Link href={`/test/mbti`}><Button variant="ghostBlack" >PawLab</Button></Link>
+                <Link href={`/pawlog`}><Button variant="ghostBlack">PawLog</Button></Link>
+                <Link href={`/pawlab/pawti`}><Button variant="ghostBlack" >PawLab</Button></Link>
             </div>
 
             <HeaderUser user={user}/>

@@ -1,6 +1,6 @@
 import { User } from "@/types/user.type";
 import { ApiResponse } from "@/types/response.type";
-import { Shelter, ShelterImages } from "@/types/shelter.type";
+import { Shelter, ShelterImages } from "@/types/shelter/shelter.type";
 
 export interface ResponseRegisterUser extends ApiResponse {
     user: User;

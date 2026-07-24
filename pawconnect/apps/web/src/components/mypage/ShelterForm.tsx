@@ -2,7 +2,7 @@
 
 import NotFound from "@/components/common/NotFound";
 import Section from "@/components/common/Section";
-import { Shelter } from "@/types/shelter.type";
+import { Shelter } from "@/types/shelter/shelter.type";
 import styles from "@/styles/mypage/shelterInfo.module.css"
 import Button from "@/components/common/Button";
 import TextArea from "@/components/common/TextArea";
