@@ -36,13 +36,11 @@ export default function Pagination({
     }
 
     const handlePrev = () => {
-        if (page <= 0) return;
-        handlePage(page - 1);
+        if (isPrevActive) handlePage(page - 1);
     }
 
     const handleNext = () => {
-        if (page >= maxPage) return;
-        handlePage(page + 1);
+        if (isNextActive) handlePage(page + 1);
     }
 
     return (
