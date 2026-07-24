@@ -2,7 +2,6 @@ import { CurrentAuth } from '@/auth/decorators/current-auth.decorator';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/role.guard';
 import { type AuthRequest } from '@/auth/interfaces/auth-request.interface';
-import { cleanupOnError } from '@/common/utils/upload.util';
 import { createImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
 import { UpdatePasswordDto } from '@/users/dto/update-password.dto';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
@@ -10,7 +9,6 @@ import { UsersService } from '@/users/users.service';
 import { Body, Controller, Get, Patch, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { isDefined } from 'class-validator';
 
 @ApiTags('User')
 @Controller('users')

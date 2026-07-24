@@ -30,3 +30,20 @@ export const SHELTER_DETAIL_SELECT =
             select: SHELTER_IMAGE_SELECT,
         },
     });
+
+export const SHELTER_ORDERBY = {
+    OLDEST: Prisma.validator<Prisma.ShelterOrderByWithRelationInput>()
+    ({
+        createdAt: 'asc',
+    }),
+
+    NEWEST: Prisma.validator<Prisma.ShelterOrderByWithRelationInput>()
+    ({
+        createdAt: 'desc',
+    }),
+
+    UPDATED: Prisma.validator<Prisma.ShelterOrderByWithRelationInput>()
+    ({
+        updatedAt: 'desc',
+    }),
+};

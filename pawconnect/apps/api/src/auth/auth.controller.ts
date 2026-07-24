@@ -10,8 +10,6 @@ import { Body, Controller, Post, UploadedFile, UploadedFiles, UseGuards, UseInte
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { createFieldsImageUploadOptions, createImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
-import { cleanupOnError } from '@/common/utils/upload.util';
-import { isDefined } from 'class-validator';
 
 @ApiTags('Auth')
 @Controller('auth')
