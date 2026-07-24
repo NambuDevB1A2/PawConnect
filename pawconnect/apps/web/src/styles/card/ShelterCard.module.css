@@ -1,0 +1,38 @@
+.wrapper_shelter_card {
+    width: 370px;
+    height: 300px;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    padding: var(--spacing-300);
+
+    background-color: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    border: 1px solid var(--color-surface);
+
+    cursor: pointer;
+
+    transition: 
+        border-color var(--transition-border-color);
+}
+
+.wrapper_shelter_card:hover {
+    border: 1px solid var(--color-primary);
+}
+
+.wrapper_shelter_card:active {
+    border: 1px solid var(--color-primary-pressed);
+}
+
+.img_shelter {
+    height: 160px;
+    background-color: var(--color-border);
+}
+
+.box_shelter_box {
+
+}

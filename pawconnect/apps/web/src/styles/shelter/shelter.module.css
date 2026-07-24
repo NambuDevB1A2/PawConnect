@@ -1,0 +1,25 @@
+.wrapper_page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 100vh;
+}
+
+.wrapper_list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-500);
+
+    width: 100%;
+    max-width: 1200px;
+
+    padding: var(--spacing);
+}
+
+.box_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-200);
+}
