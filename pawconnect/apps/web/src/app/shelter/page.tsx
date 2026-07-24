@@ -7,7 +7,7 @@ import { PageProps } from "@/types/page.type";
 
 export default async function Page({ searchParams }: PageProps) {
     const { page } = await searchParams;
-    const shelters = await GetShelters(Number(page) ?? 1, 6);
+    const shelters = await GetShelters(Number(page ?? 1), 6);
 
     return (
         <div className={styles.wrapper_page}>

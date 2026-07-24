@@ -40,7 +40,9 @@ export default function ImageSlider({
         });
     };
 
-    if (images.length === 0) return null;
+    if (images.length === 0) {
+        images = [''];
+    }
 
     return (
         <div className={`${styles.wrapper_slider} ${wrapperClassName}`}>

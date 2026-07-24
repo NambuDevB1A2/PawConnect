@@ -16,7 +16,7 @@ INSERT INTO "Shelter" (
     '0212345678',
     '매주 화-일 10:00~18:00 (월요일 휴무)',
     '유기동물의 새로운 가족을 찾아주는 따뜻한 보호소입니다. 다양한 견종과 묘종을 보호하고 있으며, 입양 전 건강검진과 예방접종을 완료합니다.',
-    'default_shelter_1.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -27,7 +27,7 @@ INSERT INTO "Shelter" (
     '0319876543',
     '매일 09:00~19:00 (연중무휴)',
     '10년째 유기동물을 보호하며 새 가족을 찾아주고 있습니다. 봉사자와 함께 동물들의 사회화 훈련도 진행하고 있습니다.',
-    'default_shelter_2.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -38,7 +38,7 @@ INSERT INTO "Shelter" (
     '0515557788',
     '매주 월-토 10:00~17:00 (일요일 휴무)',
     '유기견, 유기묘뿐만 아니라 특수동물도 함께 보호하는 지역 보호소입니다. 입양 후에도 지속적인 사후관리를 제공합니다.',
-    'default_shelter_3.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -49,7 +49,7 @@ INSERT INTO "Shelter" (
     '0324443322',
     '매주 화-일 09:30~18:30 (월요일 휴무)',
     '자연친화적인 환경에서 동물들을 보호하며, 정기적으로 입양 캠페인과 봉사활동을 진행합니다.',
-    'default_shelter_4.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -60,7 +60,7 @@ INSERT INTO "Shelter" (
     '0536667799',
     '매일 10:00~18:00 (공휴일 휴무)',
     '지역 주민들과 함께 운영되는 소규모 보호소로, 모든 동물에게 개별 맞춤 케어를 제공하고 있습니다.',
-    'default_shelter_5.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 );
 
@@ -77,7 +77,7 @@ INSERT INTO "Shelter" (
     '0223339988',
     '매주 수-월 10:00~19:00 (화요일 휴무)',
     '도심 속 작은 쉼터를 표방하며, 유기동물들이 안정을 찾을 수 있도록 조용하고 넓은 공간을 제공합니다.',
-    'default_shelter_6.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -88,7 +88,7 @@ INSERT INTO "Shelter" (
     '0625558811',
     '매일 09:00~18:00 (연중무휴)',
     '지자체와 협력하여 운영되는 대규모 보호소로, 대형견부터 소형묘까지 폭넓게 보호하고 있습니다.',
-    'default_shelter_7.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -99,7 +99,7 @@ INSERT INTO "Shelter" (
     '0428887766',
     '매주 목-화 10:00~17:30 (수요일 휴무)',
     '대학생 봉사자들과 함께 운영되며, 유기견 행동교정 프로그램을 함께 진행하는 보호소입니다.',
-    'default_shelter_8.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -110,7 +110,7 @@ INSERT INTO "Shelter" (
     '0314445566',
     '매주 화-일 11:00~19:00 (월요일 휴무)',
     '고양이 전문 보호소로, 입양 전 중성화 수술과 건강검진을 완료한 후 새로운 가족을 찾아줍니다.',
-    'default_shelter_9.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -121,7 +121,7 @@ INSERT INTO "Shelter" (
     '0332221199',
     '매일 09:00~17:00 (연중무휴)',
     '자연 속에서 운영되는 보호소로, 넓은 마당에서 동물들이 자유롭게 뛰놀 수 있는 환경을 제공합니다.',
-    'default_shelter_10.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -132,7 +132,7 @@ INSERT INTO "Shelter" (
     '0526669900',
     '매주 월-토 10:00~18:00 (일요일 휴무)',
     '지역 동물병원과 협력하여 상시 의료 지원이 가능한 보호소로, 노령견과 지병이 있는 동물도 함께 돌봅니다.',
-    'default_shelter_11.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -143,7 +143,7 @@ INSERT INTO "Shelter" (
     '0447773322',
     '매주 화-일 10:00~18:00 (월요일 휴무)',
     '신도시 지역 특성에 맞춰 젊은 층 입양자를 위한 온라인 상담 서비스를 함께 제공하는 보호소입니다.',
-    'default_shelter_12.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -154,7 +154,7 @@ INSERT INTO "Shelter" (
     '0638884455',
     '매일 09:30~18:30 (연중무휴)',
     '전통시장 인근에 위치하여 지역 상인들과 함께 유기동물 보호 캠페인을 진행하는 보호소입니다.',
-    'default_shelter_13.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -165,7 +165,7 @@ INSERT INTO "Shelter" (
     '0559992233',
     '매주 수-월 10:00~19:00 (화요일 휴무)',
     '해안가 인근 대형 보호소로, 유기동물 뿐 아니라 유실동물 임시보호 서비스도 함께 운영합니다.',
-    'default_shelter_14.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 ),
 (
@@ -176,6 +176,6 @@ INSERT INTO "Shelter" (
     '0431116688',
     '매주 화-일 09:00~17:00 (월요일 휴무)',
     '생명과학단지 인근에 위치하여 지역 연구기관과 협력한 동물 복지 프로그램을 운영하는 보호소입니다.',
-    'default_shelter_15.jpg',
+    'shelter/banner/default_banner.png',
     now(), now()
 );
