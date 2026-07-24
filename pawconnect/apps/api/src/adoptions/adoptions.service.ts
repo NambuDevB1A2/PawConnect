@@ -3,8 +3,10 @@ import { CreateAdoptionDto } from './dto/create-adoption.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { UpdateAdoptionStatusDto } from './dto/update-adoption-status.dto';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
-import { AnimalStatus } from '@prisma/client';
-import { ADOPTION_ANIMAL_INCLUDE } from './adoption.select';
+import { AdoptionStatus, AnimalStatus } from '@prisma/client';
+import { ADOPTION_ANIMAL_INCLUDE, ADOPTION_ORDERBY } from './adoption.select';
+import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
+import { getPagination, getTotalPage } from '@/common/utils/pagination.util';
 
 @Injectable()
 export class AdoptionsService {
@@ -99,6 +101,29 @@ export class AdoptionsService {
     // }
 
     return adoption;
+  }
+
+  // 내 보호소 입양 신청 목록 조회
+  async findByShelter(shelterId: string, { page, limit }: QueryPaginationDto, status: AdoptionStatus) {
+    const where = { 
+        animal: { shelterId: shelterId }, 
+        adoptionStatus: status 
+    };
+
+    const [adoptions, total] = await Promise.all([
+        this.prisma.adoption.findMany({
+            where,
+            include: ADOPTION_ANIMAL_INCLUDE,
+            orderBy: ADOPTION_ORDERBY.NEWEST,
+            ...getPagination(page, limit),
+        }),
+        this.prisma.adoption.count({
+            where,
+        })
+    ]);
+
+    const totalPage = getTotalPage(total, limit);
+    return { adoptions, total, totalPage };
   }
 
   // TODO: shelterId 권한 체크 시 auth 사용 예정

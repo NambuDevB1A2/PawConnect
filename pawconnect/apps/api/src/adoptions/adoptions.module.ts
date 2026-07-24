@@ -11,5 +11,6 @@ import { UsersModule } from '@/users/users.module';
   ],
   controllers: [AdoptionsController],
   providers: [AdoptionsService],
+  exports: [AdoptionsService],
 })
 export class AdoptionsModule {}

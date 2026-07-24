@@ -1,4 +1,4 @@
-import { ADOPTION_ANIMAL_INCLUDE } from '@/adoptions/adoption.select';
+import { AdoptionsService } from '@/adoptions/adoptions.service';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
@@ -7,6 +7,7 @@ import { getImageIdByString } from '@/common/utils/upload.util';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
+import { QueryGetShelterAdoptionsDto } from '@/shelters/dto/query-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
 import { SHELTER_DETAIL_SELECT, SHELTER_IMAGE_SELECT, SHELTER_ORDERBY, SHELTER_SELECT } from '@/shelters/shelter.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -25,6 +26,7 @@ export class SheltersService {
     constructor (
         private readonly prisma: PrismaService,
         private readonly azureBlob: AzureBlobService,
+        private readonly adoptionsService: AdoptionsService,
     ) {}
     
     // 보호소 검색 (id)
@@ -126,20 +128,12 @@ export class SheltersService {
     }
 
     // 내 보호소 입양 신청 목록 조회
-    async getShelterAdoptions(auth: AuthRequest, { page, limit }: QueryPaginationDto) {
+    async getShelterAdoptions(auth: AuthRequest, { page, limit, status }: QueryGetShelterAdoptionsDto) {
         await this.find(auth.shelterId);
 
-        const [adoptions, total] = await Promise.all([
-            this.prisma.adoption.findMany({
-                where: { animal: { shelterId: auth.shelterId as string }},
-                include: ADOPTION_ANIMAL_INCLUDE,
-            }),
-            this.prisma.adoption.count({
-                where: { animal: { shelterId: auth.shelterId as string }},
-            })
-        ]);
+        const { adoptions, total, totalPage } = 
+            await this.adoptionsService.findByShelter(auth.shelterId as string, { page, limit }, status);
 
-        const totalPage = getTotalPage(total, limit); // totalPage 값 추출
         return { success: true, adoptions, pagination: { page, limit, total, totalPage }};
     }
 

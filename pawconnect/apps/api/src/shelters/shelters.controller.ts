@@ -6,6 +6,7 @@ import { RolesGuard } from '@/auth/guards/role.guard';
 import type { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { createFieldsImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
+import { QueryGetShelterAdoptionsDto } from '@/shelters/dto/query-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
 import { SheltersService } from '@/shelters/shelters.service';
 import { Body, Controller, Get, Param, Patch, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
@@ -63,9 +64,9 @@ export class SheltersController {
     @Get('me/adoptions')
     getShelterAdoptions(
         @CurrentAuth() auth: AuthRequest,
-        @Query() pagination: QueryPaginationDto
+        @Query() query: QueryGetShelterAdoptionsDto
     ) {
-        return this.sheltersService.getShelterAdoptions(auth, pagination);
+        return this.sheltersService.getShelterAdoptions(auth, query);
     }
 
     // 보호소 목록 조회

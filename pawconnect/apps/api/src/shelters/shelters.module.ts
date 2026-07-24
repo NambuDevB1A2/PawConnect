@@ -1,10 +1,10 @@
+import { AdoptionsService } from '@/adoptions/adoptions.service';
 import { SheltersController } from '@/shelters/shelters.controller';
 import { SheltersService } from '@/shelters/shelters.service';
-import { UsersService } from '@/users/users.service';
 import { Module } from '@nestjs/common';
 
 @Module({
-  providers: [SheltersService, UsersService],
+  providers: [SheltersService, AdoptionsService],
   controllers: [SheltersController],
   exports: [SheltersService]
 })
