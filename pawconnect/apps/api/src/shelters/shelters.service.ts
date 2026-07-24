@@ -5,7 +5,7 @@ import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
-import { SHELTER_IMAGE_SELECT, SHELTER_SELECT } from '@/shelters/shelter.select';
+import { SHELTER_DETAIL_SELECT, SHELTER_IMAGE_SELECT, SHELTER_SELECT } from '@/shelters/shelter.select';
 import { UsersService } from '@/users/users.service';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
@@ -105,7 +105,7 @@ export class SheltersService {
         const user = await this.usersService.find(auth.id);
         if (!user.shelterId) throw new NotFoundException();
 
-        const shelter = await this.find(user.shelterId);
+        const shelter = await this.find(user.shelterId, SHELTER_DETAIL_SELECT);
 
         return { success: true, shelter };
     }
@@ -152,7 +152,6 @@ export class SheltersService {
             const shelter = await tx.shelter.update({
                 where: { id: shelterId },
                 data: {
-                    name: updateShelterDto.name,
                     address: updateShelterDto.address,
                     addressDetail: updateShelterDto.addressDetail,
                     phone: updateShelterDto.phone,

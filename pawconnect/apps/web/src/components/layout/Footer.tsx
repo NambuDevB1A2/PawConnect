@@ -31,7 +31,7 @@ export default function Footer() {
                     </div>
                     <Typography>새로운 가족을 찾는 가장 따뜻한 방법</Typography>
                 </div>
-                <div className={styles.box_copylight}>
+                <div className={styles.box_copyright}>
                     <a href="https://github.com/NambuDevB1A2/PawConnect/wiki"><IconButton name="commit"/></a>
                     <Typography>© 2026. Team Yeon-hong All Rights Reserved.</Typography>
                 </div>

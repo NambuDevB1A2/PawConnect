@@ -16,6 +16,8 @@ export interface ImageUploaderProps {
     accept?: string;
     maxSizeMB?: number;
     disabled?: boolean;
+    initialImageUrl?: string;
+    removedFieldName?: string;
     wrapperClassName?: string;
     previewClassName?: string;
     previewBoxClassName?: string;
@@ -31,27 +33,37 @@ export default function ImageUploader({
     accept = "image/png, image/jpeg, image/jpg",
     maxSizeMB = 5,
     disabled = false,
+    initialImageUrl,
+    removedFieldName,
     wrapperClassName = "",
     previewClassName = "",
     previewBoxClassName = "",
     previewImageClassName = "",
 }: ImageUploaderProps) {
-    const {isDragging, inputRef, internalFile, previewUrl, displayError,
+    const {isDragging, inputRef, internalFile, previewItem, displayError, removed, isExistingImage,
         handleFileChange, handleDrop, handleDragOver, handleDragLeave, handleRemove
-     } = useImageUploader(errorText, onChange, maxSizeMB, disabled);
+     } = useImageUploader(errorText, onChange, maxSizeMB, disabled, initialImageUrl);
 
     return (
         <span className={`${styles.wrapper_uploader} ${wrapperClassName}`}>
             {labelText && <Typography  variant="title">{labelText}</Typography>}
 
-            {previewUrl && 
+            <input
+                type="hidden"
+                name={removedFieldName ?? `${name}Removed`}
+                value={String(removed)}
+                />
+
+            {previewItem && 
                 <PreviewImage
-                    previewUrl={previewUrl}
-                    internalFileName={internalFile ? internalFile.name : ""}
+                    previewUrl={previewItem.url}
+                    internalFileName={previewItem.name}
                     previewClassName={previewClassName}
                     previewBoxClassName={previewBoxClassName}
                     previewImageClassName={previewImageClassName}
-                    onRemove={handleRemove}/>}
+                    onRemove={handleRemove}
+                    disabledDomain={!previewItem.isExisting} // 기존 이미지면 도메인 붙이고(false), 새 파일이면 그대로(true)
+                    />}
 
             <div 
                 className={`${styles.dropzone}

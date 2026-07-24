@@ -1,43 +1,82 @@
 import { UPLOADER_MESSAGES } from "@/constants/messages/Uploader";
+import { ImagePreviewItem } from "@/hooks/uploader/useImageUploader";
 import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
+
+interface ManagedFile {
+    id: string;
+    file: File;
+    url: string; // 생성 시점에 한 번만 발급, 이후 재사용
+}
+
+function makeId() {
+    return typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random()}`;
+}
+
+function fileSignature(file: File) {
+    // 같은 파일이 중복 추가되는 걸 막기 위한 식별자
+    return `${file.name}_${file.size}_${file.lastModified}`;
+}
 
 export function useImagesUploader(
     errorText?: string,
-    onChange?: (files: File[]) => void,
+    onChange?: (files: File[], keepUrls: string[]) => void,
     maxSizeMB = 5,
     maxFiles = 4,
     disabled = false,
+    initialImageUrls: string[] = [],
 ) {
     const [isDragging, setIsDragging] = useState(false);
-    const [internalFiles, setInternalFiles] = useState<File[]>([]);
-    const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+    const [managedFiles, setManagedFiles] = useState<ManagedFile[]>([]);
+    const [existingImages, setExistingImages] = useState<string[]>(initialImageUrls);
     const [internalError, setInternalError] = useState<string | null>(null);
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const isSyncingRef = useRef(false);
+    const managedFilesRef = useRef<ManagedFile[]>([]); // 언마운트 시 최신 목록 참조용
 
     const displayError = errorText || internalError;
-    
-    useEffect(() => {
-        const urls = internalFiles.map((file) => URL.createObjectURL(file));
-        setPreviewUrls(urls);
-
-        return () => { urls.forEach((url) => URL.revokeObjectURL(url)) };
-    }, [internalFiles]);
 
     useEffect(() => {
-        if (internalFiles.length > 0 && inputRef.current?.files?.length === 0) {
-            syncInputFiles(internalFiles);
+        managedFilesRef.current = managedFiles;
+    }, [managedFiles]);
+
+    useEffect(() => {
+        if (initialImageUrls.length > 0 && managedFiles.length === 0 && existingImages.length === 0) {
+            setExistingImages(initialImageUrls);
         }
-    }, [internalFiles]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initialImageUrls]);
+
+    // 언마운트 시에만 남아있는 모든 url 정리 (개별 파일 url은 각자 생성/삭제 시점에 관리)
+    useEffect(() => {
+        return () => {
+            managedFilesRef.current.forEach((m) => URL.revokeObjectURL(m.url));
+        };
+    }, []);
+
+    const previewItems: ImagePreviewItem[] = [
+        ...existingImages.map((url) => ({ url, isExisting: true, name: "기존 이미지" })),
+        ...managedFiles.map((m) => ({ url: m.url, isExisting: false, name: m.file.name })),
+    ];
+
+    const totalCount = existingImages.length + managedFiles.length;
 
     const syncInputFiles = (files: File[]) => {
+        if (!inputRef.current) return;
         const dataTransfer = new DataTransfer();
         files.forEach((file) => dataTransfer.items.add(file));
-        if (inputRef.current) inputRef.current.files = dataTransfer.files;
+        isSyncingRef.current = true;
+        inputRef.current.files = dataTransfer.files;
     }
 
-    const validateFiles = (files: File[]) => {
-        if (internalFiles.length + files?.length > maxFiles) {
+    const emitChange = (managed: ManagedFile[], keeps: string[]) => {
+        onChange?.(managed.map((m) => m.file), keeps);
+    };
+
+    const validateFiles = (files: File[], currentCount: number) => {
+        if (currentCount + files.length > maxFiles) {
             setInternalError(maxFiles + UPLOADER_MESSAGES.default.error.not_count);
             return null;
         }
@@ -59,22 +98,42 @@ export function useImagesUploader(
     };
 
     const addFile = (fileList: FileList | null) => {
-        if (!fileList || fileList?.length === 0) return;
+        if (!fileList || fileList.length === 0) return;
 
-        const files = Array.from(fileList);
-        const validated = validateFiles(files);
-        if (!validated) {
-            syncInputFiles(internalFiles);
+        const incoming = Array.from(fileList);
+
+        // 이미 추가된 파일과 동일한 파일(재발생 change 등으로 인한 중복)은 걸러냄
+        const existingSignatures = new Set(managedFiles.map((m) => fileSignature(m.file)));
+        const deduped = incoming.filter((f) => !existingSignatures.has(fileSignature(f)));
+
+        if (deduped.length === 0) {
+            syncInputFiles(managedFiles.map((m) => m.file));
             return;
         }
 
-        const nextFiles = [...internalFiles, ...validated];
-        setInternalFiles(nextFiles);
-        syncInputFiles(nextFiles);
-        onChange?.(nextFiles);
+        const validated = validateFiles(deduped, totalCount);
+        if (!validated) {
+            syncInputFiles(managedFiles.map((m) => m.file));
+            return;
+        }
+
+        const newEntries: ManagedFile[] = validated.map((file) => ({
+            id: makeId(),
+            file,
+            url: URL.createObjectURL(file), // 이 파일에 대해 딱 한 번만 생성
+        }));
+
+        const nextManaged = [...managedFiles, ...newEntries];
+        setManagedFiles(nextManaged);
+        syncInputFiles(nextManaged.map((m) => m.file));
+        emitChange(nextManaged, existingImages);
     }
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (isSyncingRef.current) {
+            isSyncingRef.current = false;
+            return;
+        }
         addFile(e.target.files);
     };
 
@@ -97,16 +156,32 @@ export function useImagesUploader(
     };
 
     const handleRemove = (index: number) => {
-        if (inputRef.current) inputRef.current.value = "";
-        const nextFiles = internalFiles.filter((_, i) => i !== index);
-        setInternalFiles(nextFiles);
-        syncInputFiles(nextFiles);
+        if (index < existingImages.length) {
+            const nextExisting = existingImages.filter((_, i) => i !== index);
+            setExistingImages(nextExisting);
+            setInternalError(null);
+            emitChange(managedFiles, nextExisting);
+            return;
+        }
+
+        const fileIndex = index - existingImages.length;
+        const removed = managedFiles[fileIndex];
+        if (removed) URL.revokeObjectURL(removed.url); // 제거되는 파일의 url만 정확히 revoke
+
+        const nextManaged = managedFiles.filter((_, i) => i !== fileIndex);
+        setManagedFiles(nextManaged);
+        syncInputFiles(nextManaged.map((m) => m.file));
         setInternalError(null);
-        onChange?.(nextFiles);
+        emitChange(nextManaged, existingImages);
     };
-    
-    return { isDragging, inputRef, internalFiles, previewUrls, displayError,
+
+    return {
+        isDragging,
+        inputRef,
+        internalFiles: managedFiles.map((m) => m.file), // 기존 사용처와의 호환을 위해 그대로 노출
+        previewItems,
+        existingImages,
+        displayError,
         handleFileChange, handleDrop, handleDragOver, handleDragLeave, handleRemove
     };
 }
-
