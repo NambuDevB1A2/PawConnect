@@ -33,7 +33,7 @@ export default function Footer() {
                 </div>
                 <div className={styles.box_copylight}>
                     <a href="https://github.com/NambuDevB1A2/PawConnect/wiki"><IconButton name="commit"/></a>
-                    <Typography>© 2026 PawConnect. All Rights Reserved.</Typography>
+                    <Typography>© 2026. Team Yeon-hong All Rights Reserved.</Typography>
                 </div>
             </div>
 
