@@ -28,7 +28,7 @@ export function useImagesUploader(
         if (internalFiles.length > 0 && inputRef.current?.files?.length === 0) {
             syncInputFiles(internalFiles);
         }
-    });
+    }, [internalFiles]);
 
     const syncInputFiles = (files: File[]) => {
         const dataTransfer = new DataTransfer();

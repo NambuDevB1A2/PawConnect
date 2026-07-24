@@ -26,7 +26,7 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
             onClose();
             alert('비밀번호 변경에 성공했습니다');
         }
-    }, [state]);
+    }, [state, onClose]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} size="medium">
