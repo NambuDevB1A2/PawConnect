@@ -80,6 +80,7 @@ export class AuthService {
             sub: user.id,
             email: user.email,
             role: user.role,
+            shelterId: user.shelterId,
         };
 
         // 토큰 생성

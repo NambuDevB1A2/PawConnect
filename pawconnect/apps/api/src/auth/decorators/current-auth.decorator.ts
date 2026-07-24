@@ -8,6 +8,7 @@ export const CurrentAuth = createParamDecorator(
             id: request.user.sub,
             email: request.user.email,
             role: request.user.role,
+            shelterId: request.user.shelterId,
         };
 
         return field ? auth?.[field] : auth;
