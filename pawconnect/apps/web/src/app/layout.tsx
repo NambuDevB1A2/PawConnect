@@ -6,7 +6,8 @@ import Header from "@/components/layout/Header";
 import AuthProvider from "@/providers/AuthProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ModalRoot from "@/components/modal/ModalRoot";
-import { Me } from "@/services/auth/me.server";
+import { Me } from "@/services/users/me.server";
+import Footer from "@/components/layout/Footer";
 
 export default async function RootLayout({
     children,
@@ -18,16 +19,18 @@ export default async function RootLayout({
     return (
         <html lang="ko">
             <body>
-                <AuthProvider initialUser={user}>
+                <AuthProvider initialUser={user?.user}>
                 <ModalProvider>
                     
                     <header>
-                        <Header user={user}/>
+                        <Header user={user?.user}/>
                     </header>
 
                     <main>{children}</main>
 
-                    <footer></footer>
+                    <footer>
+                        <Footer/>
+                    </footer>
 
                     <ModalRoot/>
 

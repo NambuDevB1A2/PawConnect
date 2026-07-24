@@ -6,7 +6,7 @@ export class LoginAuthDto {
     @IsEmail()
     email: string;
 
-    @ApiProperty({ example: "a123456789!" })
+    @ApiProperty({ example: "Aa123456789!" })
     @IsString()
     @MinLength(6)
     @MaxLength(30)

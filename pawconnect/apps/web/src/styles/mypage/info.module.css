@@ -1,7 +1,11 @@
 .wrapper_info {
-    display: flex;
-    align-items: start;
+    flex: 1;
+    min-width: 0;
+}
 
+.wrapper_form {    
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
