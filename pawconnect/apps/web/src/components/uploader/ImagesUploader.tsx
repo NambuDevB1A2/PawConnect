@@ -12,12 +12,14 @@ export interface ImagesUploaderProps {
     labelText?: string;
     helperText?: string;
     errorText?: string;
-    onChange?: (files: File[]) => void;
+    onChange?: (files: File[], keepUrls: string[]) => void;
     accept?: string;
     maxSizeMB?: number;
     maxFiles?: number;
     disabled?: boolean;
     wrapperClassName?: string;
+    initialImageUrls?: string[]; // 추가: 수정 시 기존 이미지 blobName 목록
+    keepFieldName?: string;      // 유지 목록 hidden input의 name (기본: `${name}Keeps`)
 }
 
 export default function ImagesUploader({
@@ -31,22 +33,32 @@ export default function ImagesUploader({
     maxFiles = 4,
     disabled = false,
     wrapperClassName = "",
+    initialImageUrls = [],
+    keepFieldName,
 }: ImagesUploaderProps) {
-    const {isDragging, inputRef, internalFiles, previewUrls, displayError,
+    const {isDragging, inputRef, previewItems, existingImages, displayError,
         handleFileChange, handleDrop, handleDragOver, handleDragLeave, handleRemove
-     } = useImagesUploader(errorText, onChange, maxSizeMB, maxFiles, disabled);
+     } = useImagesUploader(errorText, onChange, maxSizeMB, maxFiles, disabled, initialImageUrls);
 
     return (
         <span className={`${styles.wrapper_uploader} ${wrapperClassName}`}>
-            {labelText && <Typography  variant="title">{labelText}</Typography>}
+            {labelText && <Typography variant="title">{labelText}</Typography>}
 
-            {previewUrls.length > 0 && 
+            {/* 유지할 기존 이미지 목록을 폼 제출 시 함께 보내기 위한 hidden input (쉼표 join) */}
+            <input
+                type="hidden"
+                name={keepFieldName ?? `${name}Keeps`}
+                value={existingImages.join(',')}
+            />
+
+            {previewItems.length > 0 && 
                 <div className={styles.wrapper_preview}>
-                    {previewUrls.map((url, index) => 
+                    {previewItems.map((item, index) => 
                         <PreviewImage
-                            key={url}
-                            previewUrl={url}
-                            internalFileName={internalFiles[index]?.name}
+                            key={item.isExisting ? `existing-${item.url}` : `new-${item.url}`}
+                            previewUrl={item.url}
+                            internalFileName={item.name}
+                            disabledDomain={!item.isExisting} // 기존 이미지는 도메인 붙이고, 새 파일은 blob URL 그대로
                             onRemove={() => handleRemove(index)}/>)}
                 </div>
             }

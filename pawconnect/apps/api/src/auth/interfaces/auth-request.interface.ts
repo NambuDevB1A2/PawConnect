@@ -4,4 +4,5 @@ export interface AuthRequest {
     id: string;
     email: string;
     role: Role;
+    shelterId: string | null;
 }

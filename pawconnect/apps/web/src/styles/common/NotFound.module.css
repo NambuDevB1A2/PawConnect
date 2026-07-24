@@ -1,0 +1,14 @@
+.wrapper_not_found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon_warning {
+
+}
+
+.type_warning {
+    text-align: center;
+}

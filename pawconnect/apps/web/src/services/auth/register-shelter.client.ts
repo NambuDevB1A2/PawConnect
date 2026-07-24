@@ -56,7 +56,9 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
     const addressDetailError = validateShelterAddress(address);
     const phoneError = validateShelterPhone(phone);
 
-    if (passwordError || rePasswordError || nicknameError || agreedToTermsError) {
+    if (passwordError || rePasswordError || nicknameError || agreedToTermsError ||
+        nameError || addressError || addressDetailError || phoneError
+    ) {
         return {
             email,
             nickname,
@@ -96,10 +98,6 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
         if (imgBanner && imgBanner.size > 0) submitData.append('imgBanner', imgBanner);
         if (imgShelter.length > 0) imgShelter.forEach((file) => { if (file.size > 0) submitData.append('imgShelter', file); })
 
-        console.log(`imgProfile:`, imgProfile);
-        console.log(`imgBanner:`, imgBanner);
-        console.log(`imgShelter:`, imgShelter);
-
         const result = await fetchClient.post<ResponseRegisterShelter>('/auth/register/shelter', submitData);
         
         // Response를 state에 담아서 반환
@@ -127,6 +125,8 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
                 phoneError: error.fields.phone,
                 operatingHoursError: error.fields.operatingHours,
                 descriptionError: error.fields.description,
+                imgBannerError: error.fields.imgBanner,
+                imgShelterError: error.fields.imgShelter,
             };
         }
 

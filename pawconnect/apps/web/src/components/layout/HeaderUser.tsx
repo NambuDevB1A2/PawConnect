@@ -53,14 +53,14 @@ export default function HeaderUser({ user }: HeaderUserProps) {
         [Enums.Role.USER]: [
             { label: "내 정보", onClick: () => handleRouterPush('/mypage/info') },
             { label: "내 입양 신청", onClick: () => handleRouterPush('/mypage/adopt') },
-            { label: "내 PawLog", onClick: () => handleRouterPush('/mypage/petlog') },
+            { label: "내 PawLog", onClick: () => handleRouterPush('/mypage/pawlog') },
             { label: "로그아웃", onClick: handleLogout },
         ],
         [Enums.Role.SHELTER]: [
             { label: "내 정보", onClick: () => handleRouterPush('/mypage/info') },
-            { label: "내 PawLog", onClick: () => handleRouterPush('/mypage/petlog') },
-            { label: "보호소 관리", onClick: () => handleRouterPush('/mypage/shelter') },
-            { label: "보호동물 관리", onClick: () => handleRouterPush('/mypage/shelter/animal') },
+            { label: "내 PawLog", onClick: () => handleRouterPush('/mypage/pawlog') },
+            { label: "보호소 관리", onClick: () => handleRouterPush('/mypage/shelter/info') },
+            { label: "보호동물 관리", onClick: () => handleRouterPush('/mypage/shelter/paw') },
             { label: "입양 신청 관리", onClick: () => handleRouterPush('/mypage/shelter/adopt') },
             { label: "로그아웃", onClick: handleLogout },
         ],

@@ -1,38 +1,55 @@
 import { UPLOADER_MESSAGES } from "@/constants/messages/Uploader";
 import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
 
+export interface ImagePreviewItem {
+    url: string;
+    isExisting: boolean; // 기존 이미지(서버 blobName)인지, 새로 선택한 파일인지
+    name: string;
+}
+
 export function useImageUploader(
     errorText?: string,
-    onChange?: (file: File | null, removed: boolean) => void, // 시그니처 변경
+    onChange?: (file: File | null, removed: boolean) => void,
     maxSizeMB = 5,
     disabled = false,
-    initialImageUrl?: string, // 추가: 수정 화면의 기존 이미지 URL
+    initialImageUrl?: string, // 수정 화면의 기존 이미지 URL(blobName)
 ) {
     const [isDragging, setIsDragging] = useState(false);
     const [internalFile, setInternalFile] = useState<File | null>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(initialImageUrl ?? null);
+    const [previewItem, setPreviewItem] = useState<ImagePreviewItem | null>(
+        initialImageUrl
+            ? { url: initialImageUrl, isExisting: true, name: "기존 이미지" }
+            : null
+    );
     const [internalError, setInternalError] = useState<string | null>(null);
-    const [isExistingImage, setIsExistingImage] = useState(!!initialImageUrl);
     const [removed, setRemoved] = useState(false); // 기존 이미지를 명시적으로 삭제했는지
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const currentUrlRef = useRef<string | null>(null); // 언마운트 시 정리를 위해 마지막으로 생성한 objectURL 추적
 
     const displayError = errorText || internalError;
+    const isExistingImage = previewItem?.isExisting ?? false;
 
     // initialImageUrl이 비동기로(user 데이터 fetch 후) 늦게 들어오는 경우 대비
     useEffect(() => {
-        if (initialImageUrl && !internalFile) {
-            setPreviewUrl(initialImageUrl);
-            setIsExistingImage(true);
+        if (initialImageUrl && !internalFile && !previewItem) {
+            setPreviewItem({ url: initialImageUrl, isExisting: true, name: "기존 이미지" });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [initialImageUrl]);
 
-    // 새 파일 선택 시에만 objectURL 생성
+    // 새 파일 선택 시에만 objectURL 생성 (파일이 바뀔 때만, 매 렌더마다 X)
     useEffect(() => {
         if (!internalFile) return;
+
         const url = URL.createObjectURL(internalFile);
-        setPreviewUrl(url);
-        return () => URL.revokeObjectURL(url);
+        currentUrlRef.current = url;
+        setPreviewItem({ url, isExisting: false, name: internalFile.name });
+
+        return () => {
+            URL.revokeObjectURL(url);
+            if (currentUrlRef.current === url) currentUrlRef.current = null;
+        };
     }, [internalFile]);
 
     const validateAndSetFile = (file: File | null) => {
@@ -41,8 +58,7 @@ export function useImageUploader(
 
             setInternalFile(null);
             setInternalError(null);
-            setPreviewUrl(null);
-            setIsExistingImage(false);
+            setPreviewItem(null);
             setRemoved(wasExisting); // 기존 이미지가 있었을 때만 "삭제"로 취급
 
             onChange?.(null, wasExisting);
@@ -60,8 +76,7 @@ export function useImageUploader(
         }
 
         setInternalError(null);
-        setInternalFile(file);
-        setIsExistingImage(false);
+        setInternalFile(file); // previewItem 갱신은 위 useEffect가 담당
         setRemoved(false); // 새 파일로 교체 -> 삭제 상태 아님
         onChange?.(file, false);
         return true;
@@ -105,7 +120,7 @@ export function useImageUploader(
         validateAndSetFile(null);
     };
 
-    return { isDragging, inputRef, internalFile, previewUrl, displayError, isExistingImage, removed,
+    return { isDragging, inputRef, internalFile, previewItem, displayError, isExistingImage, removed,
         handleFileChange, handleDrop, handleDragOver, handleDragLeave, handleRemove
     };
 }

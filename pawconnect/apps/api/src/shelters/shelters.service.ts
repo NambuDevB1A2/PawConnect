@@ -5,9 +5,8 @@ import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
-import { SHELTER_IMAGE_SELECT, SHELTER_SELECT } from '@/shelters/shelter.select';
-import { UsersService } from '@/users/users.service';
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { SHELTER_DETAIL_SELECT, SHELTER_IMAGE_SELECT, SHELTER_SELECT } from '@/shelters/shelter.select';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 function getDefaultBanner() {
@@ -23,12 +22,21 @@ export class SheltersService {
     constructor (
         private readonly prisma: PrismaService,
         private readonly azureBlob: AzureBlobService,
-        private readonly usersService: UsersService
     ) {}
     
     // 보호소 검색 (id)
-    async find(id: string, select?: Prisma.ShelterSelect) {
-        const shelter = await this.prisma.shelter.findUnique({ where: { id }, select: select});
+    async find<T extends Prisma.ShelterSelect = Prisma.ShelterSelect>(
+        id: string | null, select?: T
+    ): Promise<Prisma.ShelterGetPayload<{ select: T }>> {
+        if (!id) throw new UnauthorizedException({
+            message: "존재하지 않는 보호소입니다",
+        });
+
+        const shelter = await this.prisma.shelter.findUnique({ 
+            where: { id }, 
+            select: select 
+        }) as Prisma.ShelterGetPayload<{ select: T }> | null;
+
         if (!shelter) throw new UnauthorizedException({
             message: "존재하지 않는 보호소입니다",
         });
@@ -86,26 +94,20 @@ export class SheltersService {
 
     // 이미지 새로 저장
     async createImages(tx: Prisma.TransactionClient, shelterId: string, images: string[]) {
-        // Promise.all로 한 번에 실행
-        return await Promise.all(images.map((img) => 
-            tx.shelterImage.create({
-                data: {
-                    id: getImageIdByString(img),
-                    img: img,
-                    shelterId: shelterId,
-                },
-                select: SHELTER_IMAGE_SELECT,
-            })
-        ));
+        return await tx.shelterImage.createManyAndReturn({
+            data: images.map((img) => ({
+                id: getImageIdByString(img),
+                img: img,
+                shelterId: shelterId,
+            })),
+            select: SHELTER_IMAGE_SELECT,
+        });
     }
 
     // READ
     // 내 보호소 정보 조회
     async me(auth: AuthRequest) {
-        const user = await this.usersService.find(auth.id);
-        if (!user.shelterId) throw new NotFoundException();
-
-        const shelter = await this.find(user.shelterId);
+        const shelter = await this.find(auth.shelterId, SHELTER_DETAIL_SELECT);
 
         return { success: true, shelter };
     }
@@ -113,18 +115,11 @@ export class SheltersService {
     // UPDATE
     // 내 보호소 정보 수정
     async update(auth: AuthRequest, updateShelterDto: UpdateShelterDto, imgBanner?: Express.Multer.File, imgShelter?: Express.Multer.File[]) {
-        const user = await this.usersService.find(auth.id);
-        const shelterId = user.shelterId;
-        if (!shelterId) throw new NotFoundException();
+        const prevShelter = await this.find(auth.shelterId, { ...SHELTER_SELECT, images: { select: SHELTER_IMAGE_SELECT } });
+        const shelterId = prevShelter.id;
 
-        console.log(updateShelterDto.imgShelterKeeps);
-
-        const prevShelter = await this.find(shelterId);
-        const prevShelterImages = await this.findImages(shelterId);
         const keepSet = new Set(updateShelterDto.imgShelterKeeps ?? []);
-        const toDelete = prevShelterImages.filter(img => !keepSet.has(img.img));
-
-        console.log(prevShelterImages);
+        const toDelete = prevShelter.images.filter(img => !keepSet.has(img.img));
 
         let imgBannerPath = prevShelter.imgBanner;
         let imgBannerOld: string | null = null;
@@ -152,7 +147,6 @@ export class SheltersService {
             const shelter = await tx.shelter.update({
                 where: { id: shelterId },
                 data: {
-                    name: updateShelterDto.name,
                     address: updateShelterDto.address,
                     addressDetail: updateShelterDto.addressDetail,
                     phone: updateShelterDto.phone,

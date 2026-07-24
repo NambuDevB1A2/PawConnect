@@ -10,8 +10,6 @@ import { ImageUploaderProps } from "@/components/uploader/ImageUploader";
 import AppImage from "@/components/common/AppImage";
 
 interface ProfileImageUploaderProps extends ImageUploaderProps {
-    initialImageUrl?: string;
-    removedFieldName?: string;
 }
 
 export default function ProfileImageUploader({

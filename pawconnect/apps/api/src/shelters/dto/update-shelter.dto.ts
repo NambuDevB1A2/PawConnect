@@ -3,12 +3,6 @@ import { Transform } from "class-transformer";
 import { IsArray, IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
 
 export class UpdateShelterDataDto {
-    @ApiPropertyOptional({ example: "서울행복동물보호소" })
-    @IsOptional()
-    @IsString()
-    @MaxLength(100)
-    name: string;
-
     @ApiPropertyOptional({ example: "서울시 금천구 독산로 50길 23" })
     @IsOptional()
     @IsString()
