@@ -53,7 +53,6 @@ export class SheltersController {
         const imgBanner = file.imgBanner?.[0];
         const imgShelter = file.imgShelter ? file.imgShelter : [];
 
-        return cleanupOnError([imgBanner, ...imgShelter].filter(isDefined), () => 
-            this.sheltersService.update(auth, updateShelterDto, imgBanner, imgShelter));
+        return this.sheltersService.update(auth, updateShelterDto, imgBanner, imgShelter);
     }
 }

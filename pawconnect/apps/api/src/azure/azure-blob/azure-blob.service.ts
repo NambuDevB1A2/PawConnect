@@ -34,13 +34,13 @@ export class AzureBlobService implements OnModuleInit {
         return `${uuid}${ext}`;
     }
 
-    // product-images 안에 products 가상폴더를 만들고 파일 업로드
+    // product-images 안에 images 가상폴더를 만들고 파일 업로드
     async uploadPublic(
         file: Express.Multer.File,
-        folder = "products"
+        folder = "images"
     ): Promise<{ blobName: string, url: string }> {
         // Azure에 파일을 저장하는 로직
-        // products = 가상폴더
+        // images = 가상폴더
         const blobName = `${folder}/${this.makeBlobName(file.originalname)}`;
         const blockBlob = this.publicContainer.getBlockBlobClient(blobName);
         await blockBlob.uploadData(file.buffer, { 
@@ -53,7 +53,7 @@ export class AzureBlobService implements OnModuleInit {
     // 다중 이미지 업로드
     async uploadPublicMultiple(
         files: Express.Multer.File[],
-        folder = "products"
+        folder = "images"
     ): Promise<{ blobName: string; url: string }[]> {
         if (!files || files.length === 0) {
             return [];
@@ -86,5 +86,31 @@ export class AzureBlobService implements OnModuleInit {
         }
 
         return succeeded;
+    }
+
+    // Blob 삭제
+    async deleteBlob(blobName: string) {
+        try {
+            const blockBlob = this.publicContainer.getBlockBlobClient(blobName);
+            await blockBlob.deleteIfExists();
+        } catch (error) {
+            // 에러 메세지 표시
+        }
+    }
+
+    // 새 파일 업로드 성공 후 기존 파일 삭제
+    async replacePublic(
+        oldBlobName: string | null | undefined,
+        newFile: Express.Multer.File,
+        folder = "images"
+    ): Promise<{ blobName: string; url: string; }> {
+        const uploaded = await this.uploadPublic(newFile, folder);
+
+        if (oldBlobName) {
+            // 업로드 성공 후에 삭제 (실패 대비)
+            await this.deleteBlob(oldBlobName);
+        }
+
+        return uploaded;
     }
 }

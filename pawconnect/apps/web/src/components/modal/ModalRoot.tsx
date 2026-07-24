@@ -7,6 +7,7 @@ import ConfirmDeleteModal from "@/components/modal/ConfirmDeleteModal";
 import ImageViewerModal from "@/components/modal/ImageViewerModal";
 import ContentViewerModal from "@/components/modal/ContentViewerModal";
 import ConfirmLogoutModal from "@/components/modal/ConfirmLogoutModal";
+import ChangePasswordModal from "@/components/modal/ChangePasswordModal";
 
 export default function ModalRoot() {
     const { activeModal, params, closeModal } = useContext(ModalContext);
@@ -42,6 +43,11 @@ export default function ModalRoot() {
                 onClose={closeModal}
                 titleText={activeModal === "contentViewer" ? params?.titleText : undefined}
                 contentText={activeModal === "contentViewer" ? params?.contentText : undefined}
+                />
+            
+            <ChangePasswordModal
+                isOpen={activeModal === "changePassword"}
+                onClose={closeModal}
                 />
         </div>
     );

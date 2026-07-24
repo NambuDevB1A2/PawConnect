@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { validateNickname, validatePassword, validateRePassword } from "@/utils/auth/auth.validator";
 import { ModalContext } from "@/providers/ModalProvider";
 import { TERMS_MESSAGES } from "@/constants/messages/Terms";
+import Typography from "@/components/common/Typography";
 
 const initialState: RegisterUserState = { };
 
@@ -65,6 +66,8 @@ export default function RegisterUserForm() {
 
     return (
         <form action={formAction} className={styles.wrapper_section}>
+            
+            <Typography className={styles.typo_info}>* 항목은 필수 입력 항목입니다</Typography>
             
             <Section className={styles.wrapper_info} titleText="내 정보 입력">
 

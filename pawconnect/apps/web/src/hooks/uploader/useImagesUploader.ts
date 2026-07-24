@@ -24,6 +24,12 @@ export function useImagesUploader(
         return () => { urls.forEach((url) => URL.revokeObjectURL(url)) };
     }, [internalFiles]);
 
+    useEffect(() => {
+        if (internalFiles.length > 0 && inputRef.current?.files?.length === 0) {
+            syncInputFiles(internalFiles);
+        }
+    }, [internalFiles]);
+
     const syncInputFiles = (files: File[]) => {
         const dataTransfer = new DataTransfer();
         files.forEach((file) => dataTransfer.items.add(file));

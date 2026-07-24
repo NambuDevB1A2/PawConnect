@@ -1,4 +1,5 @@
 .wrapper_header {
+    z-index: var(--z-index-header);
     --header-height: 80px;
 
     width: 100%;
@@ -86,6 +87,8 @@
 }
 
 .box_dropdown {
+    z-index: var(--z-index-header-dropdown);
+
     position: absolute;
     display: flex;
     flex-direction: column;

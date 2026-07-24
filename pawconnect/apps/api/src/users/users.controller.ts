@@ -4,6 +4,7 @@ import { RolesGuard } from '@/auth/guards/role.guard';
 import { type AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { cleanupOnError } from '@/common/utils/upload.util';
 import { createImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
+import { UpdatePasswordDto } from '@/users/dto/update-password.dto';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { UsersService } from '@/users/users.service';
 import { Body, Controller, Get, Patch, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
@@ -35,7 +36,15 @@ export class UsersController {
         @CurrentAuth() auth: AuthRequest, 
         @Body() updateUserDto: UpdateUserDto,
         @UploadedFile() imgProfile?: Express.Multer.File) {
-        return cleanupOnError([imgProfile].filter(isDefined), () => 
-            this.usersService.update(auth, updateUserDto, imgProfile));
+        return this.usersService.update(auth, updateUserDto, imgProfile);
+    }
+
+    // 비밀번호 변경
+    @ApiOperation({ summary: "비밀번호 변경" })
+    @Patch('password')
+    updatePassword(
+        @CurrentAuth() auth: AuthRequest,
+        @Body() updatePasswordDto: UpdatePasswordDto) {
+        return this.usersService.updatePassword(auth, updatePasswordDto);
     }
 }

@@ -23,7 +23,7 @@ export default function PreviewImage({
     return (
         <div className={`${styles.box_preview} ${previewClassName}`}>
             <div className={styles.box_image}>
-                <AppImage className={`${styles.img_preview} ${previewImageClassName}`} src={previewUrl} disabledDomain/>
+                <AppImage className={`${styles.img_preview} ${previewImageClassName}`} src={previewUrl}/>
             </div>
             <div className={`${styles.box_upper} ${previewBoxClassName}`}>
                 <Typography 

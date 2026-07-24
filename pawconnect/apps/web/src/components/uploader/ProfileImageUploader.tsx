@@ -10,6 +10,8 @@ import { ImageUploaderProps } from "@/components/uploader/ImageUploader";
 import AppImage from "@/components/common/AppImage";
 
 interface ProfileImageUploaderProps extends ImageUploaderProps {
+    initialImageUrl?: string;
+    removedFieldName?: string;
 }
 
 export default function ProfileImageUploader({
@@ -21,20 +23,32 @@ export default function ProfileImageUploader({
     accept = "image/png, image/jpeg, image/jpg",
     maxSizeMB = 5,
     disabled = false,
+    initialImageUrl,
+    removedFieldName,
     wrapperClassName = "",
 }: ProfileImageUploaderProps) {
-    const {isDragging, inputRef, previewUrl, displayError,
+    const {isDragging, inputRef, internalFile, previewUrl, displayError, removed, isExistingImage,
         handleFileChange, handleDrop, handleDragOver, handleDragLeave, handleRemove
-     } = useImageUploader(errorText, onChange, maxSizeMB, disabled);
+     } = useImageUploader(errorText, onChange, maxSizeMB, disabled, initialImageUrl);
 
     return (
         <span className={`${styles.wrapper_uploader} ${wrapperClassName}`}>
-            {labelText && <Typography  variant="subtitle">{labelText}</Typography>}
+            {labelText && <Typography variant="subtitle">{labelText}</Typography>}
         
+            <input
+                type="hidden"
+                name={removedFieldName ?? `${name}Removed`}
+                value={String(removed)}
+                />
+
             <div className={styles.box_uploader}>
                 <div className={styles.box_image}>
                     {previewUrl ?
-                    <AppImage className={styles.img_preview} src={previewUrl} disabledDomain/> :
+                    <AppImage
+                        className={styles.img_preview}
+                        src={previewUrl}
+                        disabledDomain={!isExistingImage} // 기존 이미지면 도메인 붙이고(false), 새 파일이면 그대로(true)
+                    /> :
                     <div className={styles.box_null}>
                         <Icon name="account_circle" size="hero" color="color_default"/>
                     </div>}
@@ -74,11 +88,8 @@ export default function ProfileImageUploader({
                         {helperText && <Typography className={styles.helper_text}>{helperText}</Typography>}
                         {displayError && <Typography className={styles.error_text}>{displayError}</Typography>}
                     </div>
-
                 </div>
-                    
             </div>
-
         </span>
     );
 }
