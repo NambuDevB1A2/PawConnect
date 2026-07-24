@@ -6,6 +6,7 @@ export async function HelloWorld() {
         const result = await fetchClient.get<{result: string}>('/');
         console.log(result.result);
     } catch (error) {
-        console.log(`에러 발생`);
+        console.log(error);
+        throw error;
     }
 }

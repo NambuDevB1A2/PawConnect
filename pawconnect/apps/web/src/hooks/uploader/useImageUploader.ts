@@ -35,7 +35,7 @@ export function useImageUploader(
         if (initialImageUrl && !internalFile && !previewItem) {
             setPreviewItem({ url: initialImageUrl, isExisting: true, name: "기존 이미지" });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        
     }, [initialImageUrl]);
 
     // 새 파일 선택 시에만 objectURL 생성 (파일이 바뀔 때만, 매 렌더마다 X)
@@ -51,6 +51,17 @@ export function useImageUploader(
             if (currentUrlRef.current === url) currentUrlRef.current = null;
         };
     }, [internalFile]);
+
+    useEffect(() => {
+        if (!internalFile || !inputRef.current) return;
+
+        const currentFiles = inputRef.current.files;
+        if (!currentFiles || currentFiles.length === 0) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(internalFile);
+            inputRef.current.files = dataTransfer.files;
+        }
+    }); // 불필요한 deps 배열 제거
 
     const validateAndSetFile = (file: File | null) => {
         if (!file) {

@@ -1,11 +1,15 @@
+import { AdoptionsService } from '@/adoptions/adoptions.service';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
+import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
+import { getPagination, getTotalPage } from '@/common/utils/pagination.util';
 import { getImageIdByString } from '@/common/utils/upload.util';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
+import { QueryGetShelterAdoptionsDto } from '@/shelters/dto/query-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
-import { SHELTER_DETAIL_SELECT, SHELTER_IMAGE_SELECT, SHELTER_SELECT } from '@/shelters/shelter.select';
+import { SHELTER_DETAIL_SELECT, SHELTER_IMAGE_SELECT, SHELTER_ORDERBY, SHELTER_SELECT } from '@/shelters/shelter.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -22,12 +26,12 @@ export class SheltersService {
     constructor (
         private readonly prisma: PrismaService,
         private readonly azureBlob: AzureBlobService,
+        private readonly adoptionsService: AdoptionsService,
     ) {}
     
     // 보호소 검색 (id)
-    async find<T extends Prisma.ShelterSelect = Prisma.ShelterSelect>(
-        id: string | null, select?: T
-    ): Promise<Prisma.ShelterGetPayload<{ select: T }>> {
+    async find<T extends Prisma.ShelterSelect = Prisma.ShelterSelect>(id: string | null, select?: T)
+        : Promise<Prisma.ShelterGetPayload<{ select: T }>> {
         if (!id) throw new UnauthorizedException({
             message: "존재하지 않는 보호소입니다",
         });
@@ -37,6 +41,16 @@ export class SheltersService {
             select: select 
         }) as Prisma.ShelterGetPayload<{ select: T }> | null;
 
+        if (!shelter) throw new UnauthorizedException({
+            message: "존재하지 않는 보호소입니다",
+        });
+        
+        return shelter;
+    }
+
+    // 보호소 검색 (name)
+    async findByName(name: string, select?: Prisma.ShelterSelect) {
+        const shelter = await this.prisma.shelter.findUnique({ where: { name }, select: select});
         if (!shelter) throw new UnauthorizedException({
             message: "존재하지 않는 보호소입니다",
         });
@@ -108,6 +122,51 @@ export class SheltersService {
     // 내 보호소 정보 조회
     async me(auth: AuthRequest) {
         const shelter = await this.find(auth.shelterId, SHELTER_DETAIL_SELECT);
+
+        return { success: true, shelter };
+    }
+
+    // 내 보호소 입양 신청 목록 조회
+    async getShelterAdoptions(auth: AuthRequest, { page, limit, status }: QueryGetShelterAdoptionsDto) {
+        await this.find(auth.shelterId);
+
+        const { adoptions, total, totalPage } = 
+            await this.adoptionsService.findByShelter(auth.shelterId as string, { page, limit }, status);
+
+        return { success: true, adoptions, pagination: { page, limit, total, totalPage }};
+    }
+
+    // 보호소 목록 조회
+    async getShelters({ page, limit }: QueryPaginationDto) {
+        const [shelters, total] = await Promise.all([
+            this.prisma.shelter.findMany({
+                select: SHELTER_SELECT, // Select 상수화
+                orderBy: SHELTER_ORDERBY.NEWEST, // OrderBy 상수화
+                ...getPagination(page, limit), // 페이지네이션
+            }),
+            this.prisma.shelter.count(), // total 값 추출
+        ]);
+
+        const totalPage = getTotalPage(total, limit); // totalPage 값 추출
+        return { success: true, shelters, pagination: { page, limit, total, totalPage }};
+    }
+
+    // 보호소 상세 조회 (id)
+    async getShelter(id: string) {
+        const shelter = await this.find(id, { 
+            ...SHELTER_DETAIL_SELECT, 
+            animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
+        });
+
+        return { success: true, shelter };
+    }
+
+    // 보호소 상세 조회 (name)
+    async getShelterByName(name: string) {
+        const shelter = await this.findByName(name, { 
+            ...SHELTER_DETAIL_SELECT, 
+            animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
+        });
 
         return { success: true, shelter };
     }

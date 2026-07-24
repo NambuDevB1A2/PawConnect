@@ -1,0 +1,52 @@
+-- 1. Adoption 20개
+INSERT INTO "Adoption" (id, "userId", "animalId", "adoptionStatus", "createdAt", "updatedAt") VALUES
+('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000001', 1, 'PENDING', now(), now()),
+('00000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000002', 2, 'COUNSELING', now(), now()),
+('00000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000003', 3, 'INTERVIEW', now(), now()),
+('00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000004', 1, 'ADDITIONAL_INTERVIEW', now(), now()),
+('00000000-0000-0000-0000-000000000005', '00000000-0000-0000-0000-000000000005', 2, 'FOSTERING', now(), now()),
+('00000000-0000-0000-0000-000000000006', '00000000-0000-0000-0000-000000000001', 3, 'FINAL_REVIEW', now(), now()),
+('00000000-0000-0000-0000-000000000007', '00000000-0000-0000-0000-000000000002', 1, 'APPROVED', now(), now()),
+('00000000-0000-0000-0000-000000000008', '00000000-0000-0000-0000-000000000003', 2, 'REJECTED', now(), now()),
+('00000000-0000-0000-0000-000000000009', '00000000-0000-0000-0000-000000000004', 3, 'CANCELED', now(), now()),
+('00000000-0000-0000-0000-000000000010', '00000000-0000-0000-0000-000000000005', 1, 'PENDING', now(), now()),
+('00000000-0000-0000-0000-000000000011', '00000000-0000-0000-0000-000000000001', 2, 'COUNSELING', now(), now()),
+('00000000-0000-0000-0000-000000000012', '00000000-0000-0000-0000-000000000002', 3, 'INTERVIEW', now(), now()),
+('00000000-0000-0000-0000-000000000013', '00000000-0000-0000-0000-000000000003', 1, 'FOSTERING', now(), now()),
+('00000000-0000-0000-0000-000000000014', '00000000-0000-0000-0000-000000000004', 2, 'FINAL_REVIEW', now(), now()),
+('00000000-0000-0000-0000-000000000015', '00000000-0000-0000-0000-000000000005', 3, 'APPROVED', now(), now()),
+('00000000-0000-0000-0000-000000000016', '00000000-0000-0000-0000-000000000001', 1, 'REJECTED', now(), now()),
+('00000000-0000-0000-0000-000000000017', '00000000-0000-0000-0000-000000000002', 2, 'PENDING', now(), now()),
+('00000000-0000-0000-0000-000000000018', '00000000-0000-0000-0000-000000000003', 3, 'COUNSELING', now(), now()),
+('00000000-0000-0000-0000-000000000019', '00000000-0000-0000-0000-000000000004', 1, 'INTERVIEW', now(), now()),
+('00000000-0000-0000-0000-000000000020', '00000000-0000-0000-0000-000000000005', 2, 'CANCELED', now(), now());
+
+-- 2. AdoptionDetail 20개
+INSERT INTO "AdoptionDetail" (
+    id, "adoptionId", "userName", email, phone, address, "addressDetail",
+    "petExperience", "petsDescription", "petExperiencePeriod",
+    "residenceType", "petAllowedStatus", "familySize", "youngChildStatus",
+    "isFamilyConsent", "adoptionPurpose",
+    "isCanVaccinate", "isCanProvideMedicalCare", "isCanProvideExercise", "isAcceptLifetimeResponsibility",
+    "additionalNotes", "updatedAt"
+) VALUES
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000001', '김민준', 'minjun.kim@example.com', '01012340001', '서울특별시 강남구 역삼로 10', '101동 1001호', 'NONE', NULL, NULL, 'APARTMENT', 'ALLOWED', 'TWO', 'NONE', true, '평소 반려동물을 좋아해서 가족으로 맞이하고 싶습니다', true, true, true, true, '주말마다 산책 가능합니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000002', '이서연', 'seoyeon.lee@example.com', '01012340002', '경기도 성남시 분당구 정자로 22', '202동 202호', 'PAST', '어릴 때 강아지를 키운 경험 있음', 'ONE_TO_THREE_YEARS', 'VILLA', 'ALLOWED', 'THREE', 'UNDER_SEVEN', true, '아이 정서 발달에 도움이 될 것 같아 신청합니다', true, true, true, true, '아이가 동물을 매우 좋아합니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000003', '박도윤', 'doyoon.park@example.com', '01012340003', '부산광역시 해운대구 センター路 33', NULL, 'CURRENT', '현재 고양이 1마리 양육 중', 'THREE_TO_FIVE_YEARS', 'DETACHED_HOUSE', 'ALLOWED', 'FOUR_OR_MORE', 'SEVEN_OR_OLDER', true, '기존 반려동물과 함께 지낼 친구가 필요합니다', true, true, true, true, '마당이 있어 활동 공간이 넓습니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000004', '최지우', 'jiwoo.choi@example.com', '01012340004', '인천광역시 연수구 송도과학로 44', '3층', 'NONE', NULL, NULL, 'OFFICETEL', 'NEED_CONFIRMATION', 'ONE', 'NONE', true, '혼자 살아서 정서적 교감이 필요합니다', true, true, false, true, '재택근무라 함께 있는 시간이 많습니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000005', '정하은', 'haeun.jung@example.com', '01012340005', '대구광역시 수성구 동대구로 55', '502호', 'PAST', '과거 강아지 2마리 양육 경험', 'OVER_FIVE_YEARS', 'APARTMENT', 'ALLOWED', 'TWO', 'NONE', true, '오랜 반려 경험을 바탕으로 잘 돌볼 자신이 있습니다', true, true, true, true, '동물병원 정기검진 계획 있음', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000006', '강시우', 'siwoo.kang@example.com', '01012340006', '광주광역시 서구 상무중앙로 66', NULL, 'CURRENT', '현재 강아지 1마리 양육 중', 'LESS_THAN_1_YEAR', 'VILLA', 'ALLOWED', 'THREE', 'UNDER_SEVEN', true, '기존 반려견의 친구가 되어줄 동물을 찾습니다', true, true, true, true, '두 동물 합사 계획 있습니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000007', '윤예은', 'yeeun.yoon@example.com', '01012340007', '대전광역시 유성구 대학로 77', '가동 701호', 'NONE', NULL, NULL, 'APARTMENT', 'ALLOWED', 'FOUR_OR_MORE', 'SEVEN_OR_OLDER', true, '가족 모두가 상의하여 입양을 결정했습니다', true, true, true, true, '가족 구성원 모두 반려동물 경험 있음', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000008', '임지호', 'jiho.im@example.com', '01012340008', '울산광역시 남구 삼산로 88', NULL, 'PAST', '대학 시절 고양이 양육', 'ONE_TO_THREE_YEARS', 'DORMITORY', 'NEED_CONFIRMATION', 'ONE', 'NONE', false, '기숙사 규정 확인 후 최종 결정 예정입니다', true, false, true, true, '기숙사 반려동물 허용 여부 확인 중', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000009', '한소율', 'soyul.han@example.com', '01012340009', '세종특별자치시 한누리대로 99', '15층', 'CURRENT', '고양이 2마리 양육 중', 'OVER_FIVE_YEARS', 'OFFICETEL', 'ALLOWED', 'TWO', 'NONE', true, '경험이 충분하여 추가 입양을 희망합니다', true, true, true, true, '개인 사정으로 신청을 취소하게 되었습니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000010', '오은우', 'eunwoo.oh@example.com', '01012340010', '전라북도 전주시 완산구 효자로 100', NULL, 'NONE', NULL, NULL, 'DETACHED_HOUSE', 'ALLOWED', 'THREE', 'UNDER_SEVEN', true, '넓은 마당에서 함께 뛰놀고 싶습니다', true, true, true, true, '시골 단독주택이라 공간이 넉넉합니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000011', '서지안', 'jian.seo@example.com', '01012340011', '서울특별시 마포구 월드컵로 11', '11층', 'PAST', '반려견 1마리 5년 양육', 'THREE_TO_FIVE_YEARS', 'APARTMENT', 'ALLOWED', 'TWO', 'NONE', true, '떠난 반려동물을 그리워하며 다시 입양을 결심했습니다', true, true, true, true, '충분한 경험과 준비가 되어있습니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000012', '문가온', 'gaon.moon@example.com', '01012340012', '경기도 수원시 영통구 광교로 12', '202호', 'CURRENT', '강아지 1마리 양육 중', 'ONE_TO_THREE_YEARS', 'VILLA', 'ALLOWED', 'FOUR_OR_MORE', 'SEVEN_OR_OLDER', true, '자녀들이 동물 돌봄을 배우길 바랍니다', true, true, true, true, '자녀와 함께 산책 담당할 예정입니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000013', '배주원', 'juwon.bae@example.com', '01012340013', '강원도 춘천시 공지로 13', NULL, 'NONE', NULL, NULL, 'DETACHED_HOUSE', 'ALLOWED', 'ONE', 'NONE', true, '반려동물과 함께 지내며 안정감을 얻고 싶습니다', true, true, true, true, '재택근무로 상시 돌봄이 가능합니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000014', '노하율', 'hayul.noh@example.com', '01012340014', '울산광역시 남구 삼산로 14', '4층', 'PAST', '고양이 3년 양육 경험', 'ONE_TO_THREE_YEARS', 'OFFICETEL', 'NEED_CONFIRMATION', 'TWO', 'NONE', true, '심사 결과를 기다리고 있습니다', true, true, true, true, '반려동물 동반 가능 오피스텔로 이전 예정', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000015', '조은채', 'eunchae.jo@example.com', '01012340015', '경상남도 창원시 성산구 창이대로 15', '1502호', 'CURRENT', '강아지 2마리 양육 중', 'OVER_FIVE_YEARS', 'APARTMENT', 'ALLOWED', 'THREE', 'UNDER_SEVEN', true, '숙련된 반려 경험으로 승인받았습니다', true, true, true, true, '입양 확정 후 입양 절차 진행 예정', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000016', '신도현', 'dohyun.shin@example.com', '01012340016', '충청북도 청주시 흥덕구 오송읍 오송생명2로 16', NULL, 'NONE', NULL, NULL, 'VILLA', 'NOT_ALLOWED', 'TWO', 'NONE', false, '임대인 승인이 필요한 상황입니다', false, true, true, true, '임대 계약상 반려동물 금지 조항으로 반려되었습니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000017', '홍아윤', 'ayoon.hong@example.com', '01012340017', '서울특별시 강남구 역삼로 17', '17층', 'PAST', '강아지 1마리 4년 양육', 'THREE_TO_FIVE_YEARS', 'APARTMENT', 'ALLOWED', 'ONE', 'NONE', true, '혼자 사는 만큼 책임감 있게 돌보겠습니다', true, true, true, true, '입양 상담 신청 완료했습니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000018', '권시윤', 'siyoon.kwon@example.com', '01012340018', '경기도 성남시 분당구 정자로 18', '3동 1802호', 'CURRENT', '고양이 1마리 양육 중', 'LESS_THAN_1_YEAR', 'APARTMENT', 'ALLOWED', 'TWO', 'NONE', true, '동물병원과 상담 후 입양을 결정했습니다', true, true, true, true, '함께 지낼 반려동물 친구를 찾습니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000019', '유서준', 'seojun.yoo@example.com', '01012340019', '부산광역시 해운대구 센텀중앙로 19', '19층', 'NONE', NULL, NULL, 'OFFICETEL', 'ALLOWED', 'ONE', 'NONE', true, '반려동물과의 첫 인연을 시작하고 싶습니다', true, true, true, true, '면접 일정을 조율 중입니다', now()),
+(gen_random_uuid(), '00000000-0000-0000-0000-000000000020', '전예린', 'yerin.jeon@example.com', '01012340020', '대구광역시 수성구 동대구로 20', NULL, 'PAST', '어릴 때 반려견 양육 경험', 'OVER_FIVE_YEARS', 'DETACHED_HOUSE', 'ALLOWED', 'FOUR_OR_MORE', 'SEVEN_OR_OLDER', true, '개인 사정으로 신청을 취소합니다', true, true, true, true, '가족과의 상의 결과 취소하게 되었습니다', now());

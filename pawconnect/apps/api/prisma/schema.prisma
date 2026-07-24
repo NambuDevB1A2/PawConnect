@@ -49,6 +49,9 @@ model Shelter {
   description    String @db.VarChar(500)
   imgBanner      String @db.VarChar(100) // 기본 이미지 사용
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   images  ShelterImage[] // 이미지 필수 아님
   animals Animal[]
   staff   User[] // 보호소 관리자 다수 등록 가능

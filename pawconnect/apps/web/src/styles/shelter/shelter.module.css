@@ -1,0 +1,41 @@
+.wrapper_page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+}
+
+.box_title {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    padding-bottom: var(--spacing);
+
+    width: 100%;
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.wrapper_list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-500);
+
+    width: 100%;
+    max-width: 1050px;
+
+    padding: var(--spacing);
+}
+
+.box_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-200);
+}
+
+.pagination {
+    align-self: center;
+}

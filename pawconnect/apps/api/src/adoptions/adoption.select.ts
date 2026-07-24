@@ -1,6 +1,7 @@
+import { Prisma } from "@prisma/client";
 
 // include-> animal include 중복 상수
-export const adoptionAnimalInclude ={
+export const ADOPTION_ANIMAL_INCLUDE ={
     animal: {
           include: {
             shelter: { select: { name: true } },
@@ -9,3 +10,20 @@ export const adoptionAnimalInclude ={
           }
         },
 } as const;
+
+export const ADOPTION_ORDERBY = {
+    OLDEST: Prisma.validator<Prisma.AdoptionOrderByWithRelationInput>()
+    ({
+        createdAt: 'asc',
+    }),
+
+    NEWEST: Prisma.validator<Prisma.AdoptionOrderByWithRelationInput>()
+    ({
+        createdAt: 'desc',
+    }),
+
+    UPDATED: Prisma.validator<Prisma.AdoptionOrderByWithRelationInput>()
+    ({
+        updatedAt: 'desc',
+    }),
+};
