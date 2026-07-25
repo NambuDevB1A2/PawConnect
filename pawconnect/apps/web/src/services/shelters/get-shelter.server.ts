@@ -8,6 +8,7 @@ export async function GetShelter() {
     try {
         return await fetchServer.get<ResponseShelter>('/shelters/me', token, 0);
     } catch (error) {
-
+        console.log(error);
+        throw error;
     }
 }

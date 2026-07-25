@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AnimalsService } from './animals.service';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
@@ -14,6 +14,9 @@ import { CreateAnimalDto } from './dto/create-animals.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { createFieldsImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
 import { CreateAnimalRequestDto } from './dto/create-animals-swagger.dto';
+import { UpdateAnimalDto } from './dto/update-animals.dto';
+import { UpdateAnimalStatusDto } from './dto/update-animals.dto';
+import { UpdateAnimalRequestDto } from './dto/update-animal-swagger.dto';
 
 
 @ApiTags('Animals')
@@ -29,7 +32,6 @@ export class AnimalsController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: CreateAnimalRequestDto })
   @UseInterceptors(
-    // createFieldsImageUploadOptions로 필드별 파일 저장 위치 지정
     FileFieldsInterceptor([
       // 파일 필드명으로 구분
       { name: 'imgThumbnail', maxCount: 1 },
@@ -44,7 +46,7 @@ export class AnimalsController {
     @CurrentAuth() auth: AuthRequest,
     @UploadedFiles()
     files: {
-      imgThumbnail: Express.Multer.File;
+      imgThumbnail: Express.Multer.File[];
       images: Express.Multer.File[];
     },
     @Body() createAnimalDto: CreateAnimalDto) {
@@ -56,9 +58,8 @@ export class AnimalsController {
   @ApiOkResponse({ type: GetAnimalsResponseDto })
   @ApiOperation({ summary: "보호동물 목록 조회" })
   @Public()
-  getAnimals(@Query() query: GetAnimalsQueryDto) {
-    console.log(query);
-    return this.animalsService.getAnimals(query);
+  findAll(@Query() query: GetAnimalsQueryDto) {
+    return this.animalsService.findAll(query);
   }
 
   // 보호동물 상세조회
@@ -67,23 +68,56 @@ export class AnimalsController {
   @ApiOperation({ summary: "보호동물 상세조회" })
   @Public()
   findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log(id);
     return this.animalsService.findOne(id);
   }
 
+  // 보호동물 수정
+  @Patch(':id')
+  @ApiOkResponse({ type: AnimalDetailResponseDto })
+  @ApiOperation({ summary: "보호동물 수정" })
+  @Roles(Role.SHELTER)
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UpdateAnimalRequestDto })
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      // 파일 필드명으로 구분
+      { name: 'imgThumbnail', maxCount: 1 },
+      { name: 'images', maxCount: 4 },
+    ], createFieldsImageUploadOptions({
+      // 파일 저장 위치, 옵션 지정
+      imgThumbnail: UPLOAD_DIR.animalThumbnailDir,
+      images: UPLOAD_DIR.animalImgDir,
+    })))
+  update(
+    @CurrentAuth() auth: AuthRequest,
+    @UploadedFiles()
+    files: {
+      imgThumbnail?: Express.Multer.File[];
+      images?: Express.Multer.File[];
+    },
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateAnimalDto) {
+    return this.animalsService.update(auth, id, dto, files);
+  }
 
-  //   @Patch(':id/status')
-  //   @Roles(Role.SHELTER)
-  //   @ApiOperation({summary:"입양 신청 상태 변경"})
-  //   update(@CurrentAuth() auth:AuthRequest,
-  //          @Param('id', new ParseUUIDPipe()) id: string, 
-  //          @Body() updateAdoptionStatusDto: UpdateAdoptionStatusDto) {
-  //     return this.adoptionsService.update(auth ,id, updateAdoptionStatusDto);
-  //   }
 
-  //   @Delete(':id')
-  //   remove(@Param('id') id: string) {
-  //     return this.adoptionsService.remove(id);
-  //   }
+  // 보호동물 삭제
+  @Delete(':id')
+  @ApiOperation({ summary: "보호동물 삭제" })
+  remove(
+    @CurrentAuth() auth: AuthRequest,
+    @Param('id', ParseIntPipe) id: number) {
+    return this.animalsService.remove(auth, id);
+  }
 
+  // 보호동물 상태 변경
+  @Patch(':id/status')
+  @Roles(Role.SHELTER)
+  @ApiOperation({ summary: "보호동물 상태 변경" })
+  updateState(
+    @CurrentAuth() auth: AuthRequest,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateAnimalStatusDto) {
+    return this.animalsService.updateState(auth, id, dto.animalStatus);
+  }
 }
