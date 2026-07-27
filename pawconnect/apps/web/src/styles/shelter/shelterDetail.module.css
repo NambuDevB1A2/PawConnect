@@ -48,7 +48,7 @@
 .box_content {
     display: flex;
     flex-direction: row;
-    gap: var(--spacing-700);
+    gap: var(--spacing-);
 
     width: 100%;
 }
@@ -60,22 +60,32 @@
 .box_info {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-300);
+    gap: var(--spacing-100);
+    
+    padding: var(--spacing);
 
     flex: 1;
     min-width: 0;
+
+    background-color: var(--color-surface);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
 }
 
 .box_typo {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-500);
+
+    padding-bottom: var(--spacing-100);
+
+    border-bottom: 1px solid var(--color-border);
 }
 
 .typo_subtitle {
     flex-shrink: 0;
 
-    width: 100px;
+    width: 80px;
 
     color: var(--color-text-secondary);
 }
