@@ -103,7 +103,9 @@ export class PawLogsController {
             imgPawLog: Express.Multer.File[],
         },
     ) {
-        return this.pawLogsService.update(auth, id);
+        const imgPawLog = file.imgPawLog ? file.imgPawLog : [];
+
+        return this.pawLogsService.update(auth, id, updatePawLogDto, imgPawLog);
     }
 
     // delete - pawlog/:id

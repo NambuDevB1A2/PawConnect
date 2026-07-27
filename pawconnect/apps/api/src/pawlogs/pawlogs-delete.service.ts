@@ -25,7 +25,7 @@ export class PawLogsDeleteService {
         // 2. DB 일괄 삭제
         await this.prisma.$transaction(async (tx) => {
             await tx.pawLog.delete({ where: { id } });
-            await tx.pawLogImage.deleteMany({ where: { pawLogId: pawLog.id } });
+            await tx.pawLogImage.deleteMany({ where: { pawLogId: id } });
         });
 
         // 3. Azure Blob 삭제
@@ -33,6 +33,6 @@ export class PawLogsDeleteService {
             await this.pawLogsUploadService.deleteBlobs(pawLog.images.map((img) => img.img));
         }
 
-        return { pawLogId: pawLog.id };
+        return { pawLogId: id };
     }
 }

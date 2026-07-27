@@ -6,6 +6,7 @@ import { PawLogsReadService } from '@/pawlogs/pawlogs-read.service';
 import { PawLogsUpdateService } from '@/pawlogs/pawlogs-update.service';
 import { Injectable } from '@nestjs/common';
 import { CreatePawLogDto } from '@/pawlogs/dto/create-pawlog.dto';
+import { UpdatePawLogDto } from '@/pawlogs/dto/update-pawlog.dto';
 
 @Injectable()
 export class PawLogsService {
@@ -41,8 +42,9 @@ export class PawLogsService {
     }
 
     // 게시글 수정
-    async update(auth: AuthRequest, id: number) {
-        
+    async update(auth: AuthRequest, id: number, updatePawLogDto: UpdatePawLogDto, files: Express.Multer.File[]) {
+        const result = await this.pawLogsUpdateService.update(auth, id, updatePawLogDto, files);
+        return { success: true, ...result };
     }
 
     // 게시글 삭제
