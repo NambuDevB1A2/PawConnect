@@ -1,3 +1,4 @@
+import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { getPagination, getTotalPage } from '@/common/utils/pagination.util';
 import { PAWLOG_ORDERBY, PAWLOG_SELECT } from '@/pawlogs/pawlog.select';
@@ -27,7 +28,7 @@ export class PawLogsReadService {
 
     // 게시글 목록 조회
     async getPawLogs({ page, limit }: QueryPaginationDto) {
-        const [pawLogs, total] = await Promise.all([
+        const [pawLogs, totalCount] = await Promise.all([
             this.prisma.pawLog.findMany({
                 select: PAWLOG_SELECT, // Select 상수화
                 orderBy: PAWLOG_ORDERBY.NEWEST, // OrderBy 상수화
@@ -36,8 +37,8 @@ export class PawLogsReadService {
             this.prisma.pawLog.count(), // total 값 추출
         ]);
 
-        const totalPage = getTotalPage(total, limit); // totalPage 값 추출
-        return { success: true, pawLogs, pagination: { page, limit, total, totalPage }};
+        const totalPage = getTotalPage(totalCount, limit); // totalPage 값 추출
+        return { pawLogs, pagination: { page, limit, totalCount, totalPage }};
     }
 
     // 게시글 상세 조회
@@ -59,6 +60,22 @@ export class PawLogsReadService {
             }),
         ]);
         
-        return { success: true, pawLog, prev, next };
+        return { pawLog, prev, next };
+    }
+
+    // 내 게시글 목록 조회
+    async getMyPawLogs(auth: AuthRequest, { page, limit }: QueryPaginationDto) {
+        const [pawLogs, totalCount] = await Promise.all([
+            this.prisma.pawLog.findMany({
+                where: { authorId: auth.id },
+                select: PAWLOG_SELECT, // Select 상수화
+                orderBy: PAWLOG_ORDERBY.NEWEST, // OrderBy 상수화
+                ...getPagination(page, limit), // 페이지네이션
+            }),
+            this.prisma.pawLog.count(), // total 값 추출
+        ]);
+
+        const totalPage = getTotalPage(totalCount, limit); // totalPage 값 추출
+        return { pawLogs, pagination: { page, limit, totalCount, totalPage }};
     }
 }
