@@ -22,11 +22,8 @@ export class PawLogsDeleteService {
         if (!auth.id || auth.id !== pawLog.author.id) 
             throw new UnauthorizedException({ message: "권한이 없습니다" });
 
-        // 2. DB 일괄 삭제
-        await this.prisma.$transaction(async (tx) => {
-            await tx.pawLog.delete({ where: { id } });
-            await tx.pawLogImage.deleteMany({ where: { pawLogId: id } });
-        });
+        // 2. DB 삭제
+        await this.prisma.pawLog.delete({ where: { id } });
 
         // 3. Azure Blob 삭제
         if (pawLog.images.length > 0) {
