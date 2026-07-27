@@ -2,7 +2,7 @@ import PawLogCard from "@/components/card/PawLogCard";
 import Empty from "@/components/common/Empty";
 import Pagination from "@/components/common/Pagination";
 import Typography from "@/components/common/Typography";
-import NewPawLogButton from "@/components/mypage/pawlog/NewPawLogButton";
+import NewPawLogButton from "@/components/pawlog/NewPawLogButton";
 import { PAGE_SIZE } from "@/constants/page.constants";
 import { GetMyPawLogs } from "@/services/pawlog/get-my-pawlogs.server";
 import styles from "@/styles/pawlog/pawlog.module.css"

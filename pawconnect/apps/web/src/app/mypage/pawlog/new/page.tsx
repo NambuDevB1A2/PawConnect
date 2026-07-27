@@ -1,4 +1,4 @@
-import NewPawLogForm from "@/components/mypage/pawlog/NewPawLogForm";
+import NewPawLogForm from "@/components/pawlog/NewPawLogForm";
 import styles from "@/styles/pawlog/newPawLog.module.css"
 
 export default function Page() {

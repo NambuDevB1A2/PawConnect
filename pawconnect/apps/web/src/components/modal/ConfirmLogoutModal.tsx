@@ -22,6 +22,8 @@ export default function ConfirmLogoutModal({ isOpen, onClose }: ConfirmLogoutMod
         if (response.response?.success) {
             router.push('/');
             alert("로그아웃에 성공했습니다");
+        } else {
+            alert("로그아웃 도중 오류가 발생했습니다");
         }
     };
 

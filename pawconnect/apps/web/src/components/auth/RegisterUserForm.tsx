@@ -61,6 +61,8 @@ export default function RegisterUserForm() {
         if (state.response?.success) {
             router.push("/login");
             alert('회원가입에 성공했습니다');
+        } else {
+            alert('회원가입 도중 오류가 발생했습니다');
         }
     }, [state]);
 

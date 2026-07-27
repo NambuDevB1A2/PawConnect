@@ -3,7 +3,7 @@
 import NotFound from "@/components/common/NotFound";
 import Section from "@/components/common/Section";
 import { Shelter } from "@/types/shelter/shelter.type";
-import styles from "@/styles/mypage/shelterInfo.module.css"
+import styles from "@/styles/shelter/shelterInfo.module.css"
 import Button from "@/components/common/Button";
 import TextArea from "@/components/common/TextArea";
 import Input from "@/components/common/Input";
@@ -11,7 +11,7 @@ import ImagesUploader from "@/components/uploader/ImagesUploader";
 import BannerImageUploader from "@/components/uploader/BannerUploader";
 import { useActionState, useEffect, useState } from "react";
 import { UpdateShelter } from "@/services/shelters/update-shelter.client";
-import { UpdateShelterState } from "@/types/mypage/update-shelter.type";
+import { UpdateShelterState } from "@/types/shelter/update-shelter.type";
 import { validateShelterAddress, validateShelterPhone } from "@/utils/auth/auth.validator";
 import { useRouter } from "next/navigation";
 
@@ -52,8 +52,10 @@ export default function ShelterForm({
 
     useEffect(() => {
         if (state.response?.success) {
-            router.refresh();
             alert('정보 변경에 성공했습니다');
+            router.refresh();
+        } else {
+            alert('정보 변경 도중 오류가 발생했습니다');
         }
     }, [state]);
     

@@ -33,8 +33,10 @@ export default function NewPawLogForm() {
     // 성공 반환시 로그인 화면으로 이동
     useEffect(() => {
         if (state.response?.success) {
-            router.push(`/pawlog/${state.response.pawLogId}`);
             alert('게시글을 성공적으로 작성했습니다');
+            router.push(`/pawlog/${state.response.pawLogId}`);
+        } else {
+            alert('게시 도중 오류가 발생했습니다');
         }
     }, [state]);
 

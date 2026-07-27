@@ -45,6 +45,8 @@ export default function InfoForm({
         if (state.response?.success) {
             alert('정보 변경에 성공했습니다');
             router.refresh();
+        } else {
+            alert('정보 변경 도중 오류가 발생했습니다');
         }
     }, [state]);
 
