@@ -38,6 +38,13 @@ VALUES
 
 -- Breed
 INSERT INTO "AnimalBreed"
+("species","name")
+VALUES
+(1,'푸들'),
+(1,'믹스'),
+(2,'코리안숏헤어');
+
+INSERT INTO "AnimalBreed"
 ("id", "species", "name")
 VALUES
 (1, 1, '믹스견'),
