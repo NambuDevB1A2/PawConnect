@@ -14,8 +14,7 @@ import { CreateAnimalDto } from './dto/create-animals.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { createFieldsImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
 import { CreateAnimalRequestDto } from './dto/create-animals-swagger.dto';
-import { UpdateAnimalDto } from './dto/update-animals.dto';
-import { UpdateAnimalStatusDto } from './dto/update-animals.dto';
+import { UpdateAnimalDto, UpdateAnimalStatusDto } from './dto/update-animals.dto';
 import { UpdateAnimalRequestDto } from './dto/update-animal-swagger.dto';
 
 
@@ -103,6 +102,7 @@ export class AnimalsController {
 
   // 보호동물 삭제
   @Delete(':id')
+  @Roles(Role.SHELTER)
   @ApiOperation({ summary: "보호동물 삭제" })
   remove(
     @CurrentAuth() auth: AuthRequest,

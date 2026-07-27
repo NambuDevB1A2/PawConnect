@@ -3,7 +3,7 @@ import { PrismaService } from "@/prisma/prisma.service";
 import { ForbiddenException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { UpdateAnimalDto } from "./dto/update-animals.dto";
 import { AnimalUploadService } from "./animal-upload.service";
-import { Prisma } from "@prisma/client";
+import { AnimalStatus, Prisma } from "@prisma/client";
 
 
 @Injectable()
@@ -101,7 +101,7 @@ export class AnimalsUpdateService {
     }
 
     // 동물상태 수정
-    async updateState(auth: AuthRequest, id: number, status) {
+    async updateState(auth: AuthRequest, id: number, status: AnimalStatus) {
         // 수정 권한 확인
         await this.checkShelter(auth, id);
 
@@ -115,15 +115,24 @@ export class AnimalsUpdateService {
     // 삭제
     async remove(auth: AuthRequest, id: number) {
         // 수정 권한 확인
-        await this.checkShelter(auth, id);
+        const animal = await this.checkShelter(auth, id);
 
         // 삭제
         await this.prisma.animal.delete({
             where: { id }
         });
 
+        // blob의 이미지 삭제
+        try {
+            await this.uploadService.deleteBlob(animal.imgThumbnail);
+            await this.uploadService.deleteBlobs(
+                animal.images.map(img => img.img));
+        } catch (error){
+            this.logger.warn('이미지 삭제 실패', error);
+        }
+
         // 삭제시 아이디만 반환
-        return {success: true, animalId: id};
+        return { success: true, animalId: id };
     }
 
     // 동물 수정
