@@ -6,7 +6,7 @@ export interface PawLogImage {
 }
 
 export interface PawLog {
-    id: string;
+    id: number;
     title: string;
     content: string;
     author: User;
