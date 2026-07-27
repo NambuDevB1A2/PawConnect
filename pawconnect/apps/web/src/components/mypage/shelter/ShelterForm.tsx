@@ -16,7 +16,7 @@ import { validateShelterAddress, validateShelterPhone } from "@/utils/auth/auth.
 import { useRouter } from "next/navigation";
 
 interface ShelterFormProps {
-    shelter?: Shelter;
+    shelter: Shelter;
 }
 
 const initialState: UpdateShelterState = { };
@@ -52,8 +52,8 @@ export default function ShelterForm({
 
     useEffect(() => {
         if (state.response?.success) {
-            alert('정보 변경에 성공했습니다');
             router.refresh();
+            alert('정보 변경에 성공했습니다');
         }
     }, [state]);
     

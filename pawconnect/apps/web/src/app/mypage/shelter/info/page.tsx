@@ -1,13 +1,18 @@
+import NotFound from "@/components/common/NotFound";
 import ShelterForm from "@/components/mypage/shelter/ShelterForm";
 import { GetShelter } from "@/services/shelters/get-shelter.server";
 import styles from "@/styles/mypage/shelterInfo.module.css"
 
 export default async function Page() {
-    const shelter = await GetShelter();
+    const { shelter } = await GetShelter();
+
+    if (!shelter) {
+        return <NotFound/>
+    }
 
     return (
         <div className={styles.wrapper_info}>
-            <ShelterForm shelter={shelter?.shelter}/>
+            <ShelterForm shelter={shelter}/>
         </div>
     );
 }
