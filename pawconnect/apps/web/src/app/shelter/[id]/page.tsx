@@ -4,6 +4,7 @@ import Typography from "@/components/common/Typography";
 import { GetShelterDetail } from "@/services/shelters/get-shelter-detail.server";
 import styles from "@/styles/shelter/shelterDetail.module.css"
 import { PageProps } from "@/types/page.type";
+import { formatPhoneNumber } from "@/utils/format";
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
@@ -34,7 +35,7 @@ export default async function Page({ params }: PageProps) {
 
                         <div className={styles.box_typo}>
                             <Typography className={styles.typo_subtitle} weight="semibold">전화번호</Typography>
-                            <Typography className={styles.typo_content}>{shelter?.phone}</Typography>
+                            <Typography className={styles.typo_content}>{formatPhoneNumber(shelter?.phone)}</Typography>
                         </div>
 
                         <div className={styles.box_typo}>

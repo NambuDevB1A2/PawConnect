@@ -82,6 +82,10 @@
     border-bottom: 1px solid var(--color-border);
 }
 
+.box_typo:last-child {
+    border: none;
+}
+
 .typo_subtitle {
     flex-shrink: 0;
 
