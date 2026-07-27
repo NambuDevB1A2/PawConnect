@@ -9,7 +9,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
 import { QueryGetShelterAdoptionsDto } from '@/shelters/dto/query-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
-import { SHELTER_DETAIL_SELECT, SHELTER_IMAGE_SELECT, SHELTER_ORDERBY, SHELTER_SELECT } from '@/shelters/shelter.select';
+import { SHELTER_DETAIL_SELECT, SHELTER_IMAGE_SELECT, SHELTER_ORDERBY, SHELTER_SELECT, SHELTERS_SELECT } from '@/shelters/shelter.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
@@ -140,7 +140,7 @@ export class SheltersService {
     async getShelters({ page, limit }: QueryPaginationDto) {
         const [shelters, total] = await Promise.all([
             this.prisma.shelter.findMany({
-                select: SHELTER_SELECT, // Select 상수화
+                select: SHELTERS_SELECT, // Select 상수화
                 orderBy: SHELTER_ORDERBY.NEWEST, // OrderBy 상수화
                 ...getPagination(page, limit), // 페이지네이션
             }),

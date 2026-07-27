@@ -3,7 +3,7 @@ import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateUserDataDto } from '@/users/dto/create-user.dto';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
-import { USER_SELECT } from '@/users/user.select';
+import { USER_DETAIL_SELECT, USER_SELECT } from '@/users/user.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AzureBlobService } from '../azure/azure-blob/azure-blob.service';
@@ -101,7 +101,7 @@ export class UsersService {
 
     // READ
     async me(auth: AuthRequest) {
-        const user = await this.find(auth.id, USER_SELECT);
+        const user = await this.find(auth.id, USER_DETAIL_SELECT);
 
         return { success: true, user };
     }
@@ -157,12 +157,11 @@ export class UsersService {
         const bcryptRound = this.configService.getOrThrow('bcrypt.bcrypt_round');
         const passwordHash = await bcrypt.hash(updatePasswordDto.newPassword, bcryptRound);
 
-        const user = await this.prisma.user.update({
+        await this.prisma.user.update({
             where: { id: auth.id },
             data: {
                 password: passwordHash,
             },
-            select: USER_SELECT,
         });
 
         return { success: true };

@@ -10,5 +10,5 @@ export interface LoginState {
     emailError?: string;
     passwordError?: string;
 
-    response?: ResponseLogin;
+    response: ResponseLogin;
 }

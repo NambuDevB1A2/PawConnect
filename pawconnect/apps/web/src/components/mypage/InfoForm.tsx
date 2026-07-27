@@ -9,7 +9,7 @@ import { ModalContext } from "@/providers/ModalProvider";
 import { UpdateUser } from "@/services/users/update-user.client";
 import styles from "@/styles/mypage/info.module.css"
 import { UpdateUserState } from "@/types/mypage/update-user.type";
-import { User } from "@/types/user.type";
+import { User } from "@/types/auth/user.type";
 import { validateNickname } from "@/utils/auth/auth.validator";
 import { useRouter } from "next/navigation";
 import { useActionState, useContext, useEffect, useState } from "react";

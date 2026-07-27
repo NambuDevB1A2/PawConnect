@@ -325,6 +325,7 @@ main {
     --modal-radius: var(--radius-500);
     --modal-padding: var(--spacing-500);
 
+    --modal-width-xs: 360px;
     --modal-width-s: 420px;
     --modal-width-m: 560px;
     --modal-width-l: 720px;

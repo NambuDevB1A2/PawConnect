@@ -9,7 +9,6 @@ import { UsersModule } from '@/users/users.module';
 import { SheltersModule } from '@/shelters/shelters.module';
 import { AnimalsModule } from '@/animals/animals.module';
 import { TestsModule } from '@/tests/tests.module';
-import { PetpostsModule } from '@/petposts/petposts.module';
 import { AiModule } from '@/ai/ai.module';
 import { AdoptionsModule } from './adoptions/adoptions.module';
 import commonConfig from '@/config/common.config';
@@ -19,6 +18,14 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { AzureModule } from './azure/azure.module';
+import { PawLogsController } from './pawlogs/pawlogs.controller';
+import { PawLogsService } from './pawlogs/pawlogs.service';
+import { PawLogsModule } from './pawlogs/pawlogs.module';
+import { PawLogsUploadService } from './pawlogs/pawlogs-upload.service';
+import { PawLogsCreateService } from './pawlogs/pawlogs-create.service';
+import { PawLogsUpdateService } from './pawlogs/pawlogs-update.service';
+import { PawLogsReadService } from './pawlogs/pawlogs-read.service';
+import { PawLogsDeleteService } from './pawlogs/pawlogs-delete.service';
 
 @Module({
   imports: [
@@ -41,8 +48,8 @@ import { AzureModule } from './azure/azure.module';
     UsersModule,
     SheltersModule,
     AnimalsModule,
+    PawLogsModule,
     TestsModule,
-    PetpostsModule,
     AiModule,
     AdoptionsModule,
     AzureModule,

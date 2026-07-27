@@ -6,7 +6,7 @@ export async function GetShelter() {
     const token = await getAccessToken();
 
     try {
-        return await fetchServer.get<ResponseShelter>('/shelters/me', token, 0);
+        return await fetchServer.get<ResponseShelter>('/shelters/me', token);
     } catch (error) {
         console.log(error);
         throw error;
