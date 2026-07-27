@@ -4,8 +4,8 @@ export interface ApiResponse {
 }
 
 export interface PaginationResponse {
-    page?: number;
-    limit?: number;
-    total?: number;
-    totalPage?: number;
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
 }

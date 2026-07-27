@@ -4,12 +4,6 @@ DELETE FROM "Agreement";
 DELETE FROM "UserAgreement";
 DELETE FROM "AdoptionAgreement";
 
-TRUNCATE TABLE
-"Agreement",
-"UserAgreement",
-"AdoptionAgreement",
-RESTART IDENTITY CASCADE;
-
 INSERT INTO "Agreement"
 ("title", "content")
 VALUES

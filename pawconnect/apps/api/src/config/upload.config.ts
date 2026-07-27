@@ -62,5 +62,5 @@ export const UPLOAD_DIR = {
     shelterImgDir: "shelter/img",
     animalThumbnailDir: "animal/thumbnail",
     animalImgDir: "animal/img",
-    petpostImgDir: "petpost/img",
+    pawLogImgDir: "pawLog/img",
 }

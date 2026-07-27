@@ -33,7 +33,7 @@ export async function fetchData<T>(url: string, token?: string, options?: Reques
 
         if (response.status === 401) {
             // TODO: 401 에러 발생시 예외처리 
-            return undefined as T
+            return undefined as T;
         }
 
         throw new ApiError(response.status, data?.message ?? "요청 중 오류가 발생했습니다", data?.fields);

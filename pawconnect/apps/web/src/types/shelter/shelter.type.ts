@@ -1,4 +1,4 @@
-export interface ShelterImages {
+export interface ShelterImage {
     id: string;
     img: string;
 }
@@ -12,5 +12,9 @@ export interface Shelter {
     operatingHours: string;
     description: string;
     imgBanner: string;
-    images: ShelterImages[];
+    images: ShelterImage[];
+
+    _count: {
+        animals: number;
+    };
 }

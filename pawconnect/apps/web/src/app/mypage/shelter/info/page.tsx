@@ -1,4 +1,4 @@
-import ShelterForm from "@/components/mypage/ShelterForm";
+import ShelterForm from "@/components/mypage/shelter/ShelterForm";
 import { GetShelter } from "@/services/shelters/get-shelter.server";
 import styles from "@/styles/mypage/shelterInfo.module.css"
 

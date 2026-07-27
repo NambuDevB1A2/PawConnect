@@ -7,6 +7,23 @@ export const SHELTER_IMAGE_SELECT =
         img: true,
     });
 
+export const SHELTERS_SELECT = 
+    Prisma.validator<Prisma.ShelterSelect>()
+    ({
+        id: true,
+        name: true,
+        address: true,
+        imgBanner: true,
+        images: {
+            select: SHELTER_IMAGE_SELECT
+        },
+        _count: {
+            select: { 
+                animals: true 
+            }
+        }
+    });
+
 export const SHELTER_SELECT = 
     Prisma.validator<Prisma.ShelterSelect>()
     ({

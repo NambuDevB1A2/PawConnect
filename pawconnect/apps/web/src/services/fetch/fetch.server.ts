@@ -1,12 +1,12 @@
 import { fetchData, resolveBody } from "@/services/fetch/fetch";
 
 export const fetchServer = {
-    get: <T>(url: string, token?: string, revalidate?: number | false) =>
+    get: <T>(url: string, token?: string) =>
         fetchData<T>(url, token, {
             next: {
-                revalidate: revalidate ?? 60,
                 tags: url.split('/').filter(Boolean),
-            }
+            },
+            cache: "no-store",
         }),
 
     post: <T>(url: string, token?: string, body?: any) =>

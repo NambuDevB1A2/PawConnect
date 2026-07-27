@@ -1,5 +1,38 @@
-export default function Page() {
+import PawLogCard from "@/components/card/PawLogCard";
+import Pagination from "@/components/common/Pagination";
+import Typography from "@/components/common/Typography";
+import { PAGE_SIZE } from "@/constants/page.constants";
+import { GetPawLogs } from "@/services/pawlog/get-pawlogs.server";
+import styles from "@/styles/pawlog/pawlog.module.css"
+import { PageProps } from "@/types/page.type";
+import { parsePageToNumber } from "@/utils/page.util";
+
+export default async function Page({ searchParams }: PageProps) {
+    const { page } = await searchParams;
+    const currentPage = parsePageToNumber(page);
+    const { pawLogs, pagination } = await GetPawLogs(currentPage, PAGE_SIZE.PAWLOG);
+
     return (
-        <div></div>
+        <div className={styles.wrapper_page}>
+            <div className={styles.wrapper_list}>
+                <div className={styles.box_title}>
+                    <Typography variant="heading">PawLog 목록</Typography>
+                    <Typography>총 {pagination?.total}개의 게시글</Typography>
+                </div>
+
+                <div className={styles.box_list}>
+                    {pawLogs?.map((pawLog) =>
+                        <PawLogCard key={pawLog.id} pawLog={pawLog}/>
+                    )}
+                </div>
+
+                <div className={styles.pagination}>
+                    <Pagination
+                        page={pagination?.page} 
+                        maxPage={pagination?.totalPage}
+                        path="/pawlog" />
+                </div>
+            </div>
+        </div>
     );
 }
