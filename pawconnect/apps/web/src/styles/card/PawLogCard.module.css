@@ -30,6 +30,7 @@
 
 .img_pawlog {
     height: 100%;
+    aspect-ratio: 1 / 1;
     
     background-color: var(--color-border);
     

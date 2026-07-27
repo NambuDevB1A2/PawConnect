@@ -38,3 +38,11 @@
 .box_shelter_box {
 
 }
+
+.typo_address {
+    color: var(--color-text-secondary);
+}
+
+.typo_animal_count {
+    color: var(--color-primary);
+}

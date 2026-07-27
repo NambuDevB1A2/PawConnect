@@ -8,8 +8,11 @@
 .box_banner {
     position: relative;
 
-    width: 100%;
+    width: 100vw;
     height: 320px;
+
+    margin-left: calc(50% - 50vw);
+    margin-top: calc(var(--spacing) * -1);
 
     overflow: hidden;
 

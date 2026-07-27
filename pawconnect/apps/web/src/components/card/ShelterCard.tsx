@@ -24,7 +24,8 @@ export default function ShelterCard({ shelter }: ShelterCardProps) {
 
             <div className={styles.box_shelter_box}>
                 <Typography variant="subtitle">{shelter.name}</Typography>
-                <Typography>{shelter.address}</Typography>
+                <Typography className={styles.typo_address} variant="body2">{shelter.address}</Typography>
+                <Typography className={styles.typo_animal_count} variant="body2">총 {shelter._count.animals}마리 보호 중</Typography>
             </div>
         </div>
     );

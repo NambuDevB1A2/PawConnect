@@ -3,4 +3,7 @@ import { ApiResponse } from "@/types/response.type";
 
 export interface ResponsePawLogDetail extends ApiResponse{
     pawLog?: PawLog;
+
+    prev?: PawLog;
+    next?: PawLog;
 }

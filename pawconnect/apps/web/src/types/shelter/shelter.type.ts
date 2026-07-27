@@ -13,4 +13,8 @@ export interface Shelter {
     description: string;
     imgBanner: string;
     images: ShelterImage[];
+
+    _count: {
+        animals: number;
+    };
 }

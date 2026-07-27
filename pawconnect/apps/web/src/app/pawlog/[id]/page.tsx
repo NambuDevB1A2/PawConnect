@@ -6,10 +6,11 @@ import ImageSlider from "@/components/common/ImageSlider";
 import Icon from "@/components/common/Icon";
 import AppImage from "@/components/common/AppImage";
 import { formatDateTime } from '../../../utils/format';
+import Link from "next/link";
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
-    const { pawLog } = await GetPawLogDetail(id);
+    const { pawLog, prev, next } = await GetPawLogDetail(id);
 
     return (
         <div className={styles.wrapper_page}>
@@ -32,15 +33,26 @@ export default async function Page({ params }: PageProps) {
                     </div>
 
                     <div className={styles.box_pagination}>
-                        <div className={styles.box_prev}>
-                            <Icon name="arrow_left_alt"/>
-                            <Typography>이전 페이지</Typography>
-                        </div>
+                        {prev &&
+                            <Link className={styles.box_prev} href={`/pawlog/${prev.id}`}>
+                                <Icon name="arrow_left_alt"/>
+                                <Typography>이전 페이지</Typography>
+                                <Typography className={styles.typo_prev_title}>{prev.title}</Typography>
+                            </Link>
+                        }
 
-                        <div className={styles.box_next}>
-                            <Typography>다음 페이지</Typography>
-                            <Icon name="arrow_right_alt"/>
-                        </div>
+                        {/* <Link className={styles.box_list} href={`/pawlog`}>
+                            <Icon name="list"/>
+                            <Typography>목록으로</Typography>
+                        </Link> */}
+
+                        {next &&
+                            <Link className={styles.box_next} href={`/pawlog/${next.id}`}>
+                                <Typography className={styles.typo_next_title}>{next.title}</Typography>
+                                <Typography>다음 페이지</Typography>
+                                <Icon name="arrow_right_alt"/>
+                            </Link>
+                        }
                     </div>
                 </div>
 

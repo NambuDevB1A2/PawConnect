@@ -29,7 +29,7 @@ model User {
 
   shelter        Shelter?        @relation(fields: [shelterId], references: [id])
   adoptions      Adoption[]
-  petPosts       PetPost[]
+  pawLogs        PawLog[]
   userAgreements UserAgreement[]
 
   @@index([shelterId])
@@ -235,10 +235,10 @@ model AdoptionAgreement {
 }
 
 //
-// PetPost (반려동물 자랑 게시글)
+// PawLog (반려동물 자랑 게시글)
 //
 
-model PetPost {
+model PawLog {
   id       Int    @id @default(autoincrement())
   authorId String @db.Uuid
   title    String @db.VarChar(50)
@@ -247,20 +247,20 @@ model PetPost {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  author User           @relation(fields: [authorId], references: [id])
-  images PetPostImage[]
+  author User          @relation(fields: [authorId], references: [id])
+  images PawLogImage[]
 
   @@index([authorId])
 }
 
-model PetPostImage {
-  id        String @id @default(uuid()) @db.Uuid
-  petPostId Int
-  img       String @db.VarChar(100)
+model PawLogImage {
+  id       String @id @default(uuid()) @db.Uuid
+  pawLogId Int
+  img      String @db.VarChar(100)
 
-  petPost PetPost @relation(fields: [petPostId], references: [id], onDelete: Cascade)
+  pawLog PawLog @relation(fields: [pawLogId], references: [id], onDelete: Cascade)
 
-  @@index([petPostId])
+  @@index([pawLogId])
 }
 
 // 

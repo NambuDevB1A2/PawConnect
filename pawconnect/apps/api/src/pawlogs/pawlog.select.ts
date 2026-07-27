@@ -1,15 +1,15 @@
 import { Prisma } from "@prisma/client";
 import { USER_SELECT } from '@/users/user.select';
 
-export const PETPOST_IMAGE_SELECT = 
-    Prisma.validator<Prisma.PetPostImageSelect>()
+export const PAWLOG_IMAGE_SELECT = 
+    Prisma.validator<Prisma.PawLogImageSelect>()
     ({
         id: true,
         img: true,
     });
 
-export const PETPOST_SELECT = 
-    Prisma.validator<Prisma.PetPostSelect>()
+export const PAWLOG_SELECT = 
+    Prisma.validator<Prisma.PawLogSelect>()
     ({
         id: true,
         title: true,
@@ -17,24 +17,25 @@ export const PETPOST_SELECT =
         author: {
             select: USER_SELECT,
         },
+        createdAt: true,
         updatedAt: true,
         images: {
-            select: PETPOST_IMAGE_SELECT,
+            select: PAWLOG_IMAGE_SELECT,
         }
     });
 
-export const PETPOST_ORDERBY = {
-    OLDEST: Prisma.validator<Prisma.PetPostOrderByWithRelationInput>()
+export const PAWLOG_ORDERBY = {
+    OLDEST: Prisma.validator<Prisma.PawLogOrderByWithRelationInput>()
     ({
         createdAt: 'asc',
     }),
 
-    NEWEST: Prisma.validator<Prisma.PetPostOrderByWithRelationInput>()
+    NEWEST: Prisma.validator<Prisma.PawLogOrderByWithRelationInput>()
     ({
         createdAt: 'desc',
     }),
 
-    UPDATED: Prisma.validator<Prisma.PetPostOrderByWithRelationInput>()
+    UPDATED: Prisma.validator<Prisma.PawLogOrderByWithRelationInput>()
     ({
         updatedAt: 'desc',
     }),
