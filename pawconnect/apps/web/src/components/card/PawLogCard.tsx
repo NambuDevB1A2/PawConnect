@@ -4,6 +4,8 @@ import AppImage from "@/components/common/AppImage";
 import IconButton from "@/components/common/IconButton";
 import Typography from "@/components/common/Typography";
 import { AuthContext } from "@/providers/AuthProvider";
+import { ModalContext } from "@/providers/ModalProvider";
+import { DeletePawLog } from "@/services/pawlog/delete-pawlog.client";
 import styles from "@/styles/card/PawLogCard.module.css"
 import { PawLog } from "@/types/pawlog/pawlog.type";
 import { formatDate } from "@/utils/format.util";
@@ -16,21 +18,32 @@ interface PawLogCardProps {
 
 export default function PawLogCard({ pawLog }: PawLogCardProps) {
     const { user } = useContext(AuthContext);
+    const { openModal } = useContext(ModalContext);
     const router = useRouter();
     const isMyPawLog = user?.id === pawLog.author.id;
     const imgSrc = pawLog.images?.length > 0 ? pawLog.images?.[0].img : undefined;
 
     const handleClick = () => {
         router.push(`/pawlog/${pawLog.id}`);
-    }
+    };
 
     const handleEdit = () => {
         router.push(`/mypage/pawlog/edit/${pawLog.id}`);
-    }
+    };
 
     const handleDelete = () => {
+        openModal("confirmDelete", {
+            onConfirm: handleConfirmDelete,
+        })
+    };
 
-    }
+    const handleConfirmDelete = async () => {
+        const res = await DeletePawLog(pawLog.id);
+        if (res.success) {
+            router.refresh();
+            alert('게시글을 성공적으로 삭제했습니다');
+        }
+    };
 
     return (
         <div className={styles.wrapper_pawlog_card} onClick={handleClick}>

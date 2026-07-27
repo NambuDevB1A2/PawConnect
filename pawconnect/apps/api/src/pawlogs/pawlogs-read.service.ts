@@ -13,11 +13,12 @@ export class PawLogsReadService {
     ) {}
 
     // 게시글 검색 (id)
-    async find(id: number, select?: Prisma.PawLogSelect)  {
+    async find<T extends Prisma.PawLogSelect = Prisma.PawLogSelect>(id: number, select?: T)
+        : Promise<Prisma.PawLogGetPayload<{ select: T }>> {
         const pawLog = await this.prisma.pawLog.findUnique({ 
             where: { id }, 
             select: select 
-        });
+        }) as Prisma.PawLogGetPayload<{ select: T }>;
 
         if (!pawLog) throw new UnauthorizedException({
             message: "존재하지 않는 게시글입니다",

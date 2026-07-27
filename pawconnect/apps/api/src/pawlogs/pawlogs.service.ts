@@ -47,6 +47,7 @@ export class PawLogsService {
 
     // 게시글 삭제
     async remove(auth: AuthRequest, id: number) {
-        
+        const result = await this.pawLogsDeleteService.remove(auth, id);
+        return { success: true, ...result };
     }
 }
