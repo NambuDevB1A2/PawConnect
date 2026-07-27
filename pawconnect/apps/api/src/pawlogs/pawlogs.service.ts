@@ -18,31 +18,35 @@ export class PawLogsService {
 
     // 게시글 목록 조회
     async getPawLogs(pagination: QueryPaginationDto) {
-        return this.pawLogsReadService.getPawLogs(pagination);
+        const result = await this.pawLogsReadService.getPawLogs(pagination);
+        return { success: true, ...result };
+    }
+
+    // 내 게시글 목록 조회
+    async getMyPawLogs(auth: AuthRequest, pagination: QueryPaginationDto) {
+        const result = await this.pawLogsReadService.getMyPawLogs(auth, pagination);
+        return { success: true, ...result };
+    }
+
+    // 게시글 작성
+    async create(auth: AuthRequest, createPawLogDto: CreatePawLogDto, files: Express.Multer.File[]) {
+        const result = await this.pawLogsCreateService.create(auth, createPawLogDto, files);
+        return { success: true, ...result };
     }
 
     // 게시글 상세 조회
     async getPawLog(id: number) {
-        return this.pawLogsReadService.getPawLog(id);
-    }
-
-    // 내 게시글 목록 조회
-    async getMyPawLog(auth: AuthRequest, pagination: QueryPaginationDto) {
-        return this.pawLogsReadService.getMyPawLogs(auth, pagination);
-    }
-
-    // 게시글 작성
-    async createPawLog(auth: AuthRequest, createPawLogDto: CreatePawLogDto, files: Express.Multer.File[]) {
-        return this.pawLogsCreateService.create(auth, createPawLogDto, files);
+        const result = await this.pawLogsReadService.getPawLog(id);
+        return { success: true, ...result };
     }
 
     // 게시글 수정
-    async updatePawLog(auth: AuthRequest, id: number) {
+    async update(auth: AuthRequest, id: number) {
         
     }
 
     // 게시글 삭제
-    async deletePawLog(auth: AuthRequest, id: number) {
+    async remove(auth: AuthRequest, id: number) {
         
     }
 }

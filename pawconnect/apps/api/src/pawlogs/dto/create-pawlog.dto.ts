@@ -1,14 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsOptional, IsString, MaxLength } from "class-validator";
+import { IsOptional, IsString, MaxLength, MinLength } from "class-validator";
 
 export class CreatePawLogDto {
-    @ApiProperty({ example: "00000000-0000-0000-0000-000000000001" })
-    @IsString()
-    authorId: string;
-
     @ApiProperty({ example: "우리 강아지 첫 산책 기념샷" })
     @IsString()
-    @MaxLength(1, { message: "제목을 필수로 작성해주세요" })
+    @MinLength(1, { message: "제목을 필수로 작성해주세요" })
     @MaxLength(50, { message: "제목은 50자 이하여야 합니다" })
     title: string;
 

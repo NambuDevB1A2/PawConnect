@@ -1,3 +1,8 @@
+
+SELECT last_value FROM "PawLog_id_seq";
+SELECT MAX(id) FROM "PawLog";
+SELECT setval('"PawLog_id_seq"', (SELECT MAX(id) FROM "PawLog"));
+
 -- PawLog (게시글 1~15) - 작성일(createdAt) 오름차순으로 id 재정렬
 
 INSERT INTO "PawLog" (

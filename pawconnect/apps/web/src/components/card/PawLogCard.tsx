@@ -1,22 +1,35 @@
 'use client';
 
 import AppImage from "@/components/common/AppImage";
+import IconButton from "@/components/common/IconButton";
 import Typography from "@/components/common/Typography";
+import { AuthContext } from "@/providers/AuthProvider";
 import styles from "@/styles/card/PawLogCard.module.css"
 import { PawLog } from "@/types/pawlog/pawlog.type";
 import { formatDate } from "@/utils/format.util";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
 
 interface PawLogCardProps {
     pawLog: PawLog;
 }
 
 export default function PawLogCard({ pawLog }: PawLogCardProps) {
+    const { user } = useContext(AuthContext);
     const router = useRouter();
+    const isMyPawLog = user?.id === pawLog.author.id;
     const imgSrc = pawLog.images?.length > 0 ? pawLog.images?.[0].img : undefined;
 
     const handleClick = () => {
         router.push(`/pawlog/${pawLog.id}`);
+    }
+
+    const handleEdit = () => {
+        router.push(`/mypage/pawlog/edit/id=${pawLog.id}`);
+    }
+
+    const handleDelete = () => {
+
     }
 
     return (
@@ -28,6 +41,27 @@ export default function PawLogCard({ pawLog }: PawLogCardProps) {
                     <AppImage className={styles.img_author_profile} src={pawLog.author.imgProfile} />
                     <Typography>{pawLog.author.nickname}</Typography>
                     <Typography className={styles.typo_at} variant="caption">{formatDate(pawLog.updatedAt)}</Typography>
+
+                    {isMyPawLog &&
+                        <div className={styles.box_icons}>
+                            <IconButton 
+                                name="edit" 
+                                color="color_default" 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleEdit();
+                                }}
+                            />
+                            <IconButton 
+                                name="delete" 
+                                color="color_default" 
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDelete();
+                                }}
+                            />
+                        </div>
+                    }
                 </div>
 
                 <div className={styles.box_info}>

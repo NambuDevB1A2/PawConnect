@@ -72,7 +72,9 @@ export class PawLogsReadService {
                 orderBy: PAWLOG_ORDERBY.NEWEST, // OrderBy 상수화
                 ...getPagination(page, limit), // 페이지네이션
             }),
-            this.prisma.pawLog.count(), // total 값 추출
+            this.prisma.pawLog.count({
+                where: { authorId: auth.id },
+            }), // total 값 추출
         ]);
 
         const totalPage = getTotalPage(totalCount, limit); // totalPage 값 추출

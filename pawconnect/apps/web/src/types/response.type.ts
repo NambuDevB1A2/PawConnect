@@ -6,6 +6,6 @@ export interface ApiResponse {
 export interface PaginationResponse {
     page: number;
     limit: number;
-    total: number;
+    totalCount: number;
     totalPage: number;
 }
