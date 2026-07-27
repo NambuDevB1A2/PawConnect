@@ -3,14 +3,14 @@ export interface AnimalCard {
     id: number;
     name: string;
     imgThumbnail: string;
-    status: string;
-    statusLavel: string;
+    animalStatus: string;
+    animalStatusLabel: string;
     species : string;
     breed: string;
     gender: string;
     isNeutered: boolean;
     age: number;
-    isEstimatedAge: string;
+    isEstimatedAge: boolean;
     weight: number;
     shelterName: string;
     createdAt: string;
