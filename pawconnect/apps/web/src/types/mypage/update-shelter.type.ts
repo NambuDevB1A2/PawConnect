@@ -7,5 +7,5 @@ export interface UpdateShelterState {
     imgBannerError?: string;
     imgShelterError?: string;
 
-    response: ApiResponse;
+    response?: ApiResponse;
 }

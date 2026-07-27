@@ -65,6 +65,7 @@
 .typo_at {
     flex: 1;
     text-align: end;
+    color: var(--color-text-secondary);
 }
 
 .box_info {

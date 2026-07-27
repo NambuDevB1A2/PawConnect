@@ -34,7 +34,7 @@ export class PetpostsService {
 
     // 게시글 목록 조회
     async getPetposts({ page, limit }: QueryPaginationDto) {
-        const [petPosts, total] = await Promise.all([
+        const [pawLogs, total] = await Promise.all([
             this.prisma.petPost.findMany({
                 select: PETPOST_SELECT, // Select 상수화
                 orderBy: PETPOST_ORDERBY.NEWEST, // OrderBy 상수화
@@ -44,13 +44,13 @@ export class PetpostsService {
         ]);
 
         const totalPage = getTotalPage(total, limit); // totalPage 값 추출
-        return { success: true, petPosts, pagination: { page, limit, total, totalPage }};
+        return { success: true, pawLogs, pagination: { page, limit, total, totalPage }};
     }
 
     // 게시글 상세 조회
     async getPetpost(id: number) {
-        const petPost = await this.find(id, PETPOST_SELECT);
+        const pawLog = await this.find(id, PETPOST_SELECT);
 
-        return { success: true, petPost };
+        return { success: true, pawLog };
     }
 }

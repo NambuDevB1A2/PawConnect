@@ -1,0 +1,11 @@
+import { fetchServer } from "@/services/fetch/fetch.server";
+import { ResponsePawLogDetail } from "@/types/pawlog/get-pawlog-detail.type";
+
+export async function GetPawLogDetail(id: string) {
+    try {
+        return await fetchServer.get<ResponsePawLogDetail>(`/petposts/${id}`);
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

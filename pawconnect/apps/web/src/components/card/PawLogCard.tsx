@@ -3,19 +3,20 @@
 import AppImage from "@/components/common/AppImage";
 import Typography from "@/components/common/Typography";
 import styles from "@/styles/card/PawLogCard.module.css"
-import { PetPost } from "@/types/pawlog/petpost.type";
+import { PawLog } from "@/types/pawlog/pawlog.type";
+import { formatDate } from "@/utils/format";
 import { useRouter } from "next/navigation";
 
-interface PetPostCardProps {
-    petPost: PetPost;
+interface PawLogCardProps {
+    pawLog: PawLog;
 }
 
-export default function PetPostCard({ petPost }: PetPostCardProps) {
+export default function PawLogCard({ pawLog }: PawLogCardProps) {
     const router = useRouter();
-    const imgSrc = petPost.images?.length > 0 ? petPost.images?.[0].img : "";
+    const imgSrc = pawLog.images?.length > 0 ? pawLog.images?.[0].img : "";
 
     const handleClick = () => {
-        router.push(`/pawlog/${petPost.id}`);
+        router.push(`/pawlog/${pawLog.id}`);
     }
 
     return (
@@ -24,14 +25,14 @@ export default function PetPostCard({ petPost }: PetPostCardProps) {
 
             <div className={styles.box_pawlog}>
                 <div className={styles.box_author}>
-                    <AppImage className={styles.img_author_profile} src={petPost.author.imgProfile} />
-                    <Typography>{petPost.author.nickname}</Typography>
-                    <Typography className={styles.typo_at}>{petPost.updatedAt}</Typography>
+                    <AppImage className={styles.img_author_profile} src={pawLog.author.imgProfile} />
+                    <Typography>{pawLog.author.nickname}</Typography>
+                    <Typography className={styles.typo_at} variant="caption">{formatDate(pawLog.updatedAt)}</Typography>
                 </div>
 
                 <div className={styles.box_info}>
-                    <Typography variant="subtitle">{petPost.title}</Typography>
-                    <Typography className={styles.typo_content}>{petPost.content}</Typography>
+                    <Typography variant="subtitle">{pawLog.title}</Typography>
+                    <Typography className={styles.typo_content}>{pawLog.content}</Typography>
                 </div>
             </div>
         </div>

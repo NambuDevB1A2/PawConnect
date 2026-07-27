@@ -1,15 +1,15 @@
 import { User } from "@/types/auth/user.type";
 
-export interface PetPostImages {
+export interface PawLogImage {
     id: string;
     img: string;
 }
 
-export interface PetPost {
+export interface PawLog {
     id: string;
     title: string;
     content: string;
     author: User;
     updatedAt: string;
-    images: PetPostImages[];
+    images: PawLogImage[];
 }

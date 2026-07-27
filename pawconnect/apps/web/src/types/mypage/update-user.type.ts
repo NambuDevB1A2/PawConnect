@@ -5,5 +5,5 @@ export interface UpdateUserState {
     nicknameError?: string;
     imgProfileError?: string;
 
-    response: ApiResponse;
+    response?: ApiResponse;
 }
