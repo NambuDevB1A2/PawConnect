@@ -12,7 +12,7 @@ interface ShelterCardProps {
 
 export default function ShelterCard({ shelter }: ShelterCardProps) {
     const router = useRouter();
-    const imgSrc = shelter.images?.length > 0 ? shelter.images?.[0].img : "";
+    const imgSrc = shelter.images?.length > 0 ? shelter.images?.[0].img : undefined;
 
     const handleClick = () => {
         router.push(`/shelter/${shelter.name}`);

@@ -1,6 +1,7 @@
 import PawLogCard from "@/components/card/PawLogCard";
 import Pagination from "@/components/common/Pagination";
 import Typography from "@/components/common/Typography";
+import { PAGE_SIZE } from "@/constants/page.constants";
 import { GetPawLogs } from "@/services/pawlog/get-pawlogs.server";
 import styles from "@/styles/pawlog/pawlog.module.css"
 import { PageProps } from "@/types/page.type";
@@ -9,7 +10,7 @@ import { parsePageToNumber } from "@/utils/page.util";
 export default async function Page({ searchParams }: PageProps) {
     const { page } = await searchParams;
     const currentPage = parsePageToNumber(page);
-    const { pawLogs, pagination } = await GetPawLogs(currentPage, 5);
+    const { pawLogs, pagination } = await GetPawLogs(currentPage, PAGE_SIZE.PAWLOG);
 
     return (
         <div className={styles.wrapper_page}>
