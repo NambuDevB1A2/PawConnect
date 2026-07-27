@@ -22,6 +22,8 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
 
     
     useEffect(() => {
+        if (!state.response) return;
+        
         if (state.response?.success) {
             onClose();
             alert('비밀번호 변경에 성공했습니다');

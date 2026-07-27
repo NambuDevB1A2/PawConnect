@@ -42,6 +42,8 @@ export default function InfoForm({
     };
     
     useEffect(() => {
+        if (!state.response) return;
+        
         if (state.response?.success) {
             alert('정보 변경에 성공했습니다');
             router.refresh();

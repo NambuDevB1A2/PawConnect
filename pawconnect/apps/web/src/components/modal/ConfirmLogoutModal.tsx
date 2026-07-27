@@ -18,8 +18,9 @@ export default function ConfirmLogoutModal({ isOpen, onClose }: ConfirmLogoutMod
 
     const handleLogout = async () => {
         onClose();
-        const response = await Logout();
-        if (response.response?.success) {
+        const res = await Logout();
+
+        if (res.response?.success) {
             router.push('/');
             alert("로그아웃에 성공했습니다");
         } else {

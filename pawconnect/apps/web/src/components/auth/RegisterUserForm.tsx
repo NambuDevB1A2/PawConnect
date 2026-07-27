@@ -58,6 +58,8 @@ export default function RegisterUserForm() {
 
     // 성공 반환시 로그인 화면으로 이동
     useEffect(() => {
+        if (!state.response) return;
+        
         if (state.response?.success) {
             router.push("/login");
             alert('회원가입에 성공했습니다');
