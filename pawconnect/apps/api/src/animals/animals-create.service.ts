@@ -4,6 +4,7 @@ import { AnimalUploadService } from "./animal-upload.service";
 import { AuthRequest } from "@/auth/interfaces/auth-request.interface";
 import { CreateAnimalDto } from "./dto/create-animals.dto";
 import { Prisma } from "@prisma/client";
+import { AnimalUploadFiles } from "./animals.type";
 
 
 @Injectable()
@@ -13,7 +14,7 @@ export class AnimalsCreateService {
 
     // 보호동물 등록
     async create(auth: AuthRequest, createAnimalDto: CreateAnimalDto,
-        files) {
+        files:AnimalUploadFiles) {
         // 보호소 관리자 여부 확인
         const shelterId = auth.shelterId;
         if (!shelterId) throw new BadRequestException("보호소 관리자만 등록할 수 있습니다");
