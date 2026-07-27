@@ -4,7 +4,7 @@ import Typography from "@/components/common/Typography";
 import { GetShelterDetail } from "@/services/shelters/get-shelter-detail.server";
 import styles from "@/styles/shelter/shelterDetail.module.css"
 import { PageProps } from "@/types/page.type";
-import { formatPhoneNumber } from "@/utils/format";
+import { formatPhoneNumber } from "@/utils/format.util";
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;

@@ -5,7 +5,7 @@ import Typography from "@/components/common/Typography";
 import ImageSlider from "@/components/common/ImageSlider";
 import Icon from "@/components/common/Icon";
 import AppImage from "@/components/common/AppImage";
-import { formatDateTime } from '../../../utils/format';
+import { formatDateTime } from '../../../utils/format.util';
 import Link from "next/link";
 
 export default async function Page({ params }: PageProps) {

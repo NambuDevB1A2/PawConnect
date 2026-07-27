@@ -4,10 +4,12 @@ import Typography from "@/components/common/Typography";
 import { GetPawLogs } from "@/services/pawlog/get-pawlogs.server";
 import styles from "@/styles/pawlog/pawlog.module.css"
 import { PageProps } from "@/types/page.type";
+import { parsePageToNumber } from "@/utils/page.util";
 
 export default async function Page({ searchParams }: PageProps) {
     const { page } = await searchParams;
-    const { pawLogs, pagination } = await GetPawLogs(Number(page ?? 1), 5);
+    const currentPage = parsePageToNumber(page);
+    const { pawLogs, pagination } = await GetPawLogs(currentPage, 5);
 
     return (
         <div className={styles.wrapper_page}>

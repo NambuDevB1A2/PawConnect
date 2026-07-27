@@ -4,7 +4,7 @@ import AppImage from "@/components/common/AppImage";
 import Typography from "@/components/common/Typography";
 import styles from "@/styles/card/PawLogCard.module.css"
 import { PawLog } from "@/types/pawlog/pawlog.type";
-import { formatDate } from "@/utils/format";
+import { formatDate } from "@/utils/format.util";
 import { useRouter } from "next/navigation";
 
 interface PawLogCardProps {
@@ -13,7 +13,7 @@ interface PawLogCardProps {
 
 export default function PawLogCard({ pawLog }: PawLogCardProps) {
     const router = useRouter();
-    const imgSrc = pawLog.images?.length > 0 ? pawLog.images?.[0].img : "";
+    const imgSrc = pawLog.images?.length > 0 ? pawLog.images?.[0].img : undefined;
 
     const handleClick = () => {
         router.push(`/pawlog/${pawLog.id}`);
