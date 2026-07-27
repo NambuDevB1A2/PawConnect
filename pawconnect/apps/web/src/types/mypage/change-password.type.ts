@@ -5,5 +5,5 @@ export interface ChangePasswordState {
     newPasswordError?: string;
     newRePasswordError?: string;
 
-    response?: ApiResponse;
+    response: ApiResponse;
 }

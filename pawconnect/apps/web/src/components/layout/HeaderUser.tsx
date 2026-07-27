@@ -2,7 +2,7 @@
 
 import IconButton from "@/components/common/IconButton";
 import Typography from "@/components/common/Typography";
-import { User } from "@/types/user.type";
+import { User } from "@/types/auth/user.type";
 import styles from "@/styles/layout/Header.module.css"
 import Button from "@/components/common/Button";
 import { useRouter } from "next/navigation";

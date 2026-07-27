@@ -1,4 +1,4 @@
-import { User } from "@/types/user.type";
+import { User } from "@/types/auth/user.type";
 import { ApiResponse } from "@/types/response.type";
 import { Shelter, ShelterImages } from "@/types/shelter/shelter.type";
 
@@ -48,5 +48,5 @@ export interface RegisterShelterState {
     imgBannerError?: string;
     imgShelterError?: string;
 
-    response?: ResponseRegisterShelter;
+    response: ResponseRegisterShelter;
 }

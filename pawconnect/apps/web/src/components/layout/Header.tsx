@@ -3,7 +3,7 @@ import Icon from "@/components/common/Icon";
 import Typography from "@/components/common/Typography";
 import HeaderUser from "@/components/layout/HeaderUser";
 import styles from "@/styles/layout/Header.module.css"
-import { User } from "@/types/user.type";
+import { User } from "@/types/auth/user.type";
 import Link from "next/link";
 
 interface HeaderProps {
