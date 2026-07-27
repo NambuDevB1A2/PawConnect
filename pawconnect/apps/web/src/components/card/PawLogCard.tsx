@@ -25,7 +25,7 @@ export default function PawLogCard({ pawLog }: PawLogCardProps) {
     }
 
     const handleEdit = () => {
-        router.push(`/mypage/pawlog/edit/id=${pawLog.id}`);
+        router.push(`/mypage/pawlog/edit/${pawLog.id}`);
     }
 
     const handleDelete = () => {

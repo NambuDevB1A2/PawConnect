@@ -1,5 +1,4 @@
 import PawLogCard from "@/components/card/PawLogCard";
-import Button from "@/components/common/Button";
 import Empty from "@/components/common/Empty";
 import Pagination from "@/components/common/Pagination";
 import Typography from "@/components/common/Typography";

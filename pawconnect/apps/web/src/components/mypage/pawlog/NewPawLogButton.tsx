@@ -12,7 +12,7 @@ export default function NewPawLogButton() {
 
     return (
         <Button variant="secondary" fullWidth onClick={handleClick}>
-            새로운 PawLog 작성하기
+            새로운 PawLog 게시하기
         </Button>
     );
 }
