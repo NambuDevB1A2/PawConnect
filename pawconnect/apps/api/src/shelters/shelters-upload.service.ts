@@ -42,7 +42,7 @@ export class SheltersUploadService {
     async deleteBlob(blobName: string) {
         if (!blobName) return;
 
-        await this.deleteBlob(blobName);
+        await this.azureBlob.deleteBlob(blobName);
     }
 
     // Blob 이미지 일괄 삭제

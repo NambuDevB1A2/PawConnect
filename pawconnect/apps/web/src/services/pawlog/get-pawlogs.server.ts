@@ -6,6 +6,6 @@ export async function GetPawLogs(page: number, limit: number) {
         return await fetchServer.get<ResponsePawLogs>(`/pawlogs?page=${page}&limit=${limit}`);
     } catch (error) {
         console.log(error);
-        throw error;
+        return undefined;
     }
 }

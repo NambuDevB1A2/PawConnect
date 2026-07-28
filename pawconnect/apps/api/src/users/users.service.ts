@@ -102,7 +102,7 @@ export class UsersService {
             return user;
         } catch (error) {
             // DB 실패 시 업로드했던 Blob 파일 삭제
-            if (uploadedImgProfile) {
+            if (uploadedImgProfile && !isDefaultProfile(uploadedImgProfile)) {
                 await this.usersUploadService.rollback(uploadedImgProfile);
             }
 
@@ -161,7 +161,7 @@ export class UsersService {
             await this.usersUploadService.deleteBlob(oldImgProfile);
         }
 
-        return { success: true, user };
+        return { success: true, userId: user.id };
     }
 
     // 비밀번호 변경
@@ -184,6 +184,6 @@ export class UsersService {
             },
         });
 
-        return { success: true };
+        return { success: true, userId: auth.id };
     }
 }

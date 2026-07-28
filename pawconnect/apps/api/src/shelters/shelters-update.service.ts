@@ -22,11 +22,6 @@ export class SheltersUpdateService {
         const keepSet = new Set(updateShelterDto.imgShelterKeeps ?? []);
         const toDelete = shelter.images.filter(img => !keepSet.has(img.img));
 
-        // 1. 권한 확인
-        if (!auth.id || !auth.shelterId || auth.id !== shelter.id) {
-            throw new UnauthorizedException({ message: "권한이 없습니다" });
-        }
-
         let uploadedImgBanner: string | undefined = shelter.imgBanner;
         let oldImgBanner: string | null = null;
 

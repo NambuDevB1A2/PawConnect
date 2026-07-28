@@ -1,5 +1,6 @@
 import AppImage from "@/components/common/AppImage";
 import ImageSlider from "@/components/common/ImageSlider";
+import NotFound from "@/components/common/NotFound";
 import Typography from "@/components/common/Typography";
 import MyShelterOptions from "@/components/shelter/MyShelterOptions";
 import { GetShelterDetail } from "@/services/shelters/get-shelter-detail.server";
@@ -10,6 +11,10 @@ import { formatPhoneNumber } from "@/utils/format.util";
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
     const { shelter } = await GetShelterDetail(id);
+
+    if (!shelter) {
+        return <NotFound/>
+    }
 
     return (
         <div className={styles.wrapper_page}>
