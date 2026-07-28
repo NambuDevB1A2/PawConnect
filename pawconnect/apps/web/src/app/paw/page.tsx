@@ -3,8 +3,8 @@ import { PAGE_SIZE } from "@/constants/page.constants";
 import { getAnimals } from "@/services/paw/get-animals.server";
 import { parsePageToNumber } from "@/utils/page.util";
 import Pagination from "@/components/common/Pagination";
-import AnimalCard from "./components/AnimalCard";
 import styles from "@/styles/paw/paw.module.css"
+import AnimalCard from "@/components/paw/AnimalCard";
 
 interface PageProps {
     searchParams?: Promise<{ page?: string; }>;
@@ -56,7 +56,7 @@ export default async function Page({ searchParams }: PageProps) {
                         {/* 페이지네이션 구간 */}
                         <div className={styles.pagination}>
                             <Pagination page={pagination.page}
-                                maxPage={pagination.totalCount}
+                                maxPage={pagination.totalPage}
                                 path="/paw" />
                         </div>
                     </div>
