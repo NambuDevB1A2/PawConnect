@@ -1,4 +1,4 @@
-import PawLogCard from "@/components/card/PawLogCard";
+import PawLogCard from "@/components/pawlog/PawLogCard";
 import Empty from "@/components/common/Empty";
 import NotFound from "@/components/common/NotFound";
 import Pagination from "@/components/common/Pagination";

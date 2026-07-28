@@ -22,48 +22,72 @@ export class AuthService {
     ) {}
 
     // 회원가입 - 공통
-    async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterUserAuthDto,
-        imgProfileFile?: Express.Multer.File, shelterId?: string) {
+    async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterUserAuthDto, uploadedImgProfile: string, shelterId?: string) {
         // 비밀번호 해시
         const bcryptRound = this.configService.getOrThrow('bcrypt.bcrypt_round');
         const passwordHash = await bcrypt.hash(registerAuthDto.password, bcryptRound);
 
         // UsersService에서 유저 생성
-        const user = await this.usersService.create(tx,
+        const user = await this.usersService.createUser(tx,
             role,
             {
                 ...registerAuthDto,
                 passwordHash,
             },
-            shelterId,
-            imgProfileFile);
+            uploadedImgProfile,
+            shelterId);
 
         return user;
     }
 
     // 회원가입 - 일반 사용자
     async registerUser(registerAuthDto: RegisterUserAuthDto, imgProfileFile?: Express.Multer.File) {
-        return await this.prisma.$transaction(async (tx) => {
-            // 사용자 생성
-            const user = await this.register(tx, Role.USER, registerAuthDto, imgProfileFile);
+        // 중복 검사
+        await this.usersService.checkUser(registerAuthDto.email);
 
-            return { success: true, userId: user.id };
-        });
+        const { uploadedImgProfile } = await this.usersService.createImage(imgProfileFile);
+
+        try {
+            return await this.prisma.$transaction(async (tx) => {
+                // 사용자 생성
+                const user = await this.register(tx, Role.USER, registerAuthDto, uploadedImgProfile);
+                
+                return { success: true, userId: user.id };
+            });
+        } catch (error) {
+            await this.usersService.rollbackImage(uploadedImgProfile);
+
+            throw error;
+        }
     }
 
     // 회원가입 - 보호소 관리자
     async registerShelter(registerShelterAuthDto: RegisterShelterAuthDto, 
         imgProfileFile?: Express.Multer.File, imgBannerFile?: Express.Multer.File, imgShelterFiles?: Express.Multer.File[]) {
+        
+        // 중복 검사
+        await this.sheltersService.checkShelter(registerShelterAuthDto.name);
+        await this.usersService.checkUser(registerShelterAuthDto.email);
 
-        return await this.prisma.$transaction(async (tx) => {
-            // 보호소 생성
-            const shelter = await this.sheltersService.create(tx, registerShelterAuthDto, imgBannerFile, imgShelterFiles);
+        const { uploadedImgBanner, uploadedImgShelter } = await this.sheltersService.createImages(imgBannerFile, imgShelterFiles);
+        const { uploadedImgProfile } = await this.usersService.createImage(imgProfileFile);
 
-            // 사용자 생성
-            const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, imgProfileFile, shelter.id);
+        try {
+            return await this.prisma.$transaction(async (tx) => {
+                // 보호소 생성
+                const shelter = await this.sheltersService.createShelter(tx, registerShelterAuthDto, uploadedImgBanner, uploadedImgShelter);
+                
+                // 사용자 생성
+                const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, uploadedImgProfile, shelter.id);
+                
+                return { success: true, userId: user.id, shelterId: shelter.id };
+            });
+        } catch (error) {
+            await this.sheltersService.rollbackImages(uploadedImgBanner, uploadedImgShelter);
+            await this.usersService.rollbackImage(uploadedImgProfile);
 
-            return { success: true, userId: user.id, shelterId: shelter.id };
-        });
+            throw error;
+        }
     }
 
     // 로그인

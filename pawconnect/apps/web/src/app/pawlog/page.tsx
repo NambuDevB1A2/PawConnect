@@ -1,8 +1,9 @@
-import PawLogCard from "@/components/card/PawLogCard";
+import PawLogCard from "@/components/pawlog/PawLogCard";
 import Empty from "@/components/common/Empty";
 import NotFound from "@/components/common/NotFound";
 import Pagination from "@/components/common/Pagination";
 import Typography from "@/components/common/Typography";
+import NewPawLogButton from "@/components/pawlog/NewPawLogButton";
 import { PAGE_SIZE } from "@/constants/page.constants";
 import { GetPawLogs } from "@/services/pawlog/get-pawlogs.server";
 import styles from "@/styles/pawlog/pawlog.module.css"
@@ -28,6 +29,8 @@ export default async function Page({ searchParams }: PageProps) {
                     <Typography variant="heading">우리가 함께 만드는 PawLog</Typography>
                     <Typography>총 {pagination?.totalCount}개의 게시글</Typography>
                 </div>
+
+                <NewPawLogButton/>
 
                 {hasPawLogs ?
                     <div className={styles.box_list}>

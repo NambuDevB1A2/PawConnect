@@ -3,7 +3,7 @@
 import AppImage from "@/components/common/AppImage";
 import Typography from "@/components/common/Typography";
 import MyShelterOptions from "@/components/shelter/MyShelterOptions";
-import styles from "@/styles/card/ShelterCard.module.css"
+import styles from "@/styles/shelter/ShelterCard.module.css"
 import { Shelter } from "@/types/shelter/shelter.type";
 import { useRouter } from "next/navigation";
 

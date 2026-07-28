@@ -62,52 +62,58 @@ export class UsersService {
         });
     }
 
-    // 신규 사용자 생성
-    async create(tx: Prisma.TransactionClient, role: Role, createUserDto: CreateUserDto, shelterId?: string, 
-        imgProfileFile?: Express.Multer.File) {
-        await this.existsByEmail(createUserDto.email);
+    // 중복 검사
+    async checkUser(email: string) {
+        await this.existsByEmail(email);
+    }
 
+    // 이미지 업로드
+    async createImage(imgProfileFile?: Express.Multer.File) {
         // 1. Azure Blob에 이미지 업로드 (없을시 기본값)
         let uploadedImgProfile = imgProfileFile ? await this.usersUploadService.uploadImage(imgProfileFile) : undefined;
         if (!uploadedImgProfile) uploadedImgProfile = getDefaultProfile();
+        
+        return { uploadedImgProfile };
+    }
 
+    // 신규 사용자 생성
+    async createUser(tx: Prisma.TransactionClient, role: Role, createUserDto: CreateUserDto, uploadedImgProfile: string, shelterId?: string) {
+        
         // 2. DB 작업
-        try {
-            // 신규 사용자 DB 생성
-            const user = await tx.user.create({
-                data: {
-                    email: createUserDto.email,
-                    password: createUserDto.passwordHash,
-                    nickname: createUserDto.nickname,
-                    role: role,
-                    imgProfile: uploadedImgProfile ?? getDefaultProfile(),
-                    shelterId: shelterId,
-                },
-                select: USER_SELECT,
-            });
+        // 신규 사용자 DB 생성
+        const user = await tx.user.create({
+            data: {
+                email: createUserDto.email,
+                password: createUserDto.passwordHash,
+                nickname: createUserDto.nickname,
+                role: role,
+                imgProfile: uploadedImgProfile ?? getDefaultProfile(),
+                shelterId: shelterId,
+            },
+            select: USER_SELECT,
+        });
 
-            // 사용자 약관 동의 DB 생성
-            await tx.userAgreement.createMany({
-                data: [{
-                    userId: user.id,
-                    agreementId: 1,
-                    isAgreed: createUserDto.agreedToTerms,
-                }, {
-                    userId: user.id,
-                    agreementId: 2,
-                    isAgreed: createUserDto.agreedToTerms,
-                }]
-            });
+        // 사용자 약관 동의 DB 생성
+        await tx.userAgreement.createMany({
+            data: [{
+                userId: user.id,
+                agreementId: 1,
+                isAgreed: createUserDto.agreedToTerms,
+            }, {
+                userId: user.id,
+                agreementId: 2,
+                isAgreed: createUserDto.agreedToTerms,
+            }]
+        });
 
-            return user;
-        } catch (error) {
-            // DB 실패 시 업로드했던 Blob 파일 삭제
-            if (uploadedImgProfile && !isDefaultProfile(uploadedImgProfile)) {
-                await this.usersUploadService.rollback(uploadedImgProfile);
-            }
+        return user;
+    }
 
-            throw error;
-        };
+    // 이미지 롤백
+    async rollbackImage(uploadedImgProfile: string) {
+        if (uploadedImgProfile && !isDefaultProfile(uploadedImgProfile)) {
+            await this.usersUploadService.rollback(uploadedImgProfile);
+        }
     }
 
     // 내 정보 조회

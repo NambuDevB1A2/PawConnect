@@ -1,4 +1,4 @@
-import ShelterCard from "@/components/card/ShelterCard";
+import ShelterCard from "@/components/shelter/ShelterCard";
 import Empty from "@/components/common/Empty";
 import NotFound from "@/components/common/NotFound";
 import Pagination from "@/components/common/Pagination";
