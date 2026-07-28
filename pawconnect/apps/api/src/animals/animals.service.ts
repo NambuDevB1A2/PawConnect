@@ -7,6 +7,7 @@ import { AnimalsCreateService } from './animals-create.service';
 import { AnimalsQueryService } from './animals-query.service';
 import { AnimalsUpdateService } from './animals-update.service';
 import { UpdateAnimalDto } from './dto/update-animals.dto';
+import { AnimalUploadFiles } from './animals.type';
 
 
 @Injectable()
@@ -17,7 +18,7 @@ export class AnimalsService {
         private readonly updateService: AnimalsUpdateService) {}
   
     // 보호동물 등록 - POST /animals
-    create(auth: AuthRequest,dto: CreateAnimalDto, files) {
+    create(auth: AuthRequest,dto: CreateAnimalDto, files:AnimalUploadFiles) {
         return this.createService.create(auth, dto, files);
     }
 
