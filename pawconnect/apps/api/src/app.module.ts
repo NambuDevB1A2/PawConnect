@@ -19,6 +19,7 @@ import { join } from 'path';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { AzureModule } from './azure/azure.module';
 import { PawLogsModule } from './pawlogs/pawlogs.module';
+import { HomeModule } from './home/home.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { PawLogsModule } from './pawlogs/pawlogs.module';
     AiModule,
     AdoptionsModule,
     AzureModule,
+    HomeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
