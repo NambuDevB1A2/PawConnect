@@ -1,3 +1,7 @@
+.wrapper {
+    display: flex;
+}
+
 .wrapper_animal_card {
     width: 240px;
     height: 320px;

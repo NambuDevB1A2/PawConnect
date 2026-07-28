@@ -1,0 +1,19 @@
+.wrapper {
+    width: 280px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    padding: 24px;
+
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    height: fit-content;
+}
+
+.searchButton{
+    margin-top:8px;
+}

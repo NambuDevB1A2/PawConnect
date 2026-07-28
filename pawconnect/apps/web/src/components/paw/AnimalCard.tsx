@@ -5,14 +5,28 @@ import Typography from "@/components/common/Typography";
 import type { AnimalCard as Animal } from "@/types/paw/animal.type";
 import { formatDate } from "@/utils/format.util";
 import styles from "@/styles/card/pawCard.module.css"
+import { useRouter } from "next/router";
 
 interface AnimalCardProps {
     animal: Animal;
 }
 
 export default function AnimalCard({ animal }: AnimalCardProps) {
+    // 상세페이지 연결
+    // const router = useRouter();
+
     return (
+
+        // <div className={styles.wrapper} onClick={() => router.push(`/paw/${animal.id}`)}>
+
+
         <div className={styles.wrapper_animal_card}>
+
+            {/* 상세연결 */}
+            {/* <div className={styles.wrapper}
+                onClick={() => router.push(`/paw/${animal.id}`)}>
+            </div> */}
+
             <div className={styles.imageWrapper}>
                 {/* 동물 썸네일 이미지 */}
                 <AppImage className={styles.img_animal} src={animal.imgThumbnail} />
@@ -34,7 +48,7 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
                 <Typography className={styles.typo_detail}>
                     {animal.breed} [{animal.species}] ·
                     {animal.age} 개월 ·
-                    {animal.gender === "MALE" ? "수컷" : "암컷"}
+                    {animal.gender === "MALE" ? "남아" : "여아"}
                     {/* ({animal.isNeutered ? "중성화" : "미중성화"}) · */}
                     {/* {animal.weight}kg */}
                 </Typography>
@@ -44,5 +58,6 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
                 {/* <Typography variant="caption">{formatDate(animal.createdAt)}</Typography> */}
             </div>
         </div>
+        //    </div>
     );
 }
