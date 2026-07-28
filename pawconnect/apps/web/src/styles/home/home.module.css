@@ -1,0 +1,57 @@
+.wrapper_page {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.wrapper_banner {
+    width: 100%;
+    height: 320px;
+
+    background-color: var(--color-border);
+    border-radius: var(--radius-card);
+}
+
+.wrapper_card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--spacing-500);
+
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+
+    padding: var(--spacing-700) var(--spacing);
+}
+
+.box_animal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-300);
+
+    flex: 2;
+    min-width: 0;
+}
+
+.box_animal_list {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-100);
+
+    width: 100%;
+}
+
+.box_shelter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-300);
+
+    flex: 1;
+    min-width: 0;
+}
+
+.box_shelter_card {
+    width: 100%;
+}
