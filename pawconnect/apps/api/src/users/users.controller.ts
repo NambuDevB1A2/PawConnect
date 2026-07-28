@@ -17,6 +17,7 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nes
 export class UsersController {
     constructor (private readonly usersService: UsersService) {}
     
+    // get - users/me
     // 내 정보 조회
     @ApiOperation({ summary: "내 정보 조회" })
     @Get('me')
@@ -24,6 +25,7 @@ export class UsersController {
         return this.usersService.me(auth);
     }
 
+    // patch - users/me
     // 내 정보 수정
     @ApiOperation({ summary: "내 정보 수정" })
     @ApiConsumes('multipart/form-data')
@@ -37,6 +39,7 @@ export class UsersController {
         return this.usersService.update(auth, updateUserDto, imgProfile);
     }
 
+    // patch - users/password
     // 비밀번호 변경
     @ApiOperation({ summary: "비밀번호 변경" })
     @Patch('password')

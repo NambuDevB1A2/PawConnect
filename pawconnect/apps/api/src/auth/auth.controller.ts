@@ -18,6 +18,7 @@ import { createFieldsImageUploadOptions, createImageUploadOptions, UPLOAD_DIR } 
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
+    // post - auth/register/user
     // 회원가입 - 일반 사용자 (ROLE.USER)
     @ApiOperation({ summary: "회원가입 - 일반 사용자" })
     @ApiConsumes('multipart/form-data')
@@ -36,6 +37,7 @@ export class AuthController {
         return this.authService.registerUser(registerAuthDto, imgProfile);
     }
     
+    // post - auth/register/shelter
     // 회원가입 - 보호소 관리자 (ROLE.SHELTER)
     @ApiOperation({ summary: "회원가입 - 보호소 관리자" })
     @ApiConsumes('multipart/form-data')
@@ -69,6 +71,7 @@ export class AuthController {
         return this.authService.registerShelter(registerShelterAuthDto, imgProfile, imgBanner, imgShelter);
     }
 
+    // post - auth/login
     // 로그인
     @ApiOperation({ summary: "로그인" })
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
@@ -77,6 +80,7 @@ export class AuthController {
         return this.authService.login(loginAuthDto);
     }
 
+    // post - auth/logout
     // 로그아웃
     @ApiOperation({ summary: "로그아웃" })
     @Post('logout')

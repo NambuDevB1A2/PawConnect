@@ -1,3 +1,4 @@
+import { TRANSFORM_STRING_TO_BOOLEAN } from "@/common/dto/format.dto";
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsBoolean, IsOptional, IsString, Length } from "class-validator";
@@ -15,7 +16,7 @@ export class UpdateUserDto {
     
     @ApiPropertyOptional({ example: false })
     @IsOptional()
-    @Transform(({ value }) => value === "true" || value === true)
+    @Transform(TRANSFORM_STRING_TO_BOOLEAN)
     @IsBoolean()
     imgProfileRemoved?: boolean;
 }

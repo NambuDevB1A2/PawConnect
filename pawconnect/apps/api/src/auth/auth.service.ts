@@ -28,13 +28,14 @@ export class AuthService {
         const passwordHash = await bcrypt.hash(registerAuthDto.password, bcryptRound);
 
         // UsersService에서 유저 생성
-        const user = await this.usersService.create(tx, {
+        const user = await this.usersService.create(tx,
             role,
-            ...registerAuthDto,
-            passwordHash,
+            {
+                ...registerAuthDto,
+                passwordHash,
+            },
             shelterId,
-        }, 
-        imgProfile);
+            imgProfile);
 
         return user;
     }

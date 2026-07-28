@@ -26,6 +26,7 @@ import { PawLogsCreateService } from './pawlogs/pawlogs-create.service';
 import { PawLogsUpdateService } from './pawlogs/pawlogs-update.service';
 import { PawLogsReadService } from './pawlogs/pawlogs-read.service';
 import { PawLogsDeleteService } from './pawlogs/pawlogs-delete.service';
+import { ShelterUploadService } from './shelter/shelter-upload/shelter-upload.service';
 
 @Module({
   imports: [
@@ -55,6 +56,6 @@ import { PawLogsDeleteService } from './pawlogs/pawlogs-delete.service';
     AzureModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ShelterUploadService],
 })
 export class AppModule {}
