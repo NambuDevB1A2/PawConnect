@@ -10,6 +10,7 @@ import { JwtPayload } from '@/auth/interfaces/jwt-payload.interface';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { ConfigService } from '@nestjs/config';
 import { SheltersCreateService } from '@/shelters/shelters-create.service';
+import { USER_SELECT } from '@/users/user.select';
 
 @Injectable()
 export class AuthService {
@@ -111,7 +112,10 @@ export class AuthService {
 
         // 토큰 생성
         const accessToken = this.jwtService.sign(authPayload);
-        return { success: true, accessToken };
+
+        const { password, createdAt, updatedAt, status, ...result } = user;
+
+        return { success: true, accessToken, user: result };
     }
 
     // 로그아웃
