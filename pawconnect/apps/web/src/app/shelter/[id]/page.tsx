@@ -1,8 +1,11 @@
 import AppImage from "@/components/common/AppImage";
+import Empty from "@/components/common/Empty";
 import ImageSlider from "@/components/common/ImageSlider";
 import NotFound from "@/components/common/NotFound";
 import Typography from "@/components/common/Typography";
+import AnimalCard from "@/components/paw/AnimalCard";
 import MyShelterOptions from "@/components/shelter/MyShelterOptions";
+import ShelterAnimalTitleButton from "@/components/shelter/ShelterAnimalTitleButton";
 import { GetShelterDetail } from "@/services/shelters/get-shelter-detail.server";
 import styles from "@/styles/shelter/shelterDetail.module.css"
 import { PageProps } from "@/types/page.type";
@@ -16,7 +19,8 @@ export default async function Page({ params }: PageProps) {
         return <NotFound/>
     }
 
-    const { shelter } = response;
+    const { shelter, animals } = response;
+    const hasAnimals = animals && animals.length > 0;
 
     return (
         <div className={styles.wrapper_page}>
@@ -59,7 +63,14 @@ export default async function Page({ params }: PageProps) {
                     </div>
                 </div>
 
-                {/* TODO: 보유 보호동물 추가 */}
+                <ShelterAnimalTitleButton shelterName={shelter?.name}/>
+
+                <div className={styles.box_animals}>
+                    {hasAnimals ?
+                        animals.map((animal) => <AnimalCard key={animal.id} animal={animal}/>) :
+                        <Empty className={styles.empty} text="등록된 동물이 없습니다"/>
+                    }
+                </div>
                 
             </div>
         </div>
