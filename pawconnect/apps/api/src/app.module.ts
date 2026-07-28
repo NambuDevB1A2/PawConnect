@@ -18,15 +18,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { AzureModule } from './azure/azure.module';
-import { PawLogsController } from './pawlogs/pawlogs.controller';
-import { PawLogsService } from './pawlogs/pawlogs.service';
 import { PawLogsModule } from './pawlogs/pawlogs.module';
-import { PawLogsUploadService } from './pawlogs/pawlogs-upload.service';
-import { PawLogsCreateService } from './pawlogs/pawlogs-create.service';
-import { PawLogsUpdateService } from './pawlogs/pawlogs-update.service';
-import { PawLogsReadService } from './pawlogs/pawlogs-read.service';
-import { PawLogsDeleteService } from './pawlogs/pawlogs-delete.service';
-import { ShelterUploadService } from './shelter/shelter-upload/shelter-upload.service';
 
 @Module({
   imports: [
@@ -56,6 +48,6 @@ import { ShelterUploadService } from './shelter/shelter-upload/shelter-upload.se
     AzureModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ShelterUploadService],
+  providers: [AppService],
 })
 export class AppModule {}

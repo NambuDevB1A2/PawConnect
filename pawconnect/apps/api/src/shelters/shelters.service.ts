@@ -1,237 +1,46 @@
-import { AdoptionsService } from '@/adoptions/adoptions.service';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
-import { AzureBlobService } from '@/azure/azure-blob/azure-blob.service';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
-import { getPagination, getTotalPage } from '@/common/utils/pagination.util';
-import { getImageIdByString } from '@/common/utils/upload.util';
-import { UPLOAD_DIR } from '@/config/upload.config';
-import { PrismaService } from '@/prisma/prisma.service';
-import { CreateShelterDto } from '@/shelters/dto/create-shelter.dto';
 import { QueryGetShelterAdoptionsDto } from '@/shelters/dto/query-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
-import { SHELTER_DETAIL_SELECT, SHELTER_IMAGE_SELECT, SHELTER_ORDERBY, SHELTER_SELECT, SHELTERS_SELECT } from '@/shelters/shelter.select';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-
-function getDefaultBanner() {
-    return `${UPLOAD_DIR.shelterBannerDir}/default_banner.png`;
-}
-
-function isDefaultBanner(blobName: string) {
-    return blobName === getDefaultBanner();
-}
+import { SheltersReadService } from '@/shelters/shelters-read.service';
+import { SheltersUpdateService } from '@/shelters/shelters-update.service';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SheltersService {
     constructor (
-        private readonly prisma: PrismaService,
-        private readonly azureBlob: AzureBlobService,
-        private readonly adoptionsService: AdoptionsService,
+        private readonly sheltersReadService: SheltersReadService,
+        private readonly sheltersUpdateService: SheltersUpdateService,
     ) {}
     
-    // 보호소 검색 (id)
-    async find<T extends Prisma.ShelterSelect = Prisma.ShelterSelect>(id: string | null, select?: T)
-        : Promise<Prisma.ShelterGetPayload<{ select: T }>> {
-        if (!id) throw new UnauthorizedException({
-            message: "존재하지 않는 보호소입니다",
-        });
-
-        const shelter = await this.prisma.shelter.findUnique({ 
-            where: { id }, 
-            select: select 
-        }) as Prisma.ShelterGetPayload<{ select: T }> | null;
-
-        if (!shelter) throw new UnauthorizedException({
-            message: "존재하지 않는 보호소입니다",
-        });
-        
-        return shelter;
-    }
-
-    // 보호소 검색 (name)
-    async findByName(name: string, select?: Prisma.ShelterSelect) {
-        const shelter = await this.prisma.shelter.findUnique({ where: { name }, select: select});
-        if (!shelter) throw new UnauthorizedException({
-            message: "존재하지 않는 보호소입니다",
-        });
-        
-        return shelter;
-    }
-
-    // 보호소 이미지 검색
-    async findImages(id: string, select?: Prisma.ShelterImageSelect) {
-        const images = await this.prisma.shelterImage.findMany({ where: { shelterId: id }, select: select });
-        return images;
-    }
-
-    // 보호소 중복 검사 (이름)
-    async existsByName(name: string) {
-        const shelter = await this.prisma.shelter.findUnique({ where: { name }});
-        if (shelter) throw new UnauthorizedException({
-            message: "이미 사용중인 보호소 이름입니다",
-            fields: { name: "이미 사용중인 보호소 이름입니다" },
-        });
-    }
-
-    // CREATE
-
-    // 보호소 생성
-    async create(tx: Prisma.TransactionClient, createShelterDto: CreateShelterDto, imgBanner?: Express.Multer.File) {
-        await this.existsByName(createShelterDto.name);
-
-        // blob 스토리지에 이미지 업로드
-        const { blobName, url } = imgBanner ? 
-            await this.azureBlob.uploadPublic(imgBanner, UPLOAD_DIR.shelterBannerDir) : { blobName: getDefaultBanner() };
-
-        const shelter = await tx.shelter.create({
-            data: {
-                name: createShelterDto.name,
-                address: createShelterDto.address,
-                addressDetail: createShelterDto.addressDetail,
-                phone: createShelterDto.phone,
-                operatingHours: createShelterDto.operatingHours,
-                description: createShelterDto.description,
-                imgBanner: blobName,
-            },
-            select: SHELTER_SELECT,
-        });
-
-        return shelter;
-    }
-    
-    async uploadImages(files?: Express.Multer.File[]) {
-        if (!files || files.length === 0) return [];
-
-        // blob 스토리지에 이미지 업로드
-        return await this.azureBlob.uploadPublicMultiple(files, UPLOAD_DIR.shelterImgDir);
-    }
-
-    // 이미지 새로 저장
-    async createImages(tx: Prisma.TransactionClient, shelterId: string, images: string[]) {
-        return await tx.shelterImage.createManyAndReturn({
-            data: images.map((img) => ({
-                id: getImageIdByString(img),
-                img: img,
-                shelterId: shelterId,
-            })),
-            select: SHELTER_IMAGE_SELECT,
-        });
-    }
-
-    // READ
     // 내 보호소 정보 조회
-    async me(auth: AuthRequest) {
-        const shelter = await this.find(auth.shelterId, SHELTER_DETAIL_SELECT);
+    async getMyShelter(auth: AuthRequest) {
+        const result = await this.sheltersReadService.getMyShelter(auth);
+        return { success: true, ...result };
+    }
 
-        return { success: true, shelter };
+    // 내 보호소 정보 수정
+    async update(auth: AuthRequest, updateShelterDto: UpdateShelterDto, file?: Express.Multer.File, files?: Express.Multer.File[]) {
+        const result = await this.sheltersUpdateService.update(auth, updateShelterDto, file, files);
+        return { success: true, ...result };
     }
 
     // 내 보호소 입양 신청 목록 조회
-    async getShelterAdoptions(auth: AuthRequest, { page, limit, status }: QueryGetShelterAdoptionsDto) {
-        await this.find(auth.shelterId);
-
-        const { adoptions, total, totalPage } = 
-            await this.adoptionsService.findByShelter(auth.shelterId as string, { page, limit }, status);
-
-        return { success: true, adoptions, pagination: { page, limit, total, totalPage }};
+    async getMyShelterAdoptions(auth: AuthRequest, query: QueryGetShelterAdoptionsDto) {
+        const result = await this.sheltersReadService.getMyShelterAdoptions(auth, query);
+        return { success: true, ...result };
     }
 
     // 보호소 목록 조회
-    async getShelters({ page, limit }: QueryPaginationDto) {
-        const [shelters, total] = await Promise.all([
-            this.prisma.shelter.findMany({
-                select: SHELTERS_SELECT, // Select 상수화
-                orderBy: SHELTER_ORDERBY.NEWEST, // OrderBy 상수화
-                ...getPagination(page, limit), // 페이지네이션
-            }),
-            this.prisma.shelter.count(), // total 값 추출
-        ]);
-
-        const totalPage = getTotalPage(total, limit); // totalPage 값 추출
-        return { success: true, shelters, pagination: { page, limit, total, totalPage }};
-    }
-
-    // 보호소 상세 조회 (id)
-    async getShelter(id: string) {
-        const shelter = await this.find(id, { 
-            ...SHELTER_DETAIL_SELECT, 
-            animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
-        });
-
-        return { success: true, shelter };
+    async getShelters(pagination: QueryPaginationDto) {
+        const result = await this.sheltersReadService.getShelters(pagination);
+        return { success: true, ...result };
     }
 
     // 보호소 상세 조회 (name)
     async getShelterByName(name: string) {
-        const shelter = await this.findByName(name, { 
-            ...SHELTER_DETAIL_SELECT, 
-            animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
-        });
-
-        return { success: true, shelter };
+        const result = await this.sheltersReadService.getShelterByName(name);
+        return { success: true, ...result };
     }
-
-    // UPDATE
-    // 내 보호소 정보 수정
-    async update(auth: AuthRequest, updateShelterDto: UpdateShelterDto, imgBanner?: Express.Multer.File, imgShelter?: Express.Multer.File[]) {
-        const prevShelter = await this.find(auth.shelterId, { ...SHELTER_SELECT, images: { select: SHELTER_IMAGE_SELECT } });
-        const shelterId = prevShelter.id;
-
-        const keepSet = new Set(updateShelterDto.imgShelterKeeps ?? []);
-        const toDelete = prevShelter.images.filter(img => !keepSet.has(img.img));
-
-        let imgBannerPath = prevShelter.imgBanner;
-        let imgBannerOld: string | null = null;
-
-        // 1. 새로운 파일 업로드
-        // 새로운 이미지로 교체
-        if (imgBanner) {
-            const uploadedImgBanner = await this.azureBlob.uploadPublic(imgBanner, UPLOAD_DIR.shelterBannerDir);
-            imgBannerPath = uploadedImgBanner.blobName;
-            if (!isDefaultBanner(prevShelter.imgBanner)) {
-                imgBannerOld = prevShelter.imgBanner;
-            }
-        } 
-        // 기존 이미지 제거
-        else if (updateShelterDto.imgBannerRemoved && !isDefaultBanner(prevShelter.imgBanner)) {
-            imgBannerOld = prevShelter.imgBanner;
-            imgBannerPath = getDefaultBanner();
-        }
-
-        const uploadedImgShelter = await this.uploadImages(imgShelter);
-
-        // 2. 트랜잭션으로 진행 도중 오류 발생시 DB 작업 무효화
-        const result = await this.prisma.$transaction(async (tx) => {
-            // 보호소 업데이트
-            const shelter = await tx.shelter.update({
-                where: { id: shelterId },
-                data: {
-                    address: updateShelterDto.address,
-                    addressDetail: updateShelterDto.addressDetail,
-                    phone: updateShelterDto.phone,
-                    operatingHours: updateShelterDto.operatingHours,
-                    description: updateShelterDto.description,
-                    imgBanner: imgBannerPath,
-                },
-            });
-
-            // 보호소 이미지 업데이트
-            await tx.shelterImage.deleteMany({ where: { id: { in: toDelete.map(img => img.id)}} });
-            await this.createImages(tx, shelterId, uploadedImgShelter.map((img) => img.blobName));
-
-            return { shelter };
-        });
-
-        // 3. 트랜잭션 성공 후에 실제 파일 삭제
-        if (imgBannerOld) await this.azureBlob.deleteBlob(imgBannerOld);
-        // 유지 목록에 없는 기존 이미지 전부 삭제
-        await Promise.all(toDelete.map(img => this.azureBlob.deleteBlob(img.img)));
-
-        const shelterImages = await this.findImages(shelterId, SHELTER_IMAGE_SELECT);
-        
-        return { success: true, ...result, shelterImages };
-    }
-
-    // DELETE
     
 }

@@ -27,7 +27,7 @@ export class UsersService {
         private readonly usersUploadService: UsersUploadService,
     ) {}
 
-    // 회원 검색 (아이디)
+    // 회원 검색 (id)
     async find(id: string, select?: Prisma.UserSelect) {
         const user = await this.prisma.user.findUnique({
             where: { id },
@@ -40,7 +40,7 @@ export class UsersService {
         return user;
     }
 
-    // 회원 검색 (이메일)
+    // 회원 검색 (email)
     async findByEmail(email: string, select?: Prisma.UserSelect) {
         const user = await this.prisma.user.findUnique({ 
             where: { email }, 
@@ -53,7 +53,7 @@ export class UsersService {
         return user;
     }
 
-    // 회원 중복 검사 (이메일)
+    // 회원 중복 검사 (email)
     async existsByEmail(email: string) {
         const user = await this.prisma.user.findUnique({ where: { email }});
         if (user) throw new UnauthorizedException({
@@ -80,7 +80,7 @@ export class UsersService {
                     password: createUserDto.passwordHash,
                     nickname: createUserDto.nickname,
                     role: role,
-                    imgProfile: uploadedImgProfile ?? "",
+                    imgProfile: uploadedImgProfile ?? getDefaultProfile(),
                     shelterId: shelterId,
                 },
                 select: USER_SELECT,
@@ -99,7 +99,7 @@ export class UsersService {
                 }]
             });
 
-            return { userId: user.id };
+            return user;
         } catch (error) {
             // DB 실패 시 업로드했던 Blob 파일 삭제
             if (uploadedImgProfile) {
@@ -134,7 +134,7 @@ export class UsersService {
             }
         } 
         // 기존 이미지만 삭제
-        else if (updateUserDto.imgProfileRemoved) {
+        else if (updateUserDto.imgProfileRemoved && !isDefaultProfile(user.imgProfile)) {
             oldImgProfile = user.imgProfile;
             uploadedImgProfile = getDefaultProfile();
         }
@@ -150,13 +150,14 @@ export class UsersService {
             });
         } catch (error) {
             // DB 실패 시 업로드했던 Blob 파일 삭제
-            if (uploadedImgProfile) {
+            if (uploadedImgProfile && !isDefaultProfile(uploadedImgProfile)) {
                 await this.usersUploadService.rollback(uploadedImgProfile);
             }
+            throw error;
         }
 
         // 3. Azure Blob 삭제
-        if (oldImgProfile) {
+        if (oldImgProfile && !isDefaultProfile(oldImgProfile)) {
             await this.usersUploadService.deleteBlob(oldImgProfile);
         }
 

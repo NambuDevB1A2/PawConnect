@@ -12,12 +12,12 @@ export class UsersUploadService {
     async uploadImage(file: Express.Multer.File) {
         if (!file) return;
 
-        const result = await this.azureBlob.uploadPublic(
+        const uploaded = await this.azureBlob.uploadPublic(
             file,
             UPLOAD_DIR.userProfileDir,
         );
 
-        return result.blobName;
+        return uploaded.blobName;
     }
 
     // DB 작업 실패 시 업로드한 Blob 파일 삭제
