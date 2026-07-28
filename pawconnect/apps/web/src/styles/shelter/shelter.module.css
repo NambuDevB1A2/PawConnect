@@ -37,6 +37,10 @@
     gap: var(--spacing-200);
 }
 
+.empty {
+    text-align: center;
+}
+
 .pagination {
-    align-self: center;
+    text-align: center;
 }

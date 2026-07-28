@@ -10,11 +10,13 @@ import { formatPhoneNumber } from "@/utils/format.util";
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
-    const { shelter } = await GetShelterDetail(id);
+    const response = await GetShelterDetail(id);
 
-    if (!shelter) {
+    if (!response) {
         return <NotFound/>
     }
+
+    const { shelter } = response;
 
     return (
         <div className={styles.wrapper_page}>

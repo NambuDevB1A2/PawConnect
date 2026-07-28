@@ -16,7 +16,8 @@ export class SheltersUpdateService {
     ) {}
 
     // 내 보호소 정보 수정
-    async update(auth: AuthRequest, updateShelterDto: UpdateShelterDto, file?: Express.Multer.File, files?: Express.Multer.File[]) {
+    async update(auth: AuthRequest, updateShelterDto: UpdateShelterDto, 
+        imgBannerFile?: Express.Multer.File, imgShelterFiles?: Express.Multer.File[]) {
         const shelter = await this.sheltersReadService.find(auth.shelterId, { ...SHELTER_SELECT, images: { select: SHELTER_IMAGE_SELECT } });
 
         const keepSet = new Set(updateShelterDto.imgShelterKeeps ?? []);
@@ -27,8 +28,8 @@ export class SheltersUpdateService {
 
         // 1. 이미지 업로드
         // 새로운 이미지로 교체
-        if (file) {
-            uploadedImgBanner = await this.sheltersUploadService.uploadBanner(file);
+        if (imgBannerFile) {
+            uploadedImgBanner = await this.sheltersUploadService.uploadBanner(imgBannerFile);
             
             if (!isDefaultBanner(shelter.imgBanner)) {
                 oldImgBanner = shelter.imgBanner;
@@ -40,7 +41,7 @@ export class SheltersUpdateService {
             uploadedImgBanner = getDefaultBanner();
         }
 
-        let uploadedImgShelter = files ? await this.sheltersUploadService.uploadImages(files) : [];
+        let uploadedImgShelter = imgShelterFiles ? await this.sheltersUploadService.uploadImages(imgShelterFiles) : [];
         if (!uploadedImgShelter) uploadedImgShelter = [];
 
         // 2. DB 수정

@@ -110,7 +110,7 @@ export class AdoptionsService {
         adoptionStatus: status 
     };
 
-    const [adoptions, total] = await Promise.all([
+    const [adoptions, totalCount] = await Promise.all([
         this.prisma.adoption.findMany({
             where,
             include: ADOPTION_ANIMAL_INCLUDE,
@@ -122,8 +122,8 @@ export class AdoptionsService {
         })
     ]);
 
-    const totalPage = getTotalPage(total, limit);
-    return { adoptions, total, totalPage };
+    const totalPage = getTotalPage(totalCount, limit);
+    return { adoptions, totalCount, totalPage };
   }
 
   // TODO: shelterId 권한 체크 시 auth 사용 예정

@@ -22,7 +22,8 @@ export class AuthService {
     ) {}
 
     // 회원가입 - 공통
-    async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterUserAuthDto, imgProfile?: Express.Multer.File, shelterId?: string) {
+    async register(tx: Prisma.TransactionClient, role: Role, registerAuthDto: RegisterUserAuthDto,
+        imgProfileFile?: Express.Multer.File, shelterId?: string) {
         // 비밀번호 해시
         const bcryptRound = this.configService.getOrThrow('bcrypt.bcrypt_round');
         const passwordHash = await bcrypt.hash(registerAuthDto.password, bcryptRound);
@@ -35,29 +36,31 @@ export class AuthService {
                 passwordHash,
             },
             shelterId,
-            imgProfile);
+            imgProfileFile);
 
         return user;
     }
 
     // 회원가입 - 일반 사용자
-    async registerUser(registerAuthDto: RegisterUserAuthDto, imgProfile?: Express.Multer.File) {
-        // 사용자 생성
-        const user = await this.register(this.prisma, Role.USER, registerAuthDto, imgProfile);
+    async registerUser(registerAuthDto: RegisterUserAuthDto, imgProfileFile?: Express.Multer.File) {
+        return await this.prisma.$transaction(async (tx) => {
+            // 사용자 생성
+            const user = await this.register(tx, Role.USER, registerAuthDto, imgProfileFile);
 
-        return { success: true, userId: user.id };
+            return { success: true, userId: user.id };
+        });
     }
 
     // 회원가입 - 보호소 관리자
     async registerShelter(registerShelterAuthDto: RegisterShelterAuthDto, 
-        imgProfile?: Express.Multer.File, imgBanner?: Express.Multer.File, imgShelter?: Express.Multer.File[]) {
+        imgProfileFile?: Express.Multer.File, imgBannerFile?: Express.Multer.File, imgShelterFiles?: Express.Multer.File[]) {
 
         return await this.prisma.$transaction(async (tx) => {
             // 보호소 생성
-            const shelter = await this.sheltersService.create(tx, registerShelterAuthDto, imgBanner, imgShelter);
+            const shelter = await this.sheltersService.create(tx, registerShelterAuthDto, imgBannerFile, imgShelterFiles);
 
             // 사용자 생성
-            const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, imgProfile, shelter.id);
+            const user = await this.register(tx, Role.SHELTER, registerShelterAuthDto, imgProfileFile, shelter.id);
 
             return { success: true, userId: user.id, shelterId: shelter.id };
         });

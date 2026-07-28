@@ -15,20 +15,15 @@ export class SheltersCreateService {
     ) {}
     
     // 보호소 생성
-    async create(tx: Prisma.TransactionClient, createShelterDto: CreateShelterDto, file?: Express.Multer.File, files?: Express.Multer.File[]) {
+    async create(tx: Prisma.TransactionClient, createShelterDto: CreateShelterDto, 
+        imgBannerFile?: Express.Multer.File, imgShelterFiles?: Express.Multer.File[]) {
         await this.sheltersReadService.existsByName(createShelterDto.name);
 
         // 1. Azure Blob에 이미지 업로드 (없을시 기본값)
-        let uploadedImgBanner = file ? 
-            await this.sheltersUploadService.uploadBanner(file) : 
-            undefined;
-
+        let uploadedImgBanner = imgBannerFile ? await this.sheltersUploadService.uploadBanner(imgBannerFile) : undefined;
         if (!uploadedImgBanner) uploadedImgBanner = getDefaultBanner();
 
-        let uploadedImgShelter = files ? 
-            await this.sheltersUploadService.uploadImages(files) :
-            [];
-
+        let uploadedImgShelter = imgShelterFiles ?  await this.sheltersUploadService.uploadImages(imgShelterFiles) : [];
         if (!uploadedImgShelter) uploadedImgShelter = [];
 
         // 2. DB 작업

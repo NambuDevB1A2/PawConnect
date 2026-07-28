@@ -1,5 +1,6 @@
 import PawLogCard from "@/components/card/PawLogCard";
 import Empty from "@/components/common/Empty";
+import NotFound from "@/components/common/NotFound";
 import Pagination from "@/components/common/Pagination";
 import Typography from "@/components/common/Typography";
 import NewPawLogButton from "@/components/pawlog/NewPawLogButton";
@@ -12,8 +13,13 @@ import { parsePageToNumber } from "@/utils/page.util";
 export default async function Page({ searchParams }: PageProps) {
     const { page } = await searchParams;
     const currentPage = parsePageToNumber(page);
-    const { pawLogs, pagination } = await GetMyPawLogs(currentPage, PAGE_SIZE.MYPAGE.PAWLOG);
+    const response = await GetMyPawLogs(currentPage, PAGE_SIZE.MYPAGE.PAWLOG);
     
+    if (!response) {
+        return <NotFound/>
+    }
+
+    const { pawLogs, pagination } = response;
     const hasPawLogs = (pagination?.totalCount && pagination?.totalCount > 0);
 
     return (
@@ -26,14 +32,14 @@ export default async function Page({ searchParams }: PageProps) {
 
                 <NewPawLogButton/>
 
-                <div className={styles.box_list}>
-                    {hasPawLogs ?
-                        pawLogs?.map((pawLog) =>
+                {hasPawLogs ?
+                    <div className={styles.box_list}>
+                        {pawLogs?.map((pawLog) =>
                             <PawLogCard key={pawLog.id} pawLog={pawLog}/>
-                        ) :
-                        <Empty text="등록된 게시글이 없습니다"></Empty>
-                    }
-                </div>
+                        )}
+                    </div> :
+                    <Empty className={styles.empty} text="등록된 게시글이 없습니다"></Empty>
+                }
                 
                 <div className={styles.pagination}>
                     <Pagination

@@ -16,7 +16,7 @@ export class PawLogsUpdateService {
     ) {}
 
     // 게시글 수정
-    async update(auth: AuthRequest, id: number, updatePawLogDto: UpdatePawLogDto, files: Express.Multer.File[]) {
+    async update(auth: AuthRequest, id: number, updatePawLogDto: UpdatePawLogDto, imgPawLogFiles?: Express.Multer.File[]) {
         // 게시글 검색 (id)
         const pawLog = await this.pawLogsReadService.find(id, PAWLOG_SELECT);
         
@@ -28,7 +28,7 @@ export class PawLogsUpdateService {
             throw new UnauthorizedException({ message: "권한이 없습니다" });
 
         // 2. 이미지 업로드
-        let uploadedImgPawLog = files ? await this.pawLogsUploadService.uploadImages(files) : [];
+        let uploadedImgPawLog = imgPawLogFiles ? await this.pawLogsUploadService.uploadImages(imgPawLogFiles) : [];
         if (!uploadedImgPawLog) uploadedImgPawLog = [];
 
         // 3. DB 일괄 수정

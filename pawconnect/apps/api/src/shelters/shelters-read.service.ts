@@ -64,7 +64,7 @@ export class SheltersReadService {
 
     // 보호소 목록 조회
     async getShelters({ page, limit }: QueryPaginationDto) {
-        const [shelters, total] = await Promise.all([
+        const [shelters, totalCount] = await Promise.all([
             this.prisma.shelter.findMany({
                 select: SHELTERS_SELECT, // Select 상수화
                 orderBy: SHELTER_ORDERBY.NEWEST, // OrderBy 상수화
@@ -73,8 +73,8 @@ export class SheltersReadService {
             this.prisma.shelter.count(), // total 값 추출
         ]);
 
-        const totalPage = getTotalPage(total, limit); // totalPage 값 추출
-        return { shelters, pagination: { page, limit, total, totalPage }};
+        const totalPage = getTotalPage(totalCount, limit); // totalPage 값 추출
+        return { shelters, pagination: { page, limit, totalCount, totalPage }};
     }
 
     // 보호소 상세 조회 (id)
@@ -108,9 +108,9 @@ export class SheltersReadService {
     async getMyShelterAdoptions(auth: AuthRequest, { page, limit, status }: QueryGetShelterAdoptionsDto) {
         await this.find(auth.shelterId);
 
-        const { adoptions, total, totalPage } = 
+        const { adoptions, totalCount, totalPage } = 
             await this.adoptionsService.findByShelter(auth.shelterId as string, { page, limit }, status);
 
-        return { adoptions, pagination: { page, limit, total, totalPage }};
+        return { adoptions, pagination: { page, limit, totalCount, totalPage }};
     }
 }

@@ -14,10 +14,10 @@ export class PawLogsCreateService {
     ) {}
     
     // 게시글 작성
-    async create(auth: AuthRequest, createPawLogDto: CreatePawLogDto, files?: Express.Multer.File[]) {
+    async create(auth: AuthRequest, createPawLogDto: CreatePawLogDto, imgPawLogFiles?: Express.Multer.File[]) {
 
         // 1. Azure Blob에 이미지 업로드
-        let uploadedImgPawLog = files ? await this.pawLogsUploadService.uploadImages(files) : [];
+        let uploadedImgPawLog = imgPawLogFiles ? await this.pawLogsUploadService.uploadImages(imgPawLogFiles) : [];
         if (!uploadedImgPawLog) uploadedImgPawLog = [];
 
         // 2. DB 작업

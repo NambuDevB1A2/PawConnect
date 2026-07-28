@@ -6,7 +6,13 @@ import NotFound from "@/components/common/NotFound";
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
-    const { pawLog } = await GetPawLogDetail(id);
+    const response = await GetPawLogDetail(id);
+
+    if (!response) {
+        return <NotFound/>
+    }
+
+    const { pawLog } = response;
 
     if (!pawLog) {
         return <NotFound/>

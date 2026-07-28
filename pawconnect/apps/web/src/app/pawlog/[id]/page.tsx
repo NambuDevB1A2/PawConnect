@@ -8,10 +8,17 @@ import AppImage from "@/components/common/AppImage";
 import { formatDateTime } from '../../../utils/format.util';
 import Link from "next/link";
 import MyPawLogOptions from "@/components/pawlog/MyPawLogOptions";
+import NotFound from "@/components/common/NotFound";
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
-    const { pawLog, prev, next } = await GetPawLogDetail(id);
+    const response = await GetPawLogDetail(id);
+
+    if (!response) {
+        return <NotFound/>
+    }
+
+    const { pawLog, prev, next } = response;
 
     return (
         <div className={styles.wrapper_page}>

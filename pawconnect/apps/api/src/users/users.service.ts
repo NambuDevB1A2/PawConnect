@@ -63,13 +63,13 @@ export class UsersService {
     }
 
     // 신규 사용자 생성
-    async create(tx: Prisma.TransactionClient, role: Role, createUserDto: CreateUserDto, shelterId?: string, file?: Express.Multer.File) {
+    async create(tx: Prisma.TransactionClient, role: Role, createUserDto: CreateUserDto, shelterId?: string, 
+        imgProfileFile?: Express.Multer.File) {
         await this.existsByEmail(createUserDto.email);
 
         // 1. Azure Blob에 이미지 업로드 (없을시 기본값)
-        const uploadedImgProfile = file ? 
-            await this.usersUploadService.uploadImage(file) :
-            getDefaultProfile();
+        let uploadedImgProfile = imgProfileFile ? await this.usersUploadService.uploadImage(imgProfileFile) : undefined;
+        if (!uploadedImgProfile) uploadedImgProfile = getDefaultProfile();
 
         // 2. DB 작업
         try {
