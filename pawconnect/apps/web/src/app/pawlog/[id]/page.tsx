@@ -7,6 +7,7 @@ import Icon from "@/components/common/Icon";
 import AppImage from "@/components/common/AppImage";
 import { formatDateTime } from '../../../utils/format.util';
 import Link from "next/link";
+import MyPawLogOptions from "@/components/pawlog/MyPawLogOptions";
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
@@ -18,6 +19,8 @@ export default async function Page({ params }: PageProps) {
                 <div className={styles.box_author}>
                     <AppImage className={styles.img_author_profile} src={pawLog?.author.imgProfile} />
                     <Typography variant="menutitle">{pawLog?.author.nickname}</Typography>
+                    
+                    <MyPawLogOptions pawLog={pawLog}/>
                 </div>
 
                 <div className={styles.box_content}>

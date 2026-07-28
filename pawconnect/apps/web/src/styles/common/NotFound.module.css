@@ -3,12 +3,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    min-height: var(--modal-width-xs);
 }
 
 .icon_warning {
 
 }
 
-.type_warning {
+.typo_warning {
     text-align: center;
+}
+
+.typo_empty {
+    text-align: center;
+    color: var(--color-icon-default);
 }

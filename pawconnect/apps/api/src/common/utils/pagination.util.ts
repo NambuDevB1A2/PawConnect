@@ -11,6 +11,6 @@ export const getPagination = (page: number, limit: number) => ({
     take: getPageTake(limit),
 });
 
-export const getTotalPage = (total: number, limit: number) => (
-    Math.ceil(total / limit)
+export const getTotalPage = (totalCount: number, limit: number) => (
+    Math.ceil(totalCount / limit)
 );
