@@ -1,6 +1,6 @@
 import { getAccessToken } from "@/services/auth/auth";
 import { fetchServer } from "@/services/fetch/fetch.server";
-import { ResponseShelter } from "@/types/mypage/get-shelter.type";
+import { ResponseShelter } from "@/types/shelter/get-shelter.type";
 
 export async function GetShelter() {
     const token = await getAccessToken();

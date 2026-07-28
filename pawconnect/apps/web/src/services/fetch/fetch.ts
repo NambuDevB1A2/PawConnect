@@ -30,7 +30,7 @@ export async function fetchData<T>(url: string, token?: string, options?: Reques
 
     if (!response.ok) {
         const data = await response.json();
-
+        
         if (response.status === 401) {
             // TODO: 401 에러 발생시 예외처리 
             return undefined as T;

@@ -17,7 +17,7 @@ export default async function Page({ searchParams }: PageProps) {
             <div className={styles.wrapper_list}>
                 <div className={styles.box_title}>
                     <Typography variant="heading">보호소 목록</Typography>
-                    <Typography>총 {pagination?.total}개의 보호소</Typography>
+                    <Typography>총 {pagination?.totalCount}개의 보호소</Typography>
                 </div>
 
                 <div className={styles.box_list}>

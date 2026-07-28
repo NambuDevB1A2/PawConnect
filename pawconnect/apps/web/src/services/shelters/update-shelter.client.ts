@@ -1,6 +1,6 @@
 import { ApiError } from "@/services/fetch/api-error";
 import { fetchClient } from "@/services/fetch/fetch.client";
-import { UpdateShelterState } from "@/types/mypage/update-shelter.type";
+import { UpdateShelterState } from "@/types/shelter/update-shelter.type";
 import { ApiResponse } from "@/types/response.type";
 import { validateShelterAddress, validateShelterPhone } from "@/utils/auth/auth.validator";
 
@@ -68,7 +68,7 @@ export async function UpdateShelter(prevState: UpdateShelterState, formdata: For
 
         // 필드 정보 없는 일반 에러 매핑 (네트워크 오류 등)
         return {
-            addressError: "보호소 정보 수정 도중 오류가 발생했습니다",
+            addressError: "정보 변경 도중 오류가 발생했습니다",
         };
     }
 }

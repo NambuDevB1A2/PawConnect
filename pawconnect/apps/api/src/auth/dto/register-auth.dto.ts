@@ -1,3 +1,4 @@
+import { TRANSFORM_STRING_TO_BOOLEAN } from "@/common/dto/format.dto";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { Equals, IsBoolean, IsEmail, IsOptional, IsString, Matches, MaxLength, MinLength } from "class-validator";
@@ -29,7 +30,7 @@ export class RegisterUserAuthDto {
     imgProfile: any;
 
     @ApiProperty({ example: true })
-    @Transform(({ value }) => value === "true" || value === true)
+    @Transform(TRANSFORM_STRING_TO_BOOLEAN)
     @IsBoolean()
     @Equals(true, { message: "이용약관 및 개인정보 처리방침에 동의해주세요" })
     agreedToTerms: boolean;

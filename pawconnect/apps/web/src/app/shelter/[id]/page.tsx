@@ -1,6 +1,7 @@
 import AppImage from "@/components/common/AppImage";
 import ImageSlider from "@/components/common/ImageSlider";
 import Typography from "@/components/common/Typography";
+import MyShelterOptions from "@/components/shelter/MyShelterOptions";
 import { GetShelterDetail } from "@/services/shelters/get-shelter-detail.server";
 import styles from "@/styles/shelter/shelterDetail.module.css"
 import { PageProps } from "@/types/page.type";
@@ -19,6 +20,7 @@ export default async function Page({ params }: PageProps) {
             <div className={styles.wrapper_detail}>
                 <div className={styles.box_name}>
                     <Typography variant="heading">{shelter?.name}</Typography>
+                    <MyShelterOptions shelter={shelter}/>
                 </div>
 
                 <div className={styles.box_content}>

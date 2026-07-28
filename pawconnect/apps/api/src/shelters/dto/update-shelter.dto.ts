@@ -1,3 +1,4 @@
+import { TRANSFORM_STRING_TO_ARRAY, TRANSFORM_STRING_TO_BOOLEAN } from "@/common/dto/format.dto";
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsArray, IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
@@ -39,7 +40,7 @@ export class UpdateShelterDataDto {
 export class UpdateShelterDto extends UpdateShelterDataDto {
     @ApiPropertyOptional({ example: false })
     @IsOptional()
-    @Transform(({ value }) => value === "true" || value === true)
+    @Transform(TRANSFORM_STRING_TO_BOOLEAN)
     @IsBoolean()
     imgBannerRemoved?: boolean;
     
@@ -49,15 +50,7 @@ export class UpdateShelterDto extends UpdateShelterDataDto {
 
     @ApiPropertyOptional()
     @IsOptional()
-    @Transform(({ value }) => {
-        if (value === undefined || value === null) return value;
-        if (Array.isArray(value)) return value;
-
-        const trimmed = value.trim();
-        if (trimmed === '') return [];
-
-        return trimmed.split(',').map((v: string) => v.trim());
-    })
+    @Transform(TRANSFORM_STRING_TO_ARRAY)
     @IsArray()
     @IsString({ each: true })
     imgShelterKeeps?: string[];

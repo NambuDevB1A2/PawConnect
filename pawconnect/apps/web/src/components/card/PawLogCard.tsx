@@ -2,6 +2,7 @@
 
 import AppImage from "@/components/common/AppImage";
 import Typography from "@/components/common/Typography";
+import MyPawLogOptions from "@/components/pawlog/MyPawLogOptions";
 import styles from "@/styles/card/PawLogCard.module.css"
 import { PawLog } from "@/types/pawlog/pawlog.type";
 import { formatDate } from "@/utils/format.util";
@@ -17,7 +18,8 @@ export default function PawLogCard({ pawLog }: PawLogCardProps) {
 
     const handleClick = () => {
         router.push(`/pawlog/${pawLog.id}`);
-    }
+    };
+
 
     return (
         <div className={styles.wrapper_pawlog_card} onClick={handleClick}>
@@ -28,6 +30,8 @@ export default function PawLogCard({ pawLog }: PawLogCardProps) {
                     <AppImage className={styles.img_author_profile} src={pawLog.author.imgProfile} />
                     <Typography>{pawLog.author.nickname}</Typography>
                     <Typography className={styles.typo_at} variant="caption">{formatDate(pawLog.updatedAt)}</Typography>
+
+                    <MyPawLogOptions pawLog={pawLog}/>
                 </div>
 
                 <div className={styles.box_info}>
