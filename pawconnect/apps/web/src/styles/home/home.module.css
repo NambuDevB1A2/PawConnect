@@ -55,3 +55,11 @@
 .box_shelter_card {
     width: 100%;
 }
+
+.box_title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    margin-right: var(--spacing);
+}
