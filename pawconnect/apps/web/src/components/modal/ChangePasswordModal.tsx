@@ -25,8 +25,8 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
         if (!state.response) return;
         
         if (state.response?.success) {
-            onClose();
             alert('비밀번호 변경에 성공했습니다');
+            onClose();
         } else {
             alert('비밀번호 변경 도중 오류가 발생했습니다');
         }

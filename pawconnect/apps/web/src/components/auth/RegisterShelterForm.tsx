@@ -88,8 +88,8 @@ export default function RegisterShelterForm() {
         if (!state.response) return;
         
         if (state.response?.success) {
-            router.push("/login");
             alert('회원가입에 성공했습니다');
+            router.push("/login");
         } else {
             alert('회원가입 도중 오류가 발생했습니다');
         }

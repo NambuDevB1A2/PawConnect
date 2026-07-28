@@ -22,8 +22,8 @@ export default function LoginForm() {
         if (!state.response) return;
         
         if (state.response?.success) {
-            router.push("/login");
             alert('로그인에 성공했습니다');
+            router.push("/");
         }
     }, [state]);
 
