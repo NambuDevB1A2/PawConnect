@@ -3,9 +3,8 @@
 import AppImage from "@/components/common/AppImage";
 import Typography from "@/components/common/Typography";
 import type { AnimalCard as Animal } from "@/types/paw/animal.type";
-import { formatDate } from "@/utils/format.util";
 import styles from "@/styles/card/pawCard.module.css"
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface AnimalCardProps {
     animal: Animal;
@@ -13,19 +12,12 @@ interface AnimalCardProps {
 
 export default function AnimalCard({ animal }: AnimalCardProps) {
     // 상세페이지 연결
-    // const router = useRouter();
+    const router = useRouter();
 
     return (
-
-        // <div className={styles.wrapper} onClick={() => router.push(`/paw/${animal.id}`)}>
-
-
-        <div className={styles.wrapper_animal_card}>
-
-            {/* 상세연결 */}
-            {/* <div className={styles.wrapper}
-                onClick={() => router.push(`/paw/${animal.id}`)}>
-            </div> */}
+        // 동물카드 클릭 시 상세 페이지로 이동
+        <div className={styles.wrapper_animal_card}
+            onClick={() => router.push(`/paw/${animal.id}`)}>
 
             <div className={styles.imageWrapper}>
                 {/* 동물 썸네일 이미지 */}
@@ -38,13 +30,8 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
                 {/* 이름 */}
                 <Typography variant="subtitle" className={styles.animalName}>
                     {animal.name}</Typography>
-                {/* 동물 종류 · 품종*/}
-                {/* <div className={styles.box_top}>                    
-                    <Typography variant="caption" className={styles.typo_species}>
-                        [{animal.species}] {animal.breed}</Typography>
-                </div> */}
 
-                {/* 성별(중성화여부), 나이, 몸무게 */}
+                {/* 동물 종류, 품종, 성별(중성화여부), 나이, 몸무게 */}
                 <Typography className={styles.typo_detail}>
                     {animal.breed} [{animal.species}] ·
                     {animal.age} 개월 ·
@@ -58,6 +45,5 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
                 {/* <Typography variant="caption">{formatDate(animal.createdAt)}</Typography> */}
             </div>
         </div>
-        //    </div>
     );
 }

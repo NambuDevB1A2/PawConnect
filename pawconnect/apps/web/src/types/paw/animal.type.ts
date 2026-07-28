@@ -5,7 +5,7 @@ export interface AnimalCard {
     imgThumbnail: string;
     animalStatus: string;
     animalStatusLabel: string;
-    species : string;
+    species: string;
     breed: string;
     gender: string;
     isNeutered: boolean;
@@ -30,3 +30,12 @@ export interface AnimalListResponse {
     animals: AnimalCard[];
     pagination: Pagination;
 }
+
+// AnimalStatus
+export type AnimalStatus =
+    | "AVAILABLE"
+    | "RESERVED"
+    | "ADOPTED";
+
+// AnimalGender
+export type AnimalGender = "MALE" | "FEMALE";

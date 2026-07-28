@@ -12,12 +12,11 @@ interface PageProps {
 }
 
 export default async function Page({ searchParams }: PageProps) {
-
     // 페이지 네이션 query parameter
     const params = await searchParams
     // 현재 페이지 번호
     const currentPage = parsePageToNumber(params?.page);
-    // 보호동물 목록 조회
+    // 보호동물, 페이지네이션
     const { animals, pagination } = await getAnimals(currentPage, PAGE_SIZE.ANIMAL);
 
     return (

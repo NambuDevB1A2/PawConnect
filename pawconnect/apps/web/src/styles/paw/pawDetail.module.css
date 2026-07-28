@@ -102,3 +102,18 @@
 
     white-space: pre-line;
 }
+
+.badge {
+    position: absolute;
+    /* top: 15px;
+    left: 15px; */
+    /* padding: 2px 8px; */
+    padding: 4px 10px;
+
+    border-radius: 999px;
+
+    background: var(--color-primary);
+    color: white;
+
+    font-size: 12px;
+}

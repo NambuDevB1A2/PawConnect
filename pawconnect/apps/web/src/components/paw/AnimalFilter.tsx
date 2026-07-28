@@ -14,13 +14,10 @@ export default function AnimalFilter() {
             <Typography variant='subtitle'>보호동물 검색</Typography>
 
             {/* 검색 입력칸 */}
-            {/* <Input placeholder='보호동물 이름 or 보호소 이름' /> */}
-            {/* <Input helperText="보호동물 이름 or 보호소 이름"></Input> */}
-            <InputSearch labelText="검색" placeholder="동물이름 또는 보호소" onClick={() => {}}/>
+            <InputSearch labelText="검색" placeholder="동물이름 또는 보호소" 
+                    onClick={() => {}}/>
             
             {/* 드랍박스 */}
-            {/* <Select placeholder="종류" options={[]} />
-            <Select placeholder="성별" options={[]} /> */}
             <Select labelText="동물" labelPosition="top"
                 labelSize="small"
                 helperText="동물을 선택하세요"
