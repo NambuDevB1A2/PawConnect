@@ -31,7 +31,7 @@ export class AiController {
         createFieldsImageUploadOptions()
     ))
     @Roles(Role.USER, Role.SHELTER)
-    @Post('pawlog/generate')
+    @Post('pawlogs/generate')
     generatePawLog(
         @Body() aiPawLogDto: AiPawLogDto,
         @UploadedFiles() file: {
@@ -55,7 +55,7 @@ export class AiController {
         createFieldsImageUploadOptions()
     ))
     @Roles(Role.SHELTER)
-    @Post('animal/generate')
+    @Post('animals/generate')
     generateAnimal(
         @Body() aiAnimalDto: AiAnimalDto,
         @UploadedFiles() file: {

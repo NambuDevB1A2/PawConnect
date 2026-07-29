@@ -28,4 +28,9 @@ export const MODAL_MESSAGES = {
         confirm: "변경하기",
         changingPassword: "변경하는 중...",
     },
+
+    aiGenerate: {
+        header: "AI가 내용을 분석하고 있습니다",
+        content: "평균 5~10초 후 결과 분석이 종료됩니다",
+    }
 }

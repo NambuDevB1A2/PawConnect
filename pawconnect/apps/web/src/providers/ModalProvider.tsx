@@ -9,7 +9,8 @@ export type ModalKey =
     "confirmDelete" |
     "imageViewer" |
     "contentViewer" |
-    "changePassword";
+    "changePassword" |
+    "aiGenerate";
 
 // 모달이 추가 될 때마다 ParamsMap 추가
 interface ModalParamsMap {
@@ -33,6 +34,10 @@ interface ModalParamsMap {
     };
 
     changePassword: {
+
+    };
+
+    aiGenerate: {
 
     };
 }

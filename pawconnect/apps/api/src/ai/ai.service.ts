@@ -25,7 +25,8 @@ export class AiService {
             // 시스템 지침
             this.openAiService.buildSystemMessage(
                 '당신은 게시글 작성 도우미입니다. ' +
-                '제공된 사진들과 사용자가 입력한 단편적인 내용을 참고해서 실제 사람이 작성할 법한 게시글 내용과 제목을 작성하세요. ' +
+                '제공된 사진들과 사용자가 입력한 단편적인 내용을 참고해서 ' +
+                '실제 사람이 작성할 법한 500자 이내의 게시글 내용과 50자 이내의 제목을 작성하세요. ' +
                 '반드시 아래 JSON 형식으로만 응답하세요. 다른 설명은 절대 붙이지 마세요. ' +
                 '{ "title": "게시글 제목", "content": "게시글 본문" }'),
             
@@ -42,7 +43,9 @@ export class AiService {
         });
 
         // Json 응답 파싱
-        return this.openAiService.parseJsonResponse(rawContent);
+        const result = await this.openAiService.parseJsonResponse(rawContent);
+
+        return { success: true, ...result };
     }
 
     // ai 품종 추론 및 자동 생성 게시글
@@ -79,6 +82,8 @@ export class AiService {
         });
 
         // Json 응답 파싱
-        return this.openAiService.parseJsonResponse(rawContent);
+        const result = await this.openAiService.parseJsonResponse(rawContent);
+
+        return { success: true, ...result };
     }
 }
