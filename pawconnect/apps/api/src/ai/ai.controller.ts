@@ -1,6 +1,8 @@
 import { AiService } from '@/ai/ai.service';
+import { AiAgentChatDto } from '@/ai/dto/ai-agent.dto';
 import { AiAnimalDto } from '@/ai/dto/ai-animal.dto';
 import { AiPawLogDto } from '@/ai/dto/ai-pawlog.dto';
+import { Public } from '@/auth/decorators/public.decorator';
 import { Roles } from '@/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from '@/auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@/auth/guards/role.guard';
@@ -67,4 +69,13 @@ export class AiController {
         return this.aiService.generateAnimal(aiAnimalDto, images);
     }
 
+    // post - ai/agent
+    // ai 에이전트 채팅
+    @ApiOperation({ summary: "ai 에이전트 채팅" })
+    @Public()
+    @Post('agent')
+    agentChat(@Body() aiAgentChatDto: AiAgentChatDto) {
+        return this.aiService.agentChat(aiAgentChatDto);
+    }
+    
 }
