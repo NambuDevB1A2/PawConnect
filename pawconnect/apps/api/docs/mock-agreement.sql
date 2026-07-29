@@ -11,3 +11,4 @@ VALUES
 ('개인정보 처리방침 동의', ''),
 ('입양 심사 정보 제공 동의', '');
 
+SELECT setval('"Agreement_id_seq"', (SELECT MAX(id) FROM "Agreement"));

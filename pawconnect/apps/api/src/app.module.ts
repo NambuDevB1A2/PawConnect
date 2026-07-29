@@ -18,14 +18,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { AzureModule } from './azure/azure.module';
-import { PawLogsController } from './pawlogs/pawlogs.controller';
-import { PawLogsService } from './pawlogs/pawlogs.service';
 import { PawLogsModule } from './pawlogs/pawlogs.module';
-import { PawLogsUploadService } from './pawlogs/pawlogs-upload.service';
-import { PawLogsCreateService } from './pawlogs/pawlogs-create.service';
-import { PawLogsUpdateService } from './pawlogs/pawlogs-update.service';
-import { PawLogsReadService } from './pawlogs/pawlogs-read.service';
-import { PawLogsDeleteService } from './pawlogs/pawlogs-delete.service';
+import { HomeModule } from './home/home.module';
 
 @Module({
   imports: [
@@ -53,6 +47,7 @@ import { PawLogsDeleteService } from './pawlogs/pawlogs-delete.service';
     AiModule,
     AdoptionsModule,
     AzureModule,
+    HomeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

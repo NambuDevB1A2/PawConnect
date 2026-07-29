@@ -1,9 +1,4 @@
-export class CreateShelterDto {
-    name: string;
-    address: string;
-    addressDetail: string;
-    phone: string;
-    operatingHours: string;
-    description: string;
-    imgBanner: string;
+import { RegisterShelterAuthDto } from "@/auth/dto/register-auth.dto";
+
+export class CreateShelterDto extends RegisterShelterAuthDto {
 }

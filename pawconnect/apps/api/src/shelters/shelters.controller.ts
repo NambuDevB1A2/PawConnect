@@ -25,9 +25,9 @@ export class SheltersController {
     @ApiOperation({ summary: "내 보호소 정보 조회" })
     @Roles(Role.SHELTER)
     @Get('me')
-    me(@CurrentAuth() auth: AuthRequest) { 
+    getMyShelter(@CurrentAuth() auth: AuthRequest) { 
         // Auth 검증이 필요한 경우 @CurrentAuth() 로 검증
-        return this.sheltersService.me(auth);
+        return this.sheltersService.getMyShelter(auth);
     }
 
     // 내 보호소 정보 수정
@@ -62,11 +62,11 @@ export class SheltersController {
     @ApiOperation({ summary: "내 보호소 입양 신청 목록 조회" })
     @Roles(Role.SHELTER)
     @Get('me/adoptions')
-    getShelterAdoptions(
+    getMyShelterAdoptions(
         @CurrentAuth() auth: AuthRequest,
         @Query() query: QueryGetShelterAdoptionsDto
     ) {
-        return this.sheltersService.getShelterAdoptions(auth, query);
+        return this.sheltersService.getMyShelterAdoptions(auth, query);
     }
 
     // 보호소 목록 조회

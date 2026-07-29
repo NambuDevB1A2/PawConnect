@@ -4,7 +4,7 @@ import IconButton from "@/components/common/IconButton";
 import { AuthContext } from "@/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import styles from "@/styles/card/ShelterCard.module.css"
+import styles from "@/styles/shelter/ShelterCard.module.css"
 import { Shelter } from "@/types/shelter/shelter.type";
 
 interface MyShelterOptionsProps {

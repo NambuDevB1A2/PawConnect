@@ -1,4 +1,6 @@
 .wrapper_shelter_card {
+    position: relative;
+
     width: 320px;
     height: 300px;
 
@@ -60,4 +62,11 @@
 .box_icons {
     flex: 1;
     text-align: end;
+}
+
+.badge_my_shelter {
+    position: absolute;
+
+    top: var(--spacing);
+    left: var(--spacing);
 }
