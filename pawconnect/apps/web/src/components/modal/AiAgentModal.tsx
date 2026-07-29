@@ -7,8 +7,11 @@ import Input from "@/components/common/Input";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Typography from "@/components/common/Typography";
 import Modal from "@/components/modal/Modal";
+import AnimalCard from "@/components/paw/AnimalCard";
+import { MODAL_MESSAGES } from "@/constants/messages/Modal";
 import { PostAiAgentChat } from "@/services/ai/ai-agent-chat.client";
 import styles from "@/styles/modal/AiAgentModal.module.css"
+import { renderMultiline } from "@/utils/format-component.util";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 
 interface AiAgentChatButton {
@@ -32,16 +35,18 @@ function AiAgentChat({ role, content, buttons, children }: AiAgentChatProps) {
                 {!isUser && <Icon wrapperClassName={styles.icon_agent} name="support_agent" color="white"/>}
             </div>
             <div className={styles.box_chat_content}>
-                <div className={styles.box_chat}>
-                    {content && <Typography>{content}</Typography>}
-                    {children}
-                </div>
+                {content &&
+                    <div className={styles.box_chat}>
+                        <Typography>{renderMultiline(content)}</Typography>
+                    </div>
+                }
                 {buttons && buttons?.length > 0 &&
                     buttons.map((btn, index) => 
                     <Button key={index} variant="outline" size="small" onClick={btn.onClick}>
                         {btn.label}
                     </Button>)
                 }
+                {children}
             </div>
         </div>
     );
@@ -60,11 +65,11 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
 
     const defaultAiAgentChat: AiAgentChatProps = {
         role: "ai",
-        content: "안녕하세요! 저는 PawConnect AI 에이전트예요. 성향에 맞는 아이 추천, 보호소 안내, 입양 절차 안내를 도와드릴 수 있어요.",
+        content: MODAL_MESSAGES.aiAgent.hello,
         buttons: [
-            { label: "성향에 맞는 아이를 추천해주세요", onClick: (() => addSubmit("성향에 맞는 아이를 추천해주세요")) },
-            { label: "근처 보호소를 찾아주세요", onClick: (() => addSubmit("근처 보호소를 찾아주세요")) },
-            { label: "입양 절차가 궁금해요", onClick: (() => addSubmit("입양 절차가 궁금해요")) },
+            { label: MODAL_MESSAGES.aiAgent.defaultChat.recommendAnimal, onClick: (() => addSubmit(MODAL_MESSAGES.aiAgent.defaultChat.recommendAnimal)) },
+            { label: MODAL_MESSAGES.aiAgent.defaultChat.nearbyShelter, onClick: (() => addSubmit(MODAL_MESSAGES.aiAgent.defaultChat.nearbyShelter)) },
+            { label: MODAL_MESSAGES.aiAgent.defaultChat.adoptionProcess, onClick: (() => addSubmit(MODAL_MESSAGES.aiAgent.defaultChat.adoptionProcess)) },
         ],
     };
 
@@ -90,7 +95,18 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
         setIsPending(false);
 
         if (result?.success) {
-            setChats((prev) => [...prev, { role: "ai", content: result.content }]);
+            setChats((prev) => [...prev, { 
+                role: "ai", 
+                content: result.content,
+                children:
+                <div>
+                    {result.animals && result.animals.length > 0 ?
+                        result.animals.map((animal) =>
+                        <AnimalCard key={animal.id} animal={animal} />
+                        ) : null
+                    }
+                </div>
+            }]);
         }
     };
 
@@ -109,7 +125,7 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
             handleSubmit();
         }
     };
-    
+
     useEffect(() => {
         scrollToBottom();
     }, [chats, isPending]);
@@ -118,14 +134,14 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
         <Modal isOpen={isOpen} onClose={onClose} size="medium" className={styles.wrapper_modal}>
             <Modal.Header className={styles.wrapper_header}>
                 <Icon wrapperClassName={styles.icon_agent} name="support_agent" color="white"/>
-                <Typography className={styles.typo_header} variant="subtitle">AI 에이전트</Typography>
+                <Typography className={styles.typo_header} variant="subtitle">{MODAL_MESSAGES.aiAgent.header}</Typography>
                 <IconButton className={styles.btn_close} name="close" onClick={onClose}/>
             </Modal.Header>
 
             <Modal.Body className={styles.wrapper_body} ref={bodyRef}>
                 <AiAgentChat {...defaultAiAgentChat} />
                 {chats.map((chat, index) => <AiAgentChat key={index} {...chat}/>)}
-                {isPending && <AiAgentChat role="ai"><LoadingSpinner size="small"/></AiAgentChat>}
+                {isPending && <AiAgentChat role="ai"><LoadingSpinner size="medium"/></AiAgentChat>}
             </Modal.Body>
 
             <Modal.Footer className={styles.wrapper_footer}>
@@ -139,7 +155,7 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
                 <Button 
                     className={styles.btn_submit} 
                     onClick={handleSubmit}
-                    disabled={isPending}>전송</Button>
+                    disabled={isPending}>{MODAL_MESSAGES.aiAgent.submit}</Button>
             </Modal.Footer>
         </Modal>
     );

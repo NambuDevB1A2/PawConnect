@@ -32,5 +32,19 @@ export const MODAL_MESSAGES = {
     aiGenerate: {
         header: "AI가 내용을 분석하고 있습니다",
         content: "평균 5~10초 후 결과 분석이 종료됩니다",
-    }
+    },
+    
+    aiAgent: {
+        header: "AI 에이전트",
+        submit: "전송",
+        
+        hello: "안녕하세요! 저는 PawConnect AI 에이전트예요. 성향에 맞는 아이 추천, 보호소 안내, 입양 절차 안내를 도와드릴 수 있어요.",
+
+        defaultChat: {
+            recommendAnimal: "성향에 맞는 아이를 추천해주세요",
+            nearbyShelter: "근처 보호소를 찾아주세요",
+            adoptionProcess: "입양 절차가 궁금해요",
+        }
+    },
+
 }
