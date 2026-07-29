@@ -1,15 +1,15 @@
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
-import { CreateUserDataDto } from '@/users/dto/create-user.dto';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { USER_DETAIL_SELECT, USER_SELECT } from '@/users/user.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { AzureBlobService } from '../azure/azure-blob/azure-blob.service';
+import { Prisma, Role } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 import { UpdatePasswordDto } from '@/users/dto/update-password.dto';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDto } from '@/users/dto/create-user.dto';
+import { UsersUploadService } from '@/users/users-upload.service';
 
 function getDefaultProfile() {
     return `${UPLOAD_DIR.userProfileDir}/default_profile.png`;
@@ -24,10 +24,10 @@ export class UsersService {
     constructor (
         private readonly prisma: PrismaService,
         private readonly configService: ConfigService,
-        private readonly azureBlob: AzureBlobService,
+        private readonly usersUploadService: UsersUploadService,
     ) {}
 
-    // 회원 검색 (아이디)
+    // 회원 검색 (id)
     async find(id: string, select?: Prisma.UserSelect) {
         const user = await this.prisma.user.findUnique({
             where: { id },
@@ -40,7 +40,7 @@ export class UsersService {
         return user;
     }
 
-    // 회원 검색 (이메일)
+    // 회원 검색 (email)
     async findByEmail(email: string, select?: Prisma.UserSelect) {
         const user = await this.prisma.user.findUnique({ 
             where: { email }, 
@@ -53,7 +53,7 @@ export class UsersService {
         return user;
     }
 
-    // 회원 중복 검사 (이메일)
+    // 회원 중복 검사 (email)
     async existsByEmail(email: string) {
         const user = await this.prisma.user.findUnique({ where: { email }});
         if (user) throw new UnauthorizedException({
@@ -62,28 +62,38 @@ export class UsersService {
         });
     }
 
-    // CREATE
-    async create(tx: Prisma.TransactionClient, createUserDto: CreateUserDataDto, imgProfile?: Express.Multer.File) {
-        await this.existsByEmail(createUserDto.email);
+    // 중복 검사
+    async checkUser(email: string) {
+        await this.existsByEmail(email);
+    }
 
-        // blob 스토리지에 이미지 업로드
-        const { blobName, url } = imgProfile ? 
-            await this.azureBlob.uploadPublic(imgProfile, UPLOAD_DIR.userProfileDir) : { blobName: getDefaultProfile() };
+    // 이미지 업로드
+    async createImage(imgProfileFile?: Express.Multer.File) {
+        // 1. Azure Blob에 이미지 업로드 (없을시 기본값)
+        let uploadedImgProfile = imgProfileFile ? await this.usersUploadService.uploadImage(imgProfileFile) : undefined;
+        if (!uploadedImgProfile) uploadedImgProfile = getDefaultProfile();
+        
+        return { uploadedImgProfile };
+    }
 
-        // 1. 신규 유저 생성
+    // 신규 사용자 생성
+    async createUser(tx: Prisma.TransactionClient, role: Role, createUserDto: CreateUserDto, uploadedImgProfile: string, shelterId?: string) {
+        
+        // 2. DB 작업
+        // 신규 사용자 DB 생성
         const user = await tx.user.create({
             data: {
                 email: createUserDto.email,
                 password: createUserDto.passwordHash,
                 nickname: createUserDto.nickname,
-                role: createUserDto.role,
-                imgProfile: blobName,
-                shelterId: createUserDto.shelterId,
+                role: role,
+                imgProfile: uploadedImgProfile ?? getDefaultProfile(),
+                shelterId: shelterId,
             },
             select: USER_SELECT,
         });
 
-        // 2. 약관 동의 생성
+        // 사용자 약관 동의 DB 생성
         await tx.userAgreement.createMany({
             data: [{
                 userId: user.id,
@@ -99,49 +109,65 @@ export class UsersService {
         return user;
     }
 
-    // READ
+    // 이미지 롤백
+    async rollbackImage(uploadedImgProfile: string) {
+        if (uploadedImgProfile && !isDefaultProfile(uploadedImgProfile)) {
+            await this.usersUploadService.rollback(uploadedImgProfile);
+        }
+    }
+
+    // 내 정보 조회
     async me(auth: AuthRequest) {
         const user = await this.find(auth.id, USER_DETAIL_SELECT);
 
         return { success: true, user };
     }
     
-    // UPDATE
-    async update(auth: AuthRequest, updateUserDto: UpdateUserDto, imgProfile?: Express.Multer.File) {
-        const prevUser = await this.find(auth.id);
+    // 내 정보 수정
+    async update(auth: AuthRequest, updateUserDto: UpdateUserDto, file?: Express.Multer.File) {
+        const user = await this.find(auth.id);
 
-        let imgProfilePath = prevUser.imgProfile;
-        let imgProfileOld: string | null = null;
+        let uploadedImgProfile: string | undefined = user.imgProfile;
+        let oldImgProfile: string | null = null;
 
-        // 1. 새로운 파일 업로드
+        // 1. 이미지 업로드
         // 새로운 이미지로 교체
-        if (imgProfile) {
-            const uploaded = await this.azureBlob.uploadPublic(imgProfile, UPLOAD_DIR.userProfileDir);
-            imgProfilePath = uploaded.blobName;
-            if (!isDefaultProfile(prevUser.imgProfile)) {
-                imgProfileOld = prevUser.imgProfile;
+        if (file) {
+            uploadedImgProfile = await this.usersUploadService.uploadImage(file);
+
+            if (!isDefaultProfile(user.imgProfile)) {
+                oldImgProfile = user.imgProfile;
             }
         } 
         // 기존 이미지만 삭제
-        else if (updateUserDto.imgProfileRemoved) {
-            imgProfileOld = prevUser.imgProfile;
-            imgProfilePath = getDefaultProfile();
+        else if (updateUserDto.imgProfileRemoved && !isDefaultProfile(user.imgProfile)) {
+            oldImgProfile = user.imgProfile;
+            uploadedImgProfile = getDefaultProfile();
         }
 
-        // 2. 유저 정보 업데이트
-        const user = await this.prisma.user.update({
-            where: { id: auth.id },
-            data: {
-                nickname: updateUserDto.nickname,
-                imgProfile: imgProfilePath,
-            },
-            select: USER_SELECT,
-        });
+        // 2. DB 수정
+        try {
+            await this.prisma.user.update({
+                where: { id: auth.id },
+                data: {
+                    nickname: updateUserDto.nickname,
+                    imgProfile: uploadedImgProfile,
+                },
+            });
+        } catch (error) {
+            // DB 실패 시 업로드했던 Blob 파일 삭제
+            if (uploadedImgProfile && !isDefaultProfile(uploadedImgProfile)) {
+                await this.usersUploadService.rollback(uploadedImgProfile);
+            }
+            throw error;
+        }
 
-        // 3. DB 저장 성공 후에 실제 파일 삭제
-        if (imgProfileOld) await this.azureBlob.deleteBlob(imgProfileOld);
+        // 3. Azure Blob 삭제
+        if (oldImgProfile && !isDefaultProfile(oldImgProfile)) {
+            await this.usersUploadService.deleteBlob(oldImgProfile);
+        }
 
-        return { success: true, user };
+        return { success: true, userId: user.id };
     }
 
     // 비밀번호 변경
@@ -164,6 +190,6 @@ export class UsersService {
             },
         });
 
-        return { success: true };
+        return { success: true, userId: auth.id };
     }
 }

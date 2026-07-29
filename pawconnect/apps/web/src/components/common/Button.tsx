@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes } from "react";
 
 type ButtonSize = "large" | "medium" | "small";
 
-type ButtonVariant =
+export type ButtonVariant =
     "primary" |
     "secondary" |
     "outline" |

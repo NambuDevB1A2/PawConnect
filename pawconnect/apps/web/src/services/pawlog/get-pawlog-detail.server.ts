@@ -6,6 +6,6 @@ export async function GetPawLogDetail(id: string) {
         return await fetchServer.get<ResponsePawLogDetail>(`/pawlogs/${id}`);
     } catch (error) {
         console.log(error);
-        throw error;
+        return undefined;
     }
 }

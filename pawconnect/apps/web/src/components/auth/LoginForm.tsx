@@ -5,16 +5,18 @@ import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
 import Typography from "@/components/common/Typography";
 import InputPassword from "@/components/common/InputPassword";
-import { useActionState, useEffect } from "react";
+import { useActionState, useContext, useEffect } from "react";
 import { Login } from "@/services/auth/login.server";
 import { LoginState } from "@/types/auth/login.type";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { AuthContext } from "@/providers/AuthProvider";
 
 const initialState: LoginState = { }; // useState를 사용할 수 없어서 전역 저장
 
 export default function LoginForm() {
     const [state, formAction, isPending] = useActionState(Login, initialState); // Login에서 fetch
+    const { setUser } = useContext(AuthContext);
     const router = useRouter();
 
     // 성공 반환시 메인 화면으로 이동
@@ -23,6 +25,7 @@ export default function LoginForm() {
         
         if (state.response?.success) {
             alert('로그인에 성공했습니다');
+            setUser(state.response.user);
             router.push("/");
         }
     }, [state]);

@@ -7,6 +7,6 @@ export async function HelloWorld() {
         console.log(result.result);
     } catch (error) {
         console.log(error);
-        throw error;
+        return undefined;
     }
 }

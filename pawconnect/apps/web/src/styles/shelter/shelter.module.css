@@ -33,10 +33,14 @@
 .box_list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
     gap: var(--spacing-200);
 }
 
+.empty {
+    text-align: center;
+}
+
 .pagination {
-    align-self: center;
+    text-align: center;
 }

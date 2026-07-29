@@ -1,4 +1,6 @@
-import ShelterCard from "@/components/card/ShelterCard";
+import ShelterCard from "@/components/shelter/ShelterCard";
+import Empty from "@/components/common/Empty";
+import NotFound from "@/components/common/NotFound";
 import Pagination from "@/components/common/Pagination";
 import Typography from "@/components/common/Typography";
 import { PAGE_SIZE } from "@/constants/page.constants";
@@ -10,7 +12,14 @@ import { parsePageToNumber } from "@/utils/page.util";
 export default async function Page({ searchParams }: PageProps) {
     const { page } = await searchParams;
     const currentPage = parsePageToNumber(page);
-    const { shelters, pagination } = await GetShelters(currentPage, PAGE_SIZE.SHELTER);
+    const response = await GetShelters(currentPage, PAGE_SIZE.SHELTER);
+
+    if (!response) {
+        return <NotFound/>
+    }
+
+    const { shelters, pagination } = response;
+    const hasShelters = (pagination?.totalCount && pagination?.totalCount > 0);
 
     return (
         <div className={styles.wrapper_page}>
@@ -20,11 +29,14 @@ export default async function Page({ searchParams }: PageProps) {
                     <Typography>총 {pagination?.totalCount}개의 보호소</Typography>
                 </div>
 
-                <div className={styles.box_list}>
-                    {shelters?.map((shelter) =>
-                        <ShelterCard key={shelter.id} shelter={shelter}/>
-                    )}
-                </div>
+                {hasShelters ?
+                    <div className={styles.box_list}>
+                        {shelters?.map((shelter) =>
+                            <ShelterCard key={shelter.id} shelter={shelter}/>
+                        )}
+                    </div> :
+                    <Empty className={styles.empty} text="등록된 보호소가 없습니다"/>
+                }
 
                 <div className={styles.pagination}>
                     <Pagination

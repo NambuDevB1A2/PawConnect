@@ -1,12 +1,9 @@
-import { Role } from "@prisma/client";
+import { RegisterUserAuthDto } from "@/auth/dto/register-auth.dto";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsString } from "class-validator";
 
-export class CreateUserDataDto {
-    email: string;
+export class CreateUserDto extends RegisterUserAuthDto {
+    @ApiProperty()
+    @IsString()
     passwordHash: string;
-    nickname: string;
-    role: Role;
-    imgProfile: string;
-    agreedToTerms: boolean;
-    
-    shelterId?: string;
 }

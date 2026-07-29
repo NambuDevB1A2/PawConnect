@@ -14,11 +14,11 @@ export class PawLogsCreateService {
     ) {}
     
     // 게시글 작성
-    async create(auth: AuthRequest, createPawLogDto: CreatePawLogDto, files: Express.Multer.File[]) {
+    async create(auth: AuthRequest, createPawLogDto: CreatePawLogDto, imgPawLogFiles?: Express.Multer.File[]) {
 
         // 1. Azure Blob에 이미지 업로드
-        const images = await this.pawLogsUploadService.uploadImages(files);
-        const imageBlobNames = images?.map((img) => img.blobName) ?? [];
+        let uploadedImgPawLog = imgPawLogFiles ? await this.pawLogsUploadService.uploadImages(imgPawLogFiles) : [];
+        if (!uploadedImgPawLog) uploadedImgPawLog = [];
 
         // 2. DB 작업
         try {
@@ -27,13 +27,13 @@ export class PawLogsCreateService {
                 // 게시글 DB 생성
                 const pawLog = await this.createPawLog(tx, auth.id, createPawLogDto);
                 // 게시글 이미지 DB 생성
-                await this.createImages(tx, pawLog.id, imageBlobNames);
+                await this.createImages(tx, pawLog.id, uploadedImgPawLog);
 
                 return { pawLogId: pawLog.id };
             });
         } catch (error) {
             // DB 실패 시 업로드했던 Blob 파일 삭제
-            await this.pawLogsUploadService.rollback(imageBlobNames);
+            await this.pawLogsUploadService.rollback(uploadedImgPawLog);
 
             throw error;
         };

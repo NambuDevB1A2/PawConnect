@@ -1,4 +1,9 @@
 
+SELECT setval('"AnimalSpecies_id_seq"', (SELECT MAX(id) FROM "AnimalSpecies"));
+SELECT setval('"AnimalBreed_id_seq"', (SELECT MAX(id) FROM "AnimalBreed"));
+SELECT setval('"Animal_id_seq"', (SELECT MAX(id) FROM "Animal"));
+
+
 INSERT INTO "AnimalSpecies"(id,name)
 VALUES
 (1,'개'),

@@ -7,7 +7,7 @@ import { DeletePawLog } from "@/services/pawlog/delete-pawlog.client";
 import { PawLog } from "@/types/pawlog/pawlog.type";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext } from "react";
-import styles from "@/styles/card/PawLogCard.module.css"
+import styles from "@/styles/pawlog/PawLogCard.module.css"
 
 interface MyPawLogOptionsProps {
     pawLog?: PawLog;

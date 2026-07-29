@@ -3,7 +3,7 @@ import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Transform } from "class-transformer";
 import { IsArray, IsBoolean, IsOptional, IsString, MaxLength } from "class-validator";
 
-export class UpdateShelterDataDto {
+export class UpdateShelterDto {
     @ApiPropertyOptional({ example: "서울시 금천구 독산로 50길 23" })
     @IsOptional()
     @IsString()
@@ -35,9 +35,7 @@ export class UpdateShelterDataDto {
     @ApiPropertyOptional({ type: 'string', format: 'binary' })
     @IsOptional()
     imgBanner: any;
-}
 
-export class UpdateShelterDto extends UpdateShelterDataDto {
     @ApiPropertyOptional({ example: false })
     @IsOptional()
     @Transform(TRANSFORM_STRING_TO_BOOLEAN)

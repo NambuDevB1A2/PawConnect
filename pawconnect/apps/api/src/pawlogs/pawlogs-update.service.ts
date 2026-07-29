@@ -16,7 +16,7 @@ export class PawLogsUpdateService {
     ) {}
 
     // 게시글 수정
-    async update(auth: AuthRequest, id: number, updatePawLogDto: UpdatePawLogDto, files: Express.Multer.File[]) {
+    async update(auth: AuthRequest, id: number, updatePawLogDto: UpdatePawLogDto, imgPawLogFiles?: Express.Multer.File[]) {
         // 게시글 검색 (id)
         const pawLog = await this.pawLogsReadService.find(id, PAWLOG_SELECT);
         
@@ -28,7 +28,8 @@ export class PawLogsUpdateService {
             throw new UnauthorizedException({ message: "권한이 없습니다" });
 
         // 2. 이미지 업로드
-        const uploadedImgPawLog = await this.pawLogsUploadService.uploadImages(files) ?? [];
+        let uploadedImgPawLog = imgPawLogFiles ? await this.pawLogsUploadService.uploadImages(imgPawLogFiles) : [];
+        if (!uploadedImgPawLog) uploadedImgPawLog = [];
 
         // 3. DB 일괄 수정
         try {
@@ -53,16 +54,17 @@ export class PawLogsUpdateService {
                 if (uploadedImgPawLog.length > 0) {
                     await tx.pawLogImage.createMany({ 
                         data: uploadedImgPawLog.map((img) => ({
-                            id: getImageIdByString(img.blobName),
-                            img: img.blobName,
                             pawLogId: id,
+                            id: getImageIdByString(img),
+                            img: img,
                         })),
                     });
                 }
             });
         } catch (error) {
             // DB 실패 시 업로드했던 Blob 파일 삭제
-            await this.pawLogsUploadService.rollback(uploadedImgPawLog.map((img) => img.blobName));
+            await this.pawLogsUploadService.rollback(uploadedImgPawLog);
+            throw error;
         }
 
         // 3. Azure Blob 삭제

@@ -12,10 +12,12 @@ export class PawLogsUploadService {
     async uploadImages(files: Express.Multer.File[]) {
         if (!files || files.length === 0) return;
 
-        return await this.azureBlob.uploadPublicMultiple(
+        const uploaded = await this.azureBlob.uploadPublicMultiple(
             files,
             UPLOAD_DIR.pawLogImgDir,
         );
+
+        return uploaded.map((img) => img.blobName);
     }
 
     // DB 작업 실패 시 업로드한 Blob 파일 삭제

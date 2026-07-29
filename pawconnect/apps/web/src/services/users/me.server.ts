@@ -9,6 +9,5 @@ export async function Me() {
         return await fetchServer.get<ResponseMe>('/users/me', token);
     } catch (error) {
         console.log(error);
-        throw error;
     }
 }

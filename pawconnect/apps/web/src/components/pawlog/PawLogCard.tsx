@@ -3,7 +3,7 @@
 import AppImage from "@/components/common/AppImage";
 import Typography from "@/components/common/Typography";
 import MyPawLogOptions from "@/components/pawlog/MyPawLogOptions";
-import styles from "@/styles/card/PawLogCard.module.css"
+import styles from "@/styles/pawlog/PawLogCard.module.css"
 import { PawLog } from "@/types/pawlog/pawlog.type";
 import { formatDate } from "@/utils/format.util";
 import { useRouter } from "next/navigation";
