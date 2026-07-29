@@ -26,8 +26,7 @@ export class RegisterUserAuthDto {
     nickname: string;
 
     @ApiPropertyOptional({ type: 'string', format: 'binary' })
-    @IsOptional()
-    imgProfile: any;
+    imgProfile: Express.Multer.File;
 
     @ApiProperty({ example: true })
     @Transform(TRANSFORM_STRING_TO_BOOLEAN)
@@ -68,10 +67,8 @@ export class RegisterShelterAuthDto extends RegisterUserAuthDto {
     description: string;
 
     @ApiPropertyOptional({ type: 'string', format: 'binary' })
-    @IsOptional()
-    imgBanner: any;
+    imgBanner: Express.Multer.File;
 
     @ApiPropertyOptional({ type: 'string', format: 'binary', isArray: true, })
-    @IsOptional()
-    imgShelter: any[];
+    imgShelter: Express.Multer.File[];
 }

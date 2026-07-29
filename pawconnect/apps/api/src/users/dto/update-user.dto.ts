@@ -11,8 +11,7 @@ export class UpdateUserDto {
     nickname: string;
 
     @ApiPropertyOptional({ type: 'string', format: 'binary' })
-    @IsOptional()
-    imgProfile: any;
+    imgProfile: Express.Multer.File;
     
     @ApiPropertyOptional({ example: false })
     @IsOptional()

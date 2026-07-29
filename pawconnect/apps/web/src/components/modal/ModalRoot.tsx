@@ -8,6 +8,7 @@ import ImageViewerModal from "@/components/modal/ImageViewerModal";
 import ContentViewerModal from "@/components/modal/ContentViewerModal";
 import ConfirmLogoutModal from "@/components/modal/ConfirmLogoutModal";
 import ChangePasswordModal from "@/components/modal/ChangePasswordModal";
+import AiGenerateModal from "@/components/modal/AiGenerateModal";
 
 export default function ModalRoot() {
     const { activeModal, params, closeModal } = useContext(ModalContext);
@@ -49,6 +50,12 @@ export default function ModalRoot() {
                 isOpen={activeModal === "changePassword"}
                 onClose={closeModal}
                 />
+
+            <AiGenerateModal
+                isOpen={activeModal === "aiGenerate"} 
+                onClose={closeModal}
+                />
+
         </div>
     );
 }

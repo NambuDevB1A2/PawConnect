@@ -17,8 +17,7 @@ export class UpdatePawLogDto {
     content: string;
 
     @ApiPropertyOptional({ type: 'string', format: 'binary', isArray: true, })
-    @IsOptional()
-    imgPawLog: any[];
+    imgPawLog: Express.Multer.File[];
 
     @ApiPropertyOptional()
     @IsOptional()

@@ -43,8 +43,7 @@ export class UpdateShelterDto {
     imgBannerRemoved?: boolean;
     
     @ApiPropertyOptional({ type: 'string', format: 'binary', isArray: true, })
-    @IsOptional()
-    imgShelter: any[];
+    imgShelter: Express.Multer.File[];
 
     @ApiPropertyOptional()
     @IsOptional()

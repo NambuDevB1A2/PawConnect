@@ -53,9 +53,7 @@ export class PawLogsController {
         FileFieldsInterceptor([
             { name: 'imgPawLog', maxCount: 4 },
         ],
-        createFieldsImageUploadOptions({
-            imgPawLog: UPLOAD_DIR.pawLogImgDir,
-        })
+        createFieldsImageUploadOptions()
     ))
     @Roles(Role.USER, Role.SHELTER)
     @Post()
@@ -89,9 +87,7 @@ export class PawLogsController {
         FileFieldsInterceptor([
             { name: 'imgPawLog', maxCount: 4 },
         ],
-        createFieldsImageUploadOptions({
-            imgPawLog: UPLOAD_DIR.pawLogImgDir,
-        })
+        createFieldsImageUploadOptions()
     ))
     @Roles(Role.USER, Role.SHELTER)
     @Patch(':id')

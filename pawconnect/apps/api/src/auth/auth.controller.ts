@@ -27,7 +27,7 @@ export class AuthController {
          // createImageUploadOptions로 파일 저장 위치 지정
         FileInterceptor(
             'imgProfile', 
-            createImageUploadOptions(UPLOAD_DIR.userProfileDir)
+            createImageUploadOptions()
         ))
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/user')
@@ -49,12 +49,7 @@ export class AuthController {
             { name: 'imgProfile', maxCount: 1 },
             { name: 'imgBanner', maxCount: 1 },
             { name: 'imgShelter', maxCount: 4 },
-        ], createFieldsImageUploadOptions({
-            // 파일 저장 위치, 옵션 지정
-            imgProfile: UPLOAD_DIR.userProfileDir,
-            imgBanner: UPLOAD_DIR.shelterBannerDir,
-            imgShelter: UPLOAD_DIR.shelterImgDir,
-        })))
+        ], createFieldsImageUploadOptions()))
     @Public() // Auth 검증이 필요하지 않은 메소드에 @Public() 사용
     @Post('register/shelter')
     registerShelter(
