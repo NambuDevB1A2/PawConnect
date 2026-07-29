@@ -1,9 +1,10 @@
+
 // 보호동물 타입
 export interface AnimalCard {
     id: number;
     name: string;
     imgThumbnail: string;
-    animalStatus: string;
+    animalStatus: AnimalStatus;
     animalStatusLabel: string;
     species: string;
     breed: string;
@@ -33,9 +34,12 @@ export interface AnimalListResponse {
 
 // AnimalStatus
 export type AnimalStatus =
+    | "PROTECTED"
     | "AVAILABLE"
-    | "RESERVED"
-    | "ADOPTED";
+    | "ADOPTED"
+    | "REUNITED"
+    | "DECEASED"
+    | "EUTHANIZED";
 
 // AnimalGender
 export type AnimalGender = "MALE" | "FEMALE";
