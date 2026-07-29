@@ -38,7 +38,7 @@ export class AiController {
             images: Express.Multer.File[],
         },
     ) {
-        const images = file.images ? file.images : [];
+        const images = file.images ?? [];
 
         return this.aiService.generatePawLog(aiPawLogDto, images);
     }
@@ -62,7 +62,7 @@ export class AiController {
             images: Express.Multer.File[],
         },
     ) {
-        const images = file.images ? file.images : [];
+        const images = file.images ?? [];
 
         return this.aiService.generateAnimal(aiAnimalDto, images);
     }

@@ -8,6 +8,5 @@ export class AiPawLogDto {
     content: string;
 
     @ApiPropertyOptional({ type: 'string', format: 'binary', isArray: true, })
-    @IsOptional()
-    images: any[];
+    images: Express.Multer.File[];
 }

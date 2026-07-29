@@ -1,6 +1,6 @@
 'use client';
 
-import LoadingSpinner from "@/components/common/LoadingSpiner";
+import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Typography from "@/components/common/Typography";
 import Modal from "@/components/modal/Modal";
 import { MODAL_MESSAGES } from "@/constants/messages/Modal";

@@ -12,7 +12,7 @@ export class UpdateUserDto {
 
     @ApiPropertyOptional({ type: 'string', format: 'binary' })
     @IsOptional()
-    imgProfile: any;
+    imgProfile: Express.Multer.File;
     
     @ApiPropertyOptional({ example: false })
     @IsOptional()
