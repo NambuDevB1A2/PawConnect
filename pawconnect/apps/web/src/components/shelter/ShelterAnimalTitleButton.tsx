@@ -11,11 +11,12 @@ interface ShelterAnimalTitleButtonProps {
 
 export default function ShelterAnimalTitleButton({ shelterName }: ShelterAnimalTitleButtonProps) {
     const router = useRouter();
+    const encodedSearch = encodeURIComponent(shelterName ?? "");
     
     return (
         <div className={styles.box_title}>
             <Typography variant="title">등록된 보호동물</Typography>
-            <Button variant="text" onClick={() => router.push(`/paw?search=${shelterName}`)}>더보기</Button>
+            <Button variant="text" onClick={() => router.push(`/paw?search=${encodedSearch}`)}>더보기</Button>
         </div>
     );
 }
