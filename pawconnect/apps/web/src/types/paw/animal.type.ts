@@ -42,4 +42,4 @@ export type AnimalStatus =
     | "EUTHANIZED";
 
 // AnimalGender
-export type AnimalGender = "MALE" | "FEMALE";
+export type AnimalGender = "MALE" | "FEMALE" | "UNKNOWN";

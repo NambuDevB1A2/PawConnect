@@ -8,7 +8,16 @@ import AnimalCard from "@/components/paw/AnimalCard";
 import AnimalFilter from "@/components/paw/AnimalFilter";
 
 interface PageProps {
-    searchParams?: Promise<{ page?: string; }>;
+    searchParams?: Promise<{
+        page?: string;
+        keyword?: string;
+        species?: string;
+        breed?: string;
+        gender?: string;
+        isNeutered?: string;
+        ageFilter?: string;
+        status?: string;
+    }>;
 }
 
 export default async function Page({ searchParams }: PageProps) {
@@ -17,31 +26,21 @@ export default async function Page({ searchParams }: PageProps) {
     // 현재 페이지 번호
     const currentPage = parsePageToNumber(params?.page);
     // 보호동물, 페이지네이션
-    const { animals, pagination } = await getAnimals(currentPage, PAGE_SIZE.ANIMAL);
+    const { animals, pagination } = await getAnimals(
+        currentPage, PAGE_SIZE.ANIMAL, params);
 
     return (
         <div className={styles.wrapper_page}>
             {/* 왼쪽 */}
             {/* 검색 및 필터 구간 */}
             <AnimalFilter />
-
-                    {/* <div className={styles.filter_box}> */}
-                        {/* <Typography variant="subtitle">검색 및 필터 🔃</Typography>
-                        <Typography variant="body1">[검색어...]🔎</Typography>
-                        <Typography variant="body1">[종류 ▼🔽] [품종 ▼🔽]</Typography>
-                        <Typography variant="body1">[성별 ▼]</Typography>
-                        <Typography variant="body1">[나이 ▼]</Typography>
-                        <Typography variant="body1">[동물 상태 ▼]</Typography>
-                        <button>검색</button> */}
-                    {/* </div> */}
-
             <div className={styles.wrapper_list}>
 
                 <div className={styles.box_title}>
                     <Typography variant="heading"> 보호 동물 </Typography>
                     {/* <Typography> 총 {pagination.totalCount}마리</Typography> */}
                 </div>
-                
+
                 <div className={styles.content}>
 
                     {/* 오른쪽 */}
