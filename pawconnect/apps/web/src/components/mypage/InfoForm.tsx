@@ -28,7 +28,7 @@ export default function InfoForm({
     const router = useRouter();
 
     const handleChangePassword = () => {
-        openModal("changePassword", undefined);
+        openModal("changePassword");
     }
     
     const [clientErrors, setClientErrors] = useState<{

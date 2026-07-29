@@ -8,6 +8,7 @@ import ModalProvider from "@/providers/ModalProvider";
 import ModalRoot from "@/components/modal/ModalRoot";
 import { Me } from "@/services/users/me.server";
 import Footer from "@/components/layout/Footer";
+import Aside from "@/components/layout/Aside";
 
 export default async function RootLayout({
     children,
@@ -27,6 +28,8 @@ export default async function RootLayout({
                     </header>
 
                     <main>{children}</main>
+
+                    <Aside/>
 
                     <footer>
                         <Footer/>

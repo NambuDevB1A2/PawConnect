@@ -202,7 +202,7 @@ export default function TempComponents() {
 
             <Typography variant="subtitle">Modal</Typography>
             <div style={boxRowStyle}>
-                <Button onClick={() => openModal("loginRequired", undefined)}>로그인 확인</Button>
+                <Button onClick={() => openModal("loginRequired")}>로그인 확인</Button>
                 <Button onClick={() => openModal("confirmDelete", { onConfirm: () => console.log("삭제 완료")})}>삭제 확인</Button>
             </div>
 
@@ -266,9 +266,7 @@ export default function TempComponents() {
             <div style={boxColumnStyle}>
                 <Pagination 
                     page={page} maxPage={12} 
-                    onPrev={() => setPage((prev) => prev - 1)}
-                    onNext={() => setPage((prev) => prev + 1)}
-                    onPage={(value) => setPage(value)}
+                    path="/paw"
                     />
             </div>
 

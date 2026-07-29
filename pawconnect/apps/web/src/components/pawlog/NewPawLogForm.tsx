@@ -63,7 +63,7 @@ export default function NewPawLogForm() {
 
     useEffect(() => {
         if (isAiPending) {
-            openModal("aiGenerate", undefined);
+            openModal("aiGenerate");
         } else {
             closeModal();
         }

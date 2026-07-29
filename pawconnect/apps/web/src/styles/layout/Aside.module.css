@@ -1,0 +1,27 @@
+.wrapper_aside {
+    position: fixed;
+    bottom: var(--spacing-500);
+    right: var(--spacing);
+
+    z-index: var(--z-index-tooltip);
+}
+
+.box_list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+}
+
+.btn_aside {
+    width: 72px !important;
+    height: 72px !important;
+    min-width: 72px !important;
+
+    border-radius: var(--radius-900);
+
+    box-shadow: var(--shadow-large);
+
+    padding: 0 !important;
+
+    font-size: var(--font-size-title);
+}

@@ -12,6 +12,7 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement>  {
     closeOnOverlayClick?: boolean;
     isOpen: boolean;
     onClose: () => void;
+    overlayClassName?: string;
 }
 
 export default function Modal({ 
@@ -19,6 +20,7 @@ export default function Modal({
     size = "small",
     closeOnOverlayClick = true,
     className = "",
+    overlayClassName = "",
     isOpen,
     onClose,
     ...props
@@ -43,7 +45,7 @@ export default function Modal({
 
     return (
         <div 
-            className={`${styles.overlay} ${isOpen ? styles.overlay_open : ""}`}
+            className={`${styles.overlay} ${isOpen ? styles.overlay_open : ""} ${overlayClassName}`}
             onClick={(() => closeOnOverlayClick && onClose())}>
             <div 
                 className={`${styles.modal} ${isOpen ? styles.modal_open : ""} ${styles[size]} ${className}`} 
