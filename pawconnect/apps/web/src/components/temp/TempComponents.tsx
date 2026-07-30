@@ -266,11 +266,7 @@ export default function TempComponents() {
             <div style={boxColumnStyle}>
                 <Pagination 
                     page={page} maxPage={12} 
-<<<<<<< HEAD
-                    path="/paw"
-=======
                     path="/"
->>>>>>> develop
                     />
             </div>
 
