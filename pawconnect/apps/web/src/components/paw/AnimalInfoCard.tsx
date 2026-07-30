@@ -7,6 +7,10 @@ import styles from '@/styles/paw/pawDetail.module.css'
 import Typography from "../common/Typography";
 import { formatDate } from "@/utils/format.util";
 import { useRouter } from "next/navigation";
+import { useContext } from "react";
+import { AuthContext } from "@/providers/AuthProvider";
+import { ModalContext } from "@/providers/ModalProvider";
+
 
 interface AnimalInfoCardProps {
     animal: AnimalDetail;
@@ -14,13 +18,28 @@ interface AnimalInfoCardProps {
 
 export default function AnimalInfoCard({ animal }: AnimalInfoCardProps) {
     const router = useRouter();
-    const canApply = animal.animalStatus === 'AVAILABLE';
+    const isAvailable = animal.animalStatus === 'AVAILABLE';
+    // 로그인 여부 확인
+    const { login } = useContext(AuthContext);
+    // 로그인 모달
+    const { openModal } = useContext(ModalContext);
+
+    // 입양신청하기 실행
+    const handleApply = () => {
+        // 로그인 안 되어 있으면 로그인 페이지로 이동
+        if (!login) {
+            openModal("loginRequired", undefined);
+            return;
+        }
+        // 로그인되어 있으면 입양신청 페이지로 이동
+        router.push(`/adopt/create?animalId=${animal.id}`);
+    }
 
     return (
         <div className={styles.infoCard}>
             {/* 입양뱃지 D-7 */}
             <AnimalStatusBadge status={animal.animalStatus} statusLabel={animal.animalStatusLabel}
-                 endDate={animal.noticeEndDate} showDday />
+                endDate={animal.noticeEndDate} showDday />
 
             {/* 동물이름 품종/성별(중성화여부)/나이/몸무게 */}
             <div>
@@ -54,10 +73,13 @@ export default function AnimalInfoCard({ animal }: AnimalInfoCardProps) {
             <div>
                 {/* // 입양신청하기 버튼 */}
                 {/* TODO: 클릭 시 로그인 여부 */}
-                <Button fullWidth className={styles.searchButton} variant="primary" 
-                    disabled={!canApply}
-                    onClick={()=> router.push(`/adopt/create?animalId=${animal.id}`)}>
-                        입양 신청</Button>                                
+                {/* 로그인 여부 확인 */}
+                {/* 로그인 안 되어 있으면 로그인 페이지로 이동 */}
+                {/* 로그인되어 있으면 /adopt/create?animalId=... 이동 */}
+                <Button fullWidth className={styles.searchButton} variant="primary"
+                    disabled={!isAvailable}
+                    onClick={handleApply}>
+                    입양 신청</Button>
             </div>
         </div>
     );

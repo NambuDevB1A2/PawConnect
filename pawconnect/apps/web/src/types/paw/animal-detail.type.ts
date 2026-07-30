@@ -25,7 +25,9 @@ export interface AnimalDetail {
 
     images: string[];
 
+    // 공고 시작일
     noticeStartDate?: string;
+    // 공고 종료일
     noticeEndDate?: string;
 
     foundLocation?: string;
