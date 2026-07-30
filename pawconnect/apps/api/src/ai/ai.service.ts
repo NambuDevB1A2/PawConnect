@@ -4,10 +4,12 @@ import { AiAnimalDto } from '@/ai/dto/ai-animal.dto';
 import { AiAgentChatDto } from '@/ai/dto/ai-agent.dto';
 import { AiGenerateService } from '@/ai/ai-generate.service';
 import { AiAgentService } from '@/ai/ai-agent.service';
+import { AiOpenAiService } from '@/ai/ai-openai.service';
 
 @Injectable()
 export class AiService {
     constructor(
+        private readonly openAiService: AiOpenAiService,
         private readonly generateService: AiGenerateService,
         private readonly agentService: AiAgentService,
     ) {}
@@ -28,7 +30,8 @@ export class AiService {
 
     // ai 에이전트 채팅
     async agentChat(aiAgentChatDto: AiAgentChatDto) {
-        const result = await this.agentService.agentChat(aiAgentChatDto);
+        const rawContent = await this.agentService.agentChat(aiAgentChatDto.content);
+        const result = await this.openAiService.parseJsonResponse(rawContent);
 
         return { success: true, ...result };
     }
