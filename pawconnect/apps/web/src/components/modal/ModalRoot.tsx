@@ -10,6 +10,7 @@ import ConfirmLogoutModal from "@/components/modal/ConfirmLogoutModal";
 import ChangePasswordModal from "@/components/modal/ChangePasswordModal";
 import AiGenerateModal from "@/components/modal/AiGenerateModal";
 import AiAgentModal from "@/components/modal/AiAgentModal";
+import ConfirmGenerateModal from "@/components/modal/ConfirmGenerateModal";
 
 export default function ModalRoot() {
     const { modalState, closeModal } = useContext(ModalContext);
@@ -50,6 +51,14 @@ export default function ModalRoot() {
             <ChangePasswordModal
                 isOpen={modalState?.key === "changePassword"}
                 onClose={closeModal}
+                />
+            
+            <ConfirmGenerateModal
+                isOpen={modalState?.key === "confirmGenerate"} 
+                onClose={closeModal}
+                onConfirm={modalState?.key === "confirmGenerate" ? modalState.params.onConfirm : undefined}
+                imageUrls={modalState?.key === "confirmGenerate" ? modalState.params.imageUrls : []}
+                content={modalState?.key === "confirmGenerate" ? modalState.params.content : ""}
                 />
 
             <AiGenerateModal

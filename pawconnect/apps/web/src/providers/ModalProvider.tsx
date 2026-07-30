@@ -10,6 +10,7 @@ export type ModalKey =
     "imageViewer" |
     "contentViewer" |
     "changePassword" |
+    "confirmGenerate" |
     "aiGenerate" |
     "aiAgent";
 
@@ -35,6 +36,12 @@ interface ModalParamsMap {
     };
 
     changePassword: undefined;
+
+    confirmGenerate: {
+        onConfirm: () => void;
+        imageUrls?: string[];
+        content?: string;
+    };
 
     aiGenerate: undefined;
 

@@ -14,20 +14,26 @@ import { UpdatePawLog } from "@/services/pawlog/update-pawlog.client";
 import { PawLog } from "@/types/pawlog/pawlog.type";
 import { AuthContext } from "@/providers/AuthProvider";
 import NotFound from "@/components/common/NotFound";
+import { GeneratePawLogState } from "@/types/pawlog/gernerate-pawlog.type";
+import { GeneratePawLog } from "@/services/ai/ai-generate-pawlog.client";
+import { ModalContext } from "@/providers/ModalProvider";
 
 interface EditPawLogFormProps {
     pawLog: PawLog;
 }
 
 const initialState: UpdatePawLogSate = { };
+const initialAiState: GeneratePawLogState = { };
 
 export default function EditPawLogForm({
     pawLog
 }: EditPawLogFormProps) {
-    const [state, formAction, isPending] = useActionState(
-        UpdatePawLog.bind(null, pawLog.id), 
-        initialState);
+    const [state, formAction, isPending] = useActionState(UpdatePawLog.bind(null, pawLog.id), initialState);
+    const [aiState, formAiAction, isAiPending] = useActionState(GeneratePawLog, initialAiState);
+    
     const { user } = useContext(AuthContext);
+    const { openModal, closeModal } = useContext(ModalContext);
+
     const router = useRouter();
 
     const [clientErrors, setClientErrors] = useState<{
@@ -53,12 +59,31 @@ export default function EditPawLogForm({
         }
     }, [state]);
 
+    // 성공시 alert 표시
+    useEffect(() => {
+        if (!aiState.response) return;
+        
+        if (aiState.response?.success) {
+            alert('AI 게시글 작성을 성공적으로 마쳤습니다');
+        } else {
+            alert('AI 게시글 작성 도중 오류가 발생했습니다');
+        }
+    }, [aiState]);
+
+    useEffect(() => {
+        if (isAiPending) {
+            openModal("aiGenerate");
+        } else {
+            closeModal();
+        }
+    }, [isAiPending]);
+
     if (pawLog.author.id !== user?.id) {
         return <NotFound/>
     }
 
     return (
-        <form action={formAction} className={styles.wrapper_section}>
+        <form className={styles.wrapper_section}>
 
             <Section className={styles.wrapper_pawlog_new} titleText="내 PawLog 수정하기">
             
@@ -71,21 +96,36 @@ export default function EditPawLogForm({
 
                 <div className={styles.box_pawlog_input}>
                         <Input 
-                            name="title" defaultValue={pawLog.title}
+                            name="title" 
+                            defaultValue={aiState.response?.title || pawLog.title}
                             labelText="제목*" 
                             helperText="제목을 입력해주세요(최대 50자)"
                             errorText={clientErrors.title ?? state.titleError}
                             onChange={handleTitle}
                             />
                         <TextArea 
-                            name="content" defaultValue={pawLog.content}
+                            name="content" 
+                            defaultValue={aiState.response?.content || pawLog.content}
                             labelText="내용" 
-                            helperText="내용을 입력해주세요(최대 500자)"
+                            helperText="AI 자동 게시글 생성시 전송할 내용 혹은 게시글로 작성할 내용을 입력해주세요(최대 500자)"
                             maxLength={500}
                             />
                 </div>
 
-                <Button className={styles.btn_submit} type="submit" disabled={isPending}>
+                <Button 
+                    className={styles.btn_submit}
+                    variant="secondary" 
+                    type="submit" 
+                    formAction={formAiAction}
+                    disabled={isAiPending || isPending}>
+                    {isAiPending ? "AI 분석 중..." : "AI 자동 게시글 생성하기"}
+                </Button>
+
+                <Button 
+                    className={styles.btn_submit} 
+                    type="submit" 
+                    formAction={formAction} 
+                    disabled={isAiPending || isPending}>
                     {isPending ? "수정 중..." : "수정하기"}
                 </Button>
             </Section>
