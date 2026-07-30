@@ -23,7 +23,7 @@ export function AnimalInfoItem({ label, value }: AnimalInfoItemProps) {
 interface AnimalStatusBadgeProps {
     status: AnimalStatus;
     statusLabel: string;
-    endDate?: string;       //| undefined
+    endDate?: string;
     showDday?: boolean;
 }
 

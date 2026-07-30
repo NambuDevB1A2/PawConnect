@@ -1,6 +1,6 @@
 // 보호동물 상세 페이지 클라이언트
 'use client'
-import Button from "@/components/common/Button";
+
 import ImageSlider from "@/components/common/ImageSlider";
 import Typography from "@/components/common/Typography";
 import styles from '@/styles/paw/pawDetail.module.css'

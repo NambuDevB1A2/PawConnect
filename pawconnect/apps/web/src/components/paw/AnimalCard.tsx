@@ -2,10 +2,11 @@
 'use client'
 import AppImage from "@/components/common/AppImage";
 import Typography from "@/components/common/Typography";
-import type { AnimalCard as Animal } from "@/types/paw/animal.type";
+import type { Animal as Animal } from "@/types/paw/animal.type";
 import styles from "@/styles/paw/pawCard.module.css"
 import { useRouter } from "next/navigation";
 import { AnimalStatusBadge } from "./AnimalInfoItem";
+import Link from "next/link";
 
 interface AnimalCardProps {
     animal: Animal;
@@ -18,18 +19,19 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
     return (
         // 동물카드 클릭 시 상세 페이지로 이동
         <div className={styles.wrapper_animal_card}
-            onClick={() => router.push(`/paw/${animal.id}`)}>
-
+            onClick={() => router.push(`/paw/${animal.id}`)} >
+        {/*  <div className={styles.wrapper_animal_card}>
+             <Link href={`/paw/${animal.id}`} /> */}
             <div className={styles.imageWrapper}>
                 {/* 동물 썸네일 이미지 */}
                 <AppImage className={styles.img_animal} src={animal.imgThumbnail} />
                 {/* 동물상태 뱃지*/}
                 <div className={styles.badge}>
-                    <AnimalStatusBadge status={animal.animalStatus} 
-                        statusLabel={animal.animalStatusLabel}/>
+                    <AnimalStatusBadge status={animal.animalStatus}
+                        statusLabel={animal.animalStatusLabel} />
                     {/* {animal.animalStatusLabel} */}
-                    </div>
-                
+                </div>
+
             </div>
 
             <div className={styles.box_info}>

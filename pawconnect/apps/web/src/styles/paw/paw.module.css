@@ -19,6 +19,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
+    padding-bottom: var(--spacing-300);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .content {
@@ -26,6 +29,8 @@
     display: flex;
     gap: 32px;
     align-items: flex-start;
+
+    padding-top: var(--spacing-300);
 }
 
 /* 왼쪽 검색 */
