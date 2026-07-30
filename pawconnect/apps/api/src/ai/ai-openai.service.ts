@@ -118,10 +118,22 @@ export class AiOpenAiService {
     }
 
     // Azure OpenAI 호출 (재사용 가능) message 전체 반환
-    async callChatCompletionRaw(options: ChatCompletionOptions) {
+    async callChatCompletionRaw({
+        messages,
+        maxCompletionTokens = 800,
+        temperature = 0.7,
+        jsonResponse,
+        tools,
+    }: ChatCompletionOptions) {
         const { endpoint, apiKey, apiVersion } = this.openAiConfig;
         const url = `${endpoint}/chat/completions`;
-        const requestBody = this.buildRequestBody(options);
+        const requestBody = this.buildRequestBody({
+            messages,
+            maxCompletionTokens,
+            temperature,
+            jsonResponse,
+            tools,
+        });
 
         const { data } = await firstValueFrom(
             this.httpService.post(url, requestBody, {
