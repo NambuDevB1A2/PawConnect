@@ -1,11 +1,12 @@
+
 // 보호동물 타입
-export interface AnimalCard {
+export interface Animal {
     id: number;
     name: string;
     imgThumbnail: string;
-    animalStatus: string;
+    animalStatus: AnimalStatus;
     animalStatusLabel: string;
-    species : string;
+    species: string;
     breed: string;
     gender: string;
     isNeutered: boolean;
@@ -27,6 +28,18 @@ export interface Pagination {
 // 목록리스트 Response 타입
 export interface AnimalListResponse {
     success: boolean;
-    animals: AnimalCard[];
+    animals: Animal[];
     pagination: Pagination;
 }
+
+// AnimalStatus
+export type AnimalStatus =
+    "PROTECTED"
+    | "AVAILABLE"
+    | "ADOPTED"
+    | "REUNITED"
+    | "DECEASED"
+    | "EUTHANIZED";
+
+// AnimalGender
+export type AnimalGender = "MALE" | "FEMALE" | "UNKNOWN";

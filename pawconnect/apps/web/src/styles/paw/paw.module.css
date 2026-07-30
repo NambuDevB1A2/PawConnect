@@ -1,28 +1,36 @@
 .wrapper_page {
     display: flex;
-    justify-content: center;
-
-    padding: 40px 0;
+    /* justify-content: center; */
+    gap:24px;
+    align-items:flex-start;
+    /* padding: 40px 0; */
 }
 
 .wrapper_list {
-    width: 1280px;
+    flex: 1;
+    /* width: 1280px;
 
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 24px; */
 }
 
 .box_title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
+    padding-bottom: var(--spacing-300);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .content {
+    /* flex:1; */
     display: flex;
     gap: 32px;
     align-items: flex-start;
+
+    padding-top: var(--spacing-300);
 }
 
 /* 왼쪽 검색 */

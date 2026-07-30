@@ -15,8 +15,9 @@ export interface SelectOption {
 }
 
 interface SelectProps {
-    options: SelectOption[],
-    defaultValue?: string,
+    value?: string;
+    options: SelectOption[];
+    defaultValue?: string;
     onChange: (value: string) => void;
     labelText?: string;
     labelPosition?: SelectLabelPosition;
@@ -28,6 +29,7 @@ interface SelectProps {
 }
 
 export default function Select({
+    value,
     options,
     defaultValue,
     onChange,
@@ -41,6 +43,10 @@ export default function Select({
 }: SelectProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [currentValue, setCurrentValue] = useState(defaultValue);
+    // 부모 filter가 바뀌어도 select 가 알수있게
+    useEffect(()=> {
+        setCurrentValue(value ?? defaultValue);
+    }, [value, defaultValue])
 
     const containerRef = useRef<HTMLDivElement>(null);
     const listRef = useRef<HTMLUListElement>(null);
