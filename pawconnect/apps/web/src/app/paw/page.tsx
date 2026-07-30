@@ -29,11 +29,9 @@ export default async function Page({ searchParams }: PageProps) {
     const currentPage = parsePageToNumber(params?.page);
     // 보호동물, 페이지네이션
     const response = await getAnimals(currentPage, PAGE_SIZE.ANIMAL, params);
-    if(!response) return <NotFound />;
+    if (!response) return <NotFound />;
 
     const { animals, pagination } = response;
-
-    if(animals.length === 0) return <Empty text="등록된 동물이 없습니다" />;
 
     return (
         <div className={styles.wrapper_page}>
@@ -53,10 +51,12 @@ export default async function Page({ searchParams }: PageProps) {
                     <div className={styles.list_section}>
                         {/* 보호동물 목록 구간 */}
                         <div className={styles.box_list}>
+                            {/* 등록된 동물데이터 있는지 확인 후 */}
                             {/* 동물 전체 조회 */}
-                            {animals.map((animal) => (
-                                <AnimalCard key={animal.id} animal={animal} />
-                            ))}
+                            {animals.length === 0 ? (<Empty text="등록된 동물이 없습니다" />) :
+                                (animals.map((animal) => (
+                                    <AnimalCard key={animal.id} animal={animal} />))
+                                )}
                         </div>
 
                         {/* 페이지네이션 구간 */}
