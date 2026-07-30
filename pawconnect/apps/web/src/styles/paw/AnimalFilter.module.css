@@ -1,0 +1,25 @@
+.wrapper {
+    width: 280px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    height: fit-content;
+}
+
+/* 타이틀과 초기화 버튼을 양옆으로 정렬 */
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.searchButton{
+    margin-top:8px;
+}
