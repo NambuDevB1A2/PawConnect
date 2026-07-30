@@ -37,3 +37,20 @@ export interface AnimalDetail {
 export interface ResponseAnimalDetail extends ApiResponse{
     animal: AnimalDetail;
 }
+
+// // 동물 상세
+// export interface AnimalBase {
+//     id: number;
+//     name: string;
+//     species: string;
+//     breed: string;
+//     gender: AnimalGender;
+// }
+
+// export interface Animal extends AnimalBase{
+//     imgThumbnail:string;
+// }
+
+// export interface AnimalDetail extends AnimalBase{
+//     images:string[];
+// }

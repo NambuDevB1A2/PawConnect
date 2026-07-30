@@ -34,8 +34,8 @@ export function AnimalStatusBadge({ status, statusLabel, endDate, showDday=false
     const end = endDate ? new Date(endDate) : null;
     const diff = end ? Math.ceil(
         (end.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)) : null;
-    const dday = diff === null? "" : diff>0 ? `D+${diff}` : 
-                diff === 0? "D-Day" : `D-${Math.abs(diff)}`; 
+    const dday = diff === null? "" : diff>0 ? `D-${diff}` : 
+                diff === 0? "D-Day" : `D+${Math.abs(diff)}`; 
 
     return (
         <div className={styles.badgeWrapper}>

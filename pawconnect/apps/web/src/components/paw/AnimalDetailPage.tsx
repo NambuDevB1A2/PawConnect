@@ -20,8 +20,9 @@ export default function AnimalDetailPage({animal}: AnimalDetailPageProps) {
         <div className={styles.wrapper_detail}>
             {/* 보호소 이름 */}
             <div className={styles.shelterName}>
-                <Typography variant="heading" onClick={() => router.push(`/shelter/${animal.shelterName}`)}>
-                    {animal.shelterName}</Typography>
+                <Typography variant="heading" onClick={() => router.push(
+                        `/shelter/${encodeURIComponent(animal.shelterName)}`)}>
+                            {animal.shelterName}</Typography>
                 </div>
 
             <div className={styles.topSection}>

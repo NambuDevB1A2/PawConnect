@@ -6,7 +6,6 @@ import type { Animal as Animal } from "@/types/paw/animal.type";
 import styles from "@/styles/paw/pawCard.module.css"
 import { useRouter } from "next/navigation";
 import { AnimalStatusBadge } from "./AnimalInfoItem";
-import Link from "next/link";
 
 interface AnimalCardProps {
     animal: Animal;

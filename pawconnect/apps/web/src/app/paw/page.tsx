@@ -6,6 +6,8 @@ import Pagination from "@/components/common/Pagination";
 import styles from "@/styles/paw/paw.module.css"
 import AnimalCard from "@/components/paw/AnimalCard";
 import AnimalFilter from "@/components/paw/AnimalFilter";
+import NotFound from "@/components/common/NotFound";
+import Empty from "@/components/common/Empty";
 
 interface PageProps {
     searchParams?: Promise<{
@@ -26,8 +28,12 @@ export default async function Page({ searchParams }: PageProps) {
     // 현재 페이지 번호
     const currentPage = parsePageToNumber(params?.page);
     // 보호동물, 페이지네이션
-    const { animals, pagination } = await getAnimals(
-        currentPage, PAGE_SIZE.ANIMAL, params);
+    const response = await getAnimals(currentPage, PAGE_SIZE.ANIMAL, params);
+    if(!response) return <NotFound />;
+
+    const { animals, pagination } = response;
+
+    if(animals.length === 0) return <Empty text="등록된 동물이 없습니다" />;
 
     return (
         <div className={styles.wrapper_page}>
