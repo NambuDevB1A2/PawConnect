@@ -1,4 +1,5 @@
-export const FIND_ANIMALS_TOOL = {
+// 보호동물 검색 tool
+const TOOL_FIND_ANIMALS = {
     type: 'function' as const,
     name: 'findAnimals',
     description: '보호동물 목록을 DB에서 검색합니다.',
@@ -39,3 +40,25 @@ export const FIND_ANIMALS_TOOL = {
         required: [],
     },
 };
+
+// 이름 기반 보호소 검색 tool 
+const TOOL_FIND_SHELTERS = {
+    type: 'function' as const,
+    name: 'findShelters',
+    description: '보호소 이름, 소개말, 주소에 특정 키워드가 포함된 보호소 목록을 검색합니다.',
+    parameters: {
+        type: 'object',
+        properties: {
+            keyword: {
+                type: 'string',
+                description: '검색할 키워드 (보호소 이름, 소개말, 주소 중 일치하는 항목을 찾습니다)',
+            },
+        },
+        required: ['keyword'],
+    },
+};
+
+export const TOOLS = [
+    TOOL_FIND_ANIMALS,
+    TOOL_FIND_SHELTERS,
+];

@@ -5,7 +5,6 @@ import { AIProjectClient } from '@azure/ai-projects';
 import { AiToolsService } from '@/ai/ai-tools.service';
 import azureAgentConfig from '@/config/azure/azure-agent.config';
 import type { ResponseCreateParamsNonStreaming } from 'openai/resources/responses/responses';
-import { AI_SYSTEM_PROMPTS } from '@/ai/constants/ai-prompt.constant';
 
 // Azure Foundry 전용 확장 필드를 추가한 타입
 type AzureAgentResponseCreateParams = ResponseCreateParamsNonStreaming & {
@@ -44,18 +43,27 @@ export class AiAgentService {
     }
 
     // ai 에이전트 빌드 사용
-    async agentChat(userMessage: string): Promise<string> {
+    async agentChat(userMessage: string, conversationId?: string) {
         const openAIClient = this.projectClient.getOpenAIClient();
 
-        const conversation = await openAIClient.conversations.create({
-            items: [
-                { type: 'message', role: 'system', content: AI_SYSTEM_PROMPTS.AGENT_CHAT },
-                { type: 'message', role: 'user', content: userMessage }
-            ],
-        });
+        let activeConversationId: string;
+
+        if (conversationId) {
+            // 기존 대화에 사용자 메시지만 추가
+            await openAIClient.conversations.items.create(conversationId, {
+                items: [{ type: 'message', role: 'user', content: userMessage }],
+            });
+            activeConversationId = conversationId;
+        } else {
+            // 새 대화 생성
+            const conversation = await openAIClient.conversations.create({
+                items: [{ type: 'message', role: 'user', content: userMessage }],
+            });
+            activeConversationId = conversation.id;
+        }
 
         let response = await openAIClient.responses.create({
-            conversation: conversation.id,
+            conversation: activeConversationId,
             agent_reference: this.agentReference,
             // tools: RESPONSES_TOOLS,
         } as AzureAgentResponseCreateParams);
@@ -88,7 +96,7 @@ export class AiAgentService {
             );
 
             response = await openAIClient.responses.create({
-                conversation: conversation.id,
+                conversation: activeConversationId,
                 input: functionOutputs,
                 agent_reference: this.agentReference,
                 // tools: RESPONSES_TOOLS,
@@ -105,6 +113,9 @@ export class AiAgentService {
             throw new InternalServerErrorException({ message: 'AI 응답이 비어있습니다' });
         }
 
-        return response.output_text;
+        return {
+            content: response.output_text,
+            conversationId: activeConversationId,
+        };
     }
 }

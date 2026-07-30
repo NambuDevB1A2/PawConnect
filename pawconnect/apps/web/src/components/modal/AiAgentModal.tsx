@@ -8,6 +8,7 @@ import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Typography from "@/components/common/Typography";
 import Modal from "@/components/modal/Modal";
 import AnimalCard from "@/components/paw/AnimalCard";
+import ShelterCard from "@/components/shelter/ShelterCard";
 import { MODAL_MESSAGES } from "@/constants/messages/Modal";
 import { PostAiAgentChat } from "@/services/ai/ai-agent-chat.client";
 import styles from "@/styles/modal/AiAgentModal.module.css"
@@ -61,6 +62,7 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
     const [chats, setChats] = useState<AiAgentChatProps[]>([]);
     const [inputValue, setInputValue] = useState("");
     const [isPending, setIsPending] = useState(false);
+    const [conversationId, setConversationId] = useState<string | undefined>(undefined); // 추가
     const bodyRef = useRef<HTMLDivElement>(null);
 
     const defaultAiAgentChat: AiAgentChatProps = {
@@ -91,20 +93,21 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
         setIsPending(true);
 
         // 대기
-        const result = await PostAiAgentChat(content);
+        const result = await PostAiAgentChat(content, conversationId);
         setIsPending(false);
 
         if (result?.success) {
+            if (result.conversationId) {
+                setConversationId(result.conversationId);
+            }
+
             setChats((prev) => [...prev, { 
                 role: "ai", 
                 content: result.content,
                 children:
                 <div>
-                    {result.animals && result.animals.length > 0 ?
-                        result.animals.map((animal) =>
-                        <AnimalCard key={animal.id} animal={animal} />
-                        ) : null
-                    }
+                    {result.animal ? <AnimalCard animal={result.animal} /> : null}
+                    {result.shelter ? <ShelterCard shelter={result.shelter} /> : null}
                 </div>
             }]);
         }

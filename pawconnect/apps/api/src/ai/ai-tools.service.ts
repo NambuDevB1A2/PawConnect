@@ -2,6 +2,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { AnimalGender, AnimalStatus } from '@prisma/client';
 import { buildAnimalWhere } from '@/animals/animals.where';
+import { SHELTERS_SELECT } from '@/shelters/shelter.select';
 
 @Injectable()
 export class AiToolsService {
@@ -12,11 +13,14 @@ export class AiToolsService {
         switch (name) {
             case 'findAnimals':
                 return this.findAnimals(args as any);
+            case 'findShelters':
+                return this.findShelters(args as any);
             default:
                 return { error: `알 수 없는 tool입니다: ${name}` };
         }
     }
 
+    // 보호동물 동물 검색
     async findAnimals({
         keyword, 
         speciesName, 
@@ -50,8 +54,31 @@ export class AiToolsService {
             page: 0,
         });
 
-        console.log(where);
+        return this.prisma.animal.findMany({ 
+            where, 
+            orderBy: { createdAt: 'desc' },
+            take: 10,
+        });
+    }
 
-        return this.prisma.animal.findMany({ where, orderBy: { createdAt: 'desc' } });
+    // 보호소 검색
+    async findShelters({ 
+        keyword 
+    }: { 
+        keyword: string 
+    }) {
+        return this.prisma.shelter.findMany({
+            where: {
+                OR: [
+                    { name: { contains: keyword, mode: 'insensitive' } },
+                    { description: { contains: keyword, mode: 'insensitive' } },
+                    { address: { contains: keyword, mode: 'insensitive' } },
+                    { addressDetail: { contains: keyword, mode: 'insensitive' } },
+                ],
+            },
+            select: SHELTERS_SELECT,
+            take: 10,
+            orderBy: { createdAt: 'desc' },
+        });
     }
 }

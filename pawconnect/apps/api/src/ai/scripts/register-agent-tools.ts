@@ -1,7 +1,6 @@
 import 'dotenv/config'; // .env 로드 (NestJS ConfigModule과 별개로 직접 로드)
-import { AIProjectClient } from '@azure/ai-projects';
 import { DefaultAzureCredential } from '@azure/identity';
-import { FIND_ANIMALS_TOOL } from '@/ai/constants/ai-tools.constant';
+import { TOOLS } from '@/ai/constants/ai-tools.constant';
 import { AI_SYSTEM_PROMPTS } from '@/ai/constants/ai-prompt.constant';
 
 async function registerAgentTools() {
@@ -27,7 +26,7 @@ async function registerAgentTools() {
             kind: 'prompt', // discriminator 필드 - 에러가 요구하던 값
             model: modelDeployment,
             instructions: AI_SYSTEM_PROMPTS.AGENT_CHAT,
-            tools: [FIND_ANIMALS_TOOL],
+            tools: TOOLS,
         },
     };
 
