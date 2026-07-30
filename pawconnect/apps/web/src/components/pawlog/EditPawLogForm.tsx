@@ -1,7 +1,7 @@
 'use client';
 
 import { validateTitle } from "@/utils/pawlog/pawlog.validator";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useContext, useEffect, useState } from "react";
 import styles from "@/styles/pawlog/newPawLog.module.css"
 import Section from "@/components/common/Section";
 import ImagesUploader from "@/components/uploader/ImagesUploader";
@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { UpdatePawLogSate } from "@/types/pawlog/update-pawlog.type";
 import { UpdatePawLog } from "@/services/pawlog/update-pawlog.client";
 import { PawLog } from "@/types/pawlog/pawlog.type";
+import { AuthContext } from "@/providers/AuthProvider";
+import NotFound from "@/components/common/NotFound";
 
 interface EditPawLogFormProps {
     pawLog: PawLog;
@@ -25,6 +27,7 @@ export default function EditPawLogForm({
     const [state, formAction, isPending] = useActionState(
         UpdatePawLog.bind(null, pawLog.id), 
         initialState);
+    const { user } = useContext(AuthContext);
     const router = useRouter();
 
     const [clientErrors, setClientErrors] = useState<{
@@ -49,6 +52,10 @@ export default function EditPawLogForm({
             alert('게시 도중 오류가 발생했습니다');
         }
     }, [state]);
+
+    if (pawLog.author.id !== user?.id) {
+        return <NotFound/>
+    }
 
     return (
         <form action={formAction} className={styles.wrapper_section}>
