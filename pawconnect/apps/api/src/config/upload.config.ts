@@ -23,7 +23,7 @@ const imageFileFilter = (_req, file, callback) => {
     callback(null, true);
 }
 
-export function createImageUploadOptions(destination: string) {
+export function createImageUploadOptions() {
     return {
         // storage: diskStorage({
         //     destination: destination,
@@ -35,7 +35,7 @@ export function createImageUploadOptions(destination: string) {
     };
 }
 
-export function createFieldsImageUploadOptions(fieldDestinationMap: Record<string, string>) {
+export function createFieldsImageUploadOptions() {
     return {
         // storage: diskStorage({
         //     destination: (_req, file, callback) => {

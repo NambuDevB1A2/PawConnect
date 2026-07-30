@@ -38,10 +38,7 @@ export class SheltersController {
         FileFieldsInterceptor([
             { name: 'imgBanner', maxCount: 1 },
             { name: 'imgShelter', maxCount: 4 },
-        ], createFieldsImageUploadOptions({
-            imgBanner: UPLOAD_DIR.shelterBannerDir,
-            imgShelter: UPLOAD_DIR.shelterImgDir,
-        })))
+        ], createFieldsImageUploadOptions()))
     @Roles(Role.SHELTER)
     @Patch('me')
     update(

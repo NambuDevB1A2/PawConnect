@@ -30,7 +30,7 @@ export class UsersController {
     @ApiOperation({ summary: "내 정보 수정" })
     @ApiConsumes('multipart/form-data')
     @ApiBody({ type: UpdateUserDto })
-    @UseInterceptors(FileInterceptor('imgProfile', createImageUploadOptions(UPLOAD_DIR.userProfileDir)))
+    @UseInterceptors(FileInterceptor('imgProfile', createImageUploadOptions()))
     @Patch('me')
     update(
         @CurrentAuth() auth: AuthRequest, 

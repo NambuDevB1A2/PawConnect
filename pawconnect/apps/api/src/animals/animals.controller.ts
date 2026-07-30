@@ -35,11 +35,7 @@ export class AnimalsController {
       // 파일 필드명으로 구분
       { name: 'imgThumbnail', maxCount: 1 },
       { name: 'images', maxCount: 4 },
-    ], createFieldsImageUploadOptions({
-      // 파일 저장 위치, 옵션 지정
-      imgThumbnail: UPLOAD_DIR.animalThumbnailDir,
-      images: UPLOAD_DIR.animalImgDir,
-    })))
+    ], createFieldsImageUploadOptions()))
   @ApiOperation({ summary: "보호동물 등록" })
   create(
     @CurrentAuth() auth: AuthRequest,
@@ -82,11 +78,7 @@ export class AnimalsController {
       // 파일 필드명으로 구분
       { name: 'imgThumbnail', maxCount: 1 },
       { name: 'images', maxCount: 4 },
-    ], createFieldsImageUploadOptions({
-      // 파일 저장 위치, 옵션 지정
-      imgThumbnail: UPLOAD_DIR.animalThumbnailDir,
-      images: UPLOAD_DIR.animalImgDir,
-    })))
+    ], createFieldsImageUploadOptions()))
   update(
     @CurrentAuth() auth: AuthRequest,
     @UploadedFiles()
