@@ -80,6 +80,7 @@
 
 .user {
     justify-content: end;
+    padding-right: var(--spacing-100);
 }
 
 .ai_profile {
@@ -91,7 +92,7 @@
     flex-direction: column;
     gap: var(--spacing-100);
 
-    max-width: 80%;
+    max-width: 75%;
 }
 
 .box_chat {

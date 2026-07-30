@@ -76,13 +76,20 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
     };
 
     // 최신 채팅으로 스크롤 이동
-    const scrollToBottom = () => {
+    const scrollToBottom = (behavior: ScrollBehavior = "smooth") => {
         if (!bodyRef.current) return;
 
         bodyRef.current.scrollTo({
             top: bodyRef.current.scrollHeight,
-            behavior: "smooth",
+            behavior: behavior,
         });
+    };
+
+    const handleBodyRef = (node: HTMLDivElement | null) => {
+        bodyRef.current = node;
+        if (node) {
+            node.scrollTop = node.scrollHeight;
+        }
     };
 
     // 채팅 전송하기
@@ -105,7 +112,7 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
                 role: "ai", 
                 content: result.content,
                 children:
-                <div>
+                <div onClick={onClose}>
                     {result.animal ? <AnimalCard animal={result.animal} /> : null}
                     {result.shelter ? <ShelterCard shelter={result.shelter} /> : null}
                 </div>
@@ -129,6 +136,7 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
         }
     };
 
+    // 메시지 추가될 때는 부드럽게 스크롤
     useEffect(() => {
         scrollToBottom();
     }, [chats, isPending]);
@@ -141,7 +149,7 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
                 <IconButton className={styles.btn_close} name="close" onClick={onClose}/>
             </Modal.Header>
 
-            <Modal.Body className={styles.wrapper_body} ref={bodyRef}>
+            <Modal.Body className={styles.wrapper_body} ref={handleBodyRef}>
                 <AiAgentChat {...defaultAiAgentChat} />
                 {chats.map((chat, index) => <AiAgentChat key={index} {...chat}/>)}
                 {isPending && <AiAgentChat role="ai"><LoadingSpinner size="medium"/></AiAgentChat>}
