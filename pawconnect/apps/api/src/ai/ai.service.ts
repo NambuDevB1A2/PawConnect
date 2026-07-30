@@ -30,7 +30,10 @@ export class AiService {
 
     // ai 에이전트 채팅
     async agentChat(aiAgentChatDto: AiAgentChatDto) {
-        const { content, conversationId } = await this.agentService.agentChat(aiAgentChatDto.content, aiAgentChatDto.conversationId);
+        const { content, conversationId } = await this.agentService.agentChat(
+            aiAgentChatDto.content, 
+            aiAgentChatDto.conversationId
+        );
         const result = await this.openAiService.parseJsonResponse(content);
 
         return { success: true, conversationId, ...result };
