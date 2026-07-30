@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { AnimalGender, AnimalStatus } from '@prisma/client';
 import { buildAnimalWhere } from '@/animals/animals.where';
 import { SHELTERS_SELECT } from '@/shelters/shelter.select';
+import { toAnimalCardDto } from '@/animals/animals.mapper';
 
 @Injectable()
 export class AiToolsService {
@@ -54,11 +55,18 @@ export class AiToolsService {
             page: 0,
         });
 
-        return this.prisma.animal.findMany({ 
+        const animals = await this.prisma.animal.findMany({ 
             where, 
+            include:{
+                shelter: true,
+                animalSpecies: true,
+                animalBreed: true
+            },
             orderBy: { createdAt: 'desc' },
             take: 10,
         });
+
+        return animals.map(toAnimalCardDto);
     }
 
     // 보호소 검색
