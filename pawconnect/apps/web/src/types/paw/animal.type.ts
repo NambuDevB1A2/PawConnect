@@ -2,6 +2,7 @@
 // 보호동물 타입
 export interface Animal {
     id: number;
+    shelterId: string;
     name: string;
     imgThumbnail: string;
     animalStatus: AnimalStatus;

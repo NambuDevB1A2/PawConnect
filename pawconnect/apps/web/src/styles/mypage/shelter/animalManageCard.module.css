@@ -1,0 +1,39 @@
+.card{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    width:280px;
+}
+
+.imageWrapper{
+    position:relative;
+}
+
+.image{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:12px;
+}
+
+.badge{
+    position:absolute;
+    left:10px;
+    top:10px;
+}
+
+.info{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.detail{
+    color:var(--gray500);
+}
+
+.buttons{
+    display:flex;
+    gap:8px;
+}

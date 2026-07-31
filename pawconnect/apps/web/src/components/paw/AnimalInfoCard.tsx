@@ -28,7 +28,7 @@ export default function AnimalInfoCard({ animal }: AnimalInfoCardProps) {
     const handleApply = () => {
         // 로그인 안 되어 있으면 로그인 페이지로 이동
         if (!login) {
-            openModal("loginRequired", undefined);
+            openModal("loginRequired"); //undefined
             return;
         }
         // 로그인되어 있으면 입양신청 페이지로 이동
@@ -72,10 +72,7 @@ export default function AnimalInfoCard({ animal }: AnimalInfoCardProps) {
             </div>
             <div>
                 {/* // 입양신청하기 버튼 */}
-                {/* TODO: 클릭 시 로그인 여부 */}
-                {/* 로그인 여부 확인 */}
-                {/* 로그인 안 되어 있으면 로그인 페이지로 이동 */}
-                {/* 로그인되어 있으면 /adopt/create?animalId=... 이동 */}
+                {/* 로그인 여부 확인 후 이동 */}
                 <Button fullWidth className={styles.searchButton} variant="primary"
                     disabled={!isAvailable}
                     onClick={handleApply}>

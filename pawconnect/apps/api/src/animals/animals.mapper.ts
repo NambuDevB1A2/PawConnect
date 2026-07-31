@@ -15,6 +15,7 @@ type AnimalWithRelation = Animal & {
 export function toAnimalCardDto(animal: AnimalWithRelation): AnimalCardDto {
     return {
         id: animal.id,
+        shelterId: animal.shelterId,
         imgThumbnail: animal.imgThumbnail,
         animalStatus: animal.animalStatus,
         animalStatusLabel: ANIMAL_STATUS_LABEL[animal.animalStatus],
