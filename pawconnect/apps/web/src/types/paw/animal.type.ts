@@ -43,3 +43,28 @@ export type AnimalStatus =
 
 // AnimalGender
 export type AnimalGender = "MALE" | "FEMALE" | "UNKNOWN";
+
+
+// 동물폼 생성
+export interface CreateAnimalForm {
+    name: string;
+    species: number;
+    breed: number;
+    gender: AnimalGender;
+    isNeutered: boolean;
+
+    age: number;
+    isEstimatedAge: boolean;
+
+    weight: number;
+    noticeStartDate: string;
+    noticeEndDate: string;
+
+    animalStatus: AnimalStatus;
+    foundLocation: string;
+    description: string;
+    healthStatus: string;
+
+    imgThumbnail?: File | null;
+    images: File[];
+}
