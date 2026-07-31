@@ -14,13 +14,13 @@ interface AnimalCardProps {
 export default function AnimalCard({ animal }: AnimalCardProps) {
     // 상세페이지 연결
     const router = useRouter();
+    // 상세페이지 이동
+    const handleClick = () => router.push(`/paw/${animal.id}`);
 
     return (
         // 동물카드 클릭 시 상세 페이지로 이동
-        <div className={styles.wrapper_animal_card}
-            onClick={() => router.push(`/paw/${animal.id}`)} >
-        {/*  <div className={styles.wrapper_animal_card}>
-             <Link href={`/paw/${animal.id}`} /> */}
+        <div className={styles.wrapper_animal_card} onClick={handleClick} >
+            {/* <Link href={`/paw/${animal.id}`} /> */}
             <div className={styles.imageWrapper}>
                 {/* 동물 썸네일 이미지 */}
                 <AppImage className={styles.img_animal} src={animal.imgThumbnail} />
@@ -28,7 +28,6 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
                 <div className={styles.badge}>
                     <AnimalStatusBadge status={animal.animalStatus}
                         statusLabel={animal.animalStatusLabel} />
-                    {/* {animal.animalStatusLabel} */}
                 </div>
 
             </div>
