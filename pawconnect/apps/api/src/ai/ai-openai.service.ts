@@ -12,7 +12,7 @@ export interface ChatMessageContent {
 }
 
 export interface ChatMessage {
-    role: 'system' | 'user' | 'assistant';
+    role: 'system' | 'user' | 'assistant' | 'tool';
     content: string | ChatMessageContent[];
 }
 
@@ -21,6 +21,7 @@ export interface ChatCompletionOptions {
     maxCompletionTokens?: number;
     temperature?: number;
     jsonResponse?: boolean;
+    tools?: Record<string, any>[];
 }
 
 @Injectable()
@@ -66,6 +67,7 @@ export class AiOpenAiService {
             ...(options.maxCompletionTokens && { max_completion_tokens: options.maxCompletionTokens }),
             ...(options.temperature !== undefined && { temperature: options.temperature }),
             ...(options.jsonResponse && { response_format: { type: 'json_object' } }),
+            ...(options.tools && { tools: options.tools, tool_choice: 'auto' }),
         };
     }
 
@@ -113,6 +115,34 @@ export class AiOpenAiService {
                 detail: axiosErr.response?.data?.error?.message ?? axiosErr.message,
             });
         }
+    }
+
+    // Azure OpenAI 호출 (재사용 가능) message 전체 반환
+    async callChatCompletionRaw({
+        messages,
+        maxCompletionTokens = 800,
+        temperature = 0.7,
+        jsonResponse,
+        tools,
+    }: ChatCompletionOptions) {
+        const { endpoint, apiKey, apiVersion } = this.openAiConfig;
+        const url = `${endpoint}/chat/completions`;
+        const requestBody = this.buildRequestBody({
+            messages,
+            maxCompletionTokens,
+            temperature,
+            jsonResponse,
+            tools,
+        });
+
+        const { data } = await firstValueFrom(
+            this.httpService.post(url, requestBody, {
+                params: { 'api-version': apiVersion },
+                headers: { 'Content-Type': 'application/json', 'api-key': apiKey },
+            }),
+        );
+
+        return data;
     }
 
     // JSON 응답 파싱 (코드블록 방어 포함)

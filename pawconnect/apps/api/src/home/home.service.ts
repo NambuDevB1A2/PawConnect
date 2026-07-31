@@ -1,3 +1,4 @@
+import { toAnimalCardDto } from '@/animals/animals.mapper';
 import { PrismaService } from '@/prisma/prisma.service';
 import { SHELTER_ORDERBY, SHELTERS_SELECT } from '@/shelters/shelter.select';
 import { Injectable } from '@nestjs/common';
@@ -13,6 +14,11 @@ export class HomeService {
 
         const [animals, shelter] = await Promise.all([
             this.prisma.animal.findMany({
+                include:{
+                    shelter: true,
+                    animalSpecies: true,
+                    animalBreed: true
+                },
                 orderBy: { createdAt: "desc" },
                 take: 3,
             }),
@@ -24,6 +30,6 @@ export class HomeService {
             }),
         ]);
 
-        return { success: true, animals, shelter };
+        return { success: true, animals: animals.map(toAnimalCardDto), shelter };
     }
 }

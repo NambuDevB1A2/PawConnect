@@ -5,13 +5,18 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AiOpenAiService } from './ai-openai.service';
+import { AiAgentService } from './ai-agent.service';
+import { AiToolsService } from './ai-tools.service';
+import { AiGenerateService } from './ai-generate.service';
+import azureAgentConfig from '@/config/azure/azure-agent.config';
 
 @Module({
   imports: [
     HttpModule,
     ConfigModule.forFeature(azureOpenAiConfig),
+    ConfigModule.forFeature(azureAgentConfig),
   ],
-  providers: [AiService, AiOpenAiService],
+  providers: [AiService, AiOpenAiService, AiAgentService, AiToolsService, AiGenerateService],
   controllers: [AiController]
 })
 export class AiModule {}

@@ -2,46 +2,43 @@
 
 import { CreatePawLog } from "@/services/pawlog/create-pawlog.client";
 import { CreatePawLogSate } from "@/types/pawlog/create-pawlog.type";
-import { validateTitle } from "@/utils/pawlog/pawlog.validator";
-import { useActionState, useContext, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import styles from "@/styles/pawlog/newPawLog.module.css"
-import Typography from "@/components/common/Typography";
 import Section from "@/components/common/Section";
 import ImagesUploader from "@/components/uploader/ImagesUploader";
 import Input from "@/components/common/Input";
 import TextArea from "@/components/common/TextArea";
 import Button from "@/components/common/Button";
 import { useRouter } from "next/navigation";
-import { GeneratePawLog } from "@/services/ai/ai-generate-pawlog.client";
-import { GeneratePawLogState } from "@/types/pawlog/gernerate-pawlog.type";
-import { ModalContext } from "@/providers/ModalProvider";
+import { usePawLogForm } from "@/hooks/form/usePawLogForm";
 
-const initialState: CreatePawLogSate = { };
-const initialAiState: GeneratePawLogState = { };
+const initialState: CreatePawLogSate = {};
 
 export default function NewPawLogForm() {
     const [state, formAction, isPending] = useActionState(CreatePawLog, initialState);
-    const [aiState, formAiAction, isAiPending] = useActionState(GeneratePawLog, initialAiState);
-
-    const { openModal, closeModal } = useContext(ModalContext);
 
     const router = useRouter();
+    const formRef = useRef<HTMLFormElement>(null);
 
-    const [clientErrors, setClientErrors] = useState<{
-        title?: string;
-        content?: string;
-    }>({});
-    
-    // 실시간 타이핑 유효성 검사
-    const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setClientErrors((prev) => ({ ...prev, title: validateTitle(value) }));
-    };
-    
-    // 성공 반환시 로그인 화면으로 이동
+    const {
+        title,
+        content,
+        clientErrors,
+        aiState,
+        isAiPending,
+        handleTitleChange,
+        handleContentChange,
+        handleConfirm,
+    } = usePawLogForm({
+        formRef,
+        initialTitle: state.title,
+        initialContent: state.content,
+    });
+
+    // 성공 반환시 상세 페이지로 이동
     useEffect(() => {
         if (!state.response) return;
-        
+
         if (state.response?.success) {
             alert('게시글을 성공적으로 작성했습니다');
             router.push(`/pawlog/${state.response.pawLogId}`);
@@ -50,67 +47,49 @@ export default function NewPawLogForm() {
         }
     }, [state]);
 
-    // 성공시 alert 표시
-    useEffect(() => {
-        if (!aiState.response) return;
-        
-        if (aiState.response?.success) {
-            alert('AI 게시글 작성을 성공적으로 마쳤습니다');
-        } else {
-            alert('AI 게시글 작성 도중 오류가 발생했습니다');
-        }
-    }, [aiState]);
-
-    useEffect(() => {
-        if (isAiPending) {
-            openModal("aiGenerate", undefined);
-        } else {
-            closeModal();
-        }
-    }, [isAiPending]);
-
     return (
-        <form className={styles.wrapper_section}>
+        <form ref={formRef} className={styles.wrapper_section}>
 
             <Section className={styles.wrapper_pawlog_new} titleText="새로운 PawLog 게시하기">
-            
-                <ImagesUploader 
+
+                <ImagesUploader
                     name="imgPawLog"
                     labelText="게시글 이미지"
-                    errorText={state.imgPawLogError || aiState.imgPawLogError}
+                    errorText={clientErrors.imgPawLog || state.imgPawLogError || aiState.imgPawLogError}
                     />
 
                 <div className={styles.box_pawlog_input}>
-                        <Input 
-                            name="title" defaultValue={aiState.response?.title || state.title}
-                            labelText="제목*" 
+                        <Input
+                            name="title"
+                            value={title}
+                            labelText="제목*"
                             helperText="제목을 입력해주세요(최대 50자)"
                             errorText={clientErrors.title || state.titleError || aiState.contentError}
-                            onChange={handleTitle}
+                            onChange={handleTitleChange}
                             />
-                        <TextArea 
-                            name="content" defaultValue={aiState.response?.content || state.content}
-                            labelText="내용" 
+                        <TextArea
+                            name="content"
+                            value={content}
+                            labelText="내용"
                             helperText="AI 자동 게시글 생성시 전송할 내용 혹은 게시글로 작성할 내용을 입력해주세요(최대 500자)"
                             maxLength={500}
+                            onChange={handleContentChange}
                             />
                 </div>
 
-                <Typography className={styles.typo_info}>* 항목은 필수 입력 항목입니다</Typography>
-                
-                <Button 
+                <Button
                     className={styles.btn_submit}
-                    variant="secondary" 
-                    type="submit" 
-                    formAction={formAiAction}
+                    variant="secondary"
+                    type="button"
+                    onClick={handleConfirm}
                     disabled={isAiPending || isPending}>
                     {isAiPending ? "AI 분석 중..." : "AI 자동 게시글 생성하기"}
                 </Button>
 
-                <Button 
-                    className={styles.btn_submit} 
-                    type="submit" 
-                    formAction={formAction} 
+                <Button
+                    className={styles.btn_submit}
+                    type="submit"
+                    formAction={formAction}
                     disabled={isAiPending || isPending}>
                     {isPending ? "게시 중..." : "게시하기"}
                 </Button>

@@ -18,9 +18,12 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "ai:register-agent-tools": "ts-node -r tsconfig-paths/register src/ai/scripts/register-agent-tools.ts"
   },
   "dependencies": {
+    "@azure/ai-projects": "^2.3.1",
+    "@azure/identity": "^4.13.1",
     "@azure/storage-blob": "^12.33.0",
     "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.0.1",
@@ -39,6 +42,7 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "joi": "^18.2.3",
+    "openai": "^7.1.0",
     "passport": "0.7",
     "passport-jwt": "4",
     "reflect-metadata": "^0.2.2",

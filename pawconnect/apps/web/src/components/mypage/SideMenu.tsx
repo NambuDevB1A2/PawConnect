@@ -92,7 +92,7 @@ export default function SideMenu() {
     const menuItems = SIDE_MENU_CONFIG[user.role];
 
     const handleLogout = () => {
-        openModal("confirmLogout", undefined);
+        openModal("confirmLogout");
     };
 
     return (

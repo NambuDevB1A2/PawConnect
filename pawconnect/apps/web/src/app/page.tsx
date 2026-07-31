@@ -23,7 +23,7 @@ export default async function Page() {
                 slides={[
                     {
                         id: 1,
-                        backgroundImage: '/home/banner/banner_01.png',
+                        backgroundImage: 'home/banner/banner_01.png',
                         title: '새로운 가족을 찾는\n가장 따뜻한 방법',
                         description: 'PawConnect는 보호소와 예비 보호자를 연결하고, 더 행복한 반려 생활을 만들어 갑니다.',
                         buttons: [
@@ -41,7 +41,7 @@ export default async function Page() {
                     },
                     {
                         id: 2,
-                        backgroundImage: '/home/banner/banner_02.png',
+                        backgroundImage: 'home/banner/banner_02.png',
                         title: '나의 가족을 소개해보세요',
                         description: 'PawConnect는 일상을 기록하고 다양한 사람들과 이야기를 공유할 수 있습니다.',
                         buttons: [
@@ -55,13 +55,13 @@ export default async function Page() {
                     },
                     {
                         id: 3,
-                        backgroundImage: '/home/banner/banner_03.png',
+                        backgroundImage: 'home/banner/banner_03.png',
                         title: '나와 잘 맞는\n반려동물을 찾아보세요',
                         description: 'PawConnect는 AI 성향 테스트로 당신의 성격과 생활 방식에 맞는 반려동물을 추천해드립니다.',
                         buttons: [
                             {
                                 id: 1,
-                                variant: "secondary",
+                                variant: "outline",
                                 label: "성향테스트 하러가기",
                                 path: "/pawlab/pawti",
                             },
