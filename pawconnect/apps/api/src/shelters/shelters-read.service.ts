@@ -1,4 +1,5 @@
 import { AdoptionsService } from '@/adoptions/adoptions.service';
+import { toAnimalCardDto } from '@/animals/animals.mapper';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { getPagination, getTotalPage } from '@/common/utils/pagination.util';
@@ -97,10 +98,16 @@ export class SheltersReadService {
     async getShelterByName(name: string) {
         const { animals, ...result } = await this.findByName(name, { 
             ...SHELTER_DETAIL_SELECT, 
-            animals: { take: 4 }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
+            animals: {
+                include:{
+                    shelter: true,
+                    animalSpecies: true,
+                    animalBreed: true
+                },
+            }
         });
 
-        return { shelter: result, animals };
+        return { shelter: result, animals: animals.map(toAnimalCardDto) };
     }
 
     // 내 보호소 정보 조회

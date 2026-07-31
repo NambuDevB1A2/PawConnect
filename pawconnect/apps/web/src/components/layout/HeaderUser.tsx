@@ -45,7 +45,7 @@ export default function HeaderUser({ user }: HeaderUserProps) {
     };
 
     const handleLogout = async () => {
-        openModal("confirmLogout", undefined);
+        openModal("confirmLogout");
         setIsOpen(false);
     };
 

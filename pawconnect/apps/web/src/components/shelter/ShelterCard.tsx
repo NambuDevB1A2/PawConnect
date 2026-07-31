@@ -17,7 +17,7 @@ interface ShelterCardProps {
 export default function ShelterCard({ shelter }: ShelterCardProps) {
     const { user } = useContext(AuthContext);
     const router = useRouter();
-    const imgSrc = shelter.images?.length > 0 ? shelter.images?.[0].img : undefined;
+    const imgSrc = shelter.images?.length > 0 ? shelter.images?.[0].img : shelter.imgBanner;
 
     const handleClick = () => {
         router.push(`/shelter/${shelter.name}`);

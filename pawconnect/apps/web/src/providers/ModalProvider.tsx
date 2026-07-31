@@ -10,7 +10,9 @@ export type ModalKey =
     "imageViewer" |
     "contentViewer" |
     "changePassword" |
-    "aiGenerate";
+    "confirmGenerate" |
+    "aiGenerate" |
+    "aiAgent";
 
 // 모달이 추가 될 때마다 ParamsMap 추가
 interface ModalParamsMap {
@@ -33,45 +35,51 @@ interface ModalParamsMap {
         contentText: string;
     };
 
-    changePassword: {
+    changePassword: undefined;
 
+    confirmGenerate: {
+        onConfirm: () => void;
+        imageUrls?: string[];
+        content?: string;
     };
 
-    aiGenerate: {
+    aiGenerate: undefined;
 
-    };
+    aiAgent: undefined;
 }
 
+type ModalState = {
+    [K in ModalKey]: { key: K; params: ModalParamsMap[K] }
+}[ModalKey];
+
 interface ModalContextType {
-    activeModal: ModalKey | null;
-    params: ModalParamsMap[ModalKey] | null;
-    openModal: (key: ModalKey, ...params: [ModalParamsMap[ModalKey]]) => void;
+    modalState: ModalState | null;
+    openModal: <K extends ModalKey>(key: K, ...params: ModalParamsMap[K] extends undefined ? [] : [ModalParamsMap[K]]) => void;
     closeModal: () => void;
 };
 
 export const ModalContext = createContext<ModalContextType>({
-    activeModal: null,
-    params: null,
+    modalState: null,
     openModal: () => {},
     closeModal: () => {},
 });
 
 export default function ModalProvider({ children }: { children: React.ReactNode }) {
-    const [activeModal, setActiveModal] = useState<ModalKey | null>(null);
-    const [params, setParams] = useState<ModalParamsMap[ModalKey] | null>(null);
+    const [modalState, setModalState] = useState<ModalState | null>(null);
 
-    const openModal = useCallback((key: ModalKey, ...params: [ModalParamsMap[ModalKey]]) => {
-        setActiveModal(key);
-        setParams(params[0] as ModalParamsMap[ModalKey]);
+    const openModal = useCallback(<K extends ModalKey>(
+        key: K, 
+        ...params: ModalParamsMap[K] extends undefined ? [] : [ModalParamsMap[K]]
+    ) => {
+        setModalState({ key, params: params[0] } as ModalState);
     }, []);
 
     const closeModal = useCallback(() => {
-        setActiveModal(null);
-        setParams(null);
+        setModalState(null);
     }, []);
     
     return (
-        <ModalContext.Provider value={{ activeModal, params, openModal, closeModal }}>
+        <ModalContext.Provider value={{ modalState, openModal, closeModal }}>
             {children}
         </ModalContext.Provider>
     );

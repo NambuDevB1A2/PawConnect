@@ -2,7 +2,7 @@
 
 import { useModalBehavior } from "@/hooks/modal/useModalBehavior";
 import styles from "@/styles/modal/Modal.module.css"
-import { HTMLAttributes, useEffect, useState } from "react";
+import { forwardRef, HTMLAttributes, useEffect, useState } from "react";
 
 type ModalSize = "small" | "medium" | "large" | "xlarge";
 
@@ -12,6 +12,7 @@ interface ModalProps extends HTMLAttributes<HTMLDivElement>  {
     closeOnOverlayClick?: boolean;
     isOpen: boolean;
     onClose: () => void;
+    overlayClassName?: string;
 }
 
 export default function Modal({ 
@@ -19,6 +20,7 @@ export default function Modal({
     size = "small",
     closeOnOverlayClick = true,
     className = "",
+    overlayClassName = "",
     isOpen,
     onClose,
     ...props
@@ -43,7 +45,7 @@ export default function Modal({
 
     return (
         <div 
-            className={`${styles.overlay} ${isOpen ? styles.overlay_open : ""}`}
+            className={`${styles.overlay} ${isOpen ? styles.overlay_open : ""} ${overlayClassName}`}
             onClick={(() => closeOnOverlayClick && onClose())}>
             <div 
                 className={`${styles.modal} ${isOpen ? styles.modal_open : ""} ${styles[size]} ${className}`} 
@@ -56,17 +58,31 @@ export default function Modal({
     );
 }
 
-function Header({ children, className = "" }: { children: React.ReactNode, className?: string }) {
-    return <div className={`${styles.box_header} ${className}`}>{children}</div>;
+interface ModalSectionProps {
+    children: React.ReactNode;
+    className?: string;
 }
 
-function Body({ children, className = "" }: { children: React.ReactNode, className?: string }) {
-    return <div className={`${styles.box_body} ${className}`}>{children}</div>;
-}
+const Header = forwardRef<HTMLDivElement, ModalSectionProps>(
+    ({ children, className = "" }, ref) => {
+        return <div ref={ref} className={`${styles.box_header} ${className}`}>{children}</div>;
+    }
+);
+Header.displayName = "Modal.Header";
 
-function Footer({ children, className = "" }: { children: React.ReactNode, className?: string }) {
-    return <div className={`${styles.box_footer} ${className}`}>{children}</div>;
-}
+const Body = forwardRef<HTMLDivElement, ModalSectionProps>(
+    ({ children, className = "" }, ref) => {
+        return <div ref={ref} className={`${styles.box_body} ${className}`}>{children}</div>;
+    }
+);
+Body.displayName = "Modal.Body";
+
+const Footer = forwardRef<HTMLDivElement, ModalSectionProps>(
+    ({ children, className = "" }, ref) => {
+        return <div ref={ref} className={`${styles.box_footer} ${className}`}>{children}</div>;
+    }
+);
+Footer.displayName = "Modal.Footer";
 
 Modal.Header = Header;
 Modal.Body = Body;
