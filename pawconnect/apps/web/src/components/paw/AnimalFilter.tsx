@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { AnimalFilterParams } from "@/types/paw/animal-filter.type";
 import { AnimalGender, AnimalStatus } from "@/types/paw/animal.type";
 import IconButton from "@/components/common/IconButton";
-import { CAT_BREEDS, DOG_BREEDS } from "@/constants/animal-filter.constants";
+import { AGE_OPTIONS, CAT_BREEDS, DOG_BREEDS, GENDER_OPTIONS, STATUS_OPTIONS } from "@/constants/animal-filter.constants";
 
 
 export default function AnimalFilter() {
@@ -19,20 +19,20 @@ export default function AnimalFilter() {
     // 검색
     const searchParams = useSearchParams();
 
-    // URL Query -> 필터 상태 변환
+    // URL Query를 필터 객체로 변환
     const getFilterFromParams = (params: ReturnType<typeof useSearchParams>)
         : AnimalFilterParams => ({
-            keyword: searchParams.get("keyword") ?? "",
-            species: searchParams.get("species") ?
-                Number(searchParams.get("species")) : undefined,
-            breed: searchParams.get("breed") ?
-                Number(searchParams.get("breed")) : undefined,
-            gender: (searchParams.get("gender") as AnimalGender) ?? undefined,
-            isNeutered: searchParams.get("isNeutered") === null ?
-                undefined : searchParams.get("isNeutered") === "true",
-            ageFilter: searchParams.get("ageFilter") ?
-                Number(searchParams.get("ageFilter")) : undefined,
-            status: (searchParams.get("status") as AnimalStatus) ?? undefined,
+            keyword: params.get("keyword") ?? "",
+            species: params.get("species") ?
+                Number(params.get("species")) : undefined,
+            breed: params.get("breed") ?
+                Number(params.get("breed")) : undefined,
+            gender: (params.get("gender") as AnimalGender) ?? undefined,
+            isNeutered: params.get("isNeutered") === null ?
+                undefined : params.get("isNeutered") === "true",
+            ageFilter: params.get("ageFilter") ?
+                Number(params.get("ageFilter")) : undefined,
+            status: (params.get("status") as AnimalStatus) ?? undefined,
         });
 
     // 검색 버튼 스타일
@@ -40,16 +40,17 @@ export default function AnimalFilter() {
 
     // 초기화
     useEffect(() => {
-        //reset=ture로 들어왔으면 완전 초기화
+        // Header에서 reset=ture로 들어오면 URL과 검색조건을 모두 초기화
         if (searchParams.get("reset") === "true") {
             router.replace("/paw");
             return;
         }
-        //URL 기준으로 filter 다시 세팅
+        // URL Query 변경 시 필터 상태 동기화
         setFilter(getFilterFromParams(searchParams));
     }, [searchParams]);
 
-    // 검색 기능
+    // 검색 실행
+    // 현재 필터를 URL Query로 변환 후 목록을 다시 조회
     const handleSearch = () => {
         const params = new URLSearchParams();
 
@@ -62,7 +63,7 @@ export default function AnimalFilter() {
         router.push(`/paw?${params.toString()}`);
     };
 
-    // 검색칸 초기화
+    // 검색 입력값 초기화(URL은 유지)
     const resetFilter = () => {
         setFilter({
             keyword: "",
@@ -84,14 +85,6 @@ export default function AnimalFilter() {
     // 선택한 동물에 따라 품종 나오게
     const breedOptions = filter.species === 1 ? DOG_BREEDS :
         filter.species === 2 ? CAT_BREEDS : allBreeds;
-
-    // 성별(중성화) 옵션
-    const genderOptions = [
-        { label: "여아(중성화 O)", value: "FEMALE_TRUE" },
-        { label: "여아(중성화 X)", value: "FEMALE_FALSE" },
-        { label: "남아(중성화 O)", value: "MALE_TRUE" },
-        { label: "남아(중성화 X)", value: "MALE_FALSE" },
-    ];
 
     return (
         <aside className={styles.wrapper} >
@@ -136,7 +129,7 @@ export default function AnimalFilter() {
                     filter.gender ?
                         `${filter.gender}_${filter.isNeutered ? "TRUE" : "FALSE"}` : undefined
                 }
-                options={genderOptions}
+                options={GENDER_OPTIONS}
                 onChange={(value) => {
                     const [gender, neutered] = value.split("_");
                     setFilter(prev => ({
@@ -149,13 +142,7 @@ export default function AnimalFilter() {
             <Select labelText="나이" helperText="나이를 선택하세요"
                 labelPosition="top"
                 value={filter.ageFilter?.toString()}
-                options={[
-                    { label: "0~6개월", value: "1" },
-                    { label: "6개월~1년", value: "2" },
-                    { label: "1~7세", value: "3" },
-                    { label: "7세 이상", value: "4" },
-                    // { label: "확인 불가", value: "5" },
-                ]}
+                options={AGE_OPTIONS}
                 onChange={(value) => {
                     setFilter(prev => ({
                         ...prev, ageFilter: Number(value)
@@ -165,14 +152,7 @@ export default function AnimalFilter() {
             <Select labelText="상태" helperText="상태를 선택하세요"
                 labelPosition="top"
                 value={filter.status}
-                options={[
-                    { label: "보호중", value: "PROTECTED" },
-                    { label: "공고중", value: "AVAILABLE" },
-                    { label: "입양완료", value: "ADOPTED" },
-                    { label: "귀가완료", value: "REUNITED" },
-                    { label: "자연사", value: "DECEASED" },
-                    { label: "안락사", value: "EUTHANIZED" },
-                ]}
+                options={STATUS_OPTIONS}
                 onChange={(value) => {
                     setFilter(prev => ({
                         ...prev, status: value as AnimalStatus

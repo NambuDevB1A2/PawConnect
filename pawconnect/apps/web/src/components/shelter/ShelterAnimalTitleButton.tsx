@@ -16,7 +16,7 @@ export default function ShelterAnimalTitleButton({ shelterName }: ShelterAnimalT
     return (
         <div className={styles.box_title}>
             <Typography variant="title">등록된 보호동물</Typography>
-            <Button variant="text" onClick={() => router.push(`/paw?search=${encodedSearch}`)}>더보기</Button>
+            <Button variant="text" onClick={() => router.push(`/paw?keyword=${encodedSearch}`)}>더보기</Button>
         </div>
     );
 }

@@ -8,7 +8,7 @@ export interface Animal {
     animalStatusLabel: string;
     species: string;
     breed: string;
-    gender: string;
+    gender: AnimalGender;
     isNeutered: boolean;
     age: number;
     isEstimatedAge: boolean;
