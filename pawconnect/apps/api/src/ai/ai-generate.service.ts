@@ -75,10 +75,10 @@ export class AiGenerateService {
         // Json 응답 파싱
         const { speciesName, breedName, ...result } = await this.openAiService.parseJsonResponse(rawContent);
 
-        let species, bread;
+        let species, breed;
         if (speciesName) species = await this.prisma.animalSpecies.findFirst({ where: { name: speciesName }});
-        if (breedName) bread = await this.prisma.animalBreed.findFirst({ where: { name: breedName }});
+        if (breedName) breed = await this.prisma.animalBreed.findFirst({ where: { name: breedName }});
 
-        return { ...result, species, bread };
+        return { ...result, species, breed };
     }
 }

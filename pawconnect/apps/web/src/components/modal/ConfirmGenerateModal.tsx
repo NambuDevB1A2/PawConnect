@@ -18,8 +18,11 @@ interface ConfirmGenerateModalProps {
 
 export default function ConfirmGenerateModal({ isOpen, onClose, onConfirm, imageUrls, content }: ConfirmGenerateModalProps) {
     const handleConfirm = () => {
-        onConfirm?.();
-        onClose();
+        try {
+            onConfirm?.();
+        } finally {
+            onClose();
+        }
     };
 
     return (
