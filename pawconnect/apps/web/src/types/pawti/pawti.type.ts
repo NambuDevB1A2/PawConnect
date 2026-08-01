@@ -11,7 +11,7 @@ export interface RecommendAnimal {
 }
 
 // 결과
-export interface PawtiResult {
+export interface PawtiResultData {
     mbti: string;
     title: string;
     breed: string;
