@@ -68,10 +68,11 @@ export default function AnimalManageCard({ animal }: AnimalManageCardProps) {
 
             <div className={styles.info}>
                 {/* 동물 종류, 품종 */}
-                <Typography>[{animal.species}] {animal.breed}</Typography>
+                <Typography className={styles.species}>
+                    [{animal.species}] {animal.breed}</Typography>
 
                 {/* 이름 */}
-                <Typography variant="subtitle" className={styles.animalName}>
+                <Typography variant="subtitle" className={styles.animalname}>
                     {animal.name}</Typography>
 
                 {/* 동물 종류, 품종, 성별(중성화여부), 나이, 몸무게 */}
@@ -84,7 +85,8 @@ export default function AnimalManageCard({ animal }: AnimalManageCardProps) {
                 {/* 보호소 이름 */}
                 <Typography className={styles.detail}>{animal.shelterName}</Typography>
                 {/* 등록날짜 2026-06-30 */}
-                <Typography variant="caption">{formatDate(animal.createdAt)}</Typography>
+                <Typography className={styles.date} variant="caption">
+                    {formatDate(animal.createdAt)}</Typography>
             </div>
 
             {/* 버튼들 */}

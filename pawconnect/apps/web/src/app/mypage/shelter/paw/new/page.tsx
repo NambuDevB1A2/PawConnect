@@ -7,7 +7,7 @@ export default function Page() {
         <div>
             <Typography variant="heading">보호동물 등록</Typography>
             {/* 애니멀폼 가져오기 */}
-            {/* <AnimalForm mode="create" /> */}
+            <AnimalForm mode="create" />
             
             {/* 등록요청 */}
           

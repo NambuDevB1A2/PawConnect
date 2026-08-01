@@ -20,7 +20,9 @@ export function toAnimalCardDto(animal: AnimalWithRelation): AnimalCardDto {
         animalStatus: animal.animalStatus,
         animalStatusLabel: ANIMAL_STATUS_LABEL[animal.animalStatus],
         species: animal.animalSpecies.name,
+        speciesId: animal.animalSpecies.id,
         breed: animal.animalBreed.name,
+        breedId: animal.animalBreed.id,
         name: animal.name,
         gender: animal.gender,
         isNeutered: animal.isNeutered,
@@ -53,7 +55,9 @@ export function toAnimalDetailDto(animal: AnimalDetailWithRelation):
         gender: animal.gender,  // 성별
         isNeutered: animal.isNeutered,   // 중성화
         species: animal.animalSpecies.name, // 동물종류 이름
+        speciesId: animal.animalSpecies.id, // 동물종류 아이디
         breed: animal.animalBreed.name,  // 품종
+        breedId: animal.animalBreed.id,  // 품종 아이디
         age: animal.age,                 // 나이
         isEstimatedAge: animal.isEstimatedAge,  //나이 추정
         weight: Number(animal.weight),   // 몸무게

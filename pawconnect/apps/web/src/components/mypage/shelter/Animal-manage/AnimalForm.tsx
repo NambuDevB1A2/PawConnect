@@ -1,164 +1,164 @@
 // 보호동물 등록/수정 같이 사용할 폼
-
+'use client'
 import Button from "@/components/common/Button";
-import Typography from "@/components/common/Typography";
+import BannerImageUploader from "@/components/uploader/BannerUploader";
+import ImagesUploader from "@/components/uploader/ImagesUploader";
 import { AnimalDetail } from "@/types/paw/animal-detail.type";
+import Input from "@/components/common/Input";
+import { useAnimalForm } from "@/hooks/useAnimalFrom";
+import Select from "@/components/common/Select";
+import CheckBox from "@/components/common/CheckBox";
+import Section from "@/components/common/Section";
+import styles from "@/styles/mypage/shelter/animalForm.module.css"
+import TextArea from "@/components/common/TextArea";
+
 
 interface AnimalFormProps {
     mode: "create" | "edit";
     animal?: AnimalDetail;
 }
 
-export default function AnimalForm() {
+// 화면(UI)만 담당
+// Input 값 변경, Upload 컴포넌트 연결, 버튼 클릭, 동물 등록/수정 폼 (UI)
+export default function AnimalForm({mode, animal}: AnimalFormProps) {
+    const {form, setForm, breedOptions, genderOptions, statusOptions,
+            handleChange,handleSelectChange, handleCheckboxChange,
+            handleTextareaChange, handleThumbnailChange, handleImagesChange, 
+            handleGenderChange, handleSubmit } = useAnimalForm(mode, animal);
 
-    // // 등록 수정 버튼
-    // const isPending = ()=> {};
-    // const isEdit = !!animal;
     return (
-        <div>
-            {/* 등록요청 */}
-            {/* <Button type="submit">
-                {isPending ? "저장중..." : isEdit ? "수정하기":"등록하기"}
-            </Button> */}
-        </div>
+         <Section className={styles.wrapper_shelter_info} titleText="동물 정보 입력">
+            <form className={styles.wrapper_form}  onSubmit={(e)=>{
+                e.preventDefault();
+                handleSubmit();
+            }}>
+                <BannerImageUploader 
+                    name="imgThumbnail"
+                    wrapperClassName={styles.wrapper_image_uploader}
+                    labelText="썸네일"
+                    initialImageUrl={animal?.imgThumbnail}
+                    onChange={handleThumbnailChange}
+                />
+                
+                <ImagesUploader 
+                    name="images"
+                    wrapperClassName={styles.wrapper_image_uploader}
+                    labelText="보호동물 사진"
+                    initialImageUrls={animal?.images}
+                    onChange={handleImagesChange}
+                />
+                <div className={styles.box_animal_input}>
+                <Input name="name" value={form.name} labelText="보호동물 이름"
+                    onChange={handleChange}>{animal?.name}</Input>
+
+                <Select labelText="동물" labelPosition="left"
+                                labelSize="small"
+                                helperText="동물을 선택하세요"
+                                value={String(form.speciesId)}
+                                options={[
+                                    { label: "개", value: "1" },
+                                    { label: "고양이", value: "2" }
+                                ]}
+                                onChange={(value) => {
+                                    handleSelectChange("speciesId", Number(value));
+                                    handleSelectChange("breedId", 0); // 종 바뀌면 품종 초기화
+                                }}
+                />
+                <Select labelText="품종" helperText="품종을 선택하세요"
+                                labelPosition="left"
+                                value={String(form.breedId)}
+                                options={breedOptions}
+                                onChange={(value) => 
+                                    handleSelectChange("breedId", Number(value))}
+                            />
+                <Select labelText="성별" helperText="성별을 선택하세요"
+                    labelPosition="left"
+                    value={`${form.gender}_${form.isNeutered ? "TRUE" : "FALSE"}`}
+                    options={genderOptions}
+                    onChange={handleGenderChange}
+                />
+                 
+                <Input
+                    name="age"
+                    labelText="나이"
+                    type="number"
+                    value={String(form.age)}
+                    onChange={handleChange}
+                />
+                
+                <label>
+                    <CheckBox type="checkbox" name="추정"
+                        checked={form.isEstimatedAge}
+                    onChange={(e)=> handleCheckboxChange(
+                        "isEstimatedAge", e.target.checked)} 
+                    />추정
+                </label>
+                <Input
+                    name="weight"
+                    labelText="몸무게(kg)"
+                    type="number"
+                    value={String(form.weight)}
+                    onChange={handleChange}
+                />
+                <Input
+                    name="noticeStartDate"
+                    type="date"
+                    labelText="공고 시작일"
+                    value={form.noticeStartDate}
+                    onChange={handleChange}
+                />
+
+                <Input
+                    name="noticeEndDate"
+                    type="date"
+                    labelText="공고 종료일"
+                    value={form.noticeEndDate}
+                    onChange={handleChange}
+                />
+                <Select
+                    labelText="동물상태"  helperText="상태를 선택하세요"
+                    labelPosition="left"
+                    value={form.animalStatus}
+                    options={statusOptions}
+                    onChange={(value)=>
+                        handleSelectChange("animalStatus", value)
+                    }
+                />
+                <Input
+                    name="foundLocation"
+                    labelText="발견장소"
+                    value={form.foundLocation}
+                    onChange={handleChange}
+                />
+                <TextArea
+                    name="specialNotes"
+                    labelText="특이사항"
+                    maxLength={100}
+                    defaultValue={form.specialNotes}
+                    onChange={handleTextareaChange}
+                />
+                <TextArea
+                    name="description"
+                    labelText="소개말"
+                    maxLength={500}
+                    defaultValue={form.description}
+                    onChange={handleTextareaChange}
+                />
+                <TextArea
+                    name="healthStatus"
+                    labelText="건강상태"
+                    maxLength={500}
+                    defaultValue={form.healthStatus}
+                    onChange={handleTextareaChange}
+                />
+                </div>
+               
+
+                {/* 등록/수정 버튼 */}
+                <Button className={styles.btn_save} type="submit">
+                    {mode === "create"? "등록하기" : "수정하기"}</Button>
+            </form>
+        </Section>
+  
     );
 }
-
-// 썸네일(사진미리보기), 업로드 안내 / 보호동물사진 미리보기, 업로드안내(확장자, 용량, 사이즈안내)
-
-// 아래에
-
-// 보호동물이름, 입력칸
-
-// 동물, 드랍다운
-
-// 품종, 드랍다운
-
-// 성별, 드랍다운
-
-// 나이, 추청(체크박스) 나이드랍다운
-
-// 몸무게, 입력칸(개월수로 받음)
-
-//  공고기간, 시작일 입력칸, 마감일 입력칸
-
-// 동물상태, !툴팁, 상태드랍다운
-
-// 발견장소, 입력칸
-
-// 특이사항, 입력칸(0/100자)
-
-// 소개말, 입력칸
-
-// 건강상태, 입력칸(0/500자)
-
-// 등록버튼 
-
-// const [state, formAction, isPending] = useActionState(UpdateShelter, initialState);
-//     const router = useRouter();
-
-//     const [clientErrors, setClientErrors] = useState<{
-//         shelterName?: string;
-//         shelterAddress?: string;
-//         shelterAddressDetail?: string;
-//         shelterPhone?: string;
-//     }>({});
-    
-//     // 실시간 타이핑 유효성 검사
-//     const handleShelterAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-//         const value = e.target.value;
-//         setClientErrors((prev) => ({ ...prev, shelterAddress: validateShelterAddress(value) }));
-//     };
-    
-//     const handleShelterAddressDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
-//         const value = e.target.value;
-//         setClientErrors((prev) => ({ ...prev, shelterAddressDetail: validateShelterAddress(value) }));
-//     };
-    
-//     const handleShelterPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
-//         const value = e.target.value;
-//         setClientErrors((prev) => ({ ...prev, shelterPhone: validateShelterPhone(value) }));
-//     };
-
-//     useEffect(() => {
-//         if (!state.response) return;
-        
-//         if (state.response?.success) {
-//             alert('정보 변경에 성공했습니다');
-//             router.refresh();
-//         } else {
-//             alert('정보 변경 도중 오류가 발생했습니다');
-//         }
-//     }, [state]);
-    
-//     if (!shelter) {
-//         return <NotFound/>;
-//     }
-
-//     return (
-//         <Section className={styles.wrapper_shelter_info} titleText="보호소 정보 입력">
-//             <form action={formAction} className={styles.wrapper_form}>
-
-//                 <BannerImageUploader 
-//                     name="imgBanner"
-//                     wrapperClassName={styles.wrapper_image_uploader}
-//                     labelText="배너 이미지"
-//                     initialImageUrl={shelter?.imgBanner}
-//                     errorText={state.imgBannerError}/>
-                
-//                 <ImagesUploader 
-//                     name="imgShelter"
-//                     wrapperClassName={styles.wrapper_image_uploader}
-//                     labelText="보호소 이미지"
-//                     initialImageUrls={shelter?.images?.map((img) => img.img)}
-//                     errorText={state.imgShelterError}
-//                     />
-
-//                 <div className={styles.box_shelter_input}>
-//                         <Input 
-//                             name="name" defaultValue={shelter?.name}
-//                             labelText="보호소 이름"
-//                             disabled
-//                             />
-//                         <Input 
-//                             name="address" defaultValue={shelter?.address}
-//                             labelText="주소" 
-//                             helperText="주소를 입력해주세요"
-//                             errorText={clientErrors.shelterAddress ?? state.addressError}
-//                             onChange={handleShelterAddress}
-//                             />
-//                         <Input 
-//                             name="addressDetail" defaultValue={shelter?.addressDetail}
-//                             labelText="상세 주소" 
-//                             helperText="상세 주소를 입력해주세요"
-//                             errorText={clientErrors.shelterAddressDetail ?? state.addressDetailError}
-//                             onChange={handleShelterAddressDetail}
-//                             />
-//                         <Input 
-//                             name="phone" defaultValue={shelter?.phone}
-//                             labelText="전화번호" 
-//                             helperText="전화번호를 입력해주세요(-없이 숫자만)"
-//                             errorText={clientErrors.shelterPhone ?? state.phoneError}
-//                             onChange={handleShelterPhone}
-//                             />
-//                         <TextArea 
-//                             name="operatingHours" defaultValue={shelter?.operatingHours}
-//                             labelText="운영 시간"
-//                             helperText="보호소를 운영하는 시간과 요일을 입력해주세요(최대 100자)" 
-//                             maxLength={100}
-//                             />
-//                         <TextArea 
-//                             name="description" defaultValue={shelter?.description}
-//                             labelText="보호소 소개말" 
-//                             helperText="보호소를 소개하는 말을 입력해주세요(최대 500자)" 
-//                             maxLength={500}
-//                             />
-//                 </div>
-
-//                 <Button className={styles.btn_save} type="submit" disabled={isPending}>
-//                     {isPending ? "저장 중..." : "저장하기"}
-//                 </Button>
-                
-//             </form>
-//         </Section>
-//     );

@@ -49,8 +49,10 @@ export type AnimalGender = "MALE" | "FEMALE" | "UNKNOWN";
 // 동물폼 생성
 export interface CreateAnimalForm {
     name: string;
-    species: number;
-    breed: number;
+    speciesId: number,
+    breedId: number,
+    // species: string;
+    // breed: string;
     gender: AnimalGender;
     isNeutered: boolean;
 
@@ -63,9 +65,17 @@ export interface CreateAnimalForm {
 
     animalStatus: AnimalStatus;
     foundLocation: string;
+    specialNotes: string;
     description: string;
     healthStatus: string;
 
     imgThumbnail?: File | null;
+    // 기존 유지 썸네일
+    existingThumbnail?:string;
+    // 새로 추가하는 이미지
     images: File[];
+    // 기존 유지 이미지
+    existingImages: string[];
+    // 삭제할 기존 이미지
+    deletedImages: string[];
 }

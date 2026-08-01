@@ -21,8 +21,14 @@ export class AnimalDetailResponseDto {
   @ApiProperty({ example: '고양이', description: "동물 종류" })
   species: string;
 
+  @ApiProperty({ example: "1", description: "동물 종류 아이디" })
+  speciesId: number;
+
   @ApiProperty({ example: '코리안숏헤어', description: "동물 품종" })
   breed: string;
+
+  @ApiProperty({ example: "1", description: "동물 품종 아이디" })
+  breedId: number;
 
   @ApiProperty({ enum: AnimalGender, example: AnimalGender.FEMALE, description: "성별" })
   gender: AnimalGender;
@@ -64,7 +70,7 @@ export class AnimalDetailResponseDto {
   noticeEndDate?: Date;
 
   @ApiProperty({ example: '서울시 강남구', description: "발견 장소" })
-  foundLocation?: string ;
+  foundLocation?: string;
 
   @ApiProperty({ example: '사람을 잘 따름', description: "특이사항" })
   specialNotes?: string;

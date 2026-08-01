@@ -12,6 +12,8 @@ export interface AnimalDetail {
     name: string;
     species: string;
     breed: string;
+    speciesId: number;
+    breedId: number;
 
     gender: AnimalGender;
     isNeutered: boolean;
@@ -23,6 +25,7 @@ export interface AnimalDetail {
     animalStatus: AnimalStatus;
     animalStatusLabel: string;
 
+    imgThumbnail: string;
     images: string[];
 
     // 공고 시작일
@@ -37,6 +40,7 @@ export interface AnimalDetail {
 }
 
 export interface ResponseAnimalDetail extends ApiResponse{
+    success: boolean;
     animal: AnimalDetail;
 }
 
