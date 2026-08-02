@@ -56,6 +56,7 @@ export class AdoptionsService {
     });
 
     return {
+      success: true,
       message: "입양 신청이 완료되었습니다.",
       adoptionId: adoption.id,    // 등록된 입양신청 아이디
       adoptionStatus: adoption.adoptionStatus,  // 입양 신청 상태(안보내도 되긴함)

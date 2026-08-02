@@ -51,6 +51,11 @@
     background-color: var(--input-disabled-backgound-color);
 }
 
+.input[type="checkbox"]:checked:disabled {
+    background-color: var(--color-text-disabled);
+    border-color: var(--color-text-disabled);
+}
+
 .wrapper_check_icon {
     position: absolute;
     inset: 0;
