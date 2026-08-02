@@ -55,17 +55,6 @@
     gap: var(--spacing);
 }
 
-.box_agreement {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-100);
-
-    align-items: center;
-    justify-content: center;
-
-    padding-top: var(--spacing);
-}
-
 .box_btns {
     width: 100%;
     
