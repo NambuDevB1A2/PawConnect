@@ -56,10 +56,10 @@ export interface CreateAnimalForm {
     gender: AnimalGender;
     isNeutered: boolean;
 
-    age: number;
+    age: number | "";
     isEstimatedAge: boolean;
 
-    weight: number;
+    weight: number | "";
     noticeStartDate: string;
     noticeEndDate: string;
 
