@@ -21,7 +21,7 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
         // 동물카드 클릭 시 상세 페이지로 이동
         <div className={styles.wrapper_animal_card} onClick={handleClick} >
             {/* <Link href={`/paw/${animal.id}`} /> */}
-            <div className={styles.imageWrapper}>
+            <div className={styles.wrapper_image}>
                 {/* 동물 썸네일 이미지 */}
                 <AppImage className={styles.img_animal} src={animal.imgThumbnail} />
                 {/* 동물상태 뱃지*/}
@@ -34,7 +34,7 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
 
             <div className={styles.box_info}>
                 {/* 이름 */}
-                <Typography variant="subtitle" className={styles.animalName}>
+                <Typography variant="subtitle" className={styles.typo_animal_name}>
                     {animal.name}</Typography>
 
                 {/* 동물 종류, 품종, 성별(중성화여부), 나이, 몸무게 */}

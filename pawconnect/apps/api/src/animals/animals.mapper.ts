@@ -46,7 +46,7 @@ export function toAnimalDetailDto(animal: AnimalDetailWithRelation):
         id: animal.id,
         shelterId: animal.shelter.id,     // 보호소 아이디
         shelterName: animal.shelter.name, // 보호소 이름
-        //thumbnail: animal.imgThumbnail,      //보호소 썸네일 이미지
+        imgThumbnail: animal.imgThumbnail,      //보호소 썸네일 이미지
         images: animal.images.map(image => image.img), // 보호소 이미지들
         name: animal.name,      // 보호동물 이름
         gender: animal.gender,  // 성별

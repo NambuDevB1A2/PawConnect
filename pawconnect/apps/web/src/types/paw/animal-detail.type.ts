@@ -23,6 +23,7 @@ export interface AnimalDetail {
     animalStatus: AnimalStatus;
     animalStatusLabel: string;
 
+    imgThumbnail: string;
     images: string[];
 
     // 공고 시작일

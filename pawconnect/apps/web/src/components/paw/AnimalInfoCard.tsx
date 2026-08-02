@@ -28,11 +28,11 @@ export default function AnimalInfoCard({ animal }: AnimalInfoCardProps) {
     const handleApply = () => {
         // 로그인 안 되어 있으면 로그인 페이지로 이동
         if (!login) {
-            openModal("loginRequired", undefined);
+            openModal("loginRequired");
             return;
         }
         // 로그인되어 있으면 입양신청 페이지로 이동
-        router.push(`/adopt/create?animalId=${animal.id}`);
+        router.push(`/adopt/new?animalId=${animal.id}`);
     }
 
     return (

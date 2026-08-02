@@ -48,8 +48,8 @@ export class AnimalDetailResponseDto {
   @ApiProperty({ example: "입양가능", description: "동물상태(한글)" })
   animalStatusLabel: string;
 
-  // @ApiProperty({ example: 'animals/thumbnail/abc.jpg' , description: "썸네일 이미지" })
-  // thumbnail: string;
+  @ApiProperty({ example: 'animals/thumbnail/abc.jpg' , description: "썸네일 이미지" })
+  imgThumbnail: string;
 
   @ApiProperty({
     type: [String], example: ['animals/image1.jpg',
