@@ -1,6 +1,7 @@
 import Typography from "../common/Typography";
 import Button from "@/components/common/Button";
 import PawtiProgress from "./PawtiProgress";
+import styles from "@/styles/pawLab/pawTI.module.css";
 
 
 interface PawtiQuestionPorps {
@@ -15,27 +16,19 @@ interface PawtiQuestionPorps {
 
 export default function PawtiQuestion({question, current, total, onAnsWer} 
     : PawtiQuestionPorps){
-    // 현재 질문
-    //const question = PAWTI_QUESTIONS[current];
 
     return (
-        <div>
-             <Typography variant="heading">PawTI</Typography>
-
-            {/* 진행 프로그래스바로 만들기 예)65%로 */}
-            <div>
-                {/* {current+1} / {PAWTI_QUESTIONS.length} */}
-                {/* {current+1} / {total} */}
+        <div className={styles.questionContainer}>
+            {/* 진행 프로그래스바 */}
                 <PawtiProgress current={current} total={total}/>
-            </div>
 
-            <div>
-                <Typography variant="title">{question.question}</Typography>
-            </div>
+                <Typography variant="title" className={styles.questionTitle}>
+                    {question.question}</Typography>
 
-            <div>
+            <div className={styles.answerWrapper}>
                 {question.options.map((option, index) => (
-                    <Button key={index} onClick={()=> onAnsWer(index+1)}>
+                    <Button className={styles.answerButton} variant="outline"
+                        key={index} onClick={()=> onAnsWer(index+1)} >
                         {option.text}
                     </Button>
                 ))}

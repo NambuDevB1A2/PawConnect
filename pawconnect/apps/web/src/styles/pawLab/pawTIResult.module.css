@@ -1,0 +1,158 @@
+.resultContainer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.resultCard {
+    /* background:#fff; */
+    background: linear-gradient(135deg,
+            #F8FFF8,
+            #FFFFFF);
+    border: 1px solid #EAEAEA;
+    border-radius: 24px;
+    padding: 40px;
+
+    text-align: center;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .06);
+}
+
+.resultIcon {
+    font-size: 52px;
+    margin-bottom: 18px;
+}
+
+.resultSub {
+    margin-top: 12px;
+    color: #777;
+    line-height: 1.7;
+}
+
+.resultType {
+    margin-top: 10px;
+}
+
+.keywordWrapper {
+    margin-top: 24px;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.keyword {
+    padding: 10px 18px;
+
+    border-radius: 999px;
+
+    background: #F2FFF0;
+
+    color: #4EAF51;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sectionTitle {
+    text-align: left;
+}
+
+.animalGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+
+    /* grid-template-columns:1fr 1fr; */
+    /* grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px; */
+}
+
+.animalTitle {
+    margin-bottom: 14px;
+    font-weight:600;
+    /* text-align: center; */
+}
+
+.emptyCard {
+    width: 240px;
+    height: 320px;
+    border: 1px dashed #DDD;
+    border-radius: 20px;
+
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #999;
+    background: #FAFAFA;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #EEE;
+}
+
+.analysisCard {
+    padding: 28px;
+    border-radius: 20px;
+
+    background: #F8F9FA;
+
+    min-height: 180px;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    margin-top: 20px;
+}
+
+.empty {
+    padding: 24px;
+    border-radius: 16px;
+
+    background: #FAFAFA;
+
+    text-align: center;
+    color: #999;
+}
+
+.aiBox {
+    margin-top: 32px;
+    min-height: 180px;
+    border-radius: 20px;
+    background: #F8F9FA;
+    padding: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 모바일 대응 */
+@media (max-width:768px) {
+
+    .animalGrid {
+        grid-template-columns:1fr;
+    }
+
+    .buttonGroup {
+        flex-direction: column;
+    }
+
+}

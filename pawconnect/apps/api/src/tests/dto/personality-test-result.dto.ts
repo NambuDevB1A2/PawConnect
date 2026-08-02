@@ -23,6 +23,32 @@ export class RecommendAnimalDto  {
 
     @ApiProperty({example: '푸들'})
     breed: string;
+
+    @ApiProperty({example:'1'})
+    breedId:number;
+
+    // AnimalCard용
+
+    @ApiProperty({example:'1'})
+    shelterId:string;
+
+    @ApiProperty({example:'강아지'})
+    species:string;
+
+    @ApiProperty({example:'PROTECTED'})
+    animalStatus:string;
+
+    @ApiProperty({example: true})
+    isNeutered:boolean;
+
+    @ApiProperty({example: false})
+    isEstimatedAge:boolean;
+
+    @ApiProperty({example: 2})
+    weight:number;
+
+    @ApiProperty({example:'2026-08-31'})
+    createdAt:string;
 }
 
 export class PersonalityTestResultDto {

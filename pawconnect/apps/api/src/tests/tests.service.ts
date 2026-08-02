@@ -9,7 +9,7 @@ import { animalSelect } from './testAnimal.select';
 import { AnimalStatus, Prisma } from '@prisma/client';
 
 // 타입지정
-type AnimalSelectType = Prisma.AnimalGetPayload<{select: typeof animalSelect}>;
+type AnimalSelectType = Prisma.AnimalGetPayload<{ select: typeof animalSelect }>;
 
 @Injectable()
 export class TestsService {
@@ -59,24 +59,37 @@ export class TestsService {
      * Animal 조회 결과를 RecommendAnimalDto 형태로 변환한다.
      * 추천 동물이 없으면 null을 반환한다.
      */
-    private toRecommendAnimal(animal : AnimalSelectType| null){
+    private toRecommendAnimal(animal: AnimalSelectType | null) {
         // 추천동물이 없으면 null 반환
-        if(!animal) return null;
+        if (!animal) return null;
 
         return {
             id: animal.id,
+            shelterId: animal.shelterId,
+
             name: animal.name,
-            age: animal.age,
-            gender: animal.gender,
             imgThumbnail: animal.imgThumbnail,
-            shelterName: animal.shelter.name,
+
+            animalStatus: animal.animalStatus,
+            species: animal.animalSpecies.name,
+
             breed: animal.animalBreed.name,
+            breedId: animal.animalBreed.id,
+
+            gender: animal.gender,
+            isNeutered: animal.isNeutered,
+            age: animal.age,
+            isEstimatedAge: animal.isEstimatedAge,
+
+            weight: Number(animal.weight),
+            shelterName: animal.shelter.name,
+            createdAt: animal.createdAt.toISOString(),
         };
     }
 
     // 조회된 동물 목록에서 랜덤으로 1마리 반환, 조회 결과 없으면 null 반환
-    private getRandomAnimal<T>(animals: T[]): T | null{
-        if(animals.length ===0) return null;
+    private getRandomAnimal<T>(animals: T[]): T | null {
+        if (animals.length === 0) return null;
 
         return animals[Math.floor(Math.random() * animals.length)];
     }
@@ -99,7 +112,7 @@ export class TestsService {
 
         // 3. 대표 품종과 일치하는 보호동물 조회 (breed 얻기 대표 품종 조회)
         const representativeAnimals = await this.prisma.animal.findMany({
-            where: { breed: type.breedId, animalStatus: AnimalStatus.AVAILABLE},
+            where: { breed: type.breedId, animalStatus: AnimalStatus.AVAILABLE },
             select: animalSelect,
         });
 
@@ -117,8 +130,10 @@ export class TestsService {
 
         // 매치된 동물 조회
         const matchAnimals = await this.prisma.animal.findMany({
-            where:{breed: {in:matchBreeds},
-            animalStatus: AnimalStatus.AVAILABLE},
+            where: {
+                breed: { in: matchBreeds },
+                animalStatus: AnimalStatus.AVAILABLE
+            },
             select: animalSelect, //animalSelect
         });
         // 매치된 품종 보호동물 중 랜덤 1마리 선택
@@ -129,14 +144,15 @@ export class TestsService {
 
         // 대표 추천 또는 매칭 추천이 존재하는지 확인
         const hasRecommendAnimals = representativeAnimal !== null || matchedAnimal !== null;
-   
+
         // 5. 최종 결과 반환
         return {
+
             mbti: type.mbti,
             title: type.title,
             breed: type.breed,
             keywords: type.keywords,
-            
+
             representativeAnimal: representativeAnimalDto,
             matchedAnimal: matchedAnimalDto,
             hasRecommendAnimals,

@@ -1,4 +1,4 @@
-import Typography from "../common/Typography";
+import styles from "@/styles/pawLab/pawTI.module.css";
 
 interface PawtiProgressProps {
     current: number;
@@ -7,28 +7,14 @@ interface PawtiProgressProps {
 
 // 테스트 진행도 프로그래스바
 export default function PawtiProgress({ current, total }: PawtiProgressProps) {
-    const percent = ((current + 1) / total) * 100;
-    const progressText = (total /100) * current*20;
+    const percent = Math.round(((current + 1) / total) * 100);
 
     return (
-        <div>
-            <div style={{
-                width: "30%",
-                height: "8px",
-                background: "#eee",
-                borderRadius: "999px",
-            }}>
-                <div style={{
-                    width: `${percent}%`,
-                    height: "100%",
-                    background: "#6AB04A",
-                    borderRadius: "999px",
-                    transition: "0.3s",
-                }} />
-
-            </div>
-            <Typography>{current + 1} / {total}</Typography>
-            {/* <Typography>{progressText} %</Typography> */}
+        <div className={styles.progressWrapper}>
+            <div className={styles.progressTrack}>
+                <div className={styles.progressFill} style={{ width: `${percent}%` }} />
+                <span className={styles.progressText}>{percent}%</span>
+            </div>            
         </div>
     );
 }
