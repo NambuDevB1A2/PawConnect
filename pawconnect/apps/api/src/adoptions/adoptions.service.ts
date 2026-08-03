@@ -64,14 +64,21 @@ export class AdoptionsService {
   }
 
   // 로그인한 사용자의 입양 신청 목록 조회
-  async findAll(auth: AuthRequest) {
-    const adoptions = await this.prisma.adoption.findMany({
-      where: { userId: auth.id },
-      orderBy: { createdAt: 'desc' },
-      include: ADOPTION_ANIMAL_INCLUDE,
-    });
+  async findAll(auth: AuthRequest, { page, limit }: QueryPaginationDto) {
+    const [adoptions, totalCount] = await Promise.all([
+        this.prisma.adoption.findMany({
+        where: { userId: auth.id },
+        include: ADOPTION_ANIMAL_INCLUDE,
+        orderBy: ADOPTION_ORDERBY.NEWEST,
+        ...getPagination(page, limit),
+      }),
+      this.prisma.adoption.count({
+        where: { userId: auth.id },
+      }),
+    ]);
 
-    return adoptions;
+    const totalPage = getTotalPage(totalCount, limit); // totalPage 값 추출
+    return { success: true, adoptions, pagination: { page, limit, totalCount, totalPage }};
   }
 
   // 입양신청 상세조회(readOnly 모달)
@@ -87,6 +94,7 @@ export class AdoptionsService {
         },
       },
     });
+    
     // 존재하지 않는 신청인 경우
     if (!adoption) throw new NotFoundException("입양 신청을 찾을 수 없습니다.");
     // 2. 일반사용자는 본인이 작성한 신청서만 조회 가능
@@ -94,12 +102,11 @@ export class AdoptionsService {
       throw new ForbiddenException('조회 권한이 없습니다.');
     }
 
-    // TODO
     // 보호소 관리자는 자신의 보호소에 접수된 신청만 조회 가능
     // 현재 JWT에 shelterId가 없어 구현 보류
-    // if(auth.role === 'SHELTER' && adoption.animal.shelterId !== auth.쉴터아이디){
-    //   throw new ForbiddenException('조회 권한이 없습니다.')
-    // }
+    if(auth.role === 'SHELTER' && adoption.animal.shelterId !== auth.shelterId){
+      throw new ForbiddenException({ message: '조회 권한이 없습니다.' });
+    }
 
     return adoption;
   }
@@ -122,13 +129,11 @@ export class AdoptionsService {
             where,
         })
     ]);
-
     const totalPage = getTotalPage(totalCount, limit);
     return { adoptions, totalCount, totalPage };
   }
 
-  // TODO: shelterId 권한 체크 시 auth 사용 예정
-  // 입양 신청 상태 수정(보호소관리자만)
+  // 입양 신청 상태 수정
   async update(auth: AuthRequest, id: string, updateAdoptionStatusDto: UpdateAdoptionStatusDto) {
     //1. 수정할 입양 신청 조회
     const adoption = await this.prisma.adoption.findUnique({
@@ -137,25 +142,27 @@ export class AdoptionsService {
     });
 
     // 존재하지 않는 신청인 경우
-    if (!adoption) throw new NotFoundException("입양 신청을 찾을 수 없습니다.")
+    if (!adoption) throw new NotFoundException({ message: "입양 신청을 찾을 수 없습니다." });
 
-    // TODO
+    // 일반 사용자는 자신의 신청만 수정 가능
+    if (auth.role === 'USER' && adoption.userId !== auth.id){
+      throw new ForbiddenException({ message: '수정 권한이 없습니다.' });
+    }
+
     // 보호소 관리자는 자신의 보호소에 접수된 신청만 수정 가능
-    // JWT에 shelterId 추가 후 권한 체크 예정
-    // if(adoption.animal.shelterId !== auth.쉴터아이디){
-    //   throw new ForbiddenException('수정 권한이 없습니다.')
-    // }
+    if (auth.role === 'SHELTER' && adoption.animal.shelterId !== auth.shelterId){
+      throw new ForbiddenException({ message: '수정 권한이 없습니다.' });
+    }
 
     // 2. 신청 상태 변경
-    return await this.prisma.adoption.update({
+    await this.prisma.adoption.update({
       where: { id },
       data: {
         adoptionStatus: updateAdoptionStatusDto.adoptionStatus,
       },
     });
+
+    return { success: true, adoptionId: adoption.id };
   }
 
-  // remove(id: string) {
-  //   return `This action removes a #${id} adoption`;
-  // }
 }

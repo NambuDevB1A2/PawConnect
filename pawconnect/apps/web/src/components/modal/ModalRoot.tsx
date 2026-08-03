@@ -32,6 +32,9 @@ export default function ModalRoot() {
                 isOpen={modalState?.key === "confirmDelete"} 
                 onClose={closeModal}
                 onConfirm={modalState?.key === "confirmDelete" ? modalState.params.onConfirm : undefined}
+                header={modalState?.key === "confirmDelete" ? modalState.params.header : undefined}
+                body={modalState?.key === "confirmDelete" ? modalState.params.body : undefined}
+                confirm={modalState?.key === "confirmDelete" ? modalState.params.confirm : undefined}
                 />
             
             <ImageViewerModal

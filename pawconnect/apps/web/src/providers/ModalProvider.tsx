@@ -23,6 +23,9 @@ interface ModalParamsMap {
     confirmDelete: {
         onConfirm: () => void;
         targetName?: string;
+        header?: string;
+        body?: string;
+        confirm?: string;
     };
 
     imageViewer: {
