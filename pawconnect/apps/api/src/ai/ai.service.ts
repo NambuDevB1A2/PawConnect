@@ -5,6 +5,9 @@ import { AiAgentChatDto } from '@/ai/dto/ai-agent.dto';
 import { AiGenerateService } from '@/ai/ai-generate.service';
 import { AiAgentService } from '@/ai/ai-agent.service';
 import { AiOpenAiService } from '@/ai/ai-openai.service';
+import { AiPawtiAnalysisRequestDto } from './pawti/dto/ai-pawti-analysis-request.dto';
+import { AiPawtiAnalysisResponseDto } from './pawti/dto/ai-pawti-analysis-response.dto';
+import { AiPawtiService } from './pawti/ai-pawti.service';
 
 @Injectable()
 export class AiService {
@@ -12,7 +15,15 @@ export class AiService {
         private readonly openAiService: AiOpenAiService,
         private readonly generateService: AiGenerateService,
         private readonly agentService: AiAgentService,
+        private readonly aipawtiService: AiPawtiService,
     ) {}
+
+    // PawTI AI 분석 생성
+    async analysis(dto: AiPawtiAnalysisRequestDto) {
+            const result = await this.aipawtiService.analysis(dto);
+
+        return {success: true, ...result};
+    }
 
     // ai 자동 생성 게시글
     async generatePawLog(aiPawLogDto: AiPawLogDto, files?: Express.Multer.File[]) {
