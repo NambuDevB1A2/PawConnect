@@ -6,7 +6,6 @@ import { AiGenerateService } from '@/ai/ai-generate.service';
 import { AiAgentService } from '@/ai/ai-agent.service';
 import { AiOpenAiService } from '@/ai/ai-openai.service';
 import { AiPawtiAnalysisRequestDto } from './pawti/dto/ai-pawti-analysis-request.dto';
-import { AiPawtiAnalysisResponseDto } from './pawti/dto/ai-pawti-analysis-response.dto';
 import { AiPawtiService } from './pawti/ai-pawti.service';
 
 @Injectable()

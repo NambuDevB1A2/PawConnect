@@ -9,9 +9,9 @@ import { RolesGuard } from '@/auth/guards/role.guard';
 import { createFieldsImageUploadOptions } from '@/config/upload.config';
 import { Body, Controller, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
-import { AiPawtiAnalysisRequestDto } from './pawti/dto/ai-pawti-analysis-request.dto';
+import { AiPawtiAnalysisApiResponseDto, AiPawtiAnalysisRequestDto } from './pawti/dto/ai-pawti-analysis-request.dto';
 import { AiPawtiAnalysisResponseDto } from './pawti/dto/ai-pawti-analysis-response.dto';
 
 @ApiTags('AI')
@@ -27,10 +27,12 @@ export class AiController {
     // PawTI AI 분석 생성
     @Post('pawlab/pawti/analysis')
     @ApiOperation({ summary: "PawTI AI 분석 요청" })
+    @ApiResponse({status: 201, description:  "PawTI AI 분석 결과", 
+        type: AiPawtiAnalysisApiResponseDto})
     @Public()
     async analysis(
         @Body() dto: AiPawtiAnalysisRequestDto):
-            Promise<AiPawtiAnalysisResponseDto> {
+            Promise<AiPawtiAnalysisApiResponseDto> {
         return this.aiService.analysis(dto);
     }
 
