@@ -79,6 +79,7 @@ export default function Select({
             <Typography className={`${styles.label_text} ${styles[labelSize]}`} weight="bold">{labelText}</Typography>
             <div className={styles.box_trigger}>
                 <button
+                    type="button"
                     className={`${styles.trigger} ${className}`}
                     onClick={() => setIsOpen((prev) => !prev)}
                     disabled={disabled}>

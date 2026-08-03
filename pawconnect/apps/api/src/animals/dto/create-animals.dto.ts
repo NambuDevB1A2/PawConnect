@@ -12,7 +12,7 @@ export class CreateAnimalDto {
   @MaxLength(50)
   name: string;
 
-  @ApiProperty({ example: 1, description: "동물 종류" })
+  @ApiProperty({ example: 1, description: "동물 종류 ID" })
   @Type(() => Number)
   @IsInt()
   species: number;

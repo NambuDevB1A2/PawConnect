@@ -40,11 +40,14 @@ export class AnimalsUpdateService {
         //1. 수정 권한 확인
         const currentAnimal = await this.checkShelter(auth, animalId);
         const oldThumbnail = currentAnimal.imgThumbnail;
-        const oldImages = currentAnimal.images.map(img => img.img);
+        const deletedImages = Array.isArray(dto.deletedImages)
+            ? dto.deletedImages : dto.deletedImages
+                ? [dto.deletedImages] : [];
 
         // 이미지 선언
         let thumbnail;
         let images;
+        
         //2. Azure Blob에 썸네일 업로드(있는 경우만)
         if (files?.imgThumbnail?.length) {
             thumbnail = await this.uploadService.uploadThumbnail(
@@ -56,6 +59,11 @@ export class AnimalsUpdateService {
             images = await this.uploadService.uploadImages(files.images);
         }
 
+        // 새로 추가된 이미지 등록
+        const newImageNames = images ? 
+            images.map(img => img.blobName) : [];
+
+
         try {
             const result = await this.prisma.$transaction(async (tx) => {
                 // Animal 수정(보호동물 기본 정보)
@@ -63,13 +71,13 @@ export class AnimalsUpdateService {
                 // AnimalDetail 수정
                 await this.updateAnimalDetail(tx, animalId, dto);
                 // AnimalImage 수정(이미지 변경시만)
-                // 변경된 이미지가 있는지 확인
-                if (images) {
-                    await this.updateAnimalImages(
-                        tx,
-                        animalId,
-                        images.map(img => img.blobName));
-                }
+                // 삭제요청된 기존이미지는 제거, 새로 추가된 이미지는 등록
+                await this.updateAnimalImages(
+                    tx,
+                    animalId,
+                    newImageNames,
+                    deletedImages,
+                );
 
                 // 반환
                 return {
@@ -84,9 +92,9 @@ export class AnimalsUpdateService {
                 if (thumbnail) {
                     await this.uploadService.deleteBlob(oldThumbnail);
                 }
-                // 기존 상세이미지 삭제
-                if (images) {
-                    await this.uploadService.deleteBlobs(oldImages);
+                // 삭제 요청된 이미지만 Blob 삭제
+                if (deletedImages.length > 0) {
+                    await this.uploadService.deleteBlobs(deletedImages);
                 }
             } catch (error) {
                 this.logger.warn("기존 Blob 삭제 실패", error);
@@ -127,7 +135,7 @@ export class AnimalsUpdateService {
             await this.uploadService.deleteBlob(animal.imgThumbnail);
             await this.uploadService.deleteBlobs(
                 animal.images.map(img => img.img));
-        } catch (error){
+        } catch (error) {
             this.logger.warn('이미지 삭제 실패', error);
         }
 
@@ -140,26 +148,29 @@ export class AnimalsUpdateService {
         tx: Prisma.TransactionClient,
         id: number,
         dto: UpdateAnimalDto,
-        thumbnail?: string
+        thumbnail?: string,
     ) {
+        const data: Prisma.AnimalUpdateInput = {
+            ...(dto.name !== undefined && { name: dto.name }),
+            ...(dto.species !== undefined && { species: dto.species }),
+            ...(dto.breed !== undefined && { breed: dto.breed }),
+            ...(dto.gender !== undefined && { gender: dto.gender }),
+            ...(dto.isNeutered !== undefined && { isNeutered: dto.isNeutered }),
+
+            ...(dto.age !== undefined && { age: dto.age }),
+            ...(dto.isEstimatedAge !== undefined && { isEstimatedAge: dto.isEstimatedAge }),
+
+            ...(dto.weight !== undefined && { weight: dto.weight }),
+            ...(dto.animalStatus !== undefined && { animalStatus: dto.animalStatus }),
+        };
+        // 새 썸네일이 올라온 경우에만 교체
+        if (thumbnail) {
+            data.imgThumbnail = thumbnail;
+        }
+
         return tx.animal.update({
             where: { id },
-            data: {
-                ...(dto.name !== undefined && { name: dto.name }),
-                ...(dto.species !== undefined && { species: dto.species }),
-                ...(dto.breed !== undefined && { breed: dto.breed }),
-                ...(dto.gender !== undefined && { gender: dto.gender }),
-                ...(dto.isNeutered !== undefined && { isNeutered: dto.isNeutered }),
-
-                ...(dto.age !== undefined && { age: dto.age }),
-                ...(dto.isEstimatedAge !== undefined && { isEstimatedAge: dto.isEstimatedAge }),
-
-                ...(dto.weight !== undefined && { weight: dto.weight }),
-                ...(dto.animalStatus !== undefined && { animalStatus: dto.animalStatus }),
-
-                // 새 썸네일이 업로드 된 경우에만 변경
-                ...(thumbnail && { imgThumbnail: thumbnail }),
-            }
+            data,
         });
     }
 
@@ -199,18 +210,27 @@ export class AnimalsUpdateService {
     private async updateAnimalImages(
         tx: Prisma.TransactionClient,
         animalId: number,
-        images: string[]
+        newImages: string[],
+        deleteImages: string[]
     ) {
-        if (!images.length) return;
+        // if (!images.length) return;
 
-        // 기존 이미지 삭제
-        await tx.animalImage.deleteMany({
-            where: { animalId }
-        });
+        // 삭제할 기존이미지 제거
+        if (deleteImages.length) {
+            await tx.animalImage.deleteMany({
+                where: {
+                    animalId,
+                    img: { in: deleteImages }
+                }
+            });
+        }
+
 
         // 새 이미지 등록
-        await tx.animalImage.createMany({
-            data: images.map(img => ({ animalId, img }))
-        });
+        if (newImages.length) {
+            await tx.animalImage.createMany({
+                data: newImages.map(img => ({ animalId, img }))
+            });
+        }
     }
 }

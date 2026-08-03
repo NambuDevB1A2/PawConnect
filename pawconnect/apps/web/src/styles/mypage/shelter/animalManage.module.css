@@ -1,0 +1,94 @@
+.wrapper_page {
+    display: flex;
+    /* justify-content: center; */
+    gap:24px;
+    align-items:flex-start;
+    /* padding: 40px 0; */
+}
+
+.wrapper_list {
+    flex: 1;
+    /* width: 1280px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px; */
+}
+
+.box_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding-bottom: var(--spacing-300);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.content {
+    /* flex:1; */
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+
+    padding-top: var(--spacing-300);
+}
+
+/* 왼쪽 검색 */
+.filter_box {
+    width: 280px;
+    flex-shrink: 0;
+
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    position: sticky;
+    top: 90px;
+}
+
+/* 오른쪽 */
+.list_section {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.animalGrid {
+    display:grid;
+    grid-template-columns:
+        repeat(3, minmax(280px,1fr));
+        /* repeat(auto-fill,minmax(280px,1fr)); */
+
+    gap:24px;
+    width:100%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+/* 반응형 추가 */
+@media(max-width:1024px){
+
+    .animalGrid{
+        grid-template-columns:repeat(2, minmax(240px,1fr));
+    }
+
+}
+
+@media(max-width:640px){
+
+    .animalGrid{
+        grid-template-columns:1fr;
+    }
+
+}

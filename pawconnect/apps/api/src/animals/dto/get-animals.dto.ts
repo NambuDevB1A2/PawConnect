@@ -80,6 +80,9 @@ export class AnimalCardDto {
     @ApiProperty({ example: 1, description: "동물 카드 아이디" })
     id: number;
 
+    @ApiProperty({ example: "uuid", description: "보호소 아이디" })
+    shelterId: string;
+
     @ApiProperty({
         example: "/uploads/animal/thumbnail.jpg",
         description: "보호동물 썸네일 이미지"
@@ -88,18 +91,24 @@ export class AnimalCardDto {
 
     @ApiProperty({ example: AnimalStatus.PROTECTED, description: "동물상태(영문)" })
     animalStatus: AnimalStatus;
-    
+
     @ApiProperty({ example: "입양가능", description: "동물상태(한글)" })
     animalStatusLabel: string;
 
     @ApiProperty({ example: "고양이", description: "동물 종류" })
     species: string;
 
+    @ApiProperty({ example: "1", description: "동물 종류 아이디" })
+    speciesId: number;
+
     @ApiProperty({ example: "리트리버", description: "동물 품종" })
     breed: string;
 
+    @ApiProperty({ example: "1", description: "동물 품종 아이디" })
+    breedId: number;
+
     @ApiProperty({ example: "봉지", description: "동물 이름" })
-    name: string
+    name: string;
 
     @ApiProperty({ example: AnimalGender.MALE, description: "성별" })
     gender: AnimalGender;
