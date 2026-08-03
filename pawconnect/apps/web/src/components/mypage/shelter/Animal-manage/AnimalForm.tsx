@@ -35,7 +35,7 @@ export default function AnimalForm({mode, animal}: AnimalFormProps) {
                 <BannerImageUploader 
                     name="imgThumbnail"
                     wrapperClassName={styles.wrapper_image_uploader}
-                    labelText="썸네일"
+                    labelText="썸네일 *"
                     initialImageUrl={animal?.imgThumbnail}
                     onChange={handleThumbnailChange}
                 />
@@ -43,15 +43,15 @@ export default function AnimalForm({mode, animal}: AnimalFormProps) {
                 <ImagesUploader 
                     name="images"
                     wrapperClassName={styles.wrapper_image_uploader}
-                    labelText="보호동물 사진"
+                    labelText="보호동물 사진 *"
                     initialImageUrls={animal?.images}
                     onChange={handleImagesChange}
                 />
                 <div className={styles.box_animal_input}>
-                <Input name="name" value={form.name} labelText="보호동물 이름"
+                <Input name="name" value={form.name} labelText="보호동물 이름 *"
                     onChange={handleChange} />
 
-                <Select labelText="동물" labelPosition="left"
+                <Select labelText="동물 *" labelPosition="left"
                                 labelSize="small"
                                 helperText="동물을 선택하세요"
                                 value={String(form.speciesId)}
@@ -64,14 +64,14 @@ export default function AnimalForm({mode, animal}: AnimalFormProps) {
                                     handleSelectChange("breedId", 0); // 종 바뀌면 품종 초기화
                                 }}
                 />
-                <Select labelText="품종" helperText="품종을 선택하세요"
+                <Select labelText="품종 *" helperText="품종을 선택하세요"
                                 labelPosition="left"
                                 value={String(form.breedId)}
                                 options={breedOptions}
                                 onChange={(value) => 
                                     handleSelectChange("breedId", Number(value))}
                             />
-                <Select labelText="성별" helperText="성별을 선택하세요"
+                <Select labelText="성별 *" helperText="성별을 선택하세요"
                     labelPosition="left"
                     value={`${form.gender}_${form.isNeutered ? "TRUE" : "FALSE"}`}
                     options={genderOptions}
@@ -80,7 +80,7 @@ export default function AnimalForm({mode, animal}: AnimalFormProps) {
                  
                 <Input
                     name="age"
-                    labelText="나이"
+                    labelText="나이 *"
                     type="number"
                     value={String(form.age)}
                     onChange={handleChange}
@@ -95,7 +95,7 @@ export default function AnimalForm({mode, animal}: AnimalFormProps) {
                 </label>
                 <Input
                     name="weight"
-                    labelText="몸무게(kg)"
+                    labelText="몸무게(kg) *"
                     type="number"
                     value={String(form.weight)}
                     onChange={handleChange}
@@ -103,7 +103,7 @@ export default function AnimalForm({mode, animal}: AnimalFormProps) {
                 <Input
                     name="noticeStartDate"
                     type="date"
-                    labelText="공고 시작일"
+                    labelText="공고 시작일 *"
                     value={form.noticeStartDate}
                     onChange={handleChange}
                 />
@@ -111,12 +111,12 @@ export default function AnimalForm({mode, animal}: AnimalFormProps) {
                 <Input
                     name="noticeEndDate"
                     type="date"
-                    labelText="공고 종료일"
+                    labelText="공고 종료일 *"
                     value={form.noticeEndDate}
                     onChange={handleChange}
                 />
                 <Select
-                    labelText="동물상태"  helperText="상태를 선택하세요"
+                    labelText="동물상태 *"  helperText="상태를 선택하세요"
                     labelPosition="left"
                     value={form.animalStatus}
                     options={statusOptions}

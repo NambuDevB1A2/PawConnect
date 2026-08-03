@@ -59,7 +59,6 @@ export class AnimalsCreateService {
 
             throw error;
         };
-
     }
 
     // animal 생성
