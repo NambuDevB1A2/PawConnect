@@ -30,7 +30,10 @@ export async function CreateAdoption(animalId: number, prevState: CreateAdoption
     const agreedToAdoption = formdata.get('agreedToAdoption') as string;
 
     // 1. 값 유무 검사
-    if (!userName || !phone || !email || !address) {
+    if (!userName || !phone || !email || !address 
+        || !petExperience || !residenceType || !petAllowedStatus || !familySize 
+        || !youngChildStatus || !isFamilyConsent || !adoptionPurpose || !additionalNotes
+    ) {
         return {
             userName,
             phone,
@@ -58,6 +61,16 @@ export async function CreateAdoption(animalId: number, prevState: CreateAdoption
             phoneError: !phone ? "전화번호를 입력해주세요" : "", 
             emailError: !email ? "이메일을 입력해주세요" : "", 
             addressError: !address ? "주소를 입력해주세요" : "", 
+
+            petExperienceError: !petExperience ? "값을 입력해주세요" : "", 
+            residenceTypeError: !residenceType ? "값을 입력해주세요" : "", 
+            petAllowedStatusError: !petAllowedStatus ? "값을 입력해주세요" : "", 
+            familySizeError: !familySize ? "값을 입력해주세요" : "", 
+            youngChildStatusError: !youngChildStatus ? "값을 입력해주세요" : "", 
+            isFamilyConsentError: !isFamilyConsent ? "값을 입력해주세요" : "", 
+
+            adoptionPurposeError: !adoptionPurpose ? "값을 입력해주세요" : "", 
+            additionalNotesError: !additionalNotes ? "값을 입력해주세요" : "", 
         };
     }
     
@@ -145,6 +158,22 @@ export async function CreateAdoption(animalId: number, prevState: CreateAdoption
                 emailError: error.fields.email,
                 addressError: error.fields.address,
                 addressDetailError: error.fields.addressDetail,
+
+                petExperienceError: error.fields.petExperience,
+                petsDescriptionError: error.fields.petsDescription,
+                petExperiencePeriodError: error.fields.petExperiencePeriod,
+                residenceTypeError: error.fields.residenceType,
+                petAllowedStatusError: error.fields.petAllowedStatus,
+                familySizeError: error.fields.familySize,
+                youngChildStatusError: error.fields.youngChildStatus,
+                isFamilyConsentError: error.fields.isFamilyConsent,
+
+                adoptionPurposeError: error.fields.adoptionPurpose,
+                isCanVaccinateError: error.fields.isCanVaccinate,
+                isCanProvideMedicalCareError: error.fields.isCanProvideMedicalCare,
+                isCanProvideExerciseError: error.fields.isCanProvideExercise,
+                isAcceptLifetimeResponsibilityError: error.fields.isAcceptLifetimeResponsibility,
+                additionalNotesError: error.fields.additionalNotes,
             };
         }
 

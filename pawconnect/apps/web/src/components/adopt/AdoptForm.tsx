@@ -54,6 +54,9 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
     const [isCanProvideExercise, setIsCanProvideExercise] = useState<boolean>(false);
     const [isAcceptLifetimeResponsibility, setIsAcceptLifetimeResponsibility] = useState<boolean>(false);
     const [additionalNotes, setAdditionalNotes] = useState<string>("");
+
+    const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
+    const [agreedToAdoption, setAgreedToAdoption] = useState<boolean>(false);
     
     const { user } = useContext(AuthContext);
     const { openModal } = useContext(ModalContext);
@@ -95,7 +98,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
         openModal("contentViewer", { titleText: TERMS_MESSAGES.privacyPolicy.title, contentText: TERMS_MESSAGES.privacyPolicy.content });
     }
 
-    const handleCancle = () => {
+    const handleCancel = () => {
         router.push(`/paw/${animal.id}`);
     };
 
@@ -109,17 +112,27 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
         setStep((prev) => prev + 1);
     };
 
-    if (!user) {
-        return (
-            <div className={styles.wrapper_form}>
-                <NotFound/>
-            </div>);
-    }
-    
-    // 성공 반환시 로그인 화면으로 이동
-    useEffect(() => {
-        console.log(state);
+    // 다음 단계 비활성화 조건
+    let isNextStepDisabled = true;
 
+    if (step === 1) {
+        isNextStepDisabled = (!userName || !phone || !email || !address);
+    }
+    else if (step === 2) {
+        isNextStepDisabled = (!petExperience || !residenceType || !petAllowedStatus || !familySize
+            || !youngChildStatus || !isFamilyConsent || !adoptionPurpose 
+            // || !isCanVaccinate || !isCanProvideMedicalCare || !isCanProvideExercise || !isAcceptLifetimeResponsibility
+            || !additionalNotes || !agreedToTerms || !agreedToAdoption
+        );
+    }
+
+    // 단계 변경시 스크롤 효과
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [step]);
+
+    // 성공 반환시 내 입양 신청 화면으로 이동
+    useEffect(() => {
         if (!state.response) return;
         
         if (state.response?.success) {
@@ -127,9 +140,25 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
             router.push("/mypage/adopt");
         } else {
             alert('신청서 작성 도중 오류가 발생했습니다');
+
+            if (state.userNameError || state.phoneError || state.emailError 
+                || state.addressError || state.addressDetailError) {
+                    setStep(1);
+                }
+                else {
+                    setStep(2);
+                }
         }
     }, [state]);
     
+
+    if (!user) {
+        return (
+            <div className={styles.wrapper_form}>
+                <NotFound/>
+            </div>);
+    }
+
     return (
         <div className={styles.wrapper_form}>
             <AdoptStepProgress step={step} />
@@ -185,7 +214,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
             <div style={{ display: step === 2 ? "block" : "none" }}>
                 <Section titleText="입양 기본 정보">
                     <div className={styles.box_radio_group}>
-                        <Typography weight="bold" className={styles.typo_radio}>반려동물 양육 경험</Typography>
+                        <Typography weight="bold" className={styles.typo_radio}>반려동물 양육 경험*</Typography>
                         <RadioGroup name="petExperience" 
                             defaultValue={petExperience || "NONE"} onChange={setPetExperience}
                             className={styles.box_radio_list}>
@@ -229,7 +258,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                     <Select 
                         name="residenceType"
                         value={residenceType}
-                        labelText="거주 형태"
+                        labelText="거주 형태*"
                         labelPosition="top"
                         helperText="선택하세요"
                         options={[
@@ -245,7 +274,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                     <Select 
                         name="familySize"
                         value={familySize}
-                        labelText="가족 구성"
+                        labelText="가족 구성*"
                         labelPosition="top"
                         helperText="선택하세요"
                         options={[
@@ -260,7 +289,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                     <Select 
                         name="isFamilyConsent"
                         value={isFamilyConsent}
-                        labelText="가족 동의 여부"
+                        labelText="가족 동의 여부*"
                         labelPosition="top"
                         helperText="선택하세요"
                         options={[
@@ -275,7 +304,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                     <Select 
                         name="petAllowedStatus"
                         value={petAllowedStatus}
-                        labelText="반려동물 사육 가능 여부"
+                        labelText="반려동물 사육 가능 여부*"
                         labelPosition="top"
                         helperText="선택하세요"
                         options={[
@@ -289,7 +318,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                     <Select 
                         name="youngChildStatus"
                         value={youngChildStatus}
-                        labelText="어린 아이 여부"
+                        labelText="어린 아이 여부*"
                         labelPosition="top"
                         helperText="선택하세요"
                         options={[
@@ -304,7 +333,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                 
                 <Section titleText="입양 계획">
                     <div className={styles.box_radio_group}>
-                    <Typography weight="bold" className={styles.typo_radio}>입양 목적</Typography>
+                    <Typography weight="bold" className={styles.typo_radio}>입양 목적*</Typography>
                     <TextArea
                         name="adoptionPurpose"
                         value={adoptionPurpose}
@@ -333,7 +362,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                     </div>
                     
                     <div className={styles.box_radio_group}>
-                    <Typography weight="bold" className={styles.typo_radio}>추가 전달사항</Typography>
+                    <Typography weight="bold" className={styles.typo_radio}>추가 전달사항*</Typography>
                     <TextArea
                         name="additionalNotes"
                         value={additionalNotes}
@@ -346,14 +375,16 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                     <div className={styles.box_radio_group}>
                         <Typography weight="bold" className={styles.typo_radio}> </Typography>
                             <div className={styles.box_radio_list}>
-                            <CheckBox name="agreedToTerms">
+                            <CheckBox name="agreedToTerms"
+                            onChange={(e) => setAgreedToTerms(e.target.checked)}>
                                 <Button variant="text" type="button" onClick={handleOpenTermsOfService}>이용약관</Button>
                                 &nbsp;및&nbsp;
                                 <Button variant="text" type="button" onClick={handleOpenPrivacyPolicy}>개인정보 처리방침</Button>
                                 에 동의합니다
                             </CheckBox>
                             
-                            <CheckBox name="agreedToAdoption">
+                            <CheckBox name="agreedToAdoption"
+                            onChange={(e) => setAgreedToAdoption(e.target.checked)}>
                                 입양 심사에 필요한 정보 제공에 동의합니다
                             </CheckBox>
                         </div>
@@ -363,7 +394,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                 
             </div>
                 
-            <div style={{ display: step === 3 ? "block" : "none" }}>
+            {step === 3 &&
                 <AdoptFormReadOnly
                     userName={userName}
                     phone={phone}
@@ -388,15 +419,15 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                     isAcceptLifetimeResponsibility={isAcceptLifetimeResponsibility}
                     additionalNotes={additionalNotes}
                     />
-            </div>
+            }
                     
                 <div className={styles.box_btns}>
                     {step === 1 && 
-                    <Button variant="modal" type="button" onClick={handleCancle} disabled={isPending}>취소</Button>}
+                    <Button variant="modal" type="button" onClick={handleCancel} disabled={isPending}>취소</Button>}
                     {1 < step && step <= 3 && 
                     <Button variant="modal" type="button" onClick={handlePrevStep} disabled={isPending}>이전 단계</Button>}
                     {1 <= step && step < 3 && 
-                    <Button variant="primary" type="button" onClick={handleNextStep} disabled={isPending}>다음 단계</Button>}
+                    <Button variant="primary" type="button" onClick={handleNextStep} disabled={isPending || isNextStepDisabled}>다음 단계</Button>}
                     {step === 3 && 
                     <Button variant="primary" type="submit" disabled={isPending}>
                         {isPending ? "제출 중..." : "제출하기"}

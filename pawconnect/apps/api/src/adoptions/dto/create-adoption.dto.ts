@@ -22,31 +22,31 @@ export class CreateAdoptionDto {
 
     @ApiProperty({ example: "김샛별", description: "신청자 이름", })
     @IsString()
-    @MaxLength(30)
+    @MaxLength(30, { message: "너무 긴 이름은 사용할 수 없습니다" })
     userName: string;
 
     @ApiProperty({
         example: "example@email.com",
         description: "신청자 이메일(회원 이메일이 기본값으로 표시되며 수정 가능)",
     })
-    @IsEmail()
-    @MaxLength(255)
+    @IsEmail({}, { message: "올바른 이메일 형식이 아닙니다" })
+    @MaxLength(255, { message: "너무 긴 이메일은 사용할 수 없습니다" })
     email: string;
 
     @ApiProperty({ example: "01012345678", description: "신청자 연락처", })
     @IsString()
-    @MaxLength(20)
+    @MaxLength(20, { message: "올바르지 않은 전화번호입니다" })
     phone: string;
 
     @ApiProperty({ example: "서울시 금천구 독산로 50길 23", description: "신청자 주소", })
     @IsString()
-    @MaxLength(255)
+    @MaxLength(255, { message: "올바르지 않은 주소입니다" })
     address: string;
 
     @ApiProperty({ example: "교육관 203", description: "상세 주소", })
     @IsOptional()
     @IsString()
-    @MaxLength(255)
+    @MaxLength(255, { message: "올바르지 않은 주소입니다" })
     addressDetail?: string;
 
     @ApiProperty({
@@ -62,7 +62,7 @@ export class CreateAdoptionDto {
     })
     @IsOptional()
     @IsString()
-    @MaxLength(100)
+    @MaxLength(100, { message: "양육경험 상세는 100자 이하여야 합니다" })
     petsDescription?: string;
 
     @ApiProperty({
@@ -111,7 +111,7 @@ export class CreateAdoptionDto {
         description: "입양 목적",
     })
     @IsString()
-    @MaxLength(100)
+    @MaxLength(100, { message: "입양 목적은 100자 이하여야 합니다" })
     adoptionPurpose: string;
 
     @IsBoolean()
@@ -135,7 +135,7 @@ export class CreateAdoptionDto {
         description: "추가 전달 사항",
     })
     @IsString()
-    @MaxLength(500)
+    @MaxLength(500, { message: "추가 전달 사항은 상세는 500자 이하여야 합니다" })
     additionalNotes: string;
 
     @ApiProperty({

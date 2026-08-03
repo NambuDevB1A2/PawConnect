@@ -23,12 +23,12 @@ export class AdoptionsService {
     });
     // 존재하는 동물이 아니면 경고 띄우기
     if (!animal) {
-      throw new NotFoundException("존재하지 않는 보호 동물 입니다.");
+      throw new NotFoundException({ message: "존재하지 않는 보호 동물 입니다."});
     }
 
     // 2. 현재 입양 가능한 상태인지 체크(입양가능 상태가 아니면 경고 띄우기)
     if (animal.animalStatus !== AnimalStatus.AVAILABLE) {
-      throw new BadRequestException("현재 입양 신청이 불가능한 보호동물 입니다.")
+      throw new BadRequestException({ message: "현재 입양 신청이 불가능한 보호동물 입니다."});
     }
 
     // 3. 동일한 보호동물에 이미 신청한 이력이 있는지 확인(중복신청 확인)
@@ -38,7 +38,7 @@ export class AdoptionsService {
 
     // 존재하면 경고 띄우기
     if (existingAdoption) {
-      throw new BadRequestException("이미 해당 동물에 입양 신청을 했습니다.");
+      throw new BadRequestException({ message: "이미 해당 동물에 입양 신청을 했습니다."});
     }
 
     // 4. 입양 신청서 생성
