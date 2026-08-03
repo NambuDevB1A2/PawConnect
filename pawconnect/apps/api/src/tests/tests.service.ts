@@ -21,6 +21,10 @@ export class TestsService {
     마지막에 각 성향의 점수를 비교하여 최종 MBTI 문자열을 반환한다.
     */
     private calculateMbti(answers: number[]) {
+        if( answers.length != PERSONALITY_QUESTIONS.length) {
+            throw new BadRequestException("답변 개수가 올바르지 않습니다");
+        }
+
         // 8개의 성향의 점수를 저장할 객체 0으로 시작
         const scores = {
             E: 0,
@@ -72,6 +76,7 @@ export class TestsService {
 
             animalStatus: animal.animalStatus,
             species: animal.animalSpecies.name,
+            speciesId: animal.animalSpecies.id,
 
             breed: animal.animalBreed.name,
             breedId: animal.animalBreed.id,

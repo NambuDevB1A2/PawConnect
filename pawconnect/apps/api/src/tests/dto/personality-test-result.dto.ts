@@ -35,6 +35,9 @@ export class RecommendAnimalDto  {
     @ApiProperty({example:'강아지'})
     species:string;
 
+    @ApiProperty({example:'1'})
+    speciesId:number;
+
     @ApiProperty({example:'PROTECTED'})
     animalStatus:string;
 
