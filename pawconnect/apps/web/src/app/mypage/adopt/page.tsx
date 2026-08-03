@@ -26,7 +26,7 @@ export default async function Page({ searchParams }: PageProps) {
             <div className={styles.wrapper_list}>
                 <div className={styles.box_title}>
                     <Typography variant="title">내 입양 신청</Typography>
-                    <Typography>총 {pagination?.totalCount}개의 신청서</Typography>
+                    <Typography>총 {pagination?.totalCount}개의 신청</Typography>
                 </div>
 
                 {hasAdoption ?

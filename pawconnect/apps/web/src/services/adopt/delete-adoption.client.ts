@@ -4,7 +4,7 @@ import { ApiResponse } from "@/types/response.type";
 export async function DeleteAdoption(adoptionId: string) {
     try {
         return await fetchClient.patch<ApiResponse>(`/adoptions/${adoptionId}/status`, {
-            adoptionStatus: "CANCEL",
+            "adoptionStatus": "CANCELED",
         });
     } catch (error) {
         console.log(error);

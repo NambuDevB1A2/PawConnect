@@ -52,7 +52,7 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
     };
 
     return (
-        <div className={styles.wrapper_adoption_card}>
+        <div className={`${styles.wrapper_adoption_card} ${adoption.adoptionStatus === "CANCELED" ? styles.canceled : ""}`}>
             <div className={styles.wrapper_image}>
                 <AppImage className={styles.img_animal} src={adoption.animal.imgThumbnail} />
                 <Badge className={styles.badge_animal}
@@ -85,7 +85,7 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
 
                 <div className={styles.wrapper_btns}>
                     <Button variant="modal" size="small">신청서 보기</Button>
-                    <Button variant="danger" size="small" onClick={handleDelete}>신청 취소</Button>
+                    {adoption.adoptionStatus !== "CANCELED" && <Button variant="danger" size="small" onClick={handleDelete}>신청 취소</Button>}
                 </div>
             </div>
         </div>

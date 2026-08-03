@@ -14,10 +14,15 @@
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-medium);
 
-    border: 1px solid var(--color-surface);
+    border: 1px solid var(--color-border);
 
     transition: 
         border-color var(--transition-border-color);
+}
+
+.canceled {
+    background-color: var(--color-badge-completed-background-color);
+    color: var(--color-text-secondary);
 }
 
 .wrapper_image{
