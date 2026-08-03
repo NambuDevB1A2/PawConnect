@@ -1,45 +1,75 @@
+'use client'
 import { PAWTI_QUESTIONS } from "@/constants/pawti/pawti-question.constants";
 import { SubmitPawti } from "@/services/pawti/pawti.client";
-import { PawtiResult } from "@/types/pawti/pawti.type";
 import { useState } from "react"
+import PawtiQuestion from "./PawtiQuestion";
+import PawtiLoading from "./PawtiLoading";
+import PawtiIntro from "./PawtiIntro";
+import { useRouter } from "next/navigation";
 
-interface PawTITestProps {
-    question : string;
-}
 
-export default function PawTITest({ question }: PawTITestProps) {
+export default function PawTITest() {
+    const router = useRouter();
+
+    // 상태관리
+    const [step, setStep] = useState<"intro" | "test">("intro");
+
     // 답변 state
-    const [answers,setAnswers] = useState<number[]>([]);
-    const [current,setCurrent] = useState(0);
+    const [answers, setAnswers] = useState<number[]>([]);
+    const [current, setCurrent] = useState(0);    
 
-    const handleAnswer = (answer:number) => {
+    // 현재 질문
+    const question = PAWTI_QUESTIONS[current];
+
+    // 테스트 실행
+    const handleAnswer = async (answer: number) => {
         const newAnswers = [...answers, answer];
 
         setAnswers(newAnswers);
 
-        if(current === PAWTI_QUESTIONS.length-1){
-            submitResult(newAnswers);
+        // 마지막 문제
+        if (current === PAWTI_QUESTIONS.length - 1) {
+            await submitResult(newAnswers);
             return;
         }
-        setCurrent(prev => prev+1);
+        setCurrent(prev => prev + 1);
     }
 
     // 제출
-    const [result,setResult] = useState<PawtiResult|null> (null);
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const submitResult = async(answers:number[]) => {
-        try{
+    const submitResult = async (answers: number[]) => {
+        try {
             setLoading(true);
 
-            const data = await SubmitPawti({answers});
+            const data = await SubmitPawti({ answers });
 
-            setResult(data);
+            sessionStorage.setItem("pawti-result",JSON.stringify(data));
 
-        }catch(error) {
+            router.push("/pawlab/pawti/result");
+
+        } catch (error) {
             alert("테스트 결과 생성 실패")
         } finally {
             setLoading(false);
         }
     }
+
+    // 상태
+    if (step == "intro")
+        return (
+            <PawtiIntro onStart={() => setStep("test")} />
+        );
+
+    // 로딩중일때
+    if (loading)
+        return <PawtiLoading />
+
+    return (
+        <div>
+            <PawtiQuestion question={question} current={current}
+                total={PAWTI_QUESTIONS.length}
+                onAnsWer={handleAnswer} />
+        </div>
+    )
 } 

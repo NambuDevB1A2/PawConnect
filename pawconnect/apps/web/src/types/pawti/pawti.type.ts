@@ -1,20 +1,25 @@
+import { Animal } from "../paw/animal.type";
+
 
 // 추천 동물
-export interface RecommendAnimal {
-    id: number;
-    name: string;
-    age: number;
-    gender: string;
-    imgThumbnail: string;
-    shelterName: string;
-    breed: string;
+export interface RecommendAnimal extends Animal{
+    // id: number;
+    // name: string;
+    // age: number;
+    // gender: string;
+    // imgThumbnail: string;
+    // shelterName: string;
+    // breed: string;
+    breedId: number;
+    speciesId: number;
 }
 
 // 결과
-export interface PawtiResult {
+export interface PawtiResultData {
     mbti: string;
     title: string;
     breed: string;
+    // breedId: number;
     keywords: string[];
 
     representativeAnimal: RecommendAnimal | null;

@@ -1,0 +1,74 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+
+.intro {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.intro h1 {
+  margin-bottom: 20px;
+}
+
+.intro p {
+  margin-top: 10px;
+  color: #666;
+  line-height: 1.7;
+}
+
+.testList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.testCard {
+  border: 1px solid #EAEAEA;
+  border-radius: 20px;
+  padding: 28px;
+  background: white;
+  transition: .2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+
+.testCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+
+.testHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.badge {
+  background: #F2FFF0;
+  color: #4EAF51;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.testBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.testFooter{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:24px;
+}
+
+.arrow{
+    font-size:22px;
+    color: var(--color-success);
+    /* color:#5DB871; */
+}

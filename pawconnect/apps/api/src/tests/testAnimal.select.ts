@@ -8,6 +8,14 @@ export const animalSelect = {
     imgThumbnail: true,
 
     shelter: { select: { name: true } },
-    animalBreed: { select: { name: true } },
+    animalBreed: { select: { id: true, name: true } },
+    animalSpecies: {select: {id: true, name: true}},
+
+    shelterId: true,
+    animalStatus: true,
+    isNeutered: true,
+    isEstimatedAge: true,
+    weight: true,
+    createdAt: true,
 
 } as const;
