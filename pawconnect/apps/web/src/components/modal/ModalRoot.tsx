@@ -11,6 +11,7 @@ import ChangePasswordModal from "@/components/modal/ChangePasswordModal";
 import AiGenerateModal from "@/components/modal/AiGenerateModal";
 import AiAgentModal from "@/components/modal/AiAgentModal";
 import ConfirmGenerateModal from "@/components/modal/ConfirmGenerateModal";
+import AdoptionDetailModal from "@/components/modal/AdoptionDetailModal";
 
 export default function ModalRoot() {
     const { modalState, closeModal } = useContext(ModalContext);
@@ -54,6 +55,12 @@ export default function ModalRoot() {
             <ChangePasswordModal
                 isOpen={modalState?.key === "changePassword"}
                 onClose={closeModal}
+                />
+            
+            <AdoptionDetailModal
+                isOpen={modalState?.key === "adoptionDetail"}
+                onClose={closeModal}
+                adoptionId={modalState?.key === "adoptionDetail" ? modalState.params.adoptionId : ""}
                 />
             
             <ConfirmGenerateModal

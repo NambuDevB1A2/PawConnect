@@ -218,7 +218,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         <RadioGroup name="petExperience" 
                             defaultValue={petExperience || "NONE"} onChange={setPetExperience}
                             className={styles.box_radio_list}>
-                            <Radio value="NONE" text="현재 반려동물을 키우고 있지 않습니다."/>
+                            <Radio value="NONE" text="반려동물을 키운적이 없습니다."/>
                             <Radio value="PAST" text="과거에 반려동물을 키운적이 있습니다."/>
                             <Radio value="CURRENT" text="현재 반려동물을 키우고 있습니다."/>
                         </RadioGroup>

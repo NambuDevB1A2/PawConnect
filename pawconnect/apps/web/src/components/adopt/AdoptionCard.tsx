@@ -24,9 +24,10 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
 
     const router = useRouter();
 
-    // TODO
     const handleDetail = () => {
-
+        openModal("adoptionDetail", {
+            adoptionId: adoption.id,
+        });
     };
 
     const handleDelete = () => {
@@ -84,7 +85,7 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
                 </div>
 
                 <div className={styles.wrapper_btns}>
-                    <Button variant="modal" size="small">신청서 보기</Button>
+                    <Button variant="modal" size="small" onClick={handleDetail}>신청서 보기</Button>
                     {adoption.adoptionStatus !== "CANCELED" && <Button variant="danger" size="small" onClick={handleDelete}>신청 취소</Button>}
                 </div>
             </div>

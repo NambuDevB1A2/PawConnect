@@ -93,7 +93,7 @@ export default function AdoptFormReadOnly({
                     <Typography weight="bold" className={styles.typo_radio}>반려동물 양육 경험</Typography>
                     <RadioGroup defaultValue={petExperience}
                         className={styles.box_radio_list}>
-                        <Radio disabled value="NONE" text="현재 반려동물을 키우고 있지 않습니다."/>
+                        <Radio disabled value="NONE" text="반려동물을 키운적이 없습니다."/>
                         <Radio disabled value="PAST" text="과거에 반려동물을 키운적이 있습니다."/>
                         <Radio disabled value="CURRENT" text="현재 반려동물을 키우고 있습니다."/>
                     </RadioGroup>

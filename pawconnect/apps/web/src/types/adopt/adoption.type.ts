@@ -24,4 +24,31 @@ export interface Adoption {
     updatedAt: string;
 
     animal: AdoptionAnimal;
+
+    detail: AdoptionDetail;
+}
+
+export interface AdoptionDetail {
+    userName: string;
+    phone: string;
+    email: string;
+    address: string;
+    addressDetail: string;
+
+    petExperience: string;
+    petsDescription: string;
+    petExperiencePeriod: string;
+
+    residenceType: string;
+    petAllowedStatus: string;
+    familySize: string;
+    youngChildStatus: string;
+    isFamilyConsent: boolean;
+
+    adoptionPurpose: string;
+    isCanVaccinate: boolean;
+    isCanProvideMedicalCare: boolean;
+    isCanProvideExercise: boolean;
+    isAcceptLifetimeResponsibility: boolean;
+    additionalNotes: string;
 }

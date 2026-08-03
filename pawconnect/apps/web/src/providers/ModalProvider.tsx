@@ -10,6 +10,7 @@ export type ModalKey =
     "imageViewer" |
     "contentViewer" |
     "changePassword" |
+    "adoptionDetail" |
     "confirmGenerate" |
     "aiGenerate" |
     "aiAgent";
@@ -39,6 +40,10 @@ interface ModalParamsMap {
     };
 
     changePassword: undefined;
+
+    adoptionDetail: {
+        adoptionId: string;
+    };
 
     confirmGenerate: {
         onConfirm: () => void;

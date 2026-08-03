@@ -108,7 +108,7 @@ export class AdoptionsService {
       throw new ForbiddenException({ message: '조회 권한이 없습니다.' });
     }
 
-    return adoption;
+    return { success: true, adoption };
   }
 
   // 내 보호소 입양 신청 목록 조회

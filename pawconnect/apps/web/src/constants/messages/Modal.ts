@@ -35,6 +35,11 @@ export const MODAL_MESSAGES = {
         changingPassword: "변경하는 중...",
     },
 
+    adoptionDetail: {
+        header: "입양 신청 상세",
+        close: "닫기",
+    },
+
     confirmGenerate: {
         header: "AI에게 아래 내용을 전송하시겠습니까?",
         close: "취소",
