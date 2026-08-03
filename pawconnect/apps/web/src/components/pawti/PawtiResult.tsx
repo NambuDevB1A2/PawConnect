@@ -101,8 +101,11 @@ export default function PawtiResult({ result }: PawtiResultProps) {
                 <Button variant="outline" onClick={() => {
                     if (result.representativeAnimal) {
                         router.push(
-                            `/paw?breed=${result.representativeAnimal.breedId}`
+                            `/paw?species=${result.representativeAnimal.speciesId}&breed=${result.representativeAnimal.breedId}`
                         )
+                        // router.push(
+                        //     `/paw?breed=${result.representativeAnimal.breedId}`
+                        // )
                     } else {
                         router.push("/paw")
                     }
@@ -110,8 +113,9 @@ export default function PawtiResult({ result }: PawtiResultProps) {
 
                 <Button variant="outline" onClick={() => {
                     sessionStorage.removeItem("pawti-result");
-                    router.push("/pawlab/pawti/test");}}>
-                        테스트 다시하기</Button>
+                    router.push("/pawlab/pawti/test");
+                }}>
+                    테스트 다시하기</Button>
                 {/* <Button variant="outline" onClick={() =>
                     router.push("/pawlab/pawti")}>PawLab 가기</Button> */}
             </div>

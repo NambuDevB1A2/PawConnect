@@ -20,6 +20,9 @@ import React, { useEffect, useRef, useState } from "react";
 export function useAnimalForm(
     mode: "create" | "edit", animal?: AnimalDetail) {
     const router = useRouter();
+    
+    // 중복제출방지 위해
+    const [isPending, setIsPending] = useState(false);
 
     // 수정 시 최초 서버에서 받아온 기존 이미지 목록
     // 이미지 삭제 여부 판단 기준으로 사용
@@ -182,6 +185,10 @@ export function useAnimalForm(
         // 수정 모드인데 동물 정보가 없는 경우 방지
         if (mode === "edit" && !animal) return;
 
+        if(isPending) return;
+
+        setIsPending(true);
+
         // 등록 시 이미지 필수 체크
         if (mode === "create") {
             if (!form.imgThumbnail) {
@@ -268,8 +275,9 @@ export function useAnimalForm(
                 return;
             }
             alert("알 수 없는 오류");
+        } finally {
+             setIsPending(false);
         }
-
     }
 
     return {
@@ -287,6 +295,8 @@ export function useAnimalForm(
         handleThumbnailChange,
         handleImagesChange,
         handleGenderChange,
-        handleSubmit
+        handleSubmit,
+
+        isPending,
     };
 }

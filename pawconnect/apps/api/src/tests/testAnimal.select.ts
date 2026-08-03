@@ -9,7 +9,7 @@ export const animalSelect = {
 
     shelter: { select: { name: true } },
     animalBreed: { select: { id: true, name: true } },
-    animalSpecies: {select: {name: true}},
+    animalSpecies: {select: {id: true, name: true}},
 
     shelterId: true,
     animalStatus: true,

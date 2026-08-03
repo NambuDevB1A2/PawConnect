@@ -17,7 +17,13 @@ export default function Page() {
             return;
         }
 
-        setResult(JSON.parse(data));
+        try {
+            const parsed = JSON.parse(data);
+            setResult(parsed);
+
+        } catch (error) {
+            router.replace("/pawlab/pawti");
+        }
     }, [router]);
 
     if (!result) return null;

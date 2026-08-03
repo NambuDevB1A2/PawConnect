@@ -11,6 +11,7 @@ export interface RecommendAnimal extends Animal{
     // shelterName: string;
     // breed: string;
     breedId: number;
+    speciesId: number;
 }
 
 // 결과
