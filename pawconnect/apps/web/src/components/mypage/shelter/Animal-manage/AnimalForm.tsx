@@ -49,7 +49,7 @@ export default function AnimalForm({mode, animal}: AnimalFormProps) {
                 />
                 <div className={styles.box_animal_input}>
                 <Input name="name" value={form.name} labelText="보호동물 이름"
-                    onChange={handleChange}>{animal?.name}</Input>
+                    onChange={handleChange} />
 
                 <Select labelText="동물" labelPosition="left"
                                 labelSize="small"
