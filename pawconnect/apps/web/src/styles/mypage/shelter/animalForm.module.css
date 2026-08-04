@@ -21,3 +21,21 @@
 .btn_save {
     width:250px;
 }
+
+.age_box {
+    display:flex;
+    align-items:flex-end;
+    gap:12px;
+}
+
+.estimated {
+    display:flex;
+    align-items:center;
+
+    gap:6px;
+    height:40px;
+    margin-bottom:12px;
+
+    white-space:nowrap;
+    cursor:pointer;
+}

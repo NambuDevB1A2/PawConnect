@@ -184,11 +184,7 @@ export function useAnimalForm(
     const handleSubmit = async () => {
         // 수정 모드인데 동물 정보가 없는 경우 방지
         if (mode === "edit" && !animal) return;
-
-        if(isPending) return;
-
-        setIsPending(true);
-
+        
         // 등록 시 이미지 필수 체크
         if (mode === "create") {
             if (!form.imgThumbnail) {
@@ -201,6 +197,10 @@ export function useAnimalForm(
                 return;
             }
         }
+
+        if(isPending) return;
+
+        setIsPending(true);
 
         // Multipart/form-data 생성
         const formData = new FormData();

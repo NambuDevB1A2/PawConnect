@@ -1,15 +1,14 @@
 import Typography from "@/components/common/Typography";
 import { PAGE_SIZE } from "@/constants/page.constants";
-import { getAnimals } from "@/services/paw/get-animals.server";
 import { parsePageToNumber } from "@/utils/page.util";
 import Pagination from "@/components/common/Pagination";
 import styles from "@/styles/mypage/shelter/animalManage.module.css"
 import NotFound from "@/components/common/NotFound";
 import Empty from "@/components/common/Empty";
 import Button from "@/components/common/Button";
-import { GetMyShelter } from "@/services/shelters/get-my-shelter.server";
 import Link from "next/link";
 import AnimalManageCard from "@/components/mypage/shelter/Animal-manage/AnimalManageCard";
+import { GetShelterAnimals } from "@/services/shelters/get-shelter-animals.server";
 
 
 interface PageProps {
@@ -25,34 +24,30 @@ interface PageProps {
     }>;
 }
 
+// 보호동물 관리 페이지
 export default async function Page({ searchParams }: PageProps) {
 
-    // 페이지 네이션 query parameter
-    const params = await searchParams
-    // 현재 페이지 번호
+    // URL query parameter에서 페이지 정보 가져오기
+    const params = await searchParams;
+    // 현재 페이지 번호 변환
     const currentPage = parsePageToNumber(params?.page);
 
-    // 내보호소
-    const shelterResponse = await GetMyShelter();
-    if (!shelterResponse) return <NotFound />
-    const shelter = shelterResponse.shelter
-    if (!shelter) return <NotFound />
-
-    // 보호동물, 페이지네이션
-    const animalResponse = await getAnimals(currentPage, PAGE_SIZE.ANIMAL);
+    // 내 보호소 동물 목록 조회
+    const animalResponse = await GetShelterAnimals(currentPage, PAGE_SIZE.ANIMAL);
+    // 데이터 조회 실패 처리
     if (!animalResponse) return <NotFound />;
 
+    // 페이지네이션 데이터
     const pagination = animalResponse.pagination;
 
-    // 로그인한 보호소의 동물
-    const myAnimals = animalResponse.animals.filter(
-        animal => animal.shelterId === shelter.id);
+    // 조회된 보호동물 목록
+    const myAnimals = animalResponse.animals;
 
     return (
         <div className={styles.wrapper_list}>
             <div className={styles.box_title}>
                 <Typography variant="heading">보호동물 관리</Typography>
-                {/* 등록버튼 */}
+                 {/* 보호동물 등록 페이지 이동 */}
                 <Link href="/mypage/shelter/paw/new">
                     <Button variant="secondary" size="small">등록</Button>
                 </Link>
@@ -61,18 +56,19 @@ export default async function Page({ searchParams }: PageProps) {
             <div className={styles.content}>
                 <div className={styles.list_section}>
 
-                    {/* 보호동물 목록 구간 */}
+                    {/* 보호동물 목록 */}
                     <div className={styles.animalGrid}>
-                        {/* 등록된 동물데이터 있는지 확인 후 */}
-                        {/* 동물 전체 조회 */}
+                        {/* 등록된 동물이 없으면 빈 상태 표시 */}
                         {myAnimals.length === 0 ? (<Empty text="등록된 동물이 없습니다" />) :
-                            (myAnimals.map((animal) => (
+                            (
+                                 // 보호동물 카드 목록 출력
+                                myAnimals.map((animal) => (
                                 <AnimalManageCard key={animal.id} animal={animal} />
                             ))
                             )}
                     </div>
 
-                    {/* 페이지네이션 구간 */}
+                    {/* 페이지 이동 영역 */}
                     <div className={styles.pagination}>
                         <Pagination page={pagination.page}
                             maxPage={pagination.totalPage}
