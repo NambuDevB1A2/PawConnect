@@ -1,8 +1,9 @@
 
 .questionContainer{
-    /* max-width:720px;
+    max-width:720px;
     margin:0 auto;
-    padding:60px 24px; */
+    padding:var(--spacing-700) var(--spacing);
+
     display:flex;
     flex-direction:column;
 
