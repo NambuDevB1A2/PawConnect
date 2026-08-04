@@ -25,6 +25,9 @@
 
 .modal {
     width: var(--modal-width-m);
+    max-width: calc(100vw - var(--spacing-500) * 2);
+    max-height: calc(100vh - var(--spacing-700) * 2);
+    overflow-y: auto;
 
     padding: var(--modal-padding);
 
@@ -41,7 +44,7 @@
     opacity: 0;
     transform: translateX(0) translateY(0);
 
-    transition: 
+    transition:
         opacity var(--transition-opacity) ease,
         transform var(--transition-transform) ease;
 }
@@ -100,4 +103,10 @@
 
 .xlarge {
     width: var(--modal-width-xl);
+}
+
+@media (max-width: 480px) {
+    .box_footer {
+        flex-direction: column;
+    }
 }

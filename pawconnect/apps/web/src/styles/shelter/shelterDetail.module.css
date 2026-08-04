@@ -117,11 +117,45 @@
 .box_animals {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: var(--spacing-100);
     align-items: center;
+}
+
+.box_animals > * {
+    flex: 1 1 200px;
 }
 
 .empty {
     text-align: center;
     width: 100%;
+}
+
+@media (max-width: 768px) {
+    .box_banner {
+        height: 180px;
+    }
+
+    .box_content {
+        flex-direction: column;
+    }
+
+    .wrapper_image_slider {
+        width: 100%;
+    }
+
+    .box_typo {
+        flex-direction: column;
+        gap: var(--spacing-100);
+    }
+
+    .typo_subtitle {
+        width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .box_banner {
+        height: 140px;
+    }
 }

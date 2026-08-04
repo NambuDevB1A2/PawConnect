@@ -73,6 +73,30 @@
     justify-content: center;
 }
 
+@media (max-width: 1024px) {
+    .box_list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper_page {
+        flex-direction: column;
+    }
+
+    .filter_box {
+        width: 100%;
+        position: static;
+        top: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .box_list {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 /* .wrapper_page {
     width: 100%;

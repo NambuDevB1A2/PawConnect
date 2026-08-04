@@ -1,3 +1,17 @@
+/*
+ * ============================================================
+ * Responsive Breakpoints (컨벤션)
+ * PostCSS 커스텀 문법(@custom-media) 미사용 → 각 .module.css 파일에
+ * 아래 값을 표준 @media (max-width: Npx)로 직접 반복 작성한다.
+ *
+ *   1024px  small-desktop  : 3~4열 그리드 → 2열, 2분할 레이아웃 폭 축소 시작
+ *    768px  tablet         : flex row → column 전환 기준
+ *    480px  mobile         : 그리드 1열, 패딩/치수 축소, 헤더 축약 강화
+ *
+ * 파일 하단에 1024 → 768 → 480 순으로 미디어쿼리 블록을 쌓는다.
+ * ============================================================
+ */
+
 *,
 *::before,
 *::after {
@@ -371,6 +385,30 @@ main {
 
     /* Side Menu */
     --sidemenu-width: 240px;
+}
+
+/* Responsive token overrides — 패딩/간격류 토큰만 대상. width/grid-template-columns/
+   flex-direction 등 구조 값은 각 모듈에서 개별 처리한다. */
+@media (max-width: 768px) {
+    :root {
+        --spacing-700: 28px;
+        --spacing-800: 40px;
+        --spacing-900: 56px;
+
+        --modal-padding: var(--spacing-300);
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --spacing-500: 20px;
+        --spacing-600: 24px;
+        --spacing-700: 20px;
+        --spacing-800: 28px;
+        --spacing-900: 32px;
+
+        --modal-padding: var(--spacing-200);
+    }
 }
 
 a {

@@ -6,6 +6,7 @@
     gap: var(--input-label-gap);
 
     width: var(--uploader-profile-width);
+    max-width: 100%;
 
     align-items: center;
     justify-content: center;

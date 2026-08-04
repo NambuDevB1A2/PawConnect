@@ -135,3 +135,62 @@
 
     transform: rotate(180deg);
 }
+
+@media (max-width: 1024px) {
+    .wrapper_header {
+        padding: 0 16px;
+        gap: 12px;
+    }
+
+    .box_logo {
+        width: auto;
+    }
+
+    .box_link {
+        gap: 4px;
+    }
+
+    .box_link button,
+    .box_mypage button {
+        min-width: 0;
+        padding: 0 var(--spacing-200);
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper_header {
+        --header-height: 64px;
+
+        padding: 0 12px;
+    }
+
+    .box_logo p {
+        display: none;
+    }
+
+    .box_link button,
+    .box_mypage button {
+        padding: 0 var(--spacing-100);
+        font-size: var(--font-size-body2);
+    }
+
+    .box_mypage {
+        --header-user-nickname-size: 0px;
+        --header-user-nickname-gap: 0px;
+    }
+
+    .nickname {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .box_mypage {
+        --header-user-image-size: 36px;
+    }
+
+    .box_link button,
+    .box_mypage button {
+        padding: 0 var(--spacing-050);
+    }
+}

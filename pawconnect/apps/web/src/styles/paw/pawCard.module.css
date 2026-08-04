@@ -3,8 +3,8 @@
 }
 
 .wrapper_animal_card {
-    width: 240px;
-    height: 320px;
+    width: 100%;
+    height: auto;
 
     display: flex;
     flex-direction: column;

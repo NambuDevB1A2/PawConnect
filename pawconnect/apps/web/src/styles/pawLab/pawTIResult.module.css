@@ -155,4 +155,13 @@
         flex-direction: column;
     }
 
+    .emptyCard {
+        width: 100%;
+        height: auto;
+        min-height: 280px;
+    }
+
+    .resultCard {
+        padding: var(--spacing-500);
+    }
 }

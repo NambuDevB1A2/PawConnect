@@ -188,3 +188,24 @@
 .value{
     flex:1;
 }
+
+@media (max-width: 768px) {
+    .topSection {
+        flex-direction: column;
+        padding-right: 0;
+    }
+
+    .imageSection {
+        width: 100%;
+    }
+
+    .bottomSection {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .label {
+        width: 70px;
+    }
+}

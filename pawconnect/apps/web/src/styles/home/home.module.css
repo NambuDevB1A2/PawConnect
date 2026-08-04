@@ -63,3 +63,23 @@
 
     margin-right: var(--spacing);
 }
+
+@media (max-width: 1024px) {
+    .wrapper_card {
+        flex-direction: column;
+    }
+
+    .box_animal_list {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper_banner {
+        height: auto;
+    }
+
+    .box_animal_list {
+        flex-direction: column;
+    }
+}
