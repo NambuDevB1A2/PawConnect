@@ -15,10 +15,11 @@ export interface SelectOption {
 }
 
 interface SelectProps {
+    name?: string;
     value?: string;
     options: SelectOption[];
     defaultValue?: string;
-    onChange: (value: string) => void;
+    onChange?: (value: string) => void;
     labelText?: string;
     labelPosition?: SelectLabelPosition;
     labelSize?: SelectLabelSize;
@@ -29,6 +30,7 @@ interface SelectProps {
 }
 
 export default function Select({
+    name,
     value,
     options,
     defaultValue,
@@ -77,11 +79,13 @@ export default function Select({
             className={`${styles.wrapper_select}  ${styles[labelPosition]} ${wrapperClassName}`}
             ref={containerRef}>
             <Typography className={`${styles.label_text} ${styles[labelSize]}`} weight="bold">{labelText}</Typography>
+            {name && <input type="hidden" name={name} value={currentValue ?? ""} />}
             <div className={styles.box_trigger}>
                 <button
                     type="button"
                     className={`${styles.trigger} ${className}`}
                     onClick={() => setIsOpen((prev) => !prev)}
+                    type="button"
                     disabled={disabled}>
                     <Typography
                         className={`${selectedOption ? styles.value_text : styles.helper_text}`}

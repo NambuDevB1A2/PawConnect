@@ -1,7 +1,7 @@
 import { HTMLAttributes } from "react";
 import styles from "@/styles/common/Badge.module.css"
 
-type BadgeVariant = "success" | "warning" | "completed" | "error" | "info" | "dog" | "cat";
+export type BadgeVariant = "success" | "warning" | "completed" | "error" | "info" | "dog" | "cat";
 type BadgeSize = "small" | "medium";
 
 interface BadgeProps extends HTMLAttributes<HTMLParagraphElement> {

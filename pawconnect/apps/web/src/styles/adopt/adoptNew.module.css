@@ -1,0 +1,64 @@
+.wrapper_page {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-500);
+
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+
+    padding: var(--spacing-700) var(--spacing);
+}
+
+.wrapper_form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+    
+    width: 100%;
+}
+
+.box_radio_group {
+    display: flex;
+    gap: var(--input-label-gap);
+    width: 100%;
+    
+    flex-direction: row;
+    align-items: center;
+}
+
+.box_radio_list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+}
+
+.typo_radio {
+    min-width: var(--input-label-width-medium);
+}
+
+.box_row_section {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: var(--spacing);
+}
+
+.box_row_div {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+}
+
+.box_btns {
+    width: 100%;
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

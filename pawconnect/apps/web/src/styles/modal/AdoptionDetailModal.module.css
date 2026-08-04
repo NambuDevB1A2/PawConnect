@@ -1,0 +1,5 @@
+.wrapper_scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}

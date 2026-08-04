@@ -10,9 +10,21 @@ interface ConfirmDeleteModalProps {
     isOpen: boolean;
     onClose: () => void;
     onConfirm?: () => void;
+    
+    header?: string;
+    body?: string;
+    confirm?: string;
 }
 
-export default function ConfirmDeleteModal({ isOpen, onClose, onConfirm }: ConfirmDeleteModalProps) {
+export default function ConfirmDeleteModal({ 
+    isOpen, 
+    onClose, 
+    onConfirm,
+    
+    header = MODAL_MESSAGES.confirmDelete.header,
+    body = MODAL_MESSAGES.confirmDelete.body,
+    confirm = MODAL_MESSAGES.confirmDelete.confirm,
+}: ConfirmDeleteModalProps) {
     const handleConfirm = () => {
         onConfirm?.();
         onClose();
@@ -22,14 +34,14 @@ export default function ConfirmDeleteModal({ isOpen, onClose, onConfirm }: Confi
         <Modal isOpen={isOpen} onClose={onClose}>
             <Modal.Header>
                 <Icon name="error" color="error" size="hero"/>
-                <Typography variant="modaltitle">{MODAL_MESSAGES.confirmDelete.header}</Typography>
+                <Typography variant="modaltitle">{header}</Typography>
             </Modal.Header>
             <Modal.Body>
-                <Typography variant="body1">{MODAL_MESSAGES.confirmDelete.body}</Typography>
+                <Typography variant="body1">{body}</Typography>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="modal" onClick={onClose}>{MODAL_MESSAGES.confirmDelete.close}</Button>
-                <Button variant="danger" onClick={handleConfirm}>{MODAL_MESSAGES.confirmDelete.confirm}</Button>
+                <Button variant="danger" onClick={handleConfirm}>{confirm}</Button>
             </Modal.Footer>
         </Modal>
     );

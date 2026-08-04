@@ -19,6 +19,12 @@ export const MODAL_MESSAGES = {
         confirm: "삭제",
     },
 
+    confirmAdoptionDelete: {
+        header: "정말로 신청을 취소 하시겠습니까?",
+        body: "다시는 같은 아이에게 입양 신청을 할 수 없습니다.",
+        confirm: "신청 취소",
+    },
+
     contentViewer: {
         close: "닫기",
     },
@@ -27,6 +33,11 @@ export const MODAL_MESSAGES = {
         close: "닫기",
         confirm: "변경하기",
         changingPassword: "변경하는 중...",
+    },
+
+    adoptionDetail: {
+        header: "입양 신청 상세",
+        close: "닫기",
     },
 
     confirmGenerate: {

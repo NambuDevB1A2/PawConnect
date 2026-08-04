@@ -5,5 +5,6 @@ export const PAGE_SIZE = {
 
     MYPAGE: {
         PAWLOG: 3,
+        ADOPT: 4,
     }
 }
