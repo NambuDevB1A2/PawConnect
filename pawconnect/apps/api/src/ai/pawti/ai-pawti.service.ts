@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AiPawtiAnalysisRequestDto } from "./dto/ai-pawti-analysis-request.dto";
 import { AiOpenAiService, ChatMessage } from '@/ai/ai-openai.service';
 import { AI_PAWTI_SYSTEM_PROMPTS } from "../constants/ai-pawtiPrompt.constant";
-import { AiPawtiAnalysisResponseDto } from "./dto/ai-pawti-analysis-response.dto";
+import { AiPawtiAnalysisApiResponseDto, AiPawtiAnalysisResponseDto } from "./dto/ai-pawti-analysis-response.dto";
 
 
 // PawTI AI 분석 생성

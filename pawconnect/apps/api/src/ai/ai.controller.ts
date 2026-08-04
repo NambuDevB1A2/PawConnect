@@ -11,8 +11,9 @@ import { Body, Controller, Post, UploadedFiles, UseGuards, UseInterceptors } fro
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
-import { AiPawtiAnalysisApiResponseDto, AiPawtiAnalysisRequestDto } from './pawti/dto/ai-pawti-analysis-request.dto';
-import { AiPawtiAnalysisResponseDto } from './pawti/dto/ai-pawti-analysis-response.dto';
+import { AiPawtiAnalysisRequestDto } from './pawti/dto/ai-pawti-analysis-request.dto';
+import {  AiPawtiAnalysisApiResponseDto, AiPawtiAnalysisResponseDto} from './pawti/dto/ai-pawti-analysis-response.dto';
+
 
 @ApiTags('AI')
 @Controller('ai')

@@ -18,3 +18,18 @@ export class AiPawtiAnalysisResponseDto {
         description:  "AI 한마디"})
     aiComment:string;
 }
+
+// API 응답용
+export class AiPawtiAnalysisApiResponseDto {
+    @ApiProperty({
+        example:true,
+        description:"성공 여부"
+    })
+    success:boolean;
+
+
+    @ApiProperty({
+        type:AiPawtiAnalysisResponseDto
+    })
+    data:AiPawtiAnalysisResponseDto;
+}

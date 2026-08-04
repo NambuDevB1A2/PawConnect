@@ -21,7 +21,8 @@ export class AiService {
     async analysis(dto: AiPawtiAnalysisRequestDto) {
             const result = await this.aipawtiService.analysis(dto);
 
-        return {success: true, ...result};
+            return {success: true, data: result};
+        // return {success: true, ...result};
     }
 
     // ai 자동 생성 게시글

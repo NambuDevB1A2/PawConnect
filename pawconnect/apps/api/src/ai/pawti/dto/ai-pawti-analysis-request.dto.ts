@@ -53,12 +53,12 @@ export class AiPawtiAnalysisRequestDto {
     // animalDescription?: string;
 }
 
-export class AiPawtiAnalysisApiResponseDto 
-    extends AiPawtiAnalysisResponseDto {
+// export class AiPawtiAnalysisApiResponseDto 
+//     extends AiPawtiAnalysisResponseDto {
 
-    @ApiProperty({
-        example:true,
-        description:"요청 성공 여부"
-    })
-    success:boolean;
-}
+//     @ApiProperty({
+//         example:true,
+//         description:"요청 성공 여부"
+//     })
+//     success:boolean;
+// }
