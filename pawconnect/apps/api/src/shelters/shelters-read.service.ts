@@ -121,9 +121,9 @@ export class SheltersReadService {
     async getMyShelterAdoptions(auth: AuthRequest, { page, limit, status }: QueryGetShelterAdoptionsDto) {
         await this.find(auth.shelterId);
 
-        const { adoptions, totalCount, totalPage } = 
+        const { adoptions, pagination } = 
             await this.adoptionsService.findByShelter(auth.shelterId as string, { page, limit }, status);
 
-        return { adoptions, pagination: { page, limit, totalCount, totalPage }};
+        return { adoptions, pagination };
     }
 }

@@ -129,8 +129,9 @@ export class AdoptionsService {
             where,
         })
     ]);
-    const totalPage = getTotalPage(totalCount, limit);
-    return { adoptions, totalCount, totalPage };
+    
+    const totalPage = getTotalPage(totalCount, limit); // totalPage 값 추출
+    return { adoptions, pagination: { page, limit, totalCount, totalPage }};
   }
 
   // 입양 신청 상태 수정
@@ -155,12 +156,23 @@ export class AdoptionsService {
     }
 
     // 2. 신청 상태 변경
-    await this.prisma.adoption.update({
-      where: { id },
-      data: {
-        adoptionStatus: updateAdoptionStatusDto.adoptionStatus,
-      },
-    });
+    if (updateAdoptionStatusDto.adoptionStatus) {
+      await this.prisma.adoption.update({
+        where: { id },
+        data: {
+          adoptionStatus: updateAdoptionStatusDto.adoptionStatus,
+        },
+      });
+    }
+
+    if (updateAdoptionStatusDto.animalStatus) {
+      await this.prisma.animal.update({
+        where: { id: adoption.animalId },
+        data: {
+          animalStatus: updateAdoptionStatusDto.animalStatus,
+        },
+      });
+    }
 
     return { success: true, adoptionId: adoption.id };
   }

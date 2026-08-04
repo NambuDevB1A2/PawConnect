@@ -21,36 +21,27 @@
 }
 
 .canceled {
-    background-color: var(--color-badge-completed-background-color);
+    background-color: var(--input-disabled-background-color);
     color: var(--color-text-secondary);
 }
 
 .wrapper_image{
-    position:relative;
-
-    width:180px;
-    height:180px;
+    width: 180px;
+    height: 180px;
 
     padding-left: var(--spacing-100);
 }
 
 .img_animal {
-    width: 100%;
-    height: 100%;
+    width: 180px;
+    height: 180px;
 
     object-fit: cover;
     background-color: var(--color-border);
 }
 
-.badge_animal {
-    position: absolute;
-
-    top: var(--spacing-100);
-    left: var(--spacing-200);
-}
-
 .wrapper_info {
-    width: 380px;
+    width: 100%;
 
     display: flex;
     flex-direction: column;
@@ -72,7 +63,7 @@
 .typo_detail_title {
     color: var(--color-text-secondary);
 
-    min-width: 100px;
+    min-width: 120px;
 }
 
 .typo_detail {
@@ -85,13 +76,29 @@
   white-space: nowrap;
 }
 
+.wrapper_badge {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .box_badge {
     display: flex;
     flex-direction: row;
 }
 
+.badge {
+    width: 200px;
+}
+
 .typo_badge_title {
-    min-width: 100px;
+    min-width: 120px;
+}
+
+.select_status {
+    width: 200px;
 }
 
 .wrapper_btns {
