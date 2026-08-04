@@ -9,18 +9,34 @@ import { RolesGuard } from '@/auth/guards/role.guard';
 import { createFieldsImageUploadOptions } from '@/config/upload.config';
 import { Body, Controller, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
+import { AiPawtiAnalysisRequestDto } from './pawti/dto/ai-pawti-analysis-request.dto';
+import {  AiPawtiAnalysisApiResponseDto, AiPawtiAnalysisResponseDto} from './pawti/dto/ai-pawti-analysis-response.dto';
+
 
 @ApiTags('AI')
 @Controller('ai')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class AiController {
-    constructor (
+    constructor(
         private readonly aiService: AiService,
-    ) {}
-    
+    ) { }
+
+    // POST - /ai/pawlab/pawti/analysis
+    // PawTI AI 분석 생성
+    @Post('pawlab/pawti/analysis')
+    @ApiOperation({ summary: "PawTI AI 분석 요청" })
+    @ApiResponse({status: 201, description:  "PawTI AI 분석 결과", 
+        type: AiPawtiAnalysisApiResponseDto})
+    @Public()
+    async analysis(
+        @Body() dto: AiPawtiAnalysisRequestDto):
+            Promise<AiPawtiAnalysisApiResponseDto> {
+        return this.aiService.analysis(dto);
+    }
+
     // post - ai/pawlog/generate
     // ai 자동 생성 게시글
     @ApiOperation({ summary: "ai 자동 생성 게시글" })
@@ -30,8 +46,8 @@ export class AiController {
         FileFieldsInterceptor([
             { name: 'images', maxCount: 4 },
         ],
-        createFieldsImageUploadOptions()
-    ))
+            createFieldsImageUploadOptions()
+        ))
     @Roles(Role.USER, Role.SHELTER)
     @Post('pawlogs/generate')
     generatePawLog(
@@ -44,7 +60,7 @@ export class AiController {
 
         return this.aiService.generatePawLog(aiPawLogDto, images);
     }
-    
+
     // post - ai/animal/generate
     // ai 품종 추론 및 자동 생성 게시글
     @ApiOperation({ summary: "ai 품종 추론 및 자동 생성 게시글" })
@@ -54,8 +70,8 @@ export class AiController {
         FileFieldsInterceptor([
             { name: 'images', maxCount: 4 },
         ],
-        createFieldsImageUploadOptions()
-    ))
+            createFieldsImageUploadOptions()
+        ))
     @Roles(Role.SHELTER)
     @Post('animals/generate')
     generateAnimal(
@@ -77,5 +93,5 @@ export class AiController {
     agentChat(@Body() aiAgentChatDto: AiAgentChatDto) {
         return this.aiService.agentChat(aiAgentChatDto);
     }
-    
+
 }

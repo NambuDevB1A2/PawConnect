@@ -9,6 +9,7 @@ import { AiAgentService } from './ai-agent.service';
 import { AiToolsService } from './ai-tools.service';
 import { AiGenerateService } from './ai-generate.service';
 import azureAgentConfig from '@/config/azure/azure-agent.config';
+import { AiPawtiService } from './pawti/ai-pawti.service';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import azureAgentConfig from '@/config/azure/azure-agent.config';
     ConfigModule.forFeature(azureOpenAiConfig),
     ConfigModule.forFeature(azureAgentConfig),
   ],
-  providers: [AiService, AiOpenAiService, AiAgentService, AiToolsService, AiGenerateService],
+  providers: [AiService, AiOpenAiService, AiAgentService, 
+    AiToolsService, AiGenerateService, AiPawtiService],
   controllers: [AiController]
 })
 export class AiModule {}

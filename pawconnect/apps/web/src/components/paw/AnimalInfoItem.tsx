@@ -4,7 +4,7 @@ import { AnimalStatus } from "@/types/paw/animal.type";
 import Typography from "../common/Typography";
 import styles from '@/styles/paw/pawDetail.module.css';
 import badgeStyles from "@/styles/common/Badge.module.css";
-import { ANIMAL_STATUS_BADGE_STYLE } from "@/constants/badge";
+import { ANIMAL_STATUS_BADGE_STYLE, ANIMAL_STATUS_LABEL } from "@/constants/badge";
 
 interface AnimalInfoItemProps {
     label: string;
@@ -22,7 +22,7 @@ export function AnimalInfoItem({ label, value }: AnimalInfoItemProps) {
 
 interface AnimalStatusBadgeProps {
     status: AnimalStatus;
-    statusLabel: string;
+    statusLabel?: string;
     endDate?: string;
     showDday?: boolean;
 }
@@ -37,11 +37,15 @@ export function AnimalStatusBadge({ status, statusLabel, endDate, showDday=false
     const dday = diff === null? "" : diff>0 ? `D-${diff}` : 
                 diff === 0? "D-Day" : `D+${Math.abs(diff)}`; 
 
+    // 보호동물 상태 라벨(한글)
+    const label = statusLabel ?? 
+        ANIMAL_STATUS_LABEL[status] ?? status;
+
     return (
         <div className={styles.badgeWrapper}>
             {/* 동물상태 뱃지 */}
             <div className={`${badgeStyles.badge} ${badgeStyles.medium} 
-                ${ANIMAL_STATUS_BADGE_STYLE[status]}`}> {statusLabel}
+                ${ANIMAL_STATUS_BADGE_STYLE[status]}`}> {label}
             </div>
             {/* 디데이 */}
             {showDday && status === 'AVAILABLE' && diff !== null && (

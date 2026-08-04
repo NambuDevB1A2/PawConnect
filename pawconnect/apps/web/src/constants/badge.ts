@@ -10,3 +10,13 @@ export const ANIMAL_STATUS_BADGE_STYLE = {
     DECEASED: badgeStyles.error,        // 자연사 (빨강)
     EUTHANIZED: badgeStyles.warning,    // 안락사 (노랑/주황)
 } satisfies Record<AnimalStatus, string>;
+
+// 보호동물 상태 라벨
+export const ANIMAL_STATUS_LABEL: Record<string, string> = {
+    PROTECTED: "보호 중",
+    AVAILABLE: "공고중",
+    ADOPTED: "입양 완료",
+    REUNITED: "귀가 완료",
+    DECEASED: "자연사",
+    EUTHANIZED: "안락사",
+};
