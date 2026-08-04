@@ -3,7 +3,7 @@
 
     width: 100%;
     max-width: 960px;
-    height: 220px;
+    min-height: 220px;
 
     display: flex;
     flex-direction: row;
