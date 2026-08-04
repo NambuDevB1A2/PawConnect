@@ -51,13 +51,15 @@
 .box_content {
     display: flex;
     flex-direction: row;
-    gap: var(--spacing-);
+    gap: var(--spacing-500);
 
     width: 100%;
 }
 
 .wrapper_image_slider {
-    flex-shrink: 0;
+    flex-shrink: 1;
+    max-width: 50%;
+    min-width: 240px;
 }
 
 .box_info {
@@ -142,6 +144,8 @@
 
     .wrapper_image_slider {
         width: 100%;
+        max-width: none;
+        min-width: 0;
     }
 
     .box_typo {

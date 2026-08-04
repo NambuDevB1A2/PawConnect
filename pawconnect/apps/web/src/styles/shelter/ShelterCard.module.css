@@ -73,3 +73,9 @@
     top: var(--spacing);
     left: var(--spacing);
 }
+
+@media (max-width: 768px) {
+    .wrapper_shelter_card {
+        max-width: none;
+    }
+}

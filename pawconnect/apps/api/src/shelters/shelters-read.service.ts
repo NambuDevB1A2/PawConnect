@@ -89,7 +89,13 @@ export class SheltersReadService {
         const shelter = await this.find(id, { 
             ...SHELTER_DETAIL_SELECT, 
             animals: {
+                include:{
+                    shelter: true,
+                    animalSpecies: true,
+                    animalBreed: true
+                },
                 take: 4,
+                orderBy:{ createdAt: 'desc' },
             }
         });
 
@@ -106,6 +112,8 @@ export class SheltersReadService {
                     animalSpecies: true,
                     animalBreed: true
                 },
+                take: 4,
+                orderBy:{ createdAt: 'desc' },
             }
         });
 

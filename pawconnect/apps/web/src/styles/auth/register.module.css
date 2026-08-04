@@ -59,6 +59,7 @@
 .box_info {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: var(--spacing-900);
 
     width: 100%;
