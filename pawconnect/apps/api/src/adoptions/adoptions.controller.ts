@@ -36,13 +36,6 @@ export class AdoptionsController {
     return this.adoptionsService.findAll(auth, pagination);
   }
 
-  // 보호소안에서 하기
-  // @Get(':id/adoptions')
-  // @ApiOperation({summary:"보호소 입양신청 목록 조회"})
-  // findAllShelter(@CurrentAuth() auth:AuthRequest){
-  //   return this.adoptionsService.findAllShelter(auth);
-  // }
-
   @Get(':id')
   @ApiOperation({summary:"입양 신청 상세 조회"})
   findOne(
@@ -59,9 +52,4 @@ export class AdoptionsController {
          @Body() updateAdoptionStatusDto: UpdateAdoptionStatusDto) {
     return this.adoptionsService.update(auth ,id, updateAdoptionStatusDto);
   }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.adoptionsService.remove(id);
-  // }
 }

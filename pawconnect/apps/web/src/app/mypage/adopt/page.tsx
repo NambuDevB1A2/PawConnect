@@ -32,7 +32,7 @@ export default async function Page({ searchParams }: PageProps) {
                 {hasAdoption ?
                     <div className={styles.box_list}>
                         {adoptions?.map((adoption) =>
-                            <AdoptionCard key={adoption.id} adoption={adoption}/>
+                            <AdoptionCard key={adoption.id} role="USER" adoption={adoption}/>
                         )}
                     </div> :
                     <Empty className={styles.empty} text="등록된 입양 신청 내역이 없습니다"></Empty>

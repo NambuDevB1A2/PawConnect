@@ -3,25 +3,37 @@
 import AppImage from "@/components/common/AppImage";
 import Badge from "@/components/common/Badge";
 import Button from "@/components/common/Button";
+import IconButton from "@/components/common/IconButton";
+import Select from "@/components/common/Select";
 import Typography from "@/components/common/Typography";
 import { ADOPTION_STATUS_BADGE_STYLE, ADOPTION_STATUS_LABEL } from "@/constants/adopt/adopt-badge.constants";
 import { MODAL_MESSAGES } from "@/constants/messages/Modal";
 import { ANIMAL_STATUS_BADGE_STYLE, ANIMAL_STATUS_LABEL } from "@/constants/paw/animal-badge.constants";
 import { ModalContext } from "@/providers/ModalProvider";
 import { CancelAdoption } from "@/services/adopt/cancel-adoption.client";
+import { UpdateAdoptionStatus } from "@/services/adopt/update-adoption-status.client";
 import styles from "@/styles/adopt/AdoptCard.module.css"
-import { Adoption } from "@/types/adopt/adoption.type";
+import { Adoption, AdoptionStatus } from "@/types/adopt/adoption.type";
+import { AnimalStatus } from "@/types/paw/animal.type";
 import { formatDateTime } from "@/utils/format.util";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 interface AdoptionCardProps {
+    role: "USER" | "SHELTER",
     adoption: Adoption;
 }
 
-export default function AdoptionCard({ adoption }: AdoptionCardProps) {
+export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
     const { openModal } = useContext(ModalContext);
+    const [animalStatus, setAnimalStatus] = useState<AnimalStatus>(adoption.animal.animalStatus);
+    const [adoptionStatus, setAdoptionStatus] = useState<AdoptionStatus>(adoption.adoptionStatus);
 
+    useEffect(() => {
+        setAnimalStatus(adoption.animal.animalStatus);
+        setAdoptionStatus(adoption.adoptionStatus);
+    }, [adoption.animal.animalStatus, adoption.adoptionStatus]);
+    
     const router = useRouter();
 
     const handleDetail = () => {
@@ -52,14 +64,26 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
         }
     };
 
+    const handleSave = async () => {
+        if (adoption.adoptionStatus === adoptionStatus &&
+            adoption.animal.animalStatus === animalStatus
+        ) return;
+
+        const res = await UpdateAdoptionStatus(adoption.id, animalStatus, adoptionStatus);
+
+        if (res.success) {
+            alert('성공적으로 상태를 변경했습니다');
+            router.refresh();
+        }
+        else {
+            alert('상태 변경 도중 오류가 발생했습니다');
+        }
+    };
+
     return (
         <div className={`${styles.wrapper_adoption_card} ${adoption.adoptionStatus === "CANCELED" ? styles.canceled : ""}`}>
             <div className={styles.wrapper_image}>
                 <AppImage className={styles.img_animal} src={adoption.animal.imgThumbnail} />
-                <Badge className={styles.badge_animal}
-                    variant={ANIMAL_STATUS_BADGE_STYLE[adoption.animal.animalStatus]}>
-                    {ANIMAL_STATUS_LABEL[adoption.animal.animalStatus]}
-                </Badge>
             </div>
 
             <div className={styles.wrapper_info}>
@@ -71,22 +95,82 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
                         <Typography className={styles.typo_detail}>{formatDateTime(adoption.createdAt)}</Typography>
                     </div>
 
+                    {role === "USER" &&
                     <div className={styles.box_typo}>
                         <Typography className={styles.typo_detail_title}>소속 보호소</Typography>
                         <Typography className={styles.typo_detail}>{adoption.animal.shelter.name}</Typography>
-                    </div>
+                    </div>}
 
-                    <div className={styles.box_badge}>
-                        <Typography className={styles.typo_badge_title} weight="semibold">신청 상태</Typography>
-                        <Badge variant={ADOPTION_STATUS_BADGE_STYLE[adoption.adoptionStatus]}>
-                            {ADOPTION_STATUS_LABEL[adoption.adoptionStatus]}
-                        </Badge>
+                    
+                    <div className={styles.wrapper_badge}>
+                        
+                        <div className={styles.box_badge}>
+                            {role === "USER" && <Typography className={styles.typo_badge_title} weight="semibold">동물 입양 상태</Typography>}
+                            {role === "USER" && 
+                                <Badge className={styles.badge}
+                                    variant={ANIMAL_STATUS_BADGE_STYLE[adoption.animal.animalStatus]}>
+                                    {ANIMAL_STATUS_LABEL[adoption.animal.animalStatus]}
+                                </Badge>}
+                            {role === "SHELTER" && 
+                                <Select
+                                    labelText="동물 입양 상태"
+                                    labelSize="small"
+                                    className={styles.select_status}
+                                    value={animalStatus}
+                                    onChange={(value) => setAnimalStatus(value as AnimalStatus)}
+                                    disabled={adoption.adoptionStatus === "CANCELED"}
+                                    options={[
+                                        { label: "보호중", value: "PROTECTED" },
+                                        { label: "공고중", value: "AVAILABLE" },
+                                        { label: "입양 완료", value: "ADOPTED" },
+                                        { label: "귀가 완료", value: "REUNITED" },
+                                        { label: "자연사", value: "DECEASED" },
+                                        { label: "안락사", value: "EUTHANIZED" },
+                                    ]}
+                                />}
+                        </div>
+                        
+                        <div className={styles.box_badge}>
+                            {role === "USER" && <Typography className={styles.typo_badge_title} weight="semibold">신청 상태</Typography>}
+                            {role === "USER" && 
+                                <Badge  className={styles.badge}
+                                    variant={ADOPTION_STATUS_BADGE_STYLE[adoption.adoptionStatus]}>
+                                    {ADOPTION_STATUS_LABEL[adoption.adoptionStatus]}
+                                </Badge>}
+                            {role === "SHELTER" && 
+                                <Select
+                                    labelText="신청 상태"
+                                    labelSize="small"
+                                    className={styles.select_status}
+                                    value={adoptionStatus}
+                                    onChange={(value) => setAdoptionStatus(value as AdoptionStatus)}
+                                    disabled={adoption.adoptionStatus === "CANCELED"}
+                                    options={[
+                                        { label: "대기", value: "PENDING" },
+                                        { label: "상담", value: "COUNSELING" },
+                                        { label: "면접", value: "INTERVIEW" },
+                                        { label: "추가 면접", value: "ADDITIONAL_INTERVIEW" },
+                                        { label: "임시보호", value: "FOSTERING" },
+                                        { label: "최종 심사", value: "FINAL_REVIEW" },
+                                        { label: "승인", value: "APPROVED" },
+                                        { label: "거절", value: "REJECTED" },
+                                        { label: "신청 취소", value: "CANCELED", disabled: true },
+                                    ]}
+                                />}
+                        </div>
+                        
+                        {role === "SHELTER" && 
+                            <IconButton name="save" 
+                            disabled={(adoption.adoptionStatus === adoptionStatus && adoption.animal.animalStatus === animalStatus) || adoption.adoptionStatus === "CANCELED"}
+                            onClick={handleSave}
+                            />}
                     </div>
                 </div>
 
                 <div className={styles.wrapper_btns}>
                     <Button variant="modal" size="small" onClick={handleDetail}>신청서 보기</Button>
-                    {adoption.adoptionStatus !== "CANCELED" && <Button variant="danger" size="small" onClick={handleCancel}>신청 취소</Button>}
+                    {role === "USER" && adoption.adoptionStatus !== "CANCELED" && 
+                        <Button variant="danger" size="small" onClick={handleCancel}>신청 취소</Button>}
                 </div>
             </div>
         </div>

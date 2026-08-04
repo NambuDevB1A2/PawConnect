@@ -19,7 +19,7 @@ export interface Adoption {
     id: string;
     userId: string;
     animalId: number;
-    adoptionStatus: string;
+    adoptionStatus: AdoptionStatus;
     createdAt: string;
     updatedAt: string;
 
@@ -52,3 +52,16 @@ export interface AdoptionDetail {
     isAcceptLifetimeResponsibility: boolean;
     additionalNotes: string;
 }
+
+
+// AdoptionStatus
+export type AdoptionStatus =
+    "PENDING"
+    | "COUNSELING"
+    | "INTERVIEW"
+    | "ADDITIONAL_INTERVIEW"
+    | "FOSTERING"
+    | "FINAL_REVIEW"
+    | "APPROVED"
+    | "REJECTED"
+    | "CANCELED";
