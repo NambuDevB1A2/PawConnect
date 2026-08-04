@@ -120,36 +120,36 @@ main {
     --color-checkout-border: #8E8E8E;*/
 
     /* 톤 다운 */
-    --color-primary: #EA9948;
+    --color-primary: #DE9954;
     --color-primary-100: #F7F0E8;
     --color-primary-200: #F0DFCE;
     --color-primary-300: #E9CEB4;
     --color-primary-400: var(--color-primary);
-    --color-primary-hover: #CE7E2F;
+    --color-primary-hover: #D57E28;
     --color-primary-pressed: #A96520;
 
-    --color-secondary: #5F94AE;
+    --color-secondary: #54B1DE;
     --color-secondary-100: var(--color-secondary);
-    --color-secondary-200: #4A7B93;
-    --color-secondary-300: #385F73;
+    --color-secondary-200: #289CD5;
+    --color-secondary-300: #207BA9;
 
-    --color-success: #5DB871;
-    --color-warning: #E9C04D;
-    --color-error: #DF716A;
+    --color-success: #3BDA5E;
+    --color-warning: #DFBB57;
+    --color-error: #E26E67;
 
-    --color-badge-success-background-color: #E0EEDE;
-    --color-badge-success-text-color: #3B7A4A;
-    --color-badge-warning-background-color: #F5EACC;
+    --color-badge-success-background-color: #C8F0C2;
+    --color-badge-success-text-color: #1D983A;
+    --color-badge-warning-background-color: #F0E3C2;
     --color-badge-warning-text-color: var(--color-primary-pressed);
     --color-badge-completed-background-color: #EDEDED;
     --color-badge-completed-text-color: var(--color-primary-pressed);
-    --color-badge-error-background-color: #F5E0DD;
-    --color-badge-error-text-color: #B14840;
-    --color-badge-info-background-color: #DEE9E6;
-    --color-badge-info-text-color: #37716A;
-    --color-badge-dog-background-color: #F3E3D4;
+    --color-badge-error-background-color: #F0C8C2;
+    --color-badge-error-text-color: #CA3227;
+    --color-badge-info-background-color: #C2F0E3;
+    --color-badge-info-text-color: #1B8D7F;
+    --color-badge-dog-background-color: #F0D8C2;
     --color-badge-dog-text-color: var(--color-primary-hover);
-    --color-badge-cat-background-color: #E4EAED;
+    --color-badge-cat-background-color: #C2E0F0;
     --color-badge-cat-text-color: var(--color-secondary-300);
 
     --color-background: #FDFBF7;
