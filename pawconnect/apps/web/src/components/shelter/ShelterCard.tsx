@@ -12,9 +12,10 @@ import { useContext } from "react";
 
 interface ShelterCardProps {
     shelter: Shelter;
+    wrapperClassName?: string;
 }
 
-export default function ShelterCard({ shelter }: ShelterCardProps) {
+export default function ShelterCard({ shelter, wrapperClassName = "" }: ShelterCardProps) {
     const { user } = useContext(AuthContext);
     const router = useRouter();
     const imgSrc = shelter.images?.length > 0 ? shelter.images?.[0].img : shelter.imgBanner;
@@ -26,7 +27,7 @@ export default function ShelterCard({ shelter }: ShelterCardProps) {
     const isMyShelter = user?.shelterId === shelter.id;
 
     return (
-        <div className={styles.wrapper_shelter_card} onClick={handleClick}>
+        <div className={`${styles.wrapper_shelter_card} ${wrapperClassName}`} onClick={handleClick}>
             <AppImage className={styles.img_shelter} src={imgSrc}/>
 
             {isMyShelter && 

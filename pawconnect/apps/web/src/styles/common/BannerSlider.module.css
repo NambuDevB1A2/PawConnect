@@ -111,12 +111,16 @@
   }
 
   .content {
-    justify-content: flex-end;
+    justify-content: center;
     height: 100%;
   }
 
   .buttons {
     flex-wrap: wrap;
+  }
+
+  .slideImage {
+    object-position: right center;
   }
 }
 

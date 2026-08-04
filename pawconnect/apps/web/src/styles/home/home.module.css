@@ -56,6 +56,10 @@
     width: 100%;
 }
 
+.shelter_card_full {
+    max-width: none;
+}
+
 .box_title {
     display: flex;
     flex-wrap: wrap;
