@@ -85,7 +85,7 @@
 
 }
 
-@media(max-width:640px){
+@media(max-width:768px){
 
     .animalGrid{
         grid-template-columns:1fr;

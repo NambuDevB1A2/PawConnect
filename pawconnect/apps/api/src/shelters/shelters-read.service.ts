@@ -88,7 +88,9 @@ export class SheltersReadService {
     async getShelter(id: string) {
         const shelter = await this.find(id, { 
             ...SHELTER_DETAIL_SELECT, 
-            animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
+            animals: {
+                take: 4,
+            }
         });
 
         return { shelter };

@@ -57,8 +57,23 @@
 
 .box_btns {
     width: 100%;
-    
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+    .box_radio_group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .typo_radio {
+        min-width: 0;
+    }
+
+    .box_row_section {
+        flex-direction: column;
+    }
 }
