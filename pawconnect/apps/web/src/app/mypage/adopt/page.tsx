@@ -35,7 +35,7 @@ export default async function Page({ searchParams }: PageProps) {
                             <AdoptionCard key={adoption.id} adoption={adoption}/>
                         )}
                     </div> :
-                    <Empty className={styles.empty} text="등록된 게시글이 없습니다"></Empty>
+                    <Empty className={styles.empty} text="등록된 입양 신청 내역이 없습니다"></Empty>
                 }
                 
                 <div className={styles.pagination}>

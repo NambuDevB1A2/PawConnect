@@ -8,7 +8,7 @@ import { ADOPTION_STATUS_BADGE_STYLE, ADOPTION_STATUS_LABEL } from "@/constants/
 import { MODAL_MESSAGES } from "@/constants/messages/Modal";
 import { ANIMAL_STATUS_BADGE_STYLE, ANIMAL_STATUS_LABEL } from "@/constants/paw/animal-badge.constants";
 import { ModalContext } from "@/providers/ModalProvider";
-import { DeleteAdoption } from "@/services/adopt/delete-adoption.client";
+import { CancelAdoption } from "@/services/adopt/cancel-adoption.client";
 import styles from "@/styles/adopt/AdoptCard.module.css"
 import { Adoption } from "@/types/adopt/adoption.type";
 import { formatDateTime } from "@/utils/format.util";
@@ -30,9 +30,9 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
         });
     };
 
-    const handleDelete = () => {
+    const handleCancel = () => {
         openModal("confirmDelete", {
-            onConfirm: handleConfirmDelete,
+            onConfirm: handleConfirmCancel,
 
             header: MODAL_MESSAGES.confirmAdoptionDelete.header,
             body: MODAL_MESSAGES.confirmAdoptionDelete.body,
@@ -40,8 +40,8 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
         });
     };
 
-    const handleConfirmDelete = async () => {
-        const res = await DeleteAdoption(adoption.id);
+    const handleConfirmCancel = async () => {
+        const res = await CancelAdoption(adoption.id);
 
         if (res.success) {
             alert('성공적으로 신청을 취소했습니다');
@@ -86,7 +86,7 @@ export default function AdoptionCard({ adoption }: AdoptionCardProps) {
 
                 <div className={styles.wrapper_btns}>
                     <Button variant="modal" size="small" onClick={handleDetail}>신청서 보기</Button>
-                    {adoption.adoptionStatus !== "CANCELED" && <Button variant="danger" size="small" onClick={handleDelete}>신청 취소</Button>}
+                    {adoption.adoptionStatus !== "CANCELED" && <Button variant="danger" size="small" onClick={handleCancel}>신청 취소</Button>}
                 </div>
             </div>
         </div>

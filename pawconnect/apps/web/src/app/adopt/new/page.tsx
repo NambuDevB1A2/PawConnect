@@ -5,12 +5,16 @@ import Typography from "@/components/common/Typography";
 import { getAnimalDetail } from "@/services/paw/get-animal-detail.server";
 import styles from "@/styles/adopt/adoptNew.module.css";
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ animalId: number }>}) {
+export default async function Page({ searchParams }: { searchParams: Promise<{ animalId: string }>}) {
     const { animalId } = await searchParams;
-    const response = await getAnimalDetail(Number(animalId));
+    const animalIdNum = Number(animalId);
+    if (Number.isNaN(animalIdNum)) {
+        return <NotFound/>;
+    }
 
+    const response = await getAnimalDetail(animalIdNum);
     if (!response) {
-        return <NotFound/>
+        return <NotFound/>;
     }
     
     const { animal } = response;
