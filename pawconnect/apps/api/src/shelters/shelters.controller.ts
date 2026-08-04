@@ -6,13 +6,14 @@ import { RolesGuard } from '@/auth/guards/role.guard';
 import type { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { createFieldsImageUploadOptions, UPLOAD_DIR } from '@/config/upload.config';
-import { QueryGetShelterAdoptionsDto } from '@/shelters/dto/query-shelter.dto';
+import { QueryGetShelterAdoptionsDto, QueryGetShelterAnimalsDto } from '@/shelters/dto/query-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
 import { SheltersService } from '@/shelters/shelters.service';
 import { Body, Controller, Get, Param, Patch, Query, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
+import { query } from 'axios';
 
 @ApiTags('Shelter')
 @Controller('shelters')
@@ -80,5 +81,15 @@ export class SheltersController {
     @Get(':name')
     getShelterByName(@Param('name') name: string) {
         return this.sheltersService.getShelterByName(name);
+    }
+
+    // 내 보호소 동물 목록조회
+    @Get("me/animals")
+    @Roles(Role.SHELTER)
+    @ApiOperation({ summary: "내 보호소 동물 목록 조회" })
+    getMyAnimals(@CurrentAuth() auth: AuthRequest, 
+        // 페이지, limit, status(QueryString) 전달
+        @Query() query: QueryGetShelterAnimalsDto) {
+        return this.sheltersService.getMyAnimals(auth, query);
     }
 }
