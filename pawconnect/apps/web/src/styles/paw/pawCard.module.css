@@ -11,17 +11,14 @@
 
     /* padding: 16px; */
     gap: 16px;
-
     background: var(--color-surface);
     border-radius: var(--radius-card);
     overflow:hidden;
     
     box-shadow: var(--shadow-medium);
-
     border: 1px solid var(--color-surface);
 
     cursor: pointer;
-
     transition: border-color var(--transition-border-color);
 }
 

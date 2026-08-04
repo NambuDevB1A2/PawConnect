@@ -32,11 +32,12 @@
   background: white;
   transition: .2s;
   box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  cursor:pointer;
 }
 
 .testCard:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  box-shadow:var(--shadow-medium);
 }
 
 .testHeader {
