@@ -120,18 +120,18 @@ main {
     --color-checkout-border: #8E8E8E;*/
 
     /* 톤 다운 */
-    --color-primary: #EA9C48;
-    --color-primary-100: #F7F1E8;
-    --color-primary-200: #F0E2CE;
-    --color-primary-300: #E9D3B4;
+    --color-primary: #EA9948;
+    --color-primary-100: #F7F0E8;
+    --color-primary-200: #F0DFCE;
+    --color-primary-300: #E9CEB4;
     --color-primary-400: var(--color-primary);
-    --color-primary-hover: #CE852F;
-    --color-primary-pressed: #A96C20;
+    --color-primary-hover: #CE7E2F;
+    --color-primary-pressed: #A96520;
 
-    --color-secondary: #5FAE9E;
+    --color-secondary: #5F94AE;
     --color-secondary-100: var(--color-secondary);
-    --color-secondary-200: #4A9387;
-    --color-secondary-300: #38736C;
+    --color-secondary-200: #4A7B93;
+    --color-secondary-300: #385F73;
 
     --color-success: #5DB871;
     --color-warning: #E9C04D;
@@ -147,9 +147,9 @@ main {
     --color-badge-error-text-color: #B14840;
     --color-badge-info-background-color: #DEE9E6;
     --color-badge-info-text-color: #37716A;
-    --color-badge-dog-background-color: #F3E7D4;
+    --color-badge-dog-background-color: #F3E3D4;
     --color-badge-dog-text-color: var(--color-primary-hover);
-    --color-badge-cat-background-color: #E4EDEB;
+    --color-badge-cat-background-color: #E4EAED;
     --color-badge-cat-text-color: var(--color-secondary-300);
 
     --color-background: #FDFBF7;
