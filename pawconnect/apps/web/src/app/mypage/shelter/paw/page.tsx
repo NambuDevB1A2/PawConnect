@@ -49,35 +49,32 @@ export default async function Page({ searchParams }: PageProps) {
         animal => animal.shelterId === shelter.id);
 
     return (
-        <div className={styles.wrapper_list}>
-            <div className={styles.box_title}>
-                <Typography variant="heading">보호동물 관리</Typography>
+        <div className={styles.wrapper_page}>
+            <div className={styles.wrapper_list}>
+                <div className={styles.box_title}>
+                    <Typography variant="title">보호동물 관리</Typography>
+                    <Typography className={styles.typo_count}>총 {myAnimals.length}마리</Typography>
+                </div>
+
                 {/* 등록버튼 */}
                 <Link href="/mypage/shelter/paw/new">
-                    <Button variant="secondary" size="small">등록</Button>
+                    <Button variant="secondary" fullWidth>새로운 보호동물 등록하기</Button>
                 </Link>
-            </div>
 
-            <div className={styles.content}>
-                <div className={styles.list_section}>
-
-                    {/* 보호동물 목록 구간 */}
+                {/* 보호동물 목록 구간 */}
+                {myAnimals.length === 0 ? (<Empty className={styles.empty} text="등록된 동물이 없습니다" />) :
                     <div className={styles.animalGrid}>
-                        {/* 등록된 동물데이터 있는지 확인 후 */}
-                        {/* 동물 전체 조회 */}
-                        {myAnimals.length === 0 ? (<Empty text="등록된 동물이 없습니다" />) :
-                            (myAnimals.map((animal) => (
-                                <AnimalManageCard key={animal.id} animal={animal} />
-                            ))
-                            )}
+                        {myAnimals.map((animal) => (
+                            <AnimalManageCard key={animal.id} animal={animal} />
+                        ))}
                     </div>
+                }
 
-                    {/* 페이지네이션 구간 */}
-                    <div className={styles.pagination}>
-                        <Pagination page={pagination.page}
-                            maxPage={pagination.totalPage}
-                            path="/mypage/shelter/paw" />
-                    </div>
+                {/* 페이지네이션 구간 */}
+                <div className={styles.pagination}>
+                    <Pagination page={pagination.page}
+                        maxPage={pagination.totalPage}
+                        path="/mypage/shelter/paw" />
                 </div>
             </div>
         </div>

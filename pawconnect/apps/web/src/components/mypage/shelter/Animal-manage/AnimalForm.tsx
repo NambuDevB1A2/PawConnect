@@ -28,11 +28,12 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
         handleGenderChange, handleSubmit, isPending } = useAnimalForm(mode, animal);
 
     return (
-        <Section className={styles.wrapper_shelter_info} titleText="동물 정보 입력">
-            <form className={styles.wrapper_form} onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit();
-            }}>
+        <form className={styles.wrapper_section} onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+        }}>
+            <Section className={styles.wrapper_animal_new}
+                titleText={mode === "create" ? "새로운 보호동물 등록하기" : "보호동물 정보 수정하기"}>
                 <BannerImageUploader
                     name="imgThumbnail"
                     wrapperClassName={styles.wrapper_image_uploader}
@@ -154,12 +155,10 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                     />
                 </div>
 
-
                 {/* 등록/수정 버튼 */}
-                <Button className={styles.btn_save} type="submit" disabled={isPending}>
+                <Button className={styles.btn_submit} type="submit" disabled={isPending}>
                     {mode === "create" ? "등록하기" : "수정하기"}</Button>
-            </form>
-        </Section>
-
+            </Section>
+        </form>
     );
 }
