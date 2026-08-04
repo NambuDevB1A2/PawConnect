@@ -15,7 +15,7 @@
     gap: var(--spacing);
 
     width: 100%;
-    max-width: 560px;
+    max-width: 1100px;
 
     align-items: center;
     justify-content: center;
@@ -27,7 +27,7 @@
     gap: var(--spacing);
 
     width: 100%;
-    max-width: 560px;
+    max-width: 1100px;
 
     justify-content: space-between;
 }
@@ -53,7 +53,7 @@
 
 .wrapper_info {
     display: flex;
-    align-items: start;
+    align-items: center;
 }
 
 .box_info {
