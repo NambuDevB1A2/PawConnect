@@ -3,10 +3,12 @@
     min-width: 0;
 }
 
-.wrapper_form {    
+.wrapper_form {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    width: 100%;
 }
 
 .box_info {
