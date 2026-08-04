@@ -4,9 +4,13 @@
 import { AIPawtiRequest, AIPawtiResponse } from "@/types/ai/ai-pawti-type";
 import { fetchClient } from "../fetch/fetch.client";
 
-export async function  SubmitAIPawti(body: AIPawtiRequest) {
-    return fetchClient.post<AIPawtiResponse>(
-        "/ai/pawlab/pawti/analysis",
-        body,
-    );    
+export async function SubmitAIPawti(body: AIPawtiRequest) {
+    try {
+        return await fetchClient.post<AIPawtiResponse>(
+            "/ai/pawlab/pawti/analysis",
+            body,
+        );
+    } catch (error) {
+        return null;
+    }
 }

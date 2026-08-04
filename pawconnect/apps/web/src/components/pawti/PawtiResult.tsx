@@ -19,40 +19,47 @@ interface PawtiResultProps {
 export default function PawtiResult({ result }: PawtiResultProps) {
     const router = useRouter();
 
-    // AI pawti 분석
+    // AI 분석 결과 표시 여부
     const [showAI, setShowAI] = useState(false);
-    // AI 결과보기전 로딩
+    // AI 분석 요청 중복 방지 및 로딩 상태
     const [loading, setLoading] = useState(false);
-    // AI 결과
+    // AI 분석 결과 저장
     const [aiResult, setAiResult] =
         useState<AIPawtiResponse["data"] | null>(null);
 
-    // AI분석 버튼 로직
+    // AI PawTI 분석 요청 및 결과 표시
     const handleAIAnalysis = async () => {
-        // 결과가 있으면 결과창 보여주기
+        // 요청 중이면 중복 호출 방지
+        if(loading) return;
+
+        // 이미 분석 결과가 있으면 재요청 없이 표시
         if (aiResult) {
             setShowAI(true);
             return;
         }
+        
+        setLoading(true);
 
-        // try 하는 이유?? 무슨 예외처리인지?
         try {
-            setLoading(true);
-
-            // response 에 받은 결과 정보 넣기
+            // PawTI 결과 데이터를 기반으로 AI 분석 요청
             const response = await SubmitAIPawti({
                 mbti: result.mbti,
                 title: result.title,
                 keywords: result.keywords,
                 breed: result.breed
             });
-            // 받은결과 셋
+
+            // API 요청 실패 처리
+            if(!response) {
+                alert("AI 요청에 실패했습니다");
+                return;
+            }
+
+            // AI 분석 결과 저장 및 화면 표시
             setAiResult(response.data);
             setShowAI(true);
-        } catch (error) {
-            console.error(error);
-            alert("AI 분석 생성에 실패했습니다")
         } finally {
+            // 요청 종료 후 로딩 상태 해제
             setLoading(false);
         }
     }
@@ -128,9 +135,7 @@ export default function PawtiResult({ result }: PawtiResultProps) {
             <hr className={styles.divider} />
 
             <section className={styles.section}>
-                {/* <Typography variant="title">AI 분석</Typography> */}
-
-                {/* TODO: 분석보기 버튼 AI호출 보여주기 */}
+                {/* AI 분석 요청 전 버튼 표시 */}
                 {!showAI && (
                     <Button fullWidth variant="success" className={styles.aiButton}
                         onClick={handleAIAnalysis} disabled={loading}>
@@ -138,6 +143,7 @@ export default function PawtiResult({ result }: PawtiResultProps) {
                             : "AI PawTI 리포트 보기"}</Button>
                 )}
 
+                {/* AI 분석 결과 리포트 */}
                 {showAI && aiResult && (
                     <div className={styles.aiBox}>
                         <div className={styles.aiHeader}>
@@ -193,26 +199,21 @@ export default function PawtiResult({ result }: PawtiResultProps) {
             </section>
 
             <div className={styles.buttonGroup}>
+                {/* 추천 동물 목록 이동 */}
                 <Button variant="outline" onClick={() => {
                     if (result.representativeAnimal) {
                         router.push(
                             `/paw?species=${result.representativeAnimal.speciesId}&breed=${result.representativeAnimal.breedId}`
-                        )
-                        // router.push(
-                        //     `/paw?breed=${result.representativeAnimal.breedId}`
-                        // )
-                    } else {
+                        )                    } else {
                         router.push("/paw")
                     }
                 }}> 다른 아이 더보기</Button>
 
+                {/* PawTI 테스트 재시작 */}
                 <Button variant="outline" onClick={() => {
                     sessionStorage.removeItem("pawti-result");
                     router.push("/pawlab/pawti/test");
-                }}>
-                    테스트 다시하기</Button>
-                {/* <Button variant="outline" onClick={() =>
-                    router.push("/pawlab/pawti")}>PawLab 가기</Button> */}
+                }}> 테스트 다시하기</Button>
             </div>
         </div>
     );

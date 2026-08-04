@@ -59,8 +59,8 @@
     padding: 10px 18px;
     border-radius: var(--radius-900);
 
-    background: var(--color-badge-success-background-color);
-    color: var(--color-badge-success-text-color);
+    background: #F2ECFF;
+    color: #8068C9;
 
     font-size: var(--font-size-body2);
     font-weight: var(--font-weight-bold);
