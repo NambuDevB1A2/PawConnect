@@ -13,7 +13,7 @@ import { ModalContext } from "@/providers/ModalProvider";
 import { CancelAdoption } from "@/services/adopt/cancel-adoption.client";
 import { UpdateAdoptionStatus } from "@/services/adopt/update-adoption-status.client";
 import styles from "@/styles/adopt/AdoptCard.module.css"
-import { Adoption } from "@/types/adopt/adoption.type";
+import { Adoption, AdoptionStatus } from "@/types/adopt/adoption.type";
 import { AnimalStatus } from "@/types/paw/animal.type";
 import { formatDateTime } from "@/utils/format.util";
 import { useRouter } from "next/navigation";
@@ -26,8 +26,8 @@ interface AdoptionCardProps {
 
 export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
     const { openModal } = useContext(ModalContext);
-    const [animalStatus, setAnimalStatus] = useState(adoption.animal.animalStatus);
-    const [adoptionStatus, setAdoptionStatus] = useState(adoption.adoptionStatus);
+    const [animalStatus, setAnimalStatus] = useState<AnimalStatus>(adoption.animal.animalStatus);
+    const [adoptionStatus, setAdoptionStatus] = useState<AdoptionStatus>(adoption.adoptionStatus);
 
     useEffect(() => {
         setAnimalStatus(adoption.animal.animalStatus);
@@ -143,7 +143,7 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
                                     labelSize="small"
                                     className={styles.select_status}
                                     value={adoptionStatus}
-                                    onChange={setAdoptionStatus}
+                                    onChange={(value) => setAdoptionStatus(value as AdoptionStatus)}
                                     disabled={adoption.adoptionStatus === "CANCELED"}
                                     options={[
                                         { label: "대기", value: "PENDING" },
