@@ -408,6 +408,37 @@ main {
         --spacing-900: 32px;
 
         --modal-padding: var(--spacing-200);
+
+        /* 모바일 글자 크기 70% 축소 */
+        --font-size-display: 28px;
+        --line-height-display: 39px;
+
+        --font-size-heading: 22px;
+        --line-height-heading: 31px;
+
+        --font-size-title: 17px;
+        --line-height-title: 25px;
+
+        --font-size-modaltitle: 13px;
+        --line-height-modaltitle: 20px;
+
+        --font-size-subtitle: 14px;
+        --line-height-subtitle: 21px;
+
+        --font-size-menutitle: 13px;
+        --line-height-menutitle: 20px;
+
+        --font-size-body1: 11px;
+        --line-height-body1: 17px;
+
+        --font-size-body2: 10px;
+        --line-height-body2: 15px;
+
+        --font-size-body3: 9px;
+        --line-height-body3: 14px;
+
+        --font-size-caption: 8px;
+        --line-height-caption: 13px;
     }
 }
 
