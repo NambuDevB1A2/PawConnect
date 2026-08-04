@@ -5,7 +5,7 @@ import PawTITest from "@/components/pawti/PawtiTest";
 export default function Page() {
     return (
         <div>
-            <Typography variant="title">PaWTI</Typography>
+            <Typography variant="title">PawTI</Typography>
             <PawTITest />
         </div>
     );
