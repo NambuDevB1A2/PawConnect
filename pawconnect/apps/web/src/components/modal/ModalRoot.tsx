@@ -11,6 +11,7 @@ import ChangePasswordModal from "@/components/modal/ChangePasswordModal";
 import AiGenerateModal from "@/components/modal/AiGenerateModal";
 import AiAgentModal from "@/components/modal/AiAgentModal";
 import ConfirmGenerateModal from "@/components/modal/ConfirmGenerateModal";
+import AdoptionDetailModal from "@/components/modal/AdoptionDetailModal";
 
 export default function ModalRoot() {
     const { modalState, closeModal } = useContext(ModalContext);
@@ -32,6 +33,9 @@ export default function ModalRoot() {
                 isOpen={modalState?.key === "confirmDelete"} 
                 onClose={closeModal}
                 onConfirm={modalState?.key === "confirmDelete" ? modalState.params.onConfirm : undefined}
+                header={modalState?.key === "confirmDelete" ? modalState.params.header : undefined}
+                body={modalState?.key === "confirmDelete" ? modalState.params.body : undefined}
+                confirm={modalState?.key === "confirmDelete" ? modalState.params.confirm : undefined}
                 />
             
             <ImageViewerModal
@@ -51,6 +55,12 @@ export default function ModalRoot() {
             <ChangePasswordModal
                 isOpen={modalState?.key === "changePassword"}
                 onClose={closeModal}
+                />
+            
+            <AdoptionDetailModal
+                isOpen={modalState?.key === "adoptionDetail"}
+                onClose={closeModal}
+                adoptionId={modalState?.key === "adoptionDetail" ? modalState.params.adoptionId : ""}
                 />
             
             <ConfirmGenerateModal

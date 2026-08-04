@@ -13,8 +13,8 @@
     opacity: 0;
     background-color: var(--overlay-backdrop-color);
 
-    transition: 
-        opacity var(--transition-opacity) ease;
+    /* transition: 
+        opacity var(--transition-opacity) ease; */
 }
 
 .overlay_open {

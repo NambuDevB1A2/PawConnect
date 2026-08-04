@@ -48,7 +48,12 @@
 .input[type="checkbox"]:disabled {
     cursor: not-allowed;
     border-color: var(--input-disabled-border-color);
-    background-color: var(--input-disabled-backgound-color);
+    background-color: var(--input-disabled-background-color);
+}
+
+.input[type="checkbox"]:checked:disabled {
+    background-color: var(--color-text-disabled);
+    border-color: var(--color-text-disabled);
 }
 
 .wrapper_check_icon {

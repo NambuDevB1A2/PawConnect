@@ -32,7 +32,7 @@ export default function AnimalInfoCard({ animal }: AnimalInfoCardProps) {
             return;
         }
         // 로그인되어 있으면 입양신청 페이지로 이동
-        router.push(`/adopt/create?animalId=${animal.id}`);
+        router.push(`/adopt/new?animalId=${animal.id}`);
     }
 
     return (

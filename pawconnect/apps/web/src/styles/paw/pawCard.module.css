@@ -30,7 +30,7 @@
     border-color: var(--color-primary-pressed);
 }
 
-.imageWrapper{
+.wrapper_image{
     position:relative;
 
     width:100%;
@@ -85,13 +85,13 @@
     font-size: 14px;
 }
 
-.animalName {
+.typo_animal_name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.animalGrid{
+.animal_grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
     gap:24px;
