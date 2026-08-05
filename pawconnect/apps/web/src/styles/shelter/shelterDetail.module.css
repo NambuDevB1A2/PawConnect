@@ -130,6 +130,8 @@
 }
 
 .empty {
+    flex: 1 1 100%;
+
     text-align: center;
     width: 100%;
 }

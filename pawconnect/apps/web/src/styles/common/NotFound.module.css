@@ -4,7 +4,10 @@
     justify-content: center;
     align-items: center;
 
+    width: 100%;
     min-height: var(--modal-width-xs);
+
+    grid-column: 1 / -1;
 }
 
 .icon_warning {
