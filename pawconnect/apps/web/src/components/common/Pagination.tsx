@@ -11,12 +11,14 @@ interface PaginationProps {
     page?: number;
     maxPage?: number;
     path: string;
+    queryString?: string;
 }
 
 export default function Pagination({
     page = 1,
     maxPage = 1,
     path,
+    queryString,
 }: PaginationProps) {
     const router = useRouter();
 
@@ -32,7 +34,16 @@ export default function Pagination({
     const isNextActive = page < maxPage;
 
     const handlePage = (page: number) => {
-        router.push(`${path}?page=${page}`);
+        // 현재 검색/필터 조건 유지
+        const params = new URLSearchParams(queryString);
+        // 페이지 번호만 변경
+        params.set("page", String(page));
+
+        const query = params.toString();
+
+        // 검색 조건을 유지한 채 페이지 이동
+        router.push(query ? `${path}?${query}` : path);
+        //router.push(`${path}?page=${page}`);
     }
 
     const handlePrev = () => {

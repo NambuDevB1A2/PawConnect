@@ -1,5 +1,5 @@
 
-// AI 내용 줄바꿈 함수(마침표 기준)
+// AI 내용 줄바꿈 함수
 export function formatAIResponseText(text: string) {
     if(!text) return "";
 

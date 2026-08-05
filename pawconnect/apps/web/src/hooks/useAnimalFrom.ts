@@ -31,8 +31,8 @@ export function useAnimalForm(
     // 보호동물 입력 데이터 상태
     const [form, setForm] = useState<CreateAnimalForm>({
         name: "",
-        speciesId: 1,
-        breedId: 1,
+        speciesId: 0,
+        breedId: 0,
 
         gender: "UNKNOWN",
         isNeutered: false,
@@ -96,8 +96,8 @@ export function useAnimalForm(
             isEstimatedAge: animal.isEstimatedAge,
             weight: animal.weight,
 
-            noticeStartDate: animal.noticeStartDate ?? "",
-            noticeEndDate: animal.noticeEndDate ?? "",
+            noticeStartDate: animal.noticeStartDate?.slice(0,10) ?? "",
+            noticeEndDate: animal.noticeEndDate?.slice(0,10) ?? "",
 
             animalStatus: animal.animalStatus,
 
