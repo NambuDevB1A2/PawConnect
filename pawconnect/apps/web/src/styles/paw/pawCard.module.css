@@ -84,6 +84,12 @@
     font-size: 14px;
 }
 
+.typo_shelter_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .typo_animal_name {
   overflow: hidden;
   text-overflow: ellipsis;

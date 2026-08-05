@@ -14,6 +14,7 @@
 .box_info {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: var(--spacing-900);
 
     width: 100%;
@@ -38,9 +39,10 @@
     margin-top: var(--spacing-100);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .box_info {
         flex-direction: column;
+        align-items: center;
         gap: var(--spacing-500);
     }
 }

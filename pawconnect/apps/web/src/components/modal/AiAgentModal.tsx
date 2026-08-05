@@ -162,6 +162,7 @@ export default function AiAgentModal({ isOpen, onClose }: AiAgentModalProps) {
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}
                     disabled={isPending}
+                    maxLength={200}
                     />
                 <Button 
                     className={styles.btn_submit} 

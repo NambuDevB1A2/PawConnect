@@ -54,6 +54,14 @@
     width: 100%;
 }
 
+.typo_shelter_name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    min-width: 0;
+}
+
 .typo_address {
     color: var(--color-text-secondary);
 }

@@ -46,7 +46,7 @@ export default function AnimalCard({ animal }: AnimalCardProps) {
                     {/* {animal.weight}kg */}
                 </Typography>
                 {/* 보호소 이름 */}
-                <Typography className={styles.typo_detail}>{animal.shelterName}</Typography>
+                <Typography className={`${styles.typo_detail} ${styles.typo_shelter_name}`}>{animal.shelterName}</Typography>
                 {/* 등록날짜 2026-06-30 */}
                 {/* <Typography variant="caption">{formatDate(animal.createdAt)}</Typography> */}
             </div>

@@ -36,7 +36,7 @@ export default function ShelterCard({ shelter, wrapperClassName = "" }: ShelterC
 
             <div className={styles.box_shelter_info}>
                 <div className={styles.box_shelter_title}>
-                    <Typography variant="subtitle">{shelter.name}</Typography>
+                    <Typography className={styles.typo_shelter_name} variant="subtitle">{shelter.name}</Typography>
                     {/* <MyShelterOptions shelter={shelter}/> */}
                 </div>
                 <Typography className={styles.typo_address} variant="body2">{shelter.address}</Typography>

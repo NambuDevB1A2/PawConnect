@@ -6,6 +6,11 @@
     padding-left: var(--spacing);
 }
 
+.wrapper_layout > *:last-child {
+    flex: 1;
+    min-width: 0;
+}
+
 .wrapper_side_menu {
     flex-shrink: 0;
     width: var(--sidemenu-width);

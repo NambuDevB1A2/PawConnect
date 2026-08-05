@@ -122,14 +122,16 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: var(--spacing-100);
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 .box_animals > * {
-    flex: 0 1 220px;
+    flex: 0 1 240px;
 }
 
 .empty {
+    flex: 1 1 100%;
+
     text-align: center;
     width: 100%;
 }

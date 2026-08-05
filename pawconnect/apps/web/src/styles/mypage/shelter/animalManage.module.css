@@ -39,7 +39,7 @@
 
 .box_list {
     display: grid;
-    grid-template-columns: repeat(3, 270px);
+    grid-template-columns: repeat(3, 240px);
     gap: 20px;
 
     justify-content: center;
@@ -55,12 +55,12 @@
 
 @media (max-width: 1024px) {
     .box_list {
-        grid-template-columns: repeat(2, minmax(240px, 1fr));
+        grid-template-columns: repeat(2, 240px);
     }
 }
 
 @media (max-width: 480px) {
     .box_list {
-        grid-template-columns: 1fr;
+        grid-template-columns: 240px;
     }
 }
