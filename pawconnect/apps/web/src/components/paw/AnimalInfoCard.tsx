@@ -20,7 +20,7 @@ export default function AnimalInfoCard({ animal }: AnimalInfoCardProps) {
     const router = useRouter();
     const isAvailable = animal.animalStatus === 'AVAILABLE';
     // 로그인 여부 확인
-    const { login } = useContext(AuthContext);
+    const { login, user } = useContext(AuthContext);
     // 로그인 모달
     const { openModal } = useContext(ModalContext);
 
@@ -74,7 +74,7 @@ export default function AnimalInfoCard({ animal }: AnimalInfoCardProps) {
                 {/* // 입양신청하기 버튼 */}
                 {/* 로그인 여부 확인 후 이동 */}
                 <Button fullWidth className={styles.searchButton} variant="primary"
-                    disabled={!isAvailable}
+                    disabled={!isAvailable || user?.role === "SHELTER"}
                     onClick={handleApply}>
                     입양 신청</Button>
             </div>

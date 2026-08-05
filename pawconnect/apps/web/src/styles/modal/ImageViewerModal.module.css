@@ -1,9 +1,17 @@
 .modal {
+    width: auto;
+    max-width: 90vw;
+    max-height: 85vh;
+    padding: 0;
+    overflow: visible;
+
     background-color: transparent;
     box-shadow: none;
 }
 
 .image {
+    display: block;
+
     box-shadow: var(--shadow-medium);
 
     max-width: 90vw;
