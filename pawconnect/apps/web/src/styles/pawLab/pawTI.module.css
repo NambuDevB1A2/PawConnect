@@ -59,8 +59,8 @@
 
 .progressFill{
     height:100%;
-    background:#65C466;
-    /* transition:.3s; */
+    background: var(--color-primary);
+    transition: .3s;
 }
 
 .progressText{
@@ -115,7 +115,7 @@
     height:48px;
     border-radius:50%;
     border:5px solid #ddd;
-    border-top-color:#65C466;
+    border-top-color:var(--color-primary);
     animation:spin 1s linear infinite;
 }
 

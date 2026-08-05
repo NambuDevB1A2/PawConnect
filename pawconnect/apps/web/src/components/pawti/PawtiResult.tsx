@@ -137,7 +137,7 @@ export default function PawtiResult({ result }: PawtiResultProps) {
             <section className={styles.section}>
                 {/* AI 분석 요청 전 버튼 표시 */}
                 {!showAI && (
-                    <Button fullWidth variant="success" className={styles.aiButton}
+                    <Button fullWidth variant="secondary" className={styles.aiButton}
                         onClick={handleAIAnalysis} disabled={loading}>
                         {loading ? "AI가 당신과 맞는 아이를 분석 중이에요..."
                             : "AI PawTI 리포트 보기"}</Button>
