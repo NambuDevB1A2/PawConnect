@@ -11,7 +11,9 @@ import CheckBox from "@/components/common/CheckBox";
 import Section from "@/components/common/Section";
 import styles from "@/styles/mypage/shelter/animalForm.module.css"
 import TextArea from "@/components/common/TextArea";
+import { validateAnimalForm } from "./ValidateAnimalForm";
 import { useState } from "react";
+import Typography from "@/components/common/Typography";
 
 
 interface AnimalFormProps {
@@ -27,13 +29,40 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
         handleTextareaChange, handleThumbnailChange, handleImagesChange,
         handleGenderChange, handleSubmit, isPending } = useAnimalForm(mode, animal);
 
+    const [errors, setErrors] = useState({
+        nameError: "",
+        speciesError: "",
+        breedError: "",
+        ageError: "",
+        weightError: "",
+        foundLocationError: "",
+        specialNotesError: "",
+        descriptionError: "",
+        healthStatusError: "",
+    });
+
+    // 제한 검증
+    const handleSubmitAnimal = () => {
+        const validationErrors = validateAnimalForm(form);
+
+        // 에러 하나라도 있으면 중단
+        if (
+            Object.values(validationErrors).some(error => error !== "")
+        ) {
+            setErrors(validationErrors);
+            return;
+        }
+        // 제출 진행
+        handleSubmit();
+    }
+
+
     return (
-        <form className={styles.wrapper_section} onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-        }}>
-            <Section className={styles.wrapper_animal_new}
-                titleText={mode === "create" ? "새로운 보호동물 등록하기" : "보호동물 정보 수정하기"}>
+        <Section className={styles.wrapper_shelter_info} titleText="동물 정보 입력">
+            <form className={styles.wrapper_form} onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmitAnimal();
+            }}>
                 <BannerImageUploader
                     name="imgThumbnail"
                     wrapperClassName={styles.wrapper_image_uploader}
@@ -51,7 +80,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                 />
                 <div className={styles.box_animal_input}>
                     <Input name="name" value={form.name} labelText="보호동물 이름 *"
-                        onChange={handleChange} />
+                        maxLength={20} onChange={handleChange} errorText={errors.nameError} />
 
                     <Select labelText="동물 *" labelPosition="left"
                         labelSize="small"
@@ -66,40 +95,60 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                             handleSelectChange("breedId", 0); // 종 바뀌면 품종 초기화
                         }}
                     />
-                    <Select labelText="품종 *" helperText="품종을 선택하세요"
+                    {errors.speciesError && (
+                        <Typography className={styles.error}>
+                            {errors.speciesError}
+                        </Typography>
+                    )}
+
+                    <Select labelText="품종 *"
+                        helperText={errors.breedError || "품종을 선택하세요"}
                         labelPosition="left"
                         value={String(form.breedId)}
                         options={breedOptions}
                         onChange={(value) =>
                             handleSelectChange("breedId", Number(value))}
                     />
-                    <Select labelText="성별 *" helperText="성별을 선택하세요"
+                    {errors.breedError && (
+                        <Typography className={styles.error}>
+                            {errors.breedError}
+                        </Typography>
+                    )}
+
+                    <Select labelText="성별 *"
+                        helperText="성별을 선택하세요"
                         labelPosition="left"
                         value={`${form.gender}_${form.isNeutered ? "TRUE" : "FALSE"}`}
                         options={genderOptions}
                         onChange={handleGenderChange}
                     />
 
-                    <Input
-                        name="age"
-                        labelText="나이 *"
-                        type="number"
-                        value={String(form.age)}
-                        onChange={handleChange}
-                    />
+                    <div className={styles.age_box}>
+                        <Input
+                            name="age"
+                            labelText="나이 *"
+                            type="number"
+                            value={String(form.age)}
+                            errorText={errors.ageError}
+                            onChange={handleChange}
+                        />
+                        <label className={styles.estimated}>
+                            <CheckBox type="checkbox" name="추정"
+                                checked={form.isEstimatedAge}
+                                onChange={(e) => handleCheckboxChange(
+                                    "isEstimatedAge", e.target.checked)}
+                            />추정
+                        </label>                        
+                    </div>
 
-                    <label>
-                        <CheckBox type="checkbox" name="추정"
-                            checked={form.isEstimatedAge}
-                            onChange={(e) => handleCheckboxChange(
-                                "isEstimatedAge", e.target.checked)}
-                        />추정
-                    </label>
+
+
                     <Input
                         name="weight"
                         labelText="몸무게(kg) *"
                         type="number"
                         value={String(form.weight)}
+                        errorText={errors.weightError}
                         onChange={handleChange}
                     />
                     <Input
@@ -126,10 +175,12 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                             handleSelectChange("animalStatus", value)
                         }
                     />
+
                     <Input
                         name="foundLocation"
                         labelText="발견장소"
                         value={form.foundLocation}
+                        errorText={errors.foundLocationError}
                         onChange={handleChange}
                     />
                     <TextArea

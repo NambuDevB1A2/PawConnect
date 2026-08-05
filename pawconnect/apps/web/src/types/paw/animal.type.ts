@@ -15,7 +15,7 @@ export interface Animal {
     isEstimatedAge: boolean;
     weight: number;
     shelterName: string;
-    createdAt?: string;
+    createdAt: string;
 }
 
 // 페이지네이션 타입

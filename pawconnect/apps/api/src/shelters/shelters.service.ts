@@ -1,6 +1,6 @@
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
-import { QueryGetShelterAdoptionsDto } from '@/shelters/dto/query-shelter.dto';
+import { QueryGetShelterAdoptionsDto, QueryGetShelterAnimalsDto } from '@/shelters/dto/query-shelter.dto';
 import { UpdateShelterDto } from '@/shelters/dto/update-shelter.dto';
 import { SheltersReadService } from '@/shelters/shelters-read.service';
 import { SheltersUpdateService } from '@/shelters/shelters-update.service';
@@ -42,5 +42,10 @@ export class SheltersService {
         const result = await this.sheltersReadService.getShelterByName(name);
         return { success: true, ...result };
     }
-    
+
+    // 내 보호소 동물 목록 조회 - GET /shelters/me/animals
+    async getMyAnimals(auth: AuthRequest, query: QueryGetShelterAnimalsDto) {
+        const result = await this.sheltersReadService.getMyAnimals(auth, query);
+        return { success: true, ...result };
+    }
 }
