@@ -30,7 +30,7 @@
     align-items: center;
     justify-items: center;
 
-    width: 190px;
+    width: auto;
 }
 
 .box_copylight {
@@ -51,4 +51,32 @@
 
 .btn_terms {
     cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .wrapper_footer {
+        flex-wrap: wrap;
+        gap: var(--spacing-500);
+    }
+
+    .box_left {
+        flex: 1 1 100%;
+    }
+
+    .box_right {
+        width: auto;
+        flex: 1 1 160px;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper_footer {
+        flex-direction: column;
+        gap: var(--spacing-500);
+    }
+
+    .box_right {
+        width: 100%;
+        flex: none;
+    }
 }

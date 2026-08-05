@@ -73,3 +73,47 @@
 .btn_child {
     width: 100%;
 }
+
+@media (max-width: 768px) {
+    .wrapper_layout {
+        flex-direction: column;
+        padding: 0 var(--spacing);
+    }
+
+    .wrapper_side_menu {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        padding-right: 0;
+        padding-bottom: var(--spacing-300);
+
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .box_menu_group {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn_side {
+        height: auto;
+        padding: var(--spacing-100) var(--spacing-200);
+    }
+
+    .box_submenu {
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        margin-left: 0;
+        padding-left: 0;
+
+        border-left: none;
+    }
+
+    .btn_child {
+        width: auto;
+    }
+}

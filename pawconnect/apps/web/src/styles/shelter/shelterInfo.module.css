@@ -28,9 +28,17 @@
     flex-direction: column;
     gap: var(--spacing);
 
-    width: 500px;
+    width: 100%;
+    max-width: 500px;
 }
 
 .btn_save {
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
+}
+
+@media (max-width: 768px) {
+    .wrapper_shelter_info {
+        flex-direction: column;
+    }
 }

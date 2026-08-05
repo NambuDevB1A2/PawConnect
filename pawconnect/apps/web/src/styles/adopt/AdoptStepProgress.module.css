@@ -62,3 +62,30 @@
 
     border-bottom: 1px solid var(--color-text-primary);
 }
+
+@media (max-width: 768px) {
+    .wrapper_step {
+        gap: var(--spacing-100);
+    }
+
+    .line {
+        width: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper_step {
+        gap: var(--spacing-050);
+    }
+
+    .typo_step {
+        width: 36px;
+        height: 36px;
+
+        font-size: var(--font-size-body1);
+    }
+
+    .line {
+        width: 32px;
+    }
+}

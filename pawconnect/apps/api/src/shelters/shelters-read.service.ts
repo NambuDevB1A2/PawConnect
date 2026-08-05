@@ -87,9 +87,17 @@ export class SheltersReadService {
 
     // 보호소 상세 조회 (id)
     async getShelter(id: string) {
-        const shelter = await this.find(id, {
-            ...SHELTER_DETAIL_SELECT,
-            animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
+        const shelter = await this.find(id, { 
+            ...SHELTER_DETAIL_SELECT, 
+            animals: {
+                include:{
+                    shelter: true,
+                    animalSpecies: true,
+                    animalBreed: true
+                },
+                take: 4,
+                orderBy:{ createdAt: 'desc' },
+            }
         });
 
         return { shelter };
@@ -105,6 +113,8 @@ export class SheltersReadService {
                     animalSpecies: true,
                     animalBreed: true
                 },
+                take: 4,
+                orderBy:{ createdAt: 'desc' },
             }
         });
 

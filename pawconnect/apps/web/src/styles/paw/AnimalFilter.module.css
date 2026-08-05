@@ -23,3 +23,9 @@
 .searchButton{
     margin-top:8px;
 }
+
+@media (max-width: 768px) {
+    .wrapper {
+        width: 100%;
+    }
+}

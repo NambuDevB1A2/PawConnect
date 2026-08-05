@@ -1,3 +1,17 @@
+/*
+ * ============================================================
+ * Responsive Breakpoints (컨벤션)
+ * PostCSS 커스텀 문법(@custom-media) 미사용 → 각 .module.css 파일에
+ * 아래 값을 표준 @media (max-width: Npx)로 직접 반복 작성한다.
+ *
+ *   1024px  small-desktop  : 3~4열 그리드 → 2열, 2분할 레이아웃 폭 축소 시작
+ *    768px  tablet         : flex row → column 전환 기준
+ *    480px  mobile         : 그리드 1열, 패딩/치수 축소, 헤더 축약 강화
+ *
+ * 파일 하단에 1024 → 768 → 480 순으로 미디어쿼리 블록을 쌓는다.
+ * ============================================================
+ */
+
 *,
 *::before,
 *::after {
@@ -106,36 +120,36 @@ main {
     --color-checkout-border: #8E8E8E;*/
 
     /* 톤 다운 */
-    --color-primary: #EA9C48;
-    --color-primary-100: #F7F1E8;
-    --color-primary-200: #F0E2CE;
-    --color-primary-300: #E9D3B4;
+    --color-primary: #DE9954;
+    --color-primary-100: #F7F0E8;
+    --color-primary-200: #F0DFCE;
+    --color-primary-300: #E9CEB4;
     --color-primary-400: var(--color-primary);
-    --color-primary-hover: #CE852F;
-    --color-primary-pressed: #A96C20;
+    --color-primary-hover: #D57E28;
+    --color-primary-pressed: #A96520;
 
-    --color-secondary: #5FAE9E;
+    --color-secondary: #54B1DE;
     --color-secondary-100: var(--color-secondary);
-    --color-secondary-200: #4A9387;
-    --color-secondary-300: #38736C;
+    --color-secondary-200: #289CD5;
+    --color-secondary-300: #207BA9;
 
-    --color-success: #5DB871;
-    --color-warning: #E9C04D;
-    --color-error: #DF716A;
+    --color-success: #3BDA5E;
+    --color-warning: #DFBB57;
+    --color-error: #E26E67;
 
-    --color-badge-success-background-color: #E0EEDE;
-    --color-badge-success-text-color: #3B7A4A;
-    --color-badge-warning-background-color: #F5EACC;
+    --color-badge-success-background-color: var(--color-primary-200);
+    --color-badge-success-text-color: var(--color-primary-hover);
+    --color-badge-warning-background-color: #F0E3C2;
     --color-badge-warning-text-color: var(--color-primary-pressed);
     --color-badge-completed-background-color: #EDEDED;
     --color-badge-completed-text-color: var(--color-primary-pressed);
-    --color-badge-error-background-color: #F5E0DD;
-    --color-badge-error-text-color: #B14840;
-    --color-badge-info-background-color: #DEE9E6;
-    --color-badge-info-text-color: #37716A;
-    --color-badge-dog-background-color: #F3E7D4;
+    --color-badge-error-background-color: #F0C8C2;
+    --color-badge-error-text-color: #CA3227;
+    --color-badge-info-background-color: #C2E0F0;
+    --color-badge-info-text-color: var(--color-secondary-300);
+    --color-badge-dog-background-color: #F0D8C2;
     --color-badge-dog-text-color: var(--color-primary-hover);
-    --color-badge-cat-background-color: #E4EDEB;
+    --color-badge-cat-background-color: #C2E0F0;
     --color-badge-cat-text-color: var(--color-secondary-300);
 
     --color-background: #FDFBF7;
@@ -371,6 +385,71 @@ main {
 
     /* Side Menu */
     --sidemenu-width: 240px;
+}
+
+/* Responsive token overrides — 패딩/간격류 토큰만 대상. width/grid-template-columns/
+   flex-direction 등 구조 값은 각 모듈에서 개별 처리한다. */
+@media (max-width: 768px) {
+    :root {
+        --spacing-700: 28px;
+        --spacing-800: 40px;
+        --spacing-900: 56px;
+
+        --modal-padding: var(--spacing-300);
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --spacing-500: 20px;
+        --spacing-600: 24px;
+        --spacing-700: 20px;
+        --spacing-800: 28px;
+        --spacing-900: 32px;
+
+        --modal-padding: var(--spacing-200);
+
+        /* 모바일 글자 크기 70% 축소 */
+        --font-size-display: 28px;
+        --line-height-display: 39px;
+
+        --font-size-heading: 22px;
+        --line-height-heading: 31px;
+
+        --font-size-title: 17px;
+        --line-height-title: 25px;
+
+        --font-size-modaltitle: 13px;
+        --line-height-modaltitle: 20px;
+
+        --font-size-subtitle: 14px;
+        --line-height-subtitle: 21px;
+
+        --font-size-menutitle: 13px;
+        --line-height-menutitle: 20px;
+
+        --font-size-body1: 11px;
+        --line-height-body1: 17px;
+
+        --font-size-body2: 10px;
+        --line-height-body2: 15px;
+
+        --font-size-body3: 9px;
+        --line-height-body3: 14px;
+
+        --font-size-caption: 8px;
+        --line-height-caption: 13px;
+    }
+}
+
+/* 초소형 화면(412px 이하) — Section/카드형 컨테이너가 겹겹이 중첩되는
+   mypage 전 화면에서 좌우 여백이 과도하게 쌓이는 것을 막기 위해
+   기본 여백 토큰을 한 번 더 축소한다. */
+@media (max-width: 412px) {
+    :root {
+        --spacing: 14px;
+        --spacing-300: 10px;
+    }
 }
 
 a {

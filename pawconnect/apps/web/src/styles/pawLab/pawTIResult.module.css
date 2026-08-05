@@ -19,16 +19,15 @@
 }
 
 .resultCard {
-    /* background:#fff; */
     background: linear-gradient(135deg,
-            var(--color-badge-success-background-color),
+            var(--color-background),
             var(--color-surface));
     border: 1px solid var(--color-border);
     border-radius: var(--radius-600);
-    padding: 40px;
+    padding: var(--spacing-800);
 
     text-align: center;
-    box-shadow: var(--shadow-large);
+    box-shadow: var(--shadow-medium);
 }
 
 .resultIcon {
@@ -59,8 +58,8 @@
     padding: 10px 18px;
     border-radius: var(--radius-900);
 
-    background: #F2ECFF;
-    color: #8068C9;
+    background: var(--color-badge-cat-background-color);
+    color: var(--color-badge-info-text-color);
 
     font-size: var(--font-size-body2);
     font-weight: var(--font-weight-bold);
@@ -80,10 +79,6 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-
-    /* grid-template-columns:1fr 1fr; */
-    /* grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:20px; */
 }
 
 .animalGrid>div {
@@ -152,10 +147,8 @@
 
     background:
         linear-gradient(135deg,
-            var(--color-badge-success-background-color),
+            var(--color-background),
             var(--color-surface)
-            /* var(--color-primary-100),
-            var(--color-surface) */
         );
 
     border-radius: var(--radius-600);
@@ -209,40 +202,6 @@
     }
 }
 
-/* .aiItem:hover{
-    transform:translateY(-2px);
-} */
-/* 
-.aiButton{
-
-    margin-top:12px;
-
-    height:56px;
-
-    border-radius:18px;
-
-    font-size:16px;
-
-    font-weight:700;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7BCF74,
-            #4EAF51
-        );
-
-    box-shadow:
-        0 8px 20px rgba(78,175,81,.25);
-
-    transition:.2s;
-}
-
-
-.aiButton:hover{
-    transform:translateY(-2px);
-} */
-
 .aiButton {
     margin-top: var(--spacing-200);
 
@@ -254,11 +213,6 @@
     transition:
         transform var(--transition-transform),
         opacity var(--transition-opacity);
-}
-
-.aiButton:hover {
-    background: #4FA462;
-    transform: translateY(-2px);
 }
 
 .aiTitle {
@@ -298,4 +252,13 @@
         flex-direction: column;
     }
 
+    .emptyCard {
+        width: 100%;
+        height: auto;
+        min-height: 280px;
+    }
+
+    .resultCard {
+        padding: var(--spacing-500);
+    }
 }

@@ -27,7 +27,7 @@ export default async function Page({ searchParams }: PageProps) {
             <div className={styles.wrapper_list}>
                 <div className={styles.box_title}>
                     <Typography variant="heading">우리가 함께 만드는 PawLog</Typography>
-                    <Typography>총 {pagination?.totalCount}개의 게시글</Typography>
+                    <Typography className={styles.typo_count}>총 {pagination?.totalCount}개의 게시글</Typography>
                 </div>
 
                 <NewPawLogButton/>

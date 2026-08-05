@@ -3,6 +3,7 @@
 import Typography from "@/components/common/Typography";
 import { useRouter } from "next/navigation";
 import styles from "@/styles/pawLab/pawLab.module.css";
+import Badge from "@/components/common/Badge";
 
 
 // PawTI 소개/메인 페이지
@@ -30,9 +31,7 @@ export default function Page() {
                     <div className={styles.testHeader}>
                         <Typography variant="subtitle"> PawTI </Typography>
 
-                        <span className={styles.badge}>
-                            NEW
-                        </span>
+                        <Badge variant="info">New</Badge>
                     </div>
 
                     <div className={styles.testBody}>

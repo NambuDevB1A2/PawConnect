@@ -25,3 +25,18 @@
 
     font-size: var(--font-size-title);
 }
+
+@media (max-width: 480px) {
+    .wrapper_aside {
+        bottom: var(--spacing-300);
+        right: var(--spacing-300);
+    }
+
+    .btn_aside {
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+
+        font-size: var(--font-size-subtitle);
+    }
+}

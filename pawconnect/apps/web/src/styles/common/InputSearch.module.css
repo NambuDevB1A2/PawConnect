@@ -11,7 +11,7 @@
 
 .input {
     border-radius: var(--radius-900);
-    padding-left: var(--spacing-700);
+    padding-left: 48px;
 }
 
 .icon_search {

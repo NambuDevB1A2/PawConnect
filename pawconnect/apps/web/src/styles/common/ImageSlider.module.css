@@ -27,22 +27,26 @@
 
 .small {
     width: var(--modal-width-xs);
-    height: calc(var(--modal-width-xs) / 4 * 3);
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
 }
 
 .medium {
     width: var(--modal-width-m);
-    height: calc(var(--modal-width-m) / 4 * 3);
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
 }
 
 .large {
     width: var(--modal-width-l);
-    height: calc(var(--modal-width-l) / 4 * 3);
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
 }
 
 .xlarge {
     width: var(--modal-width-xl);
-    height: calc(var(--modal-width-xl) / 4 * 3);
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
 }
 
 .track {

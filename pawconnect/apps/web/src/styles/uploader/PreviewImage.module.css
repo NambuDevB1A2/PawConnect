@@ -44,3 +44,14 @@
 
     color: var(--color-primary-hover);
 }
+
+@media (max-width: 480px) {
+    .img_preview,
+    .box_upper {
+        width: 140px;
+    }
+
+    .img_preview {
+        height: 100px;
+    }
+}

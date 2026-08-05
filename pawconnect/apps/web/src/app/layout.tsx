@@ -23,9 +23,7 @@ export default async function RootLayout({
                 <AuthProvider initialUser={user?.user}>
                 <ModalProvider>
                     
-                    <header>
-                        <Header user={user?.user}/>
-                    </header>
+                    <Header user={user?.user}/>
 
                     <main>{children}</main>
 

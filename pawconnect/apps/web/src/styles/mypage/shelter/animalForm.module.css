@@ -1,10 +1,30 @@
-.wrapper_form {
+.wrapper_new {
+    flex: 1;
+    min-width: 0;
+}
+
+.wrapper_edit {
+    flex: 1;
+    min-width: 0;
+}
+
+.wrapper_section {
     display:flex;
     flex-direction:column;
-    align-items:center;
     gap:var(--spacing);
+
+    justify-content:space-between;
     width:100%;
-    margin:var(--spacing);
+}
+
+.wrapper_form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+}
+
+.wrapper_animal_new {
+    padding: var(--spacing);
 }
 
 .wrapper_image_uploader {
@@ -15,7 +35,8 @@
     display:flex;
     flex-direction:column;
     gap:var(--spacing);
-    width:500px;
+    width:100%;
+    max-width:500px;
 }
 
 .btn_save {

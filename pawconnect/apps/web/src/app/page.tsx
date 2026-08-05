@@ -63,7 +63,7 @@ export default async function Page() {
                                 id: 1,
                                 variant: "outline",
                                 label: "성향테스트 하러가기",
-                                path: "/pawlab/pawti",
+                                path: "/pawlab",
                             },
                         ]
                     },
@@ -86,7 +86,7 @@ export default async function Page() {
                     <HomeTitleButton titleText="신규 보호소" path="/shelter"/>
                     <div className={styles.box_shelter_card}>
                         {shelter ?
-                            <ShelterCard shelter={shelter}/> :
+                            <ShelterCard shelter={shelter} wrapperClassName={styles.shelter_card_full}/> :
                             <Empty text="등록된 보호소가 없습니다"/>}
                     </div>
                 </div>

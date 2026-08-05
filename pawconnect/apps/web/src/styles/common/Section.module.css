@@ -3,6 +3,8 @@
 .wrapper_section {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 100%;
     padding: var(--spacing);
     gap: var(--spacing);
 }
@@ -26,18 +28,22 @@
 
 .small {
     width: var(--modal-width-s);
+    max-width: 100%;
 }
 
 .medium {
     width: var(--modal-width-m);
+    max-width: 100%;
 }
 
 .large {
     width: var(--modal-width-l);
+    max-width: 100%;
 }
 
 .xlarge {
     width: var(--modal-width-xl);
+    max-width: 100%;
 }
 
 /* Align */

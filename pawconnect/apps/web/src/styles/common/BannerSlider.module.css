@@ -95,3 +95,37 @@
   background-color: var(--color-surface);
   transform: scale(1.2);
 }
+
+@media (max-width: 768px) {
+  .slide {
+    aspect-ratio: 4 / 3;
+  }
+
+  .overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.75) 55%,
+      rgba(255, 255, 255, 0.9) 100%
+    );
+  }
+
+  .content {
+    justify-content: center;
+    height: 100%;
+  }
+
+  .buttons {
+    flex-wrap: wrap;
+  }
+
+  .slideImage {
+    object-position: right center;
+  }
+}
+
+@media (max-width: 480px) {
+  .slide {
+    aspect-ratio: 3 / 4;
+  }
+}

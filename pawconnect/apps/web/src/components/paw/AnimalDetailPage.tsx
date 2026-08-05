@@ -7,14 +7,49 @@ import styles from '@/styles/paw/pawDetail.module.css'
 import { AnimalDetail } from "@/types/paw/animal-detail.type";
 import { useRouter } from "next/navigation";
 import AnimalInfoCard from "./AnimalInfoCard";
+import IconButton from "@/components/common/IconButton";
+import { DeleteAnimal } from "@/services/paw/delete-animal.client";
+import { useContext } from "react";
+import { ModalContext } from "@/providers/ModalProvider";
+import { AuthContext } from "@/providers/AuthProvider";
 
 interface AnimalDetailPageProps {
   animal: AnimalDetail;
 }
 
 export default function AnimalDetailPage({animal}: AnimalDetailPageProps) {
-    // 페이지 연결
+    // 라우터연결
     const router = useRouter();
+    const { user } = useContext(AuthContext);
+    const { openModal } = useContext(ModalContext);
+
+    // 수정 실행
+    const onClickUpdate = () => {
+        // 수정 페이지로 이동
+        router.push(`/mypage/shelter/paw/edit/${animal.id}`);
+    }
+
+    // 삭제 실행
+    const onClickDelete = () => {
+        // 로그인,등록된동물,마이쉴터 여부 등 체크해야할게 있나?
+        // 모달 오픈
+        openModal("confirmDelete",
+            {
+                onConfirm: handleConfirmDelete,
+                targetName: animal.name
+            });
+    }
+
+    const handleConfirmDelete = async () => {
+        const res = await DeleteAnimal(animal.id);
+
+        if (res?.success) {
+            alert("삭제되었습니다");
+            router.push("/paw");
+        } else {
+            alert("삭제에 실패했습니다");
+        }
+    };
 
     return (
         <div className={styles.wrapper_detail}>
@@ -23,7 +58,21 @@ export default function AnimalDetailPage({animal}: AnimalDetailPageProps) {
                 <Typography variant="heading" onClick={() => router.push(
                         `/shelter/${encodeURIComponent(animal.shelterName)}`)}>
                             {animal.shelterName}</Typography>
-                </div>
+
+                {/* 버튼들 */}
+                {user?.shelterId === animal.shelterId && <div className={styles.buttons}>
+                    <IconButton name="edit" color="color_default"
+                        aria-label="수정" onClick={(e) => {
+                            e.stopPropagation();
+                            onClickUpdate();
+                        }} title="수정" />
+                    <IconButton name="delete" color="color_default"
+                        aria-label="삭제" onClick={(e) => {
+                            e.stopPropagation();
+                            onClickDelete();
+                        }} title="삭제" />
+                </div>}
+            </div>
 
             <div className={styles.topSection}>
                 {/* 이미지들 */}
