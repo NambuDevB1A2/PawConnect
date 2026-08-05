@@ -38,7 +38,7 @@ const SIDE_MENU_CONFIG: Record<Enums.Role, MenuItem[]> = {
                 { label: "보호소 정보", path: "/mypage/shelter/info" },
                 { label: "보호동물 관리", path: "/mypage/shelter/paw" },
                 { label: "입양 신청 관리", path: "/mypage/shelter/adopt" },
-                { label: "통계 관리", path: "/mypage/shelter/stats" },
+                //{ label: "통계 관리", path: "/mypage/shelter/stats" },
             ],
         },
     ],

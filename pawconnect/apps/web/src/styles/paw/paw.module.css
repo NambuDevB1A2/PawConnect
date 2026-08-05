@@ -8,7 +8,6 @@
 }
 
 .wrapper_list {
-    flex: 1;
     max-width: 1050px;
 }
 
@@ -61,7 +60,7 @@
 .box_list {
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 240px);
     gap: 24px;
 }
 
@@ -71,6 +70,10 @@
 }
 
 @media (max-width: 1024px) {
+    .wrapper_list {
+        flex: 1;
+    }
+
     .box_list {
         grid-template-columns: repeat(2, 1fr);
     }

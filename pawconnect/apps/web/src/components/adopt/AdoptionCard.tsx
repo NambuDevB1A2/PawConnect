@@ -80,8 +80,12 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
         }
     };
 
+    const isCanceled = 
+        adoption.adoptionStatus === "CANCELED" ||
+        adoption.adoptionStatus === "REJECTED";
+
     return (
-        <div className={`${styles.wrapper_adoption_card} ${adoption.adoptionStatus === "CANCELED" ? styles.canceled : ""}`}>
+        <div className={`${styles.wrapper_adoption_card} ${isCanceled ? styles.canceled : ""}`}>
             <div className={styles.wrapper_image}>
                 <AppImage className={styles.img_animal} src={adoption.animal.imgThumbnail} />
             </div>
@@ -161,7 +165,8 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
                         
                         {role === "SHELTER" && 
                             <IconButton name="save" 
-                            disabled={(adoption.adoptionStatus === adoptionStatus && adoption.animal.animalStatus === animalStatus) || adoption.adoptionStatus === "CANCELED"}
+                            disabled={(adoption.adoptionStatus === adoptionStatus && adoption.animal.animalStatus === animalStatus) || 
+                                isCanceled }
                             onClick={handleSave}
                             />}
                     </div>

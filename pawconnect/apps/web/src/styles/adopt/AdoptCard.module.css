@@ -113,7 +113,7 @@
     gap: var(--spacing-100);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1350px) {
     .wrapper_adoption_card {
         flex-direction: column;
         height: auto;

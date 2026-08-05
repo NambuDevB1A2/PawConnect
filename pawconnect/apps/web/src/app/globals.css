@@ -121,6 +121,7 @@ main {
 
     /* 톤 다운 */
     --color-primary: #DE9954;
+    --color-primary-050: #FBF8F4;
     --color-primary-100: #F7F0E8;
     --color-primary-200: #F0DFCE;
     --color-primary-300: #E9CEB4;
@@ -129,6 +130,9 @@ main {
     --color-primary-pressed: #A96520;
 
     --color-secondary: #54B1DE;
+    --color-secondary-025: #DDEFF8;
+    --color-secondary-050: #B2DCF0;
+    --color-secondary-075: #87C8E8;
     --color-secondary-100: var(--color-secondary);
     --color-secondary-200: #289CD5;
     --color-secondary-300: #207BA9;

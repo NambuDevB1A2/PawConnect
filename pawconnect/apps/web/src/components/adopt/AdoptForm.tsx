@@ -32,7 +32,6 @@ interface AdoptFormProps {
 export default function AdoptForm({ animal }: AdoptFormProps) {
     const [state, formAction, isPending] = useActionState(CreateAdoption.bind(null, animal.id), initialState);
     const [step, setStep] = useState(1);
-    const isFirstRender = useRef(true);
 
     const [userName, setUserName] = useState<string>("");
     const [phone, setPhone] = useState<string>("");
@@ -134,10 +133,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
 
     // 성공 반환시 내 입양 신청 화면으로 이동
     useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
+        if (state === initialState) return;
         
         if (state.response?.success) {
             alert('입양 신청서 작성에 성공했습니다');
