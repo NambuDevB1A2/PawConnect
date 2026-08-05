@@ -5,7 +5,6 @@ import { AnimalStatusBadge } from "@/components/paw/AnimalInfoItem";
 import { Animal } from "@/types/paw/animal.type";
 import styles from "@/styles/mypage/shelter/animalManageCard.module.css"
 import { formatDate } from "@/utils/format.util";
-import Button from "@/components/common/Button";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { ModalContext } from "@/providers/ModalProvider";
@@ -56,7 +55,7 @@ export default function AnimalManageCard({ animal }: AnimalManageCardProps) {
     };
 
     return (
-        <div className={styles.card}>
+        <div className={styles.card} onClick={() => router.push(`/paw/${animal.id}`)}>
             <div className={styles.imageWrapper}>
                 {/* 동물 썸네일 이미지 */}
                 <AppImage className={styles.image} src={animal.imgThumbnail} />
@@ -92,15 +91,16 @@ export default function AnimalManageCard({ animal }: AnimalManageCardProps) {
 
             {/* 버튼들 */}
             <div className={styles.buttons}>
-                <IconButton name="edit" buttonType="icon" color="color_default"
-                    aria-label="수정" onClick={onClickUpdate} title="수정" />
-                <IconButton name="delete" buttonType="icon" color="color_default"
-                    aria-label="삭제" onClick={onClickDelete} title="삭제" />
-
-                {/* <Button size="small" variant="success"
-                    onClick={onClickUpdate}>수정</Button>
-                <Button size="small" variant="danger"
-                    onClick={onClickDelete}>삭제</Button> */}
+                <IconButton name="edit" color="color_default"
+                    aria-label="수정" onClick={(e) => {
+                        e.stopPropagation();
+                        onClickUpdate();
+                    }} title="수정" />
+                <IconButton name="delete" color="color_default"
+                    aria-label="삭제" onClick={(e) => {
+                        e.stopPropagation();
+                        onClickDelete();
+                    }} title="삭제" />
             </div>
         </div>
     );

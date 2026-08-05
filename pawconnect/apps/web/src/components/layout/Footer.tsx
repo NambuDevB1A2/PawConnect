@@ -43,7 +43,7 @@ export default function Footer() {
                 <Link href={`/paw`}>보호동물</Link>
                 <Link href={`/shelter`}>보호소</Link>
                 <Link href={`/pawlog`}>PawLog</Link>
-                <Link href={`/pawlab/pawti`}>PawLab</Link>
+                <Link href={`/pawlab`}>PawLab</Link>
             </div>
 
             <div className={styles.box_right}>
