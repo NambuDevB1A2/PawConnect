@@ -7,9 +7,9 @@ import { IsBoolean, IsDate, IsEnum, IsInt, IsNumber, IsString, MaxLength, Min } 
 
 export class CreateAnimalDto {
 
-  @ApiProperty({ example: "세상에서제일귀여운우리집막내니노막시무스", description: "동물 이름" })
+  @ApiProperty({ example: "세상에서제일귀여운우리집막내니노막시무스", description: "동물 이름(최대 20자)" })
   @IsString()
-  @MaxLength(50)
+  @MaxLength(20)
   name: string;
 
   @ApiProperty({ example: 1, description: "동물 종류 ID" })

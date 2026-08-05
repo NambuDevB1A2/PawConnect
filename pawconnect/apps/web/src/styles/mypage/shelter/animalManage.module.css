@@ -64,11 +64,10 @@
 .animalGrid {
     display:grid;
     grid-template-columns:
-        repeat(3, minmax(280px,1fr));
-        /* repeat(auto-fill,minmax(280px,1fr)); */
-
-    gap:24px;
-    width:100%;
+        repeat(auto-fill, 270px);
+    gap:20px;
+    /* width:100%; */
+    justify-content: center;
 }
 
 .pagination {

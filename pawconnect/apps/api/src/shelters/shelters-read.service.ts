@@ -1,29 +1,30 @@
 import { AdoptionsService } from '@/adoptions/adoptions.service';
 import { toAnimalCardDto } from '@/animals/animals.mapper';
+import { AnimalsService } from '@/animals/animals.service';
 import { AuthRequest } from '@/auth/interfaces/auth-request.interface';
 import { QueryPaginationDto } from '@/common/dto/query-pagination.dto';
 import { getPagination, getTotalPage } from '@/common/utils/pagination.util';
 import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
-import { QueryGetShelterAdoptionsDto } from '@/shelters/dto/query-shelter.dto';
+import { QueryGetShelterAdoptionsDto, QueryGetShelterAnimalsDto } from '@/shelters/dto/query-shelter.dto';
 import { SHELTER_DETAIL_SELECT, SHELTER_ORDERBY, SHELTERS_SELECT } from '@/shelters/shelter.select';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { AnimalStatus, Prisma } from '@prisma/client';
 
 export function getDefaultBanner() {
     return `${UPLOAD_DIR.shelterBannerDir}/default_banner.png`;
 }
 
-export  function isDefaultBanner(blobName: string) {
+export function isDefaultBanner(blobName: string) {
     return blobName === getDefaultBanner();
 }
 
 @Injectable()
 export class SheltersReadService {
-    constructor (
+    constructor(
         private readonly prisma: PrismaService,
         private readonly adoptionsService: AdoptionsService,
-    ) {}
+    ) { }
 
     // 보호소 검색 (id)
     async find<T extends Prisma.ShelterSelect = Prisma.ShelterSelect>(id: string | null, select?: T)
@@ -32,15 +33,15 @@ export class SheltersReadService {
             message: "존재하지 않는 보호소입니다",
         });
 
-        const shelter = await this.prisma.shelter.findUnique({ 
-            where: { id }, 
-            select: select 
+        const shelter = await this.prisma.shelter.findUnique({
+            where: { id },
+            select: select
         }) as Prisma.ShelterGetPayload<{ select: T }> | null;
 
         if (!shelter) throw new UnauthorizedException({
             message: "존재하지 않는 보호소입니다",
         });
-        
+
         return shelter;
     }
 
@@ -48,21 +49,21 @@ export class SheltersReadService {
     async findByName<T extends Prisma.ShelterSelect = Prisma.ShelterSelect>(name: string, select?: T)
         : Promise<Prisma.ShelterGetPayload<{ select: T }>> {
 
-        const shelter = await this.prisma.shelter.findUnique({ 
-            where: { name }, 
+        const shelter = await this.prisma.shelter.findUnique({
+            where: { name },
             select: select
         }) as Prisma.ShelterGetPayload<{ select: T }> | null;;
 
         if (!shelter) throw new UnauthorizedException({
             message: "존재하지 않는 보호소입니다",
         });
-        
+
         return shelter;
     }
 
     // 보호소 중복 검사 (name)
     async existsByName(name: string) {
-        const shelter = await this.prisma.shelter.findUnique({ where: { name }});
+        const shelter = await this.prisma.shelter.findUnique({ where: { name } });
         if (shelter) throw new UnauthorizedException({
             message: "이미 사용중인 보호소 이름입니다",
             fields: { name: "이미 사용중인 보호소 이름입니다" },
@@ -81,13 +82,13 @@ export class SheltersReadService {
         ]);
 
         const totalPage = getTotalPage(totalCount, limit); // totalPage 값 추출
-        return { shelters, pagination: { page, limit, totalCount, totalPage }};
+        return { shelters, pagination: { page, limit, totalCount, totalPage } };
     }
 
     // 보호소 상세 조회 (id)
     async getShelter(id: string) {
-        const shelter = await this.find(id, { 
-            ...SHELTER_DETAIL_SELECT, 
+        const shelter = await this.find(id, {
+            ...SHELTER_DETAIL_SELECT,
             animals: { take: 5, }, // 상세 페이지 최대 보호동물 표시 개수 (limit)
         });
 
@@ -96,10 +97,10 @@ export class SheltersReadService {
 
     // 보호소 상세 조회 (name)
     async getShelterByName(name: string) {
-        const { animals, ...result } = await this.findByName(name, { 
-            ...SHELTER_DETAIL_SELECT, 
+        const { animals, ...result } = await this.findByName(name, {
+            ...SHELTER_DETAIL_SELECT,
             animals: {
-                include:{
+                include: {
                     shelter: true,
                     animalSpecies: true,
                     animalBreed: true
@@ -121,9 +122,57 @@ export class SheltersReadService {
     async getMyShelterAdoptions(auth: AuthRequest, { page, limit, status }: QueryGetShelterAdoptionsDto) {
         await this.find(auth.shelterId);
 
-        const { adoptions, pagination } = 
+        const { adoptions, pagination } =
             await this.adoptionsService.findByShelter(auth.shelterId as string, { page, limit }, status);
 
         return { adoptions, pagination };
+    }
+
+    // 내 보호소 동물 목록 조회
+    async getMyAnimals(auth: AuthRequest,
+        { page, limit, status }: QueryGetShelterAnimalsDto) {
+
+        // 로그인한 사용자의 shelterId가 실제 존재하는 보호소인지 확인
+        const shelter = await this.find(auth.shelterId);
+
+
+        // 기본적으로 내 보호소(shelterId)의 동물만 조회
+        // status가 전달되면 상태 조건 추가
+        const where: Prisma.AnimalWhereInput = {
+            shelterId: shelter.id,
+            ...(status && { animalStatus: status }),
+        };
+
+        // 동물 목록 조회 + 전체 개수 조회를 동시에 실행
+        const [animals, totalCount] = await Promise.all([
+            // 동물 목록
+            this.prisma.animal.findMany({
+                where,
+                orderBy: {
+                    createdAt: 'desc',  //최신 등록 순
+                },
+                // 페이지 네이션
+                ...getPagination(page, limit),
+                // 카드화면에 필요한 관계 데이터 조회
+                include: {
+                    shelter: true,
+                    animalSpecies: true,
+                    animalBreed: true,
+                },
+            }),
+            //전체 개수
+            this.prisma.animal.count({ where }),
+        ]);
+
+        // 카드 DTO 반환 후 변환
+        return {
+            animals: animals.map(toAnimalCardDto),
+            pagination: {
+                page,
+                limit,
+                totalCount,
+                totalPage: getTotalPage(totalCount, limit)
+            }
+        };
     }
 }

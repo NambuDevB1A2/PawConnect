@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { ModalContext } from "@/providers/ModalProvider";
 import { DeleteAnimal } from "@/services/paw/delete-animal.client";
+import IconButton from "@/components/common/IconButton";
 
 
 interface AnimalManageCardProps {
@@ -72,7 +73,7 @@ export default function AnimalManageCard({ animal }: AnimalManageCardProps) {
                     [{animal.species}] {animal.breed}</Typography>
 
                 {/* 이름 */}
-                <Typography variant="subtitle" className={styles.animalname}>
+                <Typography variant="subtitle" className={styles.name}>
                     {animal.name}</Typography>
 
                 {/* 동물 종류, 품종, 성별(중성화여부), 나이, 몸무게 */}
@@ -91,10 +92,15 @@ export default function AnimalManageCard({ animal }: AnimalManageCardProps) {
 
             {/* 버튼들 */}
             <div className={styles.buttons}>
-                <Button size="small" variant="success"
+                <IconButton name="edit" buttonType="icon" color="color_default"
+                    aria-label="수정" onClick={onClickUpdate} title="수정" />
+                <IconButton name="delete" buttonType="icon" color="color_default"
+                    aria-label="삭제" onClick={onClickDelete} title="삭제" />
+
+                {/* <Button size="small" variant="success"
                     onClick={onClickUpdate}>수정</Button>
                 <Button size="small" variant="danger"
-                    onClick={onClickDelete}>삭제</Button>
+                    onClick={onClickDelete}>삭제</Button> */}
             </div>
         </div>
     );
