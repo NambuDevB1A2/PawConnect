@@ -11,7 +11,7 @@ import { RegisterUserState } from "@/types/auth/register.type";
 import { RegisterUser } from "@/services/auth/register-user.client";
 import { useActionState, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { validateNickname, validatePassword, validateRePassword } from "@/utils/auth/auth.validator";
+import { validateEmail, validateNickname, validatePassword, validateRePassword } from "@/utils/auth/auth.validator";
 import { ModalContext } from "@/providers/ModalProvider";
 import { TERMS_MESSAGES } from "@/constants/messages/Terms";
 import Typography from "@/components/common/Typography";
@@ -25,12 +25,18 @@ export default function RegisterUserForm() {
 
     const [password, setPassword] = useState("");
     const [clientErrors, setClientErrors] = useState<{
+        email?: string;
         password?: string;
         rePassword?: string;
         nickname?: string;
     }>({});
     
     // 실시간 타이핑 유효성 검사
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    };
+
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPassword(value);
@@ -91,6 +97,7 @@ export default function RegisterUserForm() {
                             labelText="이메일*"
                             helperText="이메일을 입력해주세요"
                             errorText={state.emailError}
+                            onChange={handleEmailChange}
                             />
                         <InputPassword 
                             name="password"

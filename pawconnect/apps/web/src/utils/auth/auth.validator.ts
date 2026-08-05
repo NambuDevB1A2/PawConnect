@@ -1,3 +1,9 @@
+export function validateEmail(email: string) {
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!EMAIL_REGEX.test(email)) return "올바른 이메일 형식이 아닙니다";
+    return undefined;
+}
+
 export function validatePassword(password: string) {
     if (password.length < 6) {
         return '비밀번호는 6자 이상이어야 합니다';
