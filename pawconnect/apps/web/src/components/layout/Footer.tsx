@@ -54,7 +54,8 @@ export default function Footer() {
 
             <div className={styles.box_right}>
                 <Typography variant="subtitle">문의</Typography>
-                <Typography>example@email.com</Typography>
+                <Typography>hjkim4177@gmail.com</Typography>
+                <Typography>hongarim44@gmail.com</Typography>
             </div>
         </div>
     );
