@@ -24,9 +24,12 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
     // 페이지 네이션 query parameter
-    const params = await searchParams
+    const params = await searchParams;
     // 현재 페이지 번호
     const currentPage = parsePageToNumber(params?.page);
+    // 현재 검색 조건을 페이지네이션에 전달
+    const queryString = new URLSearchParams(params ?? {}).toString();
+
     // 보호동물, 페이지네이션
     const response = await getAnimals(currentPage, PAGE_SIZE.ANIMAL, params);
     if (!response) return <NotFound />;
@@ -63,7 +66,9 @@ export default async function Page({ searchParams }: PageProps) {
                         <div className={styles.pagination}>
                             <Pagination page={pagination.page}
                                 maxPage={pagination.totalPage}
-                                path="/paw" />
+                                path="/paw"
+                                // 페이지 이동 시 검색 조건 유지
+                                queryString={queryString} />
                         </div>
                     </div>
                 </div>

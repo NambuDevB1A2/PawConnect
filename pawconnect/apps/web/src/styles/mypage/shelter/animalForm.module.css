@@ -60,3 +60,11 @@
     white-space:nowrap;
     cursor:pointer;
 }
+
+.error {
+    color: var(--color-error);
+    font-size: var(--font-size-body1);
+    line-height: var(--line-height-body3);
+    margin-top: -15px;
+    margin-left: 130px;
+}

@@ -35,7 +35,7 @@ export function validateBreed(breedId: number) {
 
 // 성별 검증
 export function validateGender(gender: AnimalGender) {
-    if (!gender) {
+    if (!gender || gender === "UNKNOWN") {
         return "성별을 선택해주세요";
     }
 

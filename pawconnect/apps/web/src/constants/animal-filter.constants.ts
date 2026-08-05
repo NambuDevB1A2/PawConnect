@@ -25,6 +25,7 @@ export const CAT_BREEDS = [
 
 // 성별(중성화) 옵션
 export const GENDER_OPTIONS = [
+    { label: "성별 선택", value: "UNKNOWN_FALSE" },
     { label: "여아(중성화 O)", value: "FEMALE_TRUE" },
     { label: "여아(중성화 X)", value: "FEMALE_FALSE" },
     { label: "남아(중성화 O)", value: "MALE_TRUE" },

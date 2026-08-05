@@ -12,12 +12,13 @@ import { DeleteAnimal } from "@/services/paw/delete-animal.client";
 import { useContext } from "react";
 import { ModalContext } from "@/providers/ModalProvider";
 import { AuthContext } from "@/providers/AuthProvider";
+import Link from "next/link";
 
 interface AnimalDetailPageProps {
-  animal: AnimalDetail;
+    animal: AnimalDetail;
 }
 
-export default function AnimalDetailPage({animal}: AnimalDetailPageProps) {
+export default function AnimalDetailPage({ animal }: AnimalDetailPageProps) {
     // 라우터연결
     const router = useRouter();
     const { user } = useContext(AuthContext);
@@ -53,24 +54,22 @@ export default function AnimalDetailPage({animal}: AnimalDetailPageProps) {
 
     return (
         <div className={styles.wrapper_detail}>
-            {/* 보호소 이름 */}
+            {/* 보호소 이름 (보호소로 이동)*/}
             <div className={styles.shelterName}>
-                <Typography variant="heading" onClick={() => router.push(
-                        `/shelter/${encodeURIComponent(animal.shelterName)}`)}>
-                            {animal.shelterName}</Typography>
-
+                <Link href={`/shelter/${encodeURIComponent(animal.shelterName)}`}
+                    className={styles.shelterLink}>
+                    <Typography variant="heading">
+                        {animal.shelterName}
+                    </Typography>
+                </Link>
                 {/* 버튼들 */}
                 {user?.shelterId === animal.shelterId && <div className={styles.buttons}>
                     <IconButton name="edit" color="color_default"
-                        aria-label="수정" onClick={(e) => {
-                            e.stopPropagation();
-                            onClickUpdate();
-                        }} title="수정" />
+                        aria-label="수정" onClick={() => { onClickUpdate(); }}
+                        title="수정" />
                     <IconButton name="delete" color="color_default"
-                        aria-label="삭제" onClick={(e) => {
-                            e.stopPropagation();
-                            onClickDelete();
-                        }} title="삭제" />
+                        aria-label="삭제" onClick={() => { onClickDelete(); }}
+                        title="삭제" />
                 </div>}
             </div>
 
@@ -80,7 +79,7 @@ export default function AnimalDetailPage({animal}: AnimalDetailPageProps) {
                     <ImageSlider images={animal.images} size="medium" />
                 </div>
                 {/* 기본정보 */}
-                    <AnimalInfoCard animal={animal} />
+                <AnimalInfoCard animal={animal} />
             </div>
 
             {/* 상세 정보 */}
@@ -89,11 +88,11 @@ export default function AnimalDetailPage({animal}: AnimalDetailPageProps) {
                     <Typography className={styles.sectionTitle} weight="semibold">소개</Typography>
                     <Typography>{animal.description}</Typography>
                 </div>
-            
+
                 <div className={styles.healthCard}>
                     <Typography className={styles.sectionTitle} weight="semibold">건강 상태</Typography>
                     <Typography>{animal.healthStatus ?? "-"}</Typography>
-                 </div>
+                </div>
             </div>
         </div>
     );
