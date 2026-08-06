@@ -12,7 +12,7 @@ import { ANIMAL_STATUS_BADGE_STYLE, ANIMAL_STATUS_LABEL } from "@/constants/paw/
 import { ModalContext } from "@/providers/ModalProvider";
 import { CancelAdoption } from "@/services/adopt/cancel-adoption.client";
 import { UpdateAdoptionStatus } from "@/services/adopt/update-adoption-status.client";
-import styles from "@/styles/adopt/AdoptCard.module.css"
+import styles from "@/styles/adopt/AdoptionCard.module.css"
 import { Adoption, AdoptionStatus } from "@/types/adopt/adoption.type";
 import { AnimalStatus } from "@/types/paw/animal.type";
 import { formatDateTime } from "@/utils/format.util";
@@ -80,12 +80,12 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
         }
     };
 
-    const isCanceled = 
+    const isDisabled = 
         adoption.adoptionStatus === "CANCELED" ||
         adoption.adoptionStatus === "REJECTED";
 
     return (
-        <div className={`${styles.wrapper_adoption_card} ${isCanceled ? styles.canceled : ""}`}>
+        <div className={`${styles.wrapper_adoption_card} ${isDisabled ? styles.disabled : ""}`}>
             <div className={styles.wrapper_image}>
                 <AppImage className={styles.img_animal} src={adoption.animal.imgThumbnail} />
             </div>
@@ -166,7 +166,7 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
                         {role === "SHELTER" && 
                             <IconButton name="save" 
                             disabled={(adoption.adoptionStatus === adoptionStatus && adoption.animal.animalStatus === animalStatus) || 
-                                isCanceled }
+                                isDisabled }
                             onClick={handleSave}
                             />}
                     </div>

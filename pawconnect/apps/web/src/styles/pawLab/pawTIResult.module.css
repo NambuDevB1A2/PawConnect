@@ -89,10 +89,11 @@
     align-items: center;
 
     width: 240px;
+    min-width: 0;
     height: 100%;
 }
 
-.animalGrid>div>* {
+.animalGrid>div>*:last-child {
     flex: 1;
     width: 100%;
 }

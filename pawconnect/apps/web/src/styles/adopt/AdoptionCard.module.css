@@ -21,7 +21,7 @@
         border-color var(--transition-border-color);
 }
 
-.canceled {
+.disabled {
     background-color: var(--input-disabled-background-color);
     color: var(--color-text-secondary);
 }
