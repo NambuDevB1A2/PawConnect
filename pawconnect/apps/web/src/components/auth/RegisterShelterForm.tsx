@@ -12,7 +12,7 @@ import ImagesUploader from "@/components/uploader/ImagesUploader";
 import TextArea from "@/components/common/TextArea";
 import { useRouter } from "next/navigation";
 import { useActionState, useContext, useEffect, useState } from "react";
-import { validateNickname, validatePassword, validateRePassword, validateShelterAddress, validateShelterName, validateShelterPhone } from "@/utils/auth/auth.validator";
+import { validateEmail, validateNickname, validatePassword, validateRePassword, validateShelterAddress, validateShelterName, validateShelterPhone } from "@/utils/auth/auth.validator";
 import { RegisterShelterState } from "@/types/auth/register.type";
 import { RegisterShelter } from "@/services/auth/register-shelter.client";
 import { TERMS_MESSAGES } from "@/constants/messages/Terms";
@@ -28,6 +28,7 @@ export default function RegisterShelterForm() {
 
     const [password, setPassword] = useState("");
     const [clientErrors, setClientErrors] = useState<{
+        email?: string;
         password?: string;
         rePassword?: string;
         nickname?: string;
@@ -38,6 +39,11 @@ export default function RegisterShelterForm() {
     }>({});
     
     // 실시간 타이핑 유효성 검사
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    };
+    
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPassword(value);
@@ -113,27 +119,32 @@ export default function RegisterShelterForm() {
                             name="email" defaultValue={state.email}
                             labelText="이메일*"
                             helperText="이메일을 입력해주세요"
-                            errorText={state.emailError}
+                            errorText={clientErrors.email || state.emailError}
+                            maxLength={255}
+                            onChange={handleEmailChange}
                             />
                         <InputPassword 
                             name="password"
                             labelText="비밀번호*"
                             helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 6~30자)"
-                            errorText={clientErrors.password ?? state.passwordError}
+                            errorText={clientErrors.password || state.passwordError}
+                            maxLength={255}
                             onChange={handlePasswordChange}
                             />
                         <InputPassword 
                             name="rePassword"
                             labelText="비밀번호 확인*"
                             helperText="비밀번호를 다시 입력해주세요"
-                            errorText={clientErrors.rePassword ?? state.rePasswordError}
+                            errorText={clientErrors.rePassword || state.rePasswordError}
+                            maxLength={255}
                             onChange={handleRePasswordChange}
                             />
                         <Input 
                             name="nickname" defaultValue={state.nickname}
                             labelText="닉네임*"
                             helperText="닉네임을 입력해주세요(공백 또는 특수문자 불가 2~16자)"
-                            errorText={clientErrors.nickname ?? state.nicknameError}
+                            errorText={clientErrors.nickname || state.nicknameError}
+                            maxLength={20}
                             onChange={handleNicknameChange}
                             />
                     </div>
@@ -158,46 +169,54 @@ export default function RegisterShelterForm() {
                             name="name" defaultValue={state.name}
                             labelText="보호소 이름*"
                             helperText="보호소 이름을 입력해주세요(최대 100자)"
-                            errorText={clientErrors.shelterName ?? state.nameError}
+                            errorText={clientErrors.shelterName || state.nameError}
+                            maxLength={100}
                             onChange={handleShelterName}
                             />
                         <Input 
                             name="address" defaultValue={state.address}
                             labelText="주소*" 
                             helperText="주소를 입력해주세요"
-                            errorText={clientErrors.shelterAddress ?? state.addressError}
+                            errorText={clientErrors.shelterAddress || state.addressError}
+                            maxLength={255}
                             onChange={handleShelterAddress}
                             />
                         <Input 
                             name="addressDetail" defaultValue={state.addressDetail}
                             labelText="상세 주소" 
                             helperText="상세 주소를 입력해주세요"
-                            errorText={clientErrors.shelterAddressDetail ?? state.addressDetailError}
+                            errorText={clientErrors.shelterAddressDetail || state.addressDetailError}
+                            maxLength={255}
                             onChange={handleShelterAddressDetail}
                             />
                         <Input 
                             name="phone" defaultValue={state.phone}
                             labelText="전화번호*" 
                             helperText="전화번호를 입력해주세요(-없이 숫자만)"
-                            errorText={clientErrors.shelterPhone ?? state.phoneError}
+                            errorText={clientErrors.shelterPhone || state.phoneError}
+                            maxLength={20}
                             onChange={handleShelterPhone}
                             />
                         <TextArea 
                             name="operatingHours" defaultValue={state.operatingHours}
                             labelText="운영 시간"
                             helperText="보호소를 운영하는 시간과 요일을 입력해주세요(최대 100자)" 
+                            errorText={state.operatingHoursError}
                             maxLength={100}
                             />
                         <TextArea 
                             name="description" defaultValue={state.description}
                             labelText="보호소 소개말" 
                             helperText="보호소를 소개하는 말을 입력해주세요(최대 500자)" 
+                            errorText={state.descriptionError}
                             maxLength={500}
                             />
                 </div>
 
                 <div className={styles.box_agreement}>
-                    <CheckBox name="agreedToTerms">
+                    <CheckBox
+                        name="agreedToTerms"
+                        errorText={state.termsError}>
                         <Button variant="text" type="button" onClick={handleOpenTermsOfService}>이용약관</Button>
                         &nbsp;및&nbsp;
                         <Button variant="text" type="button" onClick={handleOpenPrivacyPolicy}>개인정보 처리방침</Button>

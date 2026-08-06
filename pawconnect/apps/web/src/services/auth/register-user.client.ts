@@ -36,7 +36,7 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
             passwordError,
             rePasswordError,
             nicknameError,
-            emailError: agreedToTermsError,
+            termsError: agreedToTermsError,
         };
     }
 
@@ -50,7 +50,7 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
         if (imgProfile && imgProfile.size > 0) submitData.append('imgProfile', imgProfile);
 
         const result = await fetchClient.post<ResponseRegisterUser>('/auth/register/user', submitData);
-        
+
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {
@@ -59,10 +59,11 @@ export async function RegisterUser(prevState: RegisterUserState, formdata: FormD
             return {
                 email,
                 nickname,
-                emailError: error.fields.email || error.fields.agreedToTerms,
+                emailError: error.fields.email || error.message,
                 passwordError: error.fields.password,
                 nicknameError: error.fields.nickname,
                 imgProfileError: error.fields.imgProfile,
+                termsError: error.fields.agreedToTerms,
             };
         }
 

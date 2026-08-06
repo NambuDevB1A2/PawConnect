@@ -65,7 +65,7 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
             passwordError,
             rePasswordError,
             nicknameError,
-            emailError: agreedToTermsError,
+            termsError: agreedToTermsError,
 
             name,
             address,
@@ -108,10 +108,11 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
             return {
                 email,
                 nickname,
-                emailError: error.fields.email || error.fields.agreedToTerms,
+                emailError: error.fields.email || error.message,
                 passwordError: error.fields.password,
                 nicknameError: error.fields.nickname,
                 imgProfileError: error.fields.imgProfile,
+                termsError: error.fields.agreedToTerms,
                 
                 name,
                 address,

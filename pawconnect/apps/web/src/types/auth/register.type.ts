@@ -15,6 +15,8 @@ export interface RegisterUserState {
     rePasswordError?: string;
     imgProfileError?: string;
 
+    termsError?: string;
+
     response?: ResponseRegisterUser;
 }
 
@@ -32,7 +34,7 @@ export interface RegisterShelterState {
     passwordError?: string;
     rePasswordError?: string;
     imgProfileError?: string;
-
+    
     name?: string;
     nameError?: string;
     address?: string;
@@ -47,6 +49,8 @@ export interface RegisterShelterState {
     descriptionError?: string;
     imgBannerError?: string;
     imgShelterError?: string;
+    
+    termsError?: string;
 
     response?: ResponseRegisterShelter;
 }

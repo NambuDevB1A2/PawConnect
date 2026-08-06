@@ -3,7 +3,7 @@ import { UPLOAD_DIR } from '@/config/upload.config';
 import { PrismaService } from '@/prisma/prisma.service';
 import { UpdateUserDto } from '@/users/dto/update-user.dto';
 import { USER_DETAIL_SELECT, USER_SELECT } from '@/users/user.select';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Prisma, Role } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 import { UpdatePasswordDto } from '@/users/dto/update-password.dto';
@@ -33,7 +33,7 @@ export class UsersService {
             where: { id },
             select: select
         });
-        if (!user) throw new UnauthorizedException({
+        if (!user) throw new NotFoundException({
             message: "존재하지 않는 유저입니다",
         });
         
@@ -46,7 +46,7 @@ export class UsersService {
             where: { email }, 
             select: select
         });
-        if (!user) throw new UnauthorizedException({
+        if (!user) throw new NotFoundException({
             message: "존재하지 않는 유저입니다",
         });
         
@@ -56,7 +56,7 @@ export class UsersService {
     // 회원 중복 검사 (email)
     async existsByEmail(email: string) {
         const user = await this.prisma.user.findUnique({ where: { email }});
-        if (user) throw new UnauthorizedException({
+        if (user) throw new BadRequestException({
             message: "이미 사용중인 이메일입니다",
             fields: { email: "이미 사용중인 이메일입니다" },
         });
