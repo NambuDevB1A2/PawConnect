@@ -31,8 +31,6 @@ export default function TextArea({
         (value as string)?.length ?? defaultValue?.length ?? 0
     );
 
-    if (!maxLength) maxLength = defaultValue?.length ?? (value as string)?.length;
-
     // 컨트롤드(value)일 땐 value 길이를 그대로 쓰고, 아니면 내부 count state를 사용
     const displayCount = value !== undefined ? (value as string).length : count;
 
@@ -53,7 +51,8 @@ export default function TextArea({
                     maxLength={maxLength}
                     onChange={handleChange}
                     {...props}/>
-                {!disabledCount && <Typography className={styles.count_text} variant="caption">{`${displayCount}/${maxLength}`}</Typography>}
+                {!disabledCount && typeof maxLength === "number" && 
+                <Typography className={styles.count_text} variant="caption">{`${displayCount}/${maxLength}`}</Typography>}
             </div>
             {errorText && <Typography className={`${styles.error_text}`}>{errorText}</Typography>}
         </span>

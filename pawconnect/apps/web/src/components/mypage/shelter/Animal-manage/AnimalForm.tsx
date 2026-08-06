@@ -191,7 +191,6 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         name="specialNotes"
                         labelText="특이사항"
                         maxLength={100}
-                        // defaultValue={form.specialNotes}
                         value={form.specialNotes}
                         onChange={handleTextareaChange}
                     />
@@ -199,7 +198,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         name="description"
                         labelText="소개말*"
                         maxLength={500}
-                        defaultValue={form.description}
+                        value={form.description}
                         onChange={handleTextareaChange}
                     />
 
@@ -207,7 +206,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         name="healthStatus"
                         labelText="건강상태*"
                         maxLength={500}
-                        defaultValue={form.healthStatus}
+                        value={form.healthStatus}
                         onChange={handleTextareaChange}
                     />
 
