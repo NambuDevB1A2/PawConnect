@@ -29,15 +29,21 @@ export default function AuthProvider({ children, initialUser }: { children: Reac
 
     const login = user !== undefined;
 
-    const logout = useCallback(() => {
-        setUser(undefined);
-        router.push('/login');
-        Logout();
+    const logout = useCallback(async () => {
+        try {
+            await Logout();
+        } catch (e) {
+            console.log("로그아웃 중 오류 발생");
+        } finally {
+            setUser(undefined);
+            router.replace('/login');
+        }
     }, [router]);
 
     useEffect(() => {
-        // 액세스 토큰 만료(401) 시 fetch.ts에서 발생시키는 이벤트를 받아 자동 로그아웃 처리
-        const handleTokenExpired = () => logout();
+        const handleTokenExpired = () => {
+            logout();
+        };
         window.addEventListener('auth:expired', handleTokenExpired);
         return () => window.removeEventListener('auth:expired', handleTokenExpired);
     }, [logout]);
