@@ -175,7 +175,7 @@ export class UsersService {
         const prevUser = await this.find(auth.id);
         
         const isPasswordValid = await bcrypt.compare(updatePasswordDto.prevPassword, prevUser.password);
-        if (!isPasswordValid) throw new UnauthorizedException({
+        if (!isPasswordValid) throw new BadRequestException({
             message: "비밀번호가 틀렸습니다",
             fields: { prevPassword: "비밀번호가 틀렸습니다" },
         });
