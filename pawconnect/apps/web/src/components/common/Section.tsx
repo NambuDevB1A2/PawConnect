@@ -26,7 +26,7 @@ export default function Section({
 }: SectionProps) {
     return (
         <div className={`${styles.wrapper_section} ${wrapperClassName}`}>
-            {titleText && <Typography variant="title">{titleText}</Typography>}
+            {titleText && <Typography className={styles.title} variant="title">{titleText}</Typography>}
             <div className={`${styles.box_section} ${styles[align]} ${size ? styles[size] : ""} ${className}`}
                 style={{ width: !size && fullWidth ? "100%" : undefined }}>
                 {children}

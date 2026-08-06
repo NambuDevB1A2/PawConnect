@@ -51,9 +51,12 @@ export default function AdoptionDetailModal({ adoptionId, isOpen, onClose }: Ado
             </Modal.Header>
             <Modal.Body>
                 {isLoading && <LoadingSpinner/>}
+                {!isLoading && !adoption && <Typography>상세 내용을 불러올 수 없습니다.</Typography>}
                 {!isLoading && adoption &&
                 <div className={styles.wrapper_scroll}>
                     <AdoptFormReadOnly
+                        className={styles.section}
+
                         userName={adoption.detail.userName}
                         phone={adoption.detail.phone}
                         email={adoption.detail.email}

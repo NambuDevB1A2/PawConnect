@@ -31,6 +31,8 @@ interface AdoptFormReadOnlyProps {
     isCanProvideExercise: boolean;
     isAcceptLifetimeResponsibility: boolean;
     additionalNotes: string;
+
+    className?: string;
 }
 
 export default function AdoptFormReadOnly({
@@ -56,11 +58,13 @@ export default function AdoptFormReadOnly({
     isCanProvideExercise,
     isAcceptLifetimeResponsibility,
     additionalNotes,
+
+    className = "",
 }: AdoptFormReadOnlyProps) {
 
     return (
         <div>
-            <Section titleText="기본 정보 입력">
+            <Section titleText="기본 정보 입력" className={className}>
                 <Input 
                     disabled
                     defaultValue={userName}
@@ -88,7 +92,7 @@ export default function AdoptFormReadOnly({
                     />
             </Section>
 
-            <Section titleText="입양 기본 정보">
+            <Section titleText="입양 기본 정보" className={className}>
                 <div className={styles.box_radio_group}>
                     <Typography weight="bold" className={styles.typo_radio}>반려동물 양육 경험</Typography>
                     <RadioGroup defaultValue={petExperience}
@@ -125,7 +129,7 @@ export default function AdoptFormReadOnly({
                 />}
             </Section>
             
-            <Section titleText="거주 환경" className={styles.box_row_section}>
+            <Section titleText="거주 환경" className={`${styles.box_row_section} ${className}`}>
                 <div className={styles.box_row_div}>
                 <Select 
                     disabled
@@ -198,7 +202,7 @@ export default function AdoptFormReadOnly({
                 </div>
             </Section>
             
-            <Section titleText="입양 계획">
+            <Section titleText="입양 계획" className={className}>
                 <div className={styles.box_radio_group}>
                 <Typography weight="bold" className={styles.typo_radio}>입양 목적</Typography>
                 <TextArea
