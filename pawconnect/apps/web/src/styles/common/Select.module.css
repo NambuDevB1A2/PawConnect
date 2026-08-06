@@ -37,6 +37,15 @@
     min-width: var(--input-label-width-xlarge);
 }
 
+.box_error {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
 .box_trigger {
     position: relative;
 

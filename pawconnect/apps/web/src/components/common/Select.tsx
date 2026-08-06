@@ -82,36 +82,38 @@ export default function Select({
             ref={containerRef}>
             <Typography className={`${styles.label_text} ${styles[labelSize]}`} weight="bold">{labelText}</Typography>
             {name && <input type="hidden" name={name} value={currentValue ?? ""} />}
-            <div className={`${styles.box_trigger}`}>
-                <button
-                    type="button"
-                    className={`${styles.trigger}  ${errorText ? styles.trigger_error : ""} ${className}`}
-                    onClick={() => setIsOpen((prev) => !prev)}
-                    disabled={disabled}>
-                    <Typography
-                        className={`${selectedOption ? styles.value_text : styles.helper_text}`}
-                        >{selectedOption ? selectedOption.label : helperText}</Typography>
-                    <Icon className={`${isOpen ? styles.icon_chevron_open : styles.icon_chevron}`} name="keyboard_arrow_down"/>
-                </button>
-                {isOpen && 
-                    <ul ref={listRef} className={styles.box_options}>
-                        {options.map((option) => 
-                            <li
-                                key={option.value}
-                                className={`${styles.option} 
-                                ${option.value === selectedOption?.value ? styles.option_selected : ""}
-                                ${option.disabled ? styles.option_disabled : ""}
-                                `}
-                                aria-selected={option.value === currentValue}
-                                onClick={() => !option.disabled && selectValue(option.value)}
-                                >
-                                    <Typography className={styles.option_text}>{option.label}</Typography>
-                                </li>
-                        )}
-                    </ul>
-                }
-            </div>
+            <div className={`${styles.box_error}`}>
+                <div className={`${styles.box_trigger}`}>
+                    <button
+                        type="button"
+                        className={`${styles.trigger}  ${errorText ? styles.trigger_error : ""} ${className}`}
+                        onClick={() => setIsOpen((prev) => !prev)}
+                        disabled={disabled}>
+                        <Typography
+                            className={`${selectedOption ? styles.value_text : styles.helper_text}`}
+                            >{selectedOption ? selectedOption.label : helperText}</Typography>
+                        <Icon className={`${isOpen ? styles.icon_chevron_open : styles.icon_chevron}`} name="keyboard_arrow_down"/>
+                    </button>
+                    {isOpen && 
+                        <ul ref={listRef} className={styles.box_options}>
+                            {options.map((option) => 
+                                <li
+                                    key={option.value}
+                                    className={`${styles.option} 
+                                    ${option.value === selectedOption?.value ? styles.option_selected : ""}
+                                    ${option.disabled ? styles.option_disabled : ""}
+                                    `}
+                                    aria-selected={option.value === currentValue}
+                                    onClick={() => !option.disabled && selectValue(option.value)}
+                                    >
+                                        <Typography className={styles.option_text}>{option.label}</Typography>
+                                    </li>
+                            )}
+                        </ul>
+                    }
+                </div>
             {errorText && <Typography className={styles.error_text}>{errorText}</Typography>}
+            </div>
         </div>
     );
 }
