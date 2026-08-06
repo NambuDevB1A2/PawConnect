@@ -32,7 +32,9 @@ export async function fetchData<T>(url: string, token?: string, options?: Reques
         const data = await response.json();
         
         if (response.status === 401) {
-            // TODO: 401 에러 발생시 예외처리 
+            if (typeof window !== "undefined") {
+                window.dispatchEvent(new Event("auth:expired"));
+            }
             return undefined as T;
         }
 

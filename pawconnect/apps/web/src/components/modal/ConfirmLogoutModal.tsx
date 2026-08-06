@@ -5,8 +5,6 @@ import Modal from "@/components/modal/Modal";
 import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
 import { MODAL_MESSAGES } from "@/constants/messages/Modal";
-import { Logout } from "@/services/auth/logout.server";
-import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AuthContext } from "@/providers/AuthProvider";
 
@@ -16,20 +14,12 @@ interface ConfirmLogoutModalProps {
 }
 
 export default function ConfirmLogoutModal({ isOpen, onClose }: ConfirmLogoutModalProps) {
-    const { setUser } = useContext(AuthContext);
-    const router = useRouter();
+    const { logout } = useContext(AuthContext);
 
-    const handleLogout = async () => {
+    const handleLogout = () => {
         onClose();
-        const res = await Logout();
-
-        if (res.response?.success) {
-            alert("로그아웃에 성공했습니다");
-            setUser(undefined);
-            router.push('/');
-        } else {
-            alert("로그아웃 도중 오류가 발생했습니다");
-        }
+        alert("로그아웃에 성공했습니다");
+        logout();
     };
 
     return (
