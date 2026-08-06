@@ -125,6 +125,11 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         options={genderOptions}
                         onChange={handleGenderChange}
                     />
+                    {errors.genderError && (
+                        <Typography className={styles.error}>
+                            {errors.genderError}
+                        </Typography>
+                    )}
 
                     <div className={styles.age_box}>
                         <Input
