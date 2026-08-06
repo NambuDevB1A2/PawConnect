@@ -29,6 +29,11 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
     const [animalStatus, setAnimalStatus] = useState<AnimalStatus>(adoption.animal.animalStatus);
     const [adoptionStatus, setAdoptionStatus] = useState<AdoptionStatus>(adoption.adoptionStatus);
 
+    const isDisabled = 
+        adoption.adoptionStatus === "CANCELED" ||
+        adoption.adoptionStatus === "APPROVED" ||
+        adoption.adoptionStatus === "REJECTED";
+
     useEffect(() => {
         setAnimalStatus(adoption.animal.animalStatus);
         setAdoptionStatus(adoption.adoptionStatus);
@@ -53,6 +58,8 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
     };
 
     const handleConfirmCancel = async () => {
+        if (isDisabled) return;
+
         const res = await CancelAdoption(adoption.id);
 
         if (res.success) {
@@ -65,6 +72,8 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
     };
 
     const handleSave = async () => {
+        if (isDisabled) return;
+
         if (adoption.adoptionStatus === adoptionStatus &&
             adoption.animal.animalStatus === animalStatus
         ) return;
@@ -79,10 +88,6 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
             alert('상태 변경 도중 오류가 발생했습니다');
         }
     };
-
-    const isDisabled = 
-        adoption.adoptionStatus === "CANCELED" ||
-        adoption.adoptionStatus === "REJECTED";
 
     return (
         <div className={`${styles.wrapper_adoption_card} ${isDisabled ? styles.disabled : ""}`}>
@@ -122,7 +127,7 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
                                     className={styles.select_status}
                                     value={animalStatus}
                                     onChange={(value) => setAnimalStatus(value as AnimalStatus)}
-                                    disabled={adoption.adoptionStatus === "CANCELED"}
+                                    disabled={isDisabled}
                                     options={[
                                         { label: "보호중", value: "PROTECTED" },
                                         { label: "공고중", value: "AVAILABLE" },
@@ -148,7 +153,7 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
                                     className={styles.select_status}
                                     value={adoptionStatus}
                                     onChange={(value) => setAdoptionStatus(value as AdoptionStatus)}
-                                    disabled={adoption.adoptionStatus === "CANCELED"}
+                                    disabled={isDisabled}
                                     options={[
                                         { label: "대기", value: "PENDING" },
                                         { label: "상담", value: "COUNSELING" },
@@ -174,7 +179,7 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
 
                 <div className={styles.wrapper_btns}>
                     <Button variant="modal" size="small" onClick={handleDetail}>신청서 보기</Button>
-                    {role === "USER" && adoption.adoptionStatus !== "CANCELED" && 
+                    {role === "USER" && !isDisabled && 
                         <Button variant="danger" size="small" onClick={handleCancel}>신청 취소</Button>}
                 </div>
             </div>
