@@ -9,6 +9,7 @@ import { formatDateTime } from '../../../utils/format.util';
 import Link from "next/link";
 import MyPawLogOptions from "@/components/pawlog/MyPawLogOptions";
 import NotFound from "@/components/common/NotFound";
+import { renderMultiline } from "@/utils/format-component.util";
 
 export default async function Page({ params }: PageProps) {
     const { id } = await params;
@@ -39,7 +40,7 @@ export default async function Page({ params }: PageProps) {
                     <div className={styles.box_typo}>
                         <Typography className={styles.typo_title} variant="title">{pawLog?.title}</Typography>
                         <Typography className={styles.typo_at} variant="caption">{formatDateTime(pawLog?.updatedAt)}</Typography>
-                        <Typography className={styles.typo_content}>{pawLog?.content}</Typography>
+                        <Typography className={styles.typo_content}>{renderMultiline(pawLog?.content ?? "")}</Typography>
                     </div>
 
                     <div className={styles.box_pagination}>

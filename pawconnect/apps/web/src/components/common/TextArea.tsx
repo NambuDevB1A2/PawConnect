@@ -7,6 +7,7 @@ import styles from "@/styles/common/TextArea.module.css"
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     labelText?: string;
     helperText?: string;
+    errorText?: string;
     defaultValue?: string;
     maxLength?: number;
     disabledCount?: boolean;
@@ -16,6 +17,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 export default function TextArea({
     labelText,
     helperText,
+    errorText,
     defaultValue,
     value,
     maxLength,
@@ -42,7 +44,7 @@ export default function TextArea({
     return (
         <span className={`${styles.wrapper_input} ${wrapperClassname}`}>
             <Typography className={`${styles.label_text}`}>{labelText}</Typography>
-            <div className={styles.box_textarea}>
+            <div className={`${styles.box_textarea} ${errorText ? styles.box_textarea_error : ""}`}>
                 <textarea
                     className={`${styles.textarea} ${className}`}
                     placeholder={helperText}
@@ -53,6 +55,7 @@ export default function TextArea({
                     {...props}/>
                 {!disabledCount && <Typography className={styles.count_text} variant="caption">{`${displayCount}/${maxLength}`}</Typography>}
             </div>
+            {errorText && <Typography className={`${styles.error_text}`}>{errorText}</Typography>}
         </span>
     );
 }

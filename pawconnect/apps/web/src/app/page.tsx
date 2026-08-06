@@ -63,7 +63,7 @@ export default async function Page() {
                                 id: 1,
                                 variant: "outline",
                                 label: "성향테스트 하러가기",
-                                path: "/pawlab",
+                                path: "/pawlab/pawti/test",
                             },
                         ]
                     },

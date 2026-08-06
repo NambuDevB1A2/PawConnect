@@ -80,7 +80,8 @@ export default function EditPawLogForm({
                             value={title}
                             labelText="제목*"
                             helperText="제목을 입력해주세요(최대 50자)"
-                            errorText={clientErrors.title || state.titleError || aiState.contentError}
+                            errorText={clientErrors.title || state.titleError}
+                            maxLength={50}
                             onChange={handleTitleChange}
                             />
                         <TextArea
@@ -88,6 +89,7 @@ export default function EditPawLogForm({
                             value={content}
                             labelText="내용"
                             helperText="게시글로 작성할 내용을 입력해주세요(최대 500자)"
+                            errorText={state.contentError || aiState.contentError}
                             maxLength={500}
                             onChange={handleContentChange}
                             />
