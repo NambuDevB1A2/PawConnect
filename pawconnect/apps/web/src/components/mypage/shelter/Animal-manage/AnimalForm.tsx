@@ -1,7 +1,6 @@
 // 보호동물 등록/수정 같이 사용할 폼
 'use client'
 import Button from "@/components/common/Button";
-import BannerImageUploader from "@/components/uploader/BannerUploader";
 import ImagesUploader from "@/components/uploader/ImagesUploader";
 import { AnimalDetail } from "@/types/paw/animal-detail.type";
 import Input from "@/components/common/Input";
@@ -14,6 +13,7 @@ import TextArea from "@/components/common/TextArea";
 import { validateAnimalForm } from "./ValidateAnimalForm";
 import { useState } from "react";
 import Typography from "@/components/common/Typography";
+import ImageUploader from "@/components/uploader/ImageUploader";
 
 
 interface AnimalFormProps {
@@ -34,24 +34,31 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
         speciesError: "",
         breedError: "",
         ageError: "",
+        genderError: "",
         weightError: "",
         foundLocationError: "",
         specialNotesError: "",
         descriptionError: "",
         healthStatusError: "",
+        noticeDateError: "",
     });
 
     // 제한 검증
     const handleSubmitAnimal = () => {
         const validationErrors = validateAnimalForm(form);
 
-        // 에러 하나라도 있으면 중단
-        if (
-            Object.values(validationErrors).some(error => error !== "")
-        ) {
-            setErrors(validationErrors);
+        setErrors(validationErrors);
+
+         // 첫 번째 에러 찾기
+         const firstError = Object.values(validationErrors).find(
+            (error) => error);
+
+         console.log("첫 에러:", firstError);
+
+         if(firstError) {
+            alert(firstError);
             return;
-        }
+         }
         // 제출 진행
         handleSubmit();
     }
@@ -63,7 +70,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                 e.preventDefault();
                 handleSubmitAnimal();
             }}>
-                <BannerImageUploader
+                <ImageUploader
                     name="imgThumbnail"
                     wrapperClassName={styles.wrapper_image_uploader}
                     labelText="썸네일*"
@@ -124,6 +131,11 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         options={genderOptions}
                         onChange={handleGenderChange}
                     />
+                    {errors.genderError && (
+                        <Typography className={styles.error}>
+                            {errors.genderError}
+                        </Typography>
+                    )}
 
                     <div className={styles.age_box}>
                         <Input
@@ -143,8 +155,6 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         </label>                        
                     </div>
 
-
-
                     <Input
                         name="weight"
                         labelText="몸무게(kg)*"
@@ -158,6 +168,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         type="date"
                         labelText="공고 시작일*"
                         value={form.noticeStartDate}
+                        errorText={errors.noticeDateError}
                         onChange={handleChange}
                     />
 
@@ -166,6 +177,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         type="date"
                         labelText="공고 종료일*"
                         value={form.noticeEndDate}
+                        errorText={errors.noticeDateError}
                         onChange={handleChange}
                     />
                     <Select
@@ -181,7 +193,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
 
                     <Input
                         name="foundLocation"
-                        labelText="발견장소"
+                        labelText="발견장소*"
                         value={form.foundLocation}
                         errorText={errors.foundLocationError}
                         onChange={handleChange}
@@ -190,12 +202,13 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         name="specialNotes"
                         labelText="특이사항"
                         maxLength={100}
-                        defaultValue={form.specialNotes}
+                        // defaultValue={form.specialNotes}
+                        value={form.specialNotes}
                         onChange={handleTextareaChange}
                     />
                     <TextArea
                         name="description"
-                        labelText="소개말"
+                        labelText="소개말*"
                         maxLength={500}
                         defaultValue={form.description}
                         onChange={handleTextareaChange}
@@ -203,7 +216,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
 
                     <TextArea
                         name="healthStatus"
-                        labelText="건강상태"
+                        labelText="건강상태*"
                         maxLength={500}
                         defaultValue={form.healthStatus}
                         onChange={handleTextareaChange}

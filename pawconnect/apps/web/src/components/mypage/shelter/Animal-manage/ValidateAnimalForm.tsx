@@ -2,10 +2,13 @@ import { CreateAnimalForm } from "@/types/paw/animal.type";
 import {
     validateAge,
     validateAnimalName,
+    validateAnimalStatus,
     validateBreed,
     validateDescription,
     validateFoundLocation,
+    validateGender,
     validateHealthStatus,
+    validateNoticeDate,
     validateSpecialNotes,
     validateSpecies,
     validateWeight,
@@ -21,6 +24,7 @@ export function validateAnimalForm(form: CreateAnimalForm) {
         breedError: validateBreed(form.breedId),
         ageError: validateAge(form.age),
         weightError: validateWeight(form.weight),
+        genderError: validateGender(form.gender),
         foundLocationError:
             validateFoundLocation(form.foundLocation),
         specialNotesError:
@@ -29,5 +33,7 @@ export function validateAnimalForm(form: CreateAnimalForm) {
             validateDescription(form.description),
         healthStatusError:
             validateHealthStatus(form.healthStatus),
+        noticeDateError:
+            validateNoticeDate(form.noticeStartDate, form.noticeEndDate),
     };
 }
