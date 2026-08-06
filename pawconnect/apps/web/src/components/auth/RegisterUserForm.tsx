@@ -97,6 +97,7 @@ export default function RegisterUserForm() {
                             labelText="이메일*"
                             helperText="이메일을 입력해주세요"
                             errorText={clientErrors.email || state.emailError}
+                            maxLength={255}
                             onChange={handleEmailChange}
                             />
                         <InputPassword 
@@ -104,6 +105,7 @@ export default function RegisterUserForm() {
                             labelText="비밀번호*"
                             helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 6~30자)"
                             errorText={clientErrors.password || state.passwordError}
+                            maxLength={255}
                             onChange={handlePasswordChange}
                             />
                         <InputPassword 
@@ -111,6 +113,7 @@ export default function RegisterUserForm() {
                             labelText="비밀번호 확인*"
                             helperText="비밀번호를 다시 입력해주세요"
                             errorText={clientErrors.rePassword || state.rePasswordError}
+                            maxLength={255}
                             onChange={handleRePasswordChange}
                             />
                         <Input 
@@ -118,6 +121,7 @@ export default function RegisterUserForm() {
                             labelText="닉네임*"
                             helperText="닉네임을 입력해주세요(공백 또는 특수문자 불가 2~16자)"
                             errorText={clientErrors.nickname || state.nicknameError}
+                            maxLength={20}
                             onChange={handleNicknameChange}
                             />
                     </div>

@@ -44,18 +44,21 @@ export default function ChangePasswordModal({ isOpen, onClose }: ChangePasswordM
                         labelText="현재 비밀번호"
                         helperText="현재 비밀번호를 입력해주세요"
                         errorText={state.prevPasswordError}
+                        maxLength={255}
                         />
                     <InputPassword 
                         name="newPassword" 
                         labelText="새 비밀번호" 
                         helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 6~30자)"
                         errorText={state.newPasswordError}
+                        maxLength={255}
                         />
                     <InputPassword 
                         name="newRePassword" 
                         labelText="새 비밀번호 확인" 
                         helperText="비밀번호를 다시 입력해주세요"
                         errorText={state.newRePasswordError}
+                        maxLength={255}
                         />
                 </Modal.Body>
                 <Modal.Footer>

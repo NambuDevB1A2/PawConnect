@@ -77,6 +77,7 @@ export default function InfoForm({
                             labelText="닉네임"
                             helperText="닉네임을 입력해주세요(공백 또는 특수문자 불가 2~16자)"
                             errorText={clientErrors.nickname ?? state.nicknameError}
+                            maxLength={20}
                             onChange={handleNicknameChange}
                             />
                         <div className={styles.box_password}>
