@@ -103,16 +103,16 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {
-        if (error instanceof ApiError && error.fields) {
+        if (error instanceof ApiError) {
             // 서버에서 온 필드별 에러 매핑
             return {
                 email,
                 nickname,
-                emailError: error.fields.email || error.message,
-                passwordError: error.fields.password,
-                nicknameError: error.fields.nickname,
-                imgProfileError: error.fields.imgProfile,
-                termsError: error.fields.agreedToTerms,
+                emailError: error.fields?.email || error.message,
+                passwordError: error.fields?.password,
+                nicknameError: error.fields?.nickname,
+                imgProfileError: error.fields?.imgProfile,
+                termsError: error.fields?.agreedToTerms,
                 
                 name,
                 address,
@@ -120,14 +120,16 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
                 phone,
                 operatingHours,
                 description,
-                nameError: error.fields.name,
-                addressError: error.fields.address,
-                addressDetailError: error.fields.addressDetail,
-                phoneError: error.fields.phone,
-                operatingHoursError: error.fields.operatingHours,
-                descriptionError: error.fields.description,
-                imgBannerError: error.fields.imgBanner,
-                imgShelterError: error.fields.imgShelter,
+                nameError: error.fields?.name,
+                addressError: error.fields?.address,
+                addressDetailError: error.fields?.addressDetail,
+                phoneError: error.fields?.phone,
+                operatingHoursError: error.fields?.operatingHours,
+                descriptionError: error.fields?.description,
+                imgBannerError: error.fields?.imgBanner,
+                imgShelterError: error.fields?.imgShelter,
+
+                errorMessage: error.message,
             };
         }
 
@@ -135,7 +137,6 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
         return {
             email,
             nickname,
-            emailError: "회원가입 도중 오류가 발생했습니다",
             
             name,
             address,
@@ -143,6 +144,9 @@ export async function RegisterShelter(prevState: RegisterShelterState, formdata:
             phone,
             operatingHours,
             description,
+
+            emailError: "회원가입 도중 오류가 발생했습니다",
+            errorMessage: "회원가입 도중 오류가 발생했습니다",
         };
     }
 }

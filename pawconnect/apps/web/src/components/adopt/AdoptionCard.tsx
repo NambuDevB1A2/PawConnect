@@ -102,7 +102,7 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
                     {role === "USER" &&
                     <div className={styles.box_typo}>
                         <Typography className={styles.typo_detail_title}>소속 보호소</Typography>
-                        <Typography className={styles.typo_detail}>{adoption.animal.shelter.name}</Typography>
+                        <Typography className={`${styles.typo_detail} ${styles.typo_shelter_name}`}>{adoption.animal.shelter.name}</Typography>
                     </div>}
 
                     

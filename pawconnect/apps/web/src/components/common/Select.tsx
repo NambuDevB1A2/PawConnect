@@ -24,6 +24,7 @@ interface SelectProps {
     labelPosition?: SelectLabelPosition;
     labelSize?: SelectLabelSize;
     helperText?: string;
+    errorText?: string;
     disabled?: boolean;
     wrapperClassName?: string;
     className?: string;
@@ -39,6 +40,7 @@ export default function Select({
     labelPosition = "left",
     labelSize = "medium",
     helperText = "선택해주세요",
+    errorText,
     disabled,
     wrapperClassName = "",
     className = "",
@@ -80,12 +82,11 @@ export default function Select({
             ref={containerRef}>
             <Typography className={`${styles.label_text} ${styles[labelSize]}`} weight="bold">{labelText}</Typography>
             {name && <input type="hidden" name={name} value={currentValue ?? ""} />}
-            <div className={styles.box_trigger}>
+            <div className={`${styles.box_trigger}`}>
                 <button
                     type="button"
-                    className={`${styles.trigger} ${className}`}
+                    className={`${styles.trigger}  ${errorText ? styles.trigger_error : ""} ${className}`}
                     onClick={() => setIsOpen((prev) => !prev)}
-                    type="button"
                     disabled={disabled}>
                     <Typography
                         className={`${selectedOption ? styles.value_text : styles.helper_text}`}
@@ -110,6 +111,7 @@ export default function Select({
                     </ul>
                 }
             </div>
+            {errorText && <Typography className={styles.error_text}>{errorText}</Typography>}
         </div>
     );
 }

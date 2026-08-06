@@ -72,6 +72,15 @@
     color: var(--color-text-secondary);
 }
 
+.typo_shelter_name {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .typo_animal_name {
   overflow: hidden;
   text-overflow: ellipsis;

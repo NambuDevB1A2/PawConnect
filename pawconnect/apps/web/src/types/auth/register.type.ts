@@ -7,6 +7,8 @@ export interface ResponseRegisterUser extends ApiResponse {
 }
 
 export interface RegisterUserState {
+    errorMessage?: string;
+    
     email?: string;
     emailError?: string;
     nickname?: string;
@@ -27,6 +29,8 @@ export interface ResponseRegisterShelter extends ApiResponse {
 }
 
 export interface RegisterShelterState {
+    errorMessage?: string;
+
     email?: string;
     emailError?: string;
     nickname?: string;

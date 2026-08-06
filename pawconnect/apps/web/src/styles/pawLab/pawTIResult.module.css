@@ -80,6 +80,7 @@
     grid-template-columns: repeat(2, 240px);
     gap: 24px;
     justify-content: center;
+    align-items: stretch;
 }
 
 .animalGrid>div {
@@ -88,6 +89,12 @@
     align-items: center;
 
     width: 240px;
+    height: 100%;
+}
+
+.animalGrid>div>* {
+    flex: 1;
+    width: 100%;
 }
 
 .animalTitle {
@@ -98,7 +105,7 @@
 
 .emptyCard {
     width: 240px;
-    height: 320px;
+    min-height: 320px;
     border:1px dashed var(--color-border);
     border-radius: 20px;
 

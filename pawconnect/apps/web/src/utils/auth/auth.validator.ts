@@ -69,6 +69,14 @@ export function validateAgreedToTerms(agreedToTerms: boolean) {
     return undefined;
 }
 
+export function validateAgreedToAdoption(agreedToAdoption: boolean) {
+    if (!agreedToAdoption) {
+        return '정보 수집에 동의해주세요';
+    }
+
+    return undefined;
+}
+
 export function validateShelterName(name: string) {
     if (name.length > 100) {
         return '너무 긴 이름은 사용할 수 없습니다';

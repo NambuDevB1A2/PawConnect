@@ -86,6 +86,11 @@
     cursor: not-allowed;
 }
 
+.trigger_error {
+    border: 1px solid var(--color-error);
+}
+
+
 .value_text {
     color: var(--input-text-color);
 }
@@ -159,4 +164,8 @@
 
 .option:hover {
     background-color: var(--color-background);
+}
+
+.error_text {
+    color: var(--color-error);
 }
