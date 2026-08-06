@@ -1,3 +1,9 @@
+export function validateEmail(email: string) {
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!EMAIL_REGEX.test(email)) return "올바른 이메일 형식이 아닙니다";
+    return undefined;
+}
+
 export function validatePassword(password: string) {
     if (password.length < 6) {
         return '비밀번호는 6자 이상이어야 합니다';
@@ -58,6 +64,14 @@ export function validateNickname(nickname: string) {
 export function validateAgreedToTerms(agreedToTerms: boolean) {
     if (!agreedToTerms) {
         return '이용약관 및 개인정보 처리방침에 동의해주세요';
+    }
+
+    return undefined;
+}
+
+export function validateAgreedToAdoption(agreedToAdoption: boolean) {
+    if (!agreedToAdoption) {
+        return '정보 수집에 동의해주세요';
     }
 
     return undefined;

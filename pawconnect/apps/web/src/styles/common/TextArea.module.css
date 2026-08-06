@@ -37,6 +37,10 @@
     border-color: var(--input-focus-border-color);
 }
 
+.box_textarea_error {
+    border-color: var(--input-error-border-color);
+}
+
 .textarea {
     width: 100%;
     min-height: calc(var(--input-height) * 2);
@@ -116,4 +120,8 @@
 
     color: var(--color-text-placeholder);
     pointer-events: none;
+}
+
+.error_text {
+    color: var(--color-error);
 }

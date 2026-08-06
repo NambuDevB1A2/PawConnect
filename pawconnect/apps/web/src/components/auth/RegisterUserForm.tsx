@@ -11,7 +11,7 @@ import { RegisterUserState } from "@/types/auth/register.type";
 import { RegisterUser } from "@/services/auth/register-user.client";
 import { useActionState, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { validateNickname, validatePassword, validateRePassword } from "@/utils/auth/auth.validator";
+import { validateEmail, validateNickname, validatePassword, validateRePassword } from "@/utils/auth/auth.validator";
 import { ModalContext } from "@/providers/ModalProvider";
 import { TERMS_MESSAGES } from "@/constants/messages/Terms";
 import Typography from "@/components/common/Typography";
@@ -25,12 +25,18 @@ export default function RegisterUserForm() {
 
     const [password, setPassword] = useState("");
     const [clientErrors, setClientErrors] = useState<{
+        email?: string;
         password?: string;
         rePassword?: string;
         nickname?: string;
     }>({});
     
     // 실시간 타이핑 유효성 검사
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setClientErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    };
+
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setPassword(value);
@@ -90,34 +96,41 @@ export default function RegisterUserForm() {
                             name="email" defaultValue={state.email}
                             labelText="이메일*"
                             helperText="이메일을 입력해주세요"
-                            errorText={state.emailError}
+                            errorText={clientErrors.email || state.emailError}
+                            maxLength={255}
+                            onChange={handleEmailChange}
                             />
                         <InputPassword 
                             name="password"
                             labelText="비밀번호*"
                             helperText="비밀번호를 입력해주세요(영문 대소문자, 숫자, 특수문자 6~30자)"
-                            errorText={clientErrors.password ?? state.passwordError}
+                            errorText={clientErrors.password || state.passwordError}
+                            maxLength={255}
                             onChange={handlePasswordChange}
                             />
                         <InputPassword 
                             name="rePassword"
                             labelText="비밀번호 확인*"
                             helperText="비밀번호를 다시 입력해주세요"
-                            errorText={clientErrors.rePassword ?? state.rePasswordError}
+                            errorText={clientErrors.rePassword || state.rePasswordError}
+                            maxLength={255}
                             onChange={handleRePasswordChange}
                             />
                         <Input 
                             name="nickname" defaultValue={state.nickname}
                             labelText="닉네임*"
                             helperText="닉네임을 입력해주세요(공백 또는 특수문자 불가 2~16자)"
-                            errorText={clientErrors.nickname ?? state.nicknameError}
+                            errorText={clientErrors.nickname || state.nicknameError}
+                            maxLength={20}
                             onChange={handleNicknameChange}
                             />
                     </div>
                 </div>
                 
                 <div className={styles.box_agreement}>
-                    <CheckBox name="agreedToTerms">
+                    <CheckBox
+                        name="agreedToTerms"
+                        errorText={state.termsError}>
                         <Button variant="text" type="button" onClick={handleOpenTermsOfService}>이용약관</Button>
                         &nbsp;및&nbsp;
                         <Button variant="text" type="button" onClick={handleOpenPrivacyPolicy}>개인정보 처리방침</Button>

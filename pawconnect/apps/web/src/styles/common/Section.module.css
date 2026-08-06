@@ -9,6 +9,13 @@
     gap: var(--spacing);
 }
 
+.title {
+    align-self: flex-start;
+    width: 100%;
+
+    text-align: left;
+}
+
 .box_section {
     width: 100%;
 

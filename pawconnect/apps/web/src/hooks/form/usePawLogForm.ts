@@ -5,6 +5,7 @@ import { validateTitle } from "@/utils/pawlog/pawlog.validator";
 import { GeneratePawLog } from "@/services/ai/ai-generate-pawlog.client";
 import { GeneratePawLogState } from "@/types/pawlog/gernerate-pawlog.type";
 import { ModalContext } from "@/providers/ModalProvider";
+import { formatAIResponseText } from "@/utils/text/format-ai-text";
 
 const initialAiState: GeneratePawLogState = {};
 
@@ -106,7 +107,7 @@ export function usePawLogForm({
         if (aiState.response?.success) {
             alert('AI 게시글 작성을 성공적으로 마쳤습니다');
             if (aiState.response.title) setTitle(aiState.response.title);
-            if (aiState.response.content) setContent(aiState.response.content);
+            if (aiState.response.content) setContent(formatAIResponseText(aiState.response.content));
         } else {
             alert('AI 게시글 작성 도중 오류가 발생했습니다');
         }

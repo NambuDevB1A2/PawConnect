@@ -5,6 +5,8 @@ export interface ResponseCreateAdoption extends ApiResponse {
 }
 
 export interface CreateAdoptionState {
+    errorMessage?: string;
+    
     userName?: string;
     userNameError?: string;
     phone?: string;
@@ -45,6 +47,9 @@ export interface CreateAdoptionState {
     isAcceptLifetimeResponsibilityError?: string;
     additionalNotes?: string;
     additionalNotesError?: string;
+
+    agreedToTermsError?: string;
+    agreedToAdoptionError?: string;
 
     response?: ResponseCreateAdoption;
 }

@@ -120,41 +120,41 @@ main {
     --color-checkout-border: #8E8E8E;*/
 
     /* 톤 다운 */
-    --color-primary: #DE9954;
-    --color-primary-050: #FBF8F4;
+    --color-primary: #E58F3B;
+    --color-primary-050: #FBF7F4;
     --color-primary-100: #F7F0E8;
     --color-primary-200: #F0DFCE;
     --color-primary-300: #E9CEB4;
     --color-primary-400: var(--color-primary);
-    --color-primary-hover: #D57E28;
-    --color-primary-pressed: #A96520;
+    --color-primary-hover: #D4771C;
+    --color-primary-pressed: #A75D16;
 
-    --color-secondary: #54B1DE;
-    --color-secondary-025: #DDEFF8;
-    --color-secondary-050: #B2DCF0;
-    --color-secondary-075: #87C8E8;
+    --color-secondary: #72B0CB;
+    --color-secondary-025: #DDF0F8;
+    --color-secondary-050: #B2DDF0;
+    --color-secondary-075: #87CBE8;
     --color-secondary-100: var(--color-secondary);
-    --color-secondary-200: #289CD5;
-    --color-secondary-300: #207BA9;
+    --color-secondary-200: #4597BA;
+    --color-secondary-300: #34738D;
 
-    --color-success: #3BDA5E;
-    --color-warning: #DFBB57;
-    --color-error: #E26E67;
+    --color-success: #5CAE6E;
+    --color-warning: #E5B83B;
+    --color-error: #E5453B;
 
-    --color-badge-success-background-color: var(--color-primary-200);
-    --color-badge-success-text-color: var(--color-primary-hover);
-    --color-badge-warning-background-color: #F0E3C2;
-    --color-badge-warning-text-color: var(--color-primary-pressed);
+    --color-badge-success-background-color: #C2F0CC;
+    --color-badge-success-text-color: #0E6C23;
+    --color-badge-warning-background-color: #F0E4C2;
+    --color-badge-warning-text-color: #6C530E;
     --color-badge-completed-background-color: #EDEDED;
     --color-badge-completed-text-color: var(--color-primary-pressed);
-    --color-badge-error-background-color: #F0C8C2;
-    --color-badge-error-text-color: #CA3227;
-    --color-badge-info-background-color: #C2E0F0;
-    --color-badge-info-text-color: var(--color-secondary-300);
+    --color-badge-error-background-color: #F0C4C2;
+    --color-badge-error-text-color: #6C140E;
+    --color-badge-info-background-color: #C2E2F0;
+    --color-badge-info-text-color: #0E506C;
     --color-badge-dog-background-color: #F0D8C2;
-    --color-badge-dog-text-color: var(--color-primary-hover);
-    --color-badge-cat-background-color: #C2E0F0;
-    --color-badge-cat-text-color: var(--color-secondary-300);
+    --color-badge-dog-text-color: #6C3D0E;
+    --color-badge-cat-background-color: #C2E2F0;
+    --color-badge-cat-text-color: #0E506C;
 
     --color-background: #FDFBF7;
     --color-surface: #FFFFFF;

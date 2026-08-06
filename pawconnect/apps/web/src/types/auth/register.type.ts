@@ -7,6 +7,8 @@ export interface ResponseRegisterUser extends ApiResponse {
 }
 
 export interface RegisterUserState {
+    errorMessage?: string;
+    
     email?: string;
     emailError?: string;
     nickname?: string;
@@ -14,6 +16,8 @@ export interface RegisterUserState {
     passwordError?: string;
     rePasswordError?: string;
     imgProfileError?: string;
+
+    termsError?: string;
 
     response?: ResponseRegisterUser;
 }
@@ -25,6 +29,8 @@ export interface ResponseRegisterShelter extends ApiResponse {
 }
 
 export interface RegisterShelterState {
+    errorMessage?: string;
+
     email?: string;
     emailError?: string;
     nickname?: string;
@@ -32,7 +38,7 @@ export interface RegisterShelterState {
     passwordError?: string;
     rePasswordError?: string;
     imgProfileError?: string;
-
+    
     name?: string;
     nameError?: string;
     address?: string;
@@ -47,6 +53,8 @@ export interface RegisterShelterState {
     descriptionError?: string;
     imgBannerError?: string;
     imgShelterError?: string;
+    
+    termsError?: string;
 
     response?: ResponseRegisterShelter;
 }

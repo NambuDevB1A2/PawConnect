@@ -1,7 +1,7 @@
 import { ApiError } from "@/services/fetch/api-error";
 import { fetchClient } from "@/services/fetch/fetch.client";
 import { CreateAdoptionState, ResponseCreateAdoption } from "@/types/adopt/create-adoption.type";
-import { validateShelterAddress, validateShelterPhone } from "@/utils/auth/auth.validator";
+import { validateAgreedToAdoption, validateAgreedToTerms, validateEmail, validateShelterAddress, validateShelterPhone } from "@/utils/auth/auth.validator";
 
 export async function CreateAdoption(animalId: number, prevState: CreateAdoptionState, formdata: FormData): Promise<CreateAdoptionState> {
     const userName = formdata.get('userName') as string;
@@ -75,15 +75,44 @@ export async function CreateAdoption(animalId: number, prevState: CreateAdoption
     }
     
     // 2. 유효성 검사
+    const emailError = validateEmail(email);
     const phoneError = validateShelterPhone(phone);
     const addressError = validateShelterAddress(address);
     const addressDetailError = validateShelterAddress(addressDetail);
+    const agreedToTermsError = validateAgreedToTerms(agreedToTerms === "on" || agreedToTerms === "true");
+    const agreedToAdoptionError = validateAgreedToAdoption(agreedToAdoption === "on" || agreedToTerms === "true");
 
-    if (phoneError || addressError || addressDetailError) {
+    if (emailError || phoneError || addressError || addressDetailError || agreedToTermsError || agreedToAdoptionError) {
         return {
+            userName,
+            phone,
+            email,
+            address,
+            addressDetail,
+            
+            petExperience,
+            petsDescription,
+            petExperiencePeriod,
+            residenceType,
+            petAllowedStatus,
+            familySize,
+            youngChildStatus,
+            isFamilyConsent,
+
+            adoptionPurpose,
+            isCanVaccinate,
+            isCanProvideMedicalCare,
+            isCanProvideExercise,
+            isAcceptLifetimeResponsibility,
+            additionalNotes,
+                
+            emailError,
             phoneError,
             addressError,
             addressDetailError,
+
+            agreedToTermsError,
+            agreedToAdoptionError,
         };
     }
 
@@ -128,7 +157,7 @@ export async function CreateAdoption(animalId: number, prevState: CreateAdoption
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {
-        if (error instanceof ApiError && error.fields) {
+        if (error instanceof ApiError) {
             // 서버에서 온 필드별 에러 매핑
             return {
                 userName,
@@ -153,27 +182,29 @@ export async function CreateAdoption(animalId: number, prevState: CreateAdoption
                 isAcceptLifetimeResponsibility,
                 additionalNotes,
                 
-                userNameError: error.fields.userName,
-                phoneError: error.fields.phone,
-                emailError: error.fields.email,
-                addressError: error.fields.address,
-                addressDetailError: error.fields.addressDetail,
+                userNameError: error.fields?.userName,
+                phoneError: error.fields?.phone,
+                emailError: error.fields?.email,
+                addressError: error.fields?.address,
+                addressDetailError: error.fields?.addressDetail,
 
-                petExperienceError: error.fields.petExperience,
-                petsDescriptionError: error.fields.petsDescription,
-                petExperiencePeriodError: error.fields.petExperiencePeriod,
-                residenceTypeError: error.fields.residenceType,
-                petAllowedStatusError: error.fields.petAllowedStatus,
-                familySizeError: error.fields.familySize,
-                youngChildStatusError: error.fields.youngChildStatus,
-                isFamilyConsentError: error.fields.isFamilyConsent,
+                petExperienceError: error.fields?.petExperience,
+                petsDescriptionError: error.fields?.petsDescription,
+                petExperiencePeriodError: error.fields?.petExperiencePeriod,
+                residenceTypeError: error.fields?.residenceType,
+                petAllowedStatusError: error.fields?.petAllowedStatus,
+                familySizeError: error.fields?.familySize,
+                youngChildStatusError: error.fields?.youngChildStatus,
+                isFamilyConsentError: error.fields?.isFamilyConsent,
 
-                adoptionPurposeError: error.fields.adoptionPurpose,
-                isCanVaccinateError: error.fields.isCanVaccinate,
-                isCanProvideMedicalCareError: error.fields.isCanProvideMedicalCare,
-                isCanProvideExerciseError: error.fields.isCanProvideExercise,
-                isAcceptLifetimeResponsibilityError: error.fields.isAcceptLifetimeResponsibility,
-                additionalNotesError: error.fields.additionalNotes,
+                adoptionPurposeError: error.fields?.adoptionPurpose,
+                isCanVaccinateError: error.fields?.isCanVaccinate,
+                isCanProvideMedicalCareError: error.fields?.isCanProvideMedicalCare,
+                isCanProvideExerciseError: error.fields?.isCanProvideExercise,
+                isAcceptLifetimeResponsibilityError: error.fields?.isAcceptLifetimeResponsibility,
+                additionalNotesError: error.fields?.additionalNotes,
+
+                errorMessage: error.message,
             };
         }
 
@@ -201,7 +232,7 @@ export async function CreateAdoption(animalId: number, prevState: CreateAdoption
             isAcceptLifetimeResponsibility,
             additionalNotes,
 
-            userNameError: "신청서 작성 도중 오류가 발생했습니다",
+            errorMessage: "신청서 작성 도중 오류가 발생했습니다",
         };
     }
 }

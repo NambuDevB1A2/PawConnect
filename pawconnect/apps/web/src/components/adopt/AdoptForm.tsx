@@ -139,7 +139,8 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
             alert('입양 신청서 작성에 성공했습니다');
             router.push("/mypage/adopt");
         } else {
-            alert('신청서 작성 도중 오류가 발생했습니다');
+            alert(state.errorMessage ?? '신청서 작성 도중 오류가 발생했습니다');
+            //alert('신청서 작성 도중 오류가 발생했습니다');
 
             if (state.userNameError || state.phoneError || state.emailError 
                 || state.addressError || state.addressDetailError) {
@@ -173,7 +174,8 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         value={userName}
                         labelText="이름*"
                         helperText="이름을 입력해주세요"
-                        errorText={clientErrors.userName ?? state.userNameError}
+                        errorText={clientErrors.userName || state.userNameError}
+                        maxLength={30}
                         onChange={(e) => setUserName(e.target.value)}
                         />
                     <Input 
@@ -181,7 +183,8 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         value={phone}
                         labelText="전화번호*"
                         helperText="전화번호를 입력해주세요(-없이 숫자만)"
-                        errorText={clientErrors.phone ?? state.phoneError}
+                        errorText={clientErrors.phone || state.phoneError}
+                        maxLength={20}
                         onChange={handleShelterPhone}
                         />
                     <Input 
@@ -189,7 +192,8 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         value={email}
                         labelText="이메일*"
                         helperText="이메일을 입력해주세요"
-                        errorText={clientErrors.email ?? state.emailError}
+                        errorText={clientErrors.email || state.emailError}
+                        maxLength={255}
                         onChange={(e) => setEmail(e.target.value)}
                         />
                     <Input 
@@ -197,7 +201,8 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         value={address}
                         labelText="주소*" 
                         helperText="주소를 입력해주세요"
-                        errorText={clientErrors.address ?? state.addressError}
+                        errorText={clientErrors.address || state.addressError}
+                        maxLength={255}
                         onChange={handleShelterAddress}
                         />
                     <Input 
@@ -205,7 +210,8 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         value={addressDetail}
                         labelText="상세 주소" 
                         helperText="상세 주소를 입력해주세요"
-                        errorText={clientErrors.addressDetail ?? state.addressDetailError}
+                        errorText={clientErrors.addressDetail || state.addressDetailError}
+                        maxLength={255}
                         onChange={handleShelterAddressDetail}
                         />
                 </Section>
@@ -231,6 +237,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         name="petsDescription"
                         value={petsDescription}
                         helperText="양육한 반려동물의 종류와 마릿수를 작성해주세요(개 2마리/고양이 1마리 등)"
+                        errorText={state.petsDescriptionError}
                         maxLength={100}
                         onChange={(e) => setPetsDescription(e.target.value)}
                         />
@@ -243,6 +250,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         labelText="반려동물 양육 기간"
                         labelPosition="left"
                         helperText="선택하세요"
+                        errorText={state.petExperiencePeriodError}
                         options={[
                             { label: "1년 미만", value: "LESS_THAN_1_YEAR" },
                             { label: "1~3년", value: "ONE_TO_THREE_YEARS" },
@@ -261,6 +269,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         labelText="거주 형태*"
                         labelPosition="top"
                         helperText="선택하세요"
+                        errorText={state.residenceTypeError}
                         options={[
                             { label: "아파트", value: "APARTMENT" },
                             { label: "빌라", value: "VILLA" },
@@ -277,6 +286,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         labelText="가족 구성*"
                         labelPosition="top"
                         helperText="선택하세요"
+                        errorText={state.familySizeError}
                         options={[
                             { label: "1명", value: "ONE" },
                             { label: "2명", value: "TWO" },
@@ -292,6 +302,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         labelText="가족 동의 여부*"
                         labelPosition="top"
                         helperText="선택하세요"
+                        errorText={state.isFamilyConsentError}
                         options={[
                             { label: "예", value: "true" },
                             { label: "아니오", value: "false" },
@@ -307,6 +318,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         labelText="반려동물 사육 가능 여부*"
                         labelPosition="top"
                         helperText="선택하세요"
+                        errorText={state.petAllowedStatusError}
                         options={[
                             { label: "가능", value: "ALLOWED" },
                             { label: "불가능", value: "NOT_ALLOWED" },
@@ -321,6 +333,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         labelText="어린 아이 여부*"
                         labelPosition="top"
                         helperText="선택하세요"
+                        errorText={state.youngChildStatusError}
                         options={[
                             { label: "없음", value: "NONE" },
                             { label: "7세 미만", value: "UNDER_SEVEN" },
@@ -338,6 +351,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         name="adoptionPurpose"
                         value={adoptionPurpose}
                         helperText="입양을 희망하는 이유를 작성해주세요"
+                        errorText={state.adoptionPurposeError}
                         maxLength={100}
                         onChange={(e) => setAdoptionPurpose(e.target.value)}
                         />
@@ -348,15 +362,19 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         <div className={styles.box_radio_list}>
                             <CheckBox name="isCanVaccinate" text="예방 접종을 실시할 수 있습니다." 
                             checked={isCanVaccinate} 
+                            errorText={state.isCanVaccinateError}
                             onChange={(e) => setIsCanVaccinate(e.target.checked)}/>
                             <CheckBox name="isCanProvideMedicalCare" text="질병 발생시 병원 치료를 받을 수 있습니다." 
                             checked={isCanProvideMedicalCare}  
+                            errorText={state.isCanProvideMedicalCareError}
                             onChange={(e) => setIsCanProvideMedicalCare(e.target.checked)}/>
                             <CheckBox name="isCanProvideExercise" text="규칙적인 산책 및 운동을 제공할 수 있습니다."
                             checked={isCanProvideExercise} 
+                            errorText={state.isCanProvideExerciseError}
                             onChange={(e) => setIsCanProvideExercise(e.target.checked)}/>
                             <CheckBox name="isAcceptLifetimeResponsibility" text="평생 책임감을 가지고 양육하겠습니다."
                             checked={isAcceptLifetimeResponsibility} 
+                            errorText={state.isAcceptLifetimeResponsibilityError}
                             onChange={(e) => setIsAcceptLifetimeResponsibility(e.target.checked)}/>
                         </div>
                     </div>
@@ -367,6 +385,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         name="additionalNotes"
                         value={additionalNotes}
                         helperText="보호소에 전달하고 싶은 내용을 작성해주세요"
+                        errorText={state.additionalNotesError}
                         maxLength={500}
                         onChange={(e) => setAdditionalNotes(e.target.value)}
                         />
@@ -376,6 +395,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                         <Typography weight="bold" className={styles.typo_radio}> </Typography>
                             <div className={styles.box_radio_list}>
                             <CheckBox name="agreedToTerms"
+                            errorText={state.agreedToTermsError}
                             onChange={(e) => setAgreedToTerms(e.target.checked)}>
                                 <Button variant="text" type="button" onClick={handleOpenTermsOfService}>이용약관</Button>
                                 &nbsp;및&nbsp;
@@ -384,6 +404,7 @@ export default function AdoptForm({ animal }: AdoptFormProps) {
                             </CheckBox>
                             
                             <CheckBox name="agreedToAdoption"
+                            errorText={state.agreedToAdoptionError}
                             onChange={(e) => setAgreedToAdoption(e.target.checked)}>
                                 입양 심사에 필요한 정보 제공에 동의합니다
                             </CheckBox>

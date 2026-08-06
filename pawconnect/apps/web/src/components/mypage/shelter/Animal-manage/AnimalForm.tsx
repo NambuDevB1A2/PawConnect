@@ -89,9 +89,11 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                     <Input name="name" value={form.name} labelText="보호동물 이름*"
                         maxLength={20} onChange={handleChange} errorText={errors.nameError} />
 
-                    <Select labelText="동물*" labelPosition="left"
+                    <Select labelText="동물*" 
                         labelSize="small"
+                        labelPosition="left"
                         helperText="동물을 선택하세요"
+                        errorText={errors.speciesError}
                         value={String(form.speciesId)}
                         options={[
                             { label: "개", value: "1" },
@@ -102,31 +104,23 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                             handleSelectChange("breedId", 0); // 종 바뀌면 품종 초기화
                         }}
                     />
-                    {errors.speciesError && (
-                        <Typography className={styles.error}>
-                            {errors.speciesError}
-                        </Typography>
-                    )}
 
                     <Select labelText="품종*"
-                        helperText={errors.breedError || "품종을 선택하세요"}
                         labelSize="small"
                         labelPosition="left"
+                        helperText={errors.breedError || "품종을 선택하세요"}
+                        errorText={errors.breedError}
                         value={String(form.breedId)}
                         options={breedOptions}
                         onChange={(value) =>
                             handleSelectChange("breedId", Number(value))}
                     />
-                    {errors.breedError && (
-                        <Typography className={styles.error}>
-                            {errors.breedError}
-                        </Typography>
-                    )}
 
                     <Select labelText="성별*"
-                        helperText="성별을 선택하세요"
                         labelSize="small"
                         labelPosition="left"
+                        helperText="성별을 선택하세요"
+                        errorText={errors.genderError}
                         value={`${form.gender}_${form.isNeutered ? "TRUE" : "FALSE"}`}
                         options={genderOptions}
                         onChange={handleGenderChange}
@@ -202,7 +196,6 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         name="specialNotes"
                         labelText="특이사항"
                         maxLength={100}
-                        // defaultValue={form.specialNotes}
                         value={form.specialNotes}
                         onChange={handleTextareaChange}
                     />
@@ -210,7 +203,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         name="description"
                         labelText="소개말*"
                         maxLength={500}
-                        defaultValue={form.description}
+                        value={form.description}
                         onChange={handleTextareaChange}
                     />
 
@@ -218,7 +211,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         name="healthStatus"
                         labelText="건강상태*"
                         maxLength={500}
-                        defaultValue={form.healthStatus}
+                        value={form.healthStatus}
                         onChange={handleTextareaChange}
                     />
 
