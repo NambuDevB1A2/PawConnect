@@ -103,6 +103,11 @@ export default function AdoptionCard({ role, adoption }: AdoptionCardProps) {
                         <Typography className={styles.typo_detail_title}>신청일</Typography>
                         <Typography className={styles.typo_detail}>{formatDateTime(adoption.createdAt)}</Typography>
                     </div>
+                    <div className={styles.box_typo}>
+                        <Typography className={styles.typo_detail_title}>신청자 정보</Typography>
+                        <Typography className={styles.typo_detail}>{adoption.userNickName}</Typography>
+                        <Typography className={styles.typo_detail}>{adoption.userEmail}</Typography>
+                    </div>
 
                     {role === "USER" &&
                     <div className={styles.box_typo}>

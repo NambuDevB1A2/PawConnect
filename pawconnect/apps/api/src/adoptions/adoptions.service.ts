@@ -121,7 +121,10 @@ export class AdoptionsService {
     const [adoptions, totalCount] = await Promise.all([
         this.prisma.adoption.findMany({
             where,
-            include: ADOPTION_ANIMAL_INCLUDE,
+            include: {
+              ...ADOPTION_ANIMAL_INCLUDE,
+              user:{select:{nickname:true, email: true}}
+            },
             orderBy: ADOPTION_ORDERBY.NEWEST,
             ...getPagination(page, limit),
         }),

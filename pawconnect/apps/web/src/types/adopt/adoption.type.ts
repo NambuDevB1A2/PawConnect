@@ -22,6 +22,9 @@ export interface Adoption {
     adoptionStatus: AdoptionStatus;
     createdAt: string;
     updatedAt: string;
+    
+    userNickName: string;
+    userEmail: string;
 
     animal: AdoptionAnimal;
 
