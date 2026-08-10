@@ -2,6 +2,7 @@ import badgeStyles from "@/styles/common/Badge.module.css";
 import { Animal } from "@/types/paw/animal.type";
 import { Shelter } from "@/types/shelter/shelter.type";
 import { BadgeVariant } from '../../components/common/Badge';
+import { User } from "@/types/auth/user.type";
 
 interface AdoptionAnimal extends Animal {
 
@@ -23,8 +24,7 @@ export interface Adoption {
     createdAt: string;
     updatedAt: string;
     
-    userNickName: string;
-    userEmail: string;
+    user: User;
 
     animal: AdoptionAnimal;
 
