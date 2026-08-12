@@ -40,8 +40,14 @@ async function bootstrap() {
 
   // CORS
   app.use(cookieParser());
+  
+  const webUrl =
+  commonConfig.webPort === 443 || commonConfig.webPort === 80
+    ? commonConfig.webDomain
+    : `${commonConfig.webDomain}:${commonConfig.webPort}`;
+
   app.enableCors({
-    origin: `${commonConfig.webDomain}:${commonConfig.webPort}`,
+    origin: webUrl,
     credentials: true,
   });
 
