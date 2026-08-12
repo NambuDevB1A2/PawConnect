@@ -1,0 +1,40 @@
+name: Deploy Backend (API) to Azure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/api/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push backend image
+        run: |
+          docker build -f apps/api/Dockerfile \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-api:${{ github.sha }} \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-api:latest \
+            .
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-api:${{ github.sha }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-api:latest
+
+      - name: Deploy to Azure App Service (staging slot)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: pawconnect-api
+          slot-name: staging
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_API_STAGING }}
+          images: ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-api:${{ github.sha }}

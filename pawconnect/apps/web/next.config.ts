@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
         removeConsole:
             ENV.NODE_ENV === 'production',
     },
+    output: 'standalone',
 };
 
 export default nextConfig;
