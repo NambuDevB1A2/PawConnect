@@ -1,0 +1,24 @@
+.wrapper_not_found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    min-height: var(--modal-width-xs);
+
+    grid-column: 1 / -1;
+}
+
+.icon_warning {
+
+}
+
+.typo_warning {
+    text-align: center;
+}
+
+.typo_empty {
+    text-align: center;
+    color: var(--color-icon-default);
+}

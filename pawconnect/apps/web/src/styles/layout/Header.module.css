@@ -1,0 +1,200 @@
+.wrapper_header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-index-header);
+    --header-height: 80px;
+
+    width: 100%;
+    height: var(--header-height);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    padding: 0 32px 0 32px;
+    
+    background-color: var(--color-surface);
+
+    box-shadow: var(--shadow-small);
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.box_logo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+
+    cursor: pointer;
+    
+    width: 190px;
+}
+
+.box_link {
+    flex: 1;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+}
+
+.box_mypage {
+    --header-user-image-size: 48px;
+    --header-user-nickname-gap: 10px;
+    --header-user-nickname-size: 120px;
+
+    position: relative;
+
+    display: inline-flex;
+    justify-content: right;
+}
+
+.box_user {
+    display: flex;
+    flex-direction: row;
+
+    height: 100%;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.img_profile {
+    width: var(--header-user-image-size);
+    height: var(--header-user-image-size);
+
+    border: none;
+
+    background-color: var(--color-border);
+
+    box-shadow: var(--shadow-small);
+
+    border-radius: var(--radius-900);
+
+    object-fit: cover;
+}
+
+.nickname {
+    padding-left: var(--header-user-nickname-gap);
+    padding-right: var(--header-user-nickname-gap);
+
+    width: var(--header-user-nickname-size);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+
+    color: var(--color-text-secondary);
+}
+
+.box_dropdown {
+    z-index: var(--z-index-header-dropdown);
+
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+
+    padding: var(--spacing-200);
+    gap: var(--spacing-100);
+
+    top: var(--header-height);
+    margin-top: -25px;
+
+    width: max-content;
+    min-width: 180px;
+    max-width: calc(100vw - var(--spacing-500) * 2);
+
+    box-shadow: var(--shadow-medium);
+
+    background-color: var(--color-surface);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+
+    transition: 
+        opacity var(--transition-opacity) ease,
+        transform var(--transition-transform) ease;
+}
+
+.box_dropdown_open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.icon_chevron {
+    flex-shrink: 0;
+
+    transition: 
+        transform var(--transition-transform) ease;
+}
+
+.icon_chevron_open {
+    flex-shrink: 0;
+
+    transform: rotate(180deg);
+}
+
+@media (max-width: 1024px) {
+    .wrapper_header {
+        padding: 0 16px;
+        gap: 12px;
+    }
+
+    .box_logo {
+        width: auto;
+    }
+
+    .box_link {
+        gap: 4px;
+    }
+
+    .box_link button,
+    .box_mypage button {
+        min-width: 0;
+        padding: 0 var(--spacing-200);
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper_header {
+        --header-height: 64px;
+
+        padding: 0 12px;
+    }
+
+    .box_logo p {
+        display: none;
+    }
+
+    .box_link button,
+    .box_mypage button {
+        padding: 0 var(--spacing-100);
+        font-size: var(--font-size-body2);
+    }
+
+    .box_mypage {
+        --header-user-nickname-size: 0px;
+        --header-user-nickname-gap: 0px;
+    }
+
+    .nickname {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .box_mypage {
+        --header-user-image-size: 36px;
+    }
+
+    .box_link button,
+    .box_mypage button {
+        padding: 0 var(--spacing-050);
+    }
+}

@@ -1,21 +1,37 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConfigType } from '@nestjs/config';
-import commonConfig from './config/common.config';
+import { ConfigService } from '@nestjs/config';
+import { AppModule } from '@/app.module';
+import cookieParser from 'cookie-parser';
+// import { mkdirSync } from 'fs';
+// import { UPLOAD_DIR } from '@/config/upload.config';
+import { customValidationPipe } from '@/common/pipe/validation.pipe';
+import { config as loadEnv } from 'dotenv';
+
+loadEnv();
 
 async function bootstrap() {
+  // Upload Dir
+  // mkdirSync(UPLOAD_DIR.dir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.userProfileDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.shelterBannerDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.shelterImgDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.animalImgDir, { recursive: true });
+  // mkdirSync(UPLOAD_DIR.petpostImgDir, { recursive: true });
+
   const app = await NestFactory.create(AppModule);
   
-  const common = app.get<ConfigType<typeof commonConfig>>(commonConfig.KEY);
-  
+  // Config
+  const configService = app.get(ConfigService);
+  const commonConfig = configService.getOrThrow('common');
+
   // Validator
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.useGlobalPipes(customValidationPipe);
 
   // Swagger 
   const config = new DocumentBuilder()
-    .setTitle("Echo API Document")
+    .setTitle("PawConnect API Document")
     .setDescription("사람과 유기동물을 연결하는 입양 플랫폼")
     .setVersion("1.0")
     .addBearerAuth()
@@ -23,12 +39,13 @@ async function bootstrap() {
   SwaggerModule.setup("api", app, SwaggerModule.createDocument(app, config));
 
   // CORS
+  app.use(cookieParser());
   app.enableCors({
-    origin: `${common.webDomain}:${common.webPort}`,
+    origin: `${commonConfig.webDomain}:${commonConfig.webPort}`,
     credentials: true,
   });
 
-  await app.listen(common.port);
-  console.log(`Start to Server: ${common.domain}:${common.port} (swagger: ${common.domain}:${common.port}/api)`);
+  await app.listen(commonConfig.port);
+  console.log(`Start to Server: ${commonConfig.domain}:${commonConfig.port} (swagger: ${commonConfig.domain}:${commonConfig.port}/api)`);
 }
 bootstrap();

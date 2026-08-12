@@ -1,0 +1,165 @@
+.wrapper_adoption_card {
+    position: relative;
+
+    width: 100%;
+    max-width: 960px;
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing);
+
+    padding: var(--spacing-300);
+
+    background-color: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    border: 1px solid var(--color-border);
+
+    transition: 
+        border-color var(--transition-border-color);
+}
+
+.disabled {
+    background-color: var(--input-disabled-background-color);
+    color: var(--color-text-secondary);
+}
+
+.wrapper_image{
+    width: 180px;
+    height: 180px;
+
+    padding-left: var(--spacing-100);
+}
+
+.img_animal {
+    width: 180px;
+    height: 180px;
+
+    object-fit: cover;
+    background-color: var(--color-border);
+}
+
+.wrapper_info {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.box_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: var(--spacing-200);
+
+    flex: 1;
+}
+
+.box_typo {
+    display: flex;
+    flex-direction: row;
+}
+
+.typo_detail_title {
+    color: var(--color-text-secondary);
+
+    min-width: 120px;
+}
+
+.typo_detail {
+    color: var(--color-text-secondary);
+}
+
+.typo_shelter_name {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.typo_animal_name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wrapper_badge {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.box_badge {
+    display: flex;
+    flex-direction: row;
+}
+
+.badge {
+    width: 200px;
+}
+
+.typo_badge_title {
+    min-width: 120px;
+}
+
+.select_status {
+    width: 200px;
+}
+
+.wrapper_btns {
+    position: absolute;
+
+    right: var(--spacing);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+}
+
+@media (max-width: 1350px) {
+    .wrapper_adoption_card {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .wrapper_image {
+        width: 100%;
+        height: 220px;
+        padding-left: 0;
+    }
+
+    .img_animal {
+        width: 100%;
+        height: 220px;
+    }
+
+    .wrapper_btns {
+        position: static;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-top: var(--spacing-200);
+    }
+
+    .wrapper_badge {
+        flex-wrap: wrap;
+        gap: var(--spacing-200);
+    }
+}
+
+@media (max-width: 480px) {
+    .badge,
+    .select_status {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .box_badge {
+        flex: 1 1 100%;
+    }
+}

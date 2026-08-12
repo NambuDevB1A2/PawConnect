@@ -1,0 +1,136 @@
+.wrapper_page {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap:24px;
+    align-items:flex-start;
+    padding: var(--spacing);
+}
+
+.wrapper_list {
+    max-width: 1050px;
+}
+
+.box_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding-bottom: var(--spacing-300);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.content {
+    /* flex:1; */
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+
+    padding-top: var(--spacing-300);
+}
+
+/* 왼쪽 검색 */
+.filter_box {
+    width: 280px;
+    flex-shrink: 0;
+
+    background: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    position: sticky;
+    top: 90px;
+}
+
+/* 오른쪽 */
+.list_section {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.box_list {
+    display: grid;
+
+    grid-template-columns: repeat(3, 240px);
+    gap: 24px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 1024px) {
+    .wrapper_list {
+        flex: 1;
+    }
+
+    .box_list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper_page {
+        flex-direction: column;
+    }
+
+    .filter_box {
+        width: 100%;
+        position: static;
+        top: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .box_list {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* .wrapper_page {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+
+.wrapper_list {
+    width: 1200px;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 32px;
+}
+
+.box_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.box_list {
+    display: grid;
+
+    grid-template-columns: repeat(4, 240px);
+
+    gap: 24px;
+
+    justify-content: space-between;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+} */

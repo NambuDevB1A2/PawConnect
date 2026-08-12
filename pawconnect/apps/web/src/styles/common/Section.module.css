@@ -1,0 +1,71 @@
+/* Section */
+
+.wrapper_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing);
+    gap: var(--spacing);
+}
+
+.title {
+    align-self: flex-start;
+    width: 100%;
+
+    text-align: left;
+}
+
+.box_section {
+    width: 100%;
+
+    background-color: var(--color-surface);
+
+    padding: var(--spacing);
+
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+}
+
+/* Size */
+
+.small {
+    width: var(--modal-width-s);
+    max-width: 100%;
+}
+
+.medium {
+    width: var(--modal-width-m);
+    max-width: 100%;
+}
+
+.large {
+    width: var(--modal-width-l);
+    max-width: 100%;
+}
+
+.xlarge {
+    width: var(--modal-width-xl);
+    max-width: 100%;
+}
+
+/* Align */
+
+.left {
+    align-items: start;
+    justify-content: left;
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
+}
+
+.right {
+    align-items: end;
+    justify-content: right;
+}

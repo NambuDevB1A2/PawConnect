@@ -1,0 +1,29 @@
+/* Toast */
+
+.wwrapper_toast {
+    position: fixed;
+
+    top: var(--spacing-500);
+    right: var(--spacing-500);
+
+    z-index: var(--z-index-toast);
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: var(--button-gap);
+
+    width: var(--toast-width);
+    min-height: var(--toast-height);
+
+    padding: var(--toast-padding);
+
+    border-radius: var(--toast-radius);
+
+    box-shadow: var(--toast-shadow);
+
+    font-size: var(--font-size-caption);
+    font-weight: var(--font-weight-caption);
+    line-height: var(--line-height-caption);
+}

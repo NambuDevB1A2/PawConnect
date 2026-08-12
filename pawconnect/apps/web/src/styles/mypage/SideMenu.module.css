@@ -1,0 +1,124 @@
+.wrapper_layout {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing);
+    width: 100%;
+    padding-left: var(--spacing);
+}
+
+.wrapper_layout > *:last-child {
+    flex: 1;
+    min-width: 0;
+}
+
+.wrapper_side_menu {
+    flex-shrink: 0;
+    width: var(--sidemenu-width);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+
+    padding-right: var(--spacing-500); 
+    border-right: 1px solid var(--color-border);
+}
+
+.box_menu_group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+}
+
+.btn_side {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: var(--spacing-100) var(--spacing-200);
+    border-radius: var(--button-radius);
+
+    height: var(--button-height-l);
+
+    color: var(--color-text-secondary);
+    text-decoration: none;
+
+    transition: 
+        background-color var(--transition-background-color), 
+        color var(--transition-color);
+}
+
+.btn_side:hover {
+    background-color: var(--color-primary-200);
+    color: var(--color-primary);
+}
+
+.btn_side:hover .icon_side {
+    color: var(--color-primary);
+}
+
+.btn_side_active {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.icon_side_active {
+    color: var(--color-primary);
+}
+
+.box_submenu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+
+    margin-left: var(--spacing-500);
+    padding-left: var(--spacing-200);
+
+    border-left: 1px solid var(--color-border);
+}
+
+.btn_child {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .wrapper_layout {
+        flex-direction: column;
+        padding: 0 var(--spacing);
+    }
+
+    .wrapper_side_menu {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        padding-right: 0;
+        padding-bottom: var(--spacing-300);
+
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .box_menu_group {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn_side {
+        height: auto;
+        padding: var(--spacing-100) var(--spacing-200);
+    }
+
+    .box_submenu {
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        margin-left: 0;
+        padding-left: 0;
+
+        border-left: none;
+    }
+
+    .btn_child {
+        width: auto;
+    }
+}

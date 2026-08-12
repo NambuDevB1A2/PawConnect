@@ -1,0 +1,127 @@
+.wrapper_register {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-700);
+
+    padding: var(--spacing-700);
+
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper_roles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    width: 100%;
+    max-width: 1100px;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.wrapper_section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    width: 100%;
+    max-width: 1100px;
+
+    justify-content: space-between;
+}
+
+.typo_info {
+    text-align: center;
+}
+
+.box_roles {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing);
+}
+
+.btn_user,
+.btn_shelter {
+    width: 250px;
+    height: 250px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper_info {
+    display: flex;
+    align-items: center;
+}
+
+.box_info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-900);
+
+    width: 100%;
+    padding: var(--spacing);
+}
+
+.wrapper_shelter_info {
+    padding: var(--spacing);
+}
+
+.box_input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    width: 500px;
+}
+
+.box_shelter_input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    width: 500px;
+}
+
+.btn_submit {
+    width: 100%;
+    max-width: 250px;
+}
+
+@media (max-width: 768px) {
+    .box_roles {
+        flex-direction: column;
+    }
+
+    .btn_user,
+    .btn_shelter {
+        width: 100%;
+        max-width: 250px;
+        height: 180px;
+    }
+
+    .box_info {
+        flex-direction: column;
+        gap: var(--spacing-500);
+    }
+
+    .box_input,
+    .box_shelter_input {
+        width: 100%;
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wrapper_register {
+        padding: var(--spacing-300);
+    }
+
+    .btn_user,
+    .btn_shelter {
+        height: 140px;
+    }
+}

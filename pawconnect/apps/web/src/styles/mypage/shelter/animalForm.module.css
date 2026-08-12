@@ -1,0 +1,70 @@
+.wrapper_new {
+    flex: 1;
+    min-width: 0;
+}
+
+.wrapper_edit {
+    flex: 1;
+    min-width: 0;
+}
+
+.wrapper_section {
+    display:flex;
+    flex-direction:column;
+    gap:var(--spacing);
+
+    justify-content:space-between;
+    width:100%;
+}
+
+.wrapper_form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+}
+
+.wrapper_animal_new {
+    padding: var(--spacing);
+}
+
+.wrapper_image_uploader {
+    width:100%;
+}
+
+.box_animal_input {
+    display:flex;
+    flex-direction:column;
+    gap:var(--spacing);
+    width:100%;
+    max-width:500px;
+}
+
+.btn_save {
+    width:250px;
+}
+
+.age_box {
+    display:flex;
+    align-items:flex-end;
+    gap:12px;
+}
+
+.estimated {
+    display:flex;
+    align-items:center;
+
+    gap:6px;
+    height:40px;
+    margin-bottom:12px;
+
+    white-space:nowrap;
+    cursor:pointer;
+}
+
+.error {
+    color: var(--color-error);
+    font-size: var(--font-size-body1);
+    line-height: var(--line-height-body3);
+    margin-top: -15px;
+    margin-left: 130px;
+}

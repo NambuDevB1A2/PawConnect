@@ -1,0 +1,462 @@
+/*
+ * ============================================================
+ * Responsive Breakpoints (컨벤션)
+ * PostCSS 커스텀 문법(@custom-media) 미사용 → 각 .module.css 파일에
+ * 아래 값을 표준 @media (max-width: Npx)로 직접 반복 작성한다.
+ *
+ *   1024px  small-desktop  : 3~4열 그리드 → 2열, 2분할 레이아웃 폭 축소 시작
+ *    768px  tablet         : flex row → column 전환 기준
+ *    480px  mobile         : 그리드 1열, 패딩/치수 축소, 헤더 축약 강화
+ *
+ * 파일 하단에 1024 → 768 → 480 순으로 미디어쿼리 블록을 쌓는다.
+ * ============================================================
+ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: var(--font-size-body1);
+    font-weight: var(--font-weight-body1);
+    line-height: var(--line-height-body1);
+
+    scroll-behavior: auto;
+    scrollbar-gutter: stable;
+}
+
+body {
+    font-family:
+        -apple-system, 
+        BlinkMacSystemFont, 
+        'Segoe UI', 
+        'Malgun Gothic', 
+        sans-serif;
+    
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+main {
+    margin: var(--spacing);
+}
+
+:root {
+    /* z-index */
+    --z-index-tooltip: 999;
+    --z-index-select-option: 999;
+    --z-index-header: 1000;
+    --z-index-header-dropdown: 1001;
+    --z-index-overlay: 1002;
+    --z-index-modal: 1003;
+    --z-index-toast: 1004;
+
+    /* Transition Time */
+    --transition-border-color: 0.15s;
+    --transition-background-color: 0.15s;
+    --transition-color: 0.15s;
+    --transition-opacity: 0.2s;
+    --transition-transform: 0.2s;
+
+    /* Colors */
+
+    /* Origin Color */
+    /* --color-primary: #F59E0B;
+    --color-primary-100: #FFF7E6;
+    --color-primary-200: #FEE6D1;
+    --color-primary-300: #FDDEBA;
+    --color-primary-400: var(--color-primary);
+    --color-primary-hover: #D97706;
+    --color-primary-pressed: #B45309;
+
+    --color-secondary: #60A5FA;
+    --color-secondary-100: var(--color-secondary);
+    --color-secondary-200: #3B82F6;
+    --color-secondary-300: #2563EB;
+
+    --color-success: #22C55E;
+    --color-warning: #FACC15;
+    --color-error: #EF4444;
+
+    --color-badge-success-background-color: #DCFCE7;
+    --color-badge-success-text-color: #15803D;
+    --color-badge-warning-background-color: #FEF3C7;
+    --color-badge-warning-text-color: var(--color-primary-pressed);
+    --color-badge-completed-background-color: #F3F4F6;
+    --color-badge-completed-text-color: var(--color-primary-pressed);
+    --color-badge-error-background-color: #FEE2E2;
+    --color-badge-error-text-color: #B91C1C;
+    --color-badge-info-background-color: #DBEAFE;
+    --color-badge-info-text-color: #1D4ED8;
+    --color-badge-dog-background-color: var(--color-primary-100);
+    --color-badge-dog-text-color: var(--color-primary-hover);
+    --color-badge-cat-background-color: #EFF6FF;
+    --color-badge-cat-text-color: var(--color-secondary-300);
+
+    --color-background: #FFFDF8;
+    --color-surface: #FFFFFF;
+    --color-border: #E5E7EB;
+
+    --color-text-primary: #222222;
+    --color-text-secondary: #666666;
+    --color-text-placeholder: #9CA3AF;
+    --color-text-disabled: #BDBDBD;
+
+    --color-icon-default: #6B7280;
+    --color-icon-button-true: #1C1B1F;
+    --color-icon-button-false: var(--color-text-disabled);
+    
+    --color-input-disabled-background: #F5F5F5;
+    --color-checkout-border: #8E8E8E;*/
+
+    /* 톤 다운 */
+    --color-primary: #E58F3B;
+    --color-primary-050: #FBF7F4;
+    --color-primary-100: #F7F0E8;
+    --color-primary-200: #F0DFCE;
+    --color-primary-300: #E9CEB4;
+    --color-primary-400: var(--color-primary);
+    --color-primary-hover: #D4771C;
+    --color-primary-pressed: #A75D16;
+
+    --color-secondary: #72B0CB;
+    --color-secondary-025: #DDF0F8;
+    --color-secondary-050: #B2DDF0;
+    --color-secondary-075: #87CBE8;
+    --color-secondary-100: var(--color-secondary);
+    --color-secondary-200: #4597BA;
+    --color-secondary-300: #34738D;
+
+    --color-success: #5CAE6E;
+    --color-warning: #E5B83B;
+    --color-error: #E5453B;
+
+    --color-badge-success-background-color: #C2F0CC;
+    --color-badge-success-text-color: #0E6C23;
+    --color-badge-warning-background-color: #F0E4C2;
+    --color-badge-warning-text-color: #6C530E;
+    --color-badge-completed-background-color: #EDEDED;
+    --color-badge-completed-text-color: var(--color-primary-pressed);
+    --color-badge-error-background-color: #F0C4C2;
+    --color-badge-error-text-color: #6C140E;
+    --color-badge-info-background-color: #C2E2F0;
+    --color-badge-info-text-color: #0E506C;
+    --color-badge-dog-background-color: #F0D8C2;
+    --color-badge-dog-text-color: #6C3D0E;
+    --color-badge-cat-background-color: #C2E2F0;
+    --color-badge-cat-text-color: #0E506C;
+
+    --color-background: #FDFBF7;
+    --color-surface: #FFFFFF;
+    --color-border: #E8E4DD;
+
+    --color-text-primary: #23201C;
+    --color-text-secondary: #6E6862;
+    --color-text-placeholder: #A39C93;
+    --color-text-disabled: #C4BDB4;
+
+    --color-icon-default: #746D65;
+    --color-icon-button-true: #23201C;
+    --color-icon-button-false: var(--color-text-disabled);
+
+    --color-input-disabled-background: #F3F1EC;
+    --color-checkout-border: #8C857C;
+
+    /* Grid, Spacing */
+    --spacing: 24px;
+    --spacing-050: 4px;
+    --spacing-100: 8px;
+    --spacing-200: 14px;
+    --spacing-300: 16px;
+    --spacing-400: var(--spacing);
+    --spacing-500: 32px;
+    --spacing-600: 40px;
+    --spacing-700: 48px;
+    --spacing-800: 80px;
+    --spacing-900: 120px;
+
+    /* Radius, Shadow */
+    --radius-100: 6px;
+    --radius-200: 10px;
+    --radius-300: 12px;
+    --radius-400: 16px;
+    --radius-500: 20px;
+    --radius-600: 24px;
+    --radius-900: 999px;
+
+    --radius-input: var(--radius-300);
+    --radius-button: var(--radius-300);
+    --radius-card: var(--radius-400);
+
+    /* Shadows */
+    --shadow-small: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.10);
+    --shadow-large: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.16);
+    --shadow-xxl: 0 20px 48px rgba(0, 0, 0, 0.12);
+    
+    /* Typography */
+    --font-weight-thin: 100;
+    --font-weight-extralight: 200;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 800;
+    --font-weight-extrabold: 700;
+    --font-weight-black: 900;
+
+    --font-weight-display: var(--font-weight-bold);
+    --line-height-display: 56px;
+    --font-size-display: 40px;
+    
+    --font-weight-heading: var(--font-weight-bold);
+    --line-height-heading: 44px;
+    --font-size-heading: 32px;
+    
+    --font-weight-title: var(--font-weight-bold);
+    --line-height-title: 36px;
+    --font-size-title: 24px;
+    
+    --font-weight-modaltitle: var(--font-weight-bold);
+    --line-height-modaltitle: 28px;
+    --font-size-modaltitle: 18px;
+    
+    --font-weight-subtitle: var(--font-weight-semibold);
+    --line-height-subtitle: 30px;
+    --font-size-subtitle: 20px;
+    
+    --font-weight-menutitle: var(--font-weight-medium);
+    --line-height-menutitle: 28px;
+    --font-size-menutitle: 18px;
+    
+    --font-weight-body1: var(--font-weight-regular);
+    --line-height-body1: 24px;
+    --font-size-body1: 16px;
+    
+    --font-weight-body2: var(--font-weight-regular);
+    --line-height-body2: 22px;
+    --font-size-body2: 14px;
+    
+    --font-weight-body3: var(--font-weight-regular);
+    --line-height-body3: 20px;
+    --font-size-body3: 13px;
+    
+    --font-weight-caption: var(--font-weight-regular);
+    --line-height-caption: 18px;
+    --font-size-caption: 12px;
+
+    /* Buttons */
+    --button-radius: var(--radius-button);
+    --button-padding: var(--spacing-200) var(--spacing-400);
+    --button-text-padding: 0 var(--spacing-200);
+    --button-gap: 8px;
+
+    --button-height-l: 56px;
+    --button-height-m: 48px;
+    --button-height-s: 40px;
+
+    --button-width-l: 200px;
+    --button-width-m: 160px;
+    --button-width-s: 120px;
+
+    /* Inputs */
+    --input-height: 48px;
+    --input-width: 320px;
+    --input-radius: var(--radius-input);
+    --input-padding: 0 var(--spacing-300);
+
+    --input-border-width: 1px;
+    --input-border-color: var(--color-border);
+    --input-hover-border-color: var(--color-text-placeholder);
+    --input-focus-border-color: var(--color-primary);
+    --input-error-border-color: var(--color-error);
+    --input-disabled-border-color: var(--color-border);
+
+    --input-background-color: var(--color-surface);
+    --input-disabled-background-color: var(--color-input-disabled-background);
+
+    --input-text-color: var(--color-text-primary);
+    --input-placeholder-text-color: var(--color-text-placeholder);
+    --input-disabled-text-color: var(--color-text-disabled);
+
+    --input-font-size: var(--font-size-body1);
+    --input-font-weight: var(--font-weight-regular);
+    --input-line-height: var(--line-height-body1);
+    --input-label-gap: 8px;
+    --input-helper-gap: 8px;
+
+    --input-label-width-small: 120px;
+    --input-label-width-medium: 180px;
+    --input-label-width-large: 240px;
+    --input-label-width-xlarge: 320px;
+
+    /* CheckBox & Radio & Toggle */
+
+    --checkbox-size: 14px;
+    --checkbox-color-border: var(--color-checkout-border);
+    --checkbox-color-checked: var(--color-secondary);
+
+    --toggle-height-small: 18px;
+    --toggle-height-medium: 23px;
+    --toggle-width-small: 33px;
+    --toggle-width-medium: 46px;
+    --toggle-track-size: 17px;
+
+    /* Tooltip */
+
+    --tooltip-size: 17px;
+
+    /* Badges */
+    --badge-small-height: 24px;
+    --badge-medium-height: 28px;
+
+    --badge-small-width: 80px;
+    --badge-medium-width: 80px;
+    
+    --badge-small-padding: 4px 10px;
+    --badge-medium-padding: 6px 12px;
+
+    --badge-radius: var(--radius-900);
+
+    --badge-font-size: var(--font-size-caption);
+    --badge-font-weight: var(--font-weight-caption);
+    --badge-line-height: var(--line-height-caption);
+
+    /* Overlay (Backdrop) */
+    --overlay-backdrop-color: rgba(0, 0, 0, 0.30);
+    --overlay-backdrop-opacity: 0.3;
+
+    /* Modal */
+    --modal-background-color: var(--color-surface);
+    --modal-shadow: var(--shadow-xxl);
+    --modal-radius: var(--radius-500);
+    --modal-padding: var(--spacing-500);
+
+    --modal-width-xs: 360px;
+    --modal-width-s: 420px;
+    --modal-width-m: 560px;
+    --modal-width-l: 720px;
+    --modal-width-xl: 960px;
+
+    /* Toast */
+    --toast-height: 72px;
+    --toast-width: 360px;
+    --toast-radius: 12px;
+    --toast-padding: 20px;
+    --toast-shadow: var(--shadow-large);
+
+    /* Icons */
+    --icon-box-radius: var(--radius-300);
+    --icon-padding: var(--spacing-100);
+    --icon-label-gap: var(--spacing-100);
+
+    --icon-box-size-badge: 26.67px;
+    --icon-box-size-input: 33.33px;
+    --icon-box-size-default: 40px;
+    --icon-box-size-status: 53.33px;
+    --icon-box-size-hero: 66.67px;
+    
+    --icon-size-badge: 16px;
+    --icon-size-input: 20px;
+    --icon-size-default: 24px;
+    --icon-size-status: 32px;
+    --icon-size-hero: 40px;
+
+    /* Uploader */
+    --uploader-dropzone-height: 200px;
+
+    --uploader-preview-width: 210px;
+    --uploader-preview-height: 150px;
+    
+    --uploader-banner-height: 210px;
+
+    --uploader-profile-width: 280px;
+    --uploader-profile-image-width: 210px;
+
+    /* Slider */
+    --slider-transition-transform: 0.3s;
+
+    /* Side Menu */
+    --sidemenu-width: 240px;
+}
+
+/* Responsive token overrides — 패딩/간격류 토큰만 대상. width/grid-template-columns/
+   flex-direction 등 구조 값은 각 모듈에서 개별 처리한다. */
+@media (max-width: 768px) {
+    :root {
+        --spacing-700: 28px;
+        --spacing-800: 40px;
+        --spacing-900: 56px;
+
+        --modal-padding: var(--spacing-300);
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --spacing-500: 20px;
+        --spacing-600: 24px;
+        --spacing-700: 20px;
+        --spacing-800: 28px;
+        --spacing-900: 32px;
+
+        --modal-padding: var(--spacing-200);
+
+        /* 모바일 글자 크기 70% 축소 */
+        --font-size-display: 28px;
+        --line-height-display: 39px;
+
+        --font-size-heading: 22px;
+        --line-height-heading: 31px;
+
+        --font-size-title: 17px;
+        --line-height-title: 25px;
+
+        --font-size-modaltitle: 13px;
+        --line-height-modaltitle: 20px;
+
+        --font-size-subtitle: 14px;
+        --line-height-subtitle: 21px;
+
+        --font-size-menutitle: 13px;
+        --line-height-menutitle: 20px;
+
+        --font-size-body1: 11px;
+        --line-height-body1: 17px;
+
+        --font-size-body2: 10px;
+        --line-height-body2: 15px;
+
+        --font-size-body3: 9px;
+        --line-height-body3: 14px;
+
+        --font-size-caption: 8px;
+        --line-height-caption: 13px;
+    }
+}
+
+/* 초소형 화면(412px 이하) — Section/카드형 컨테이너가 겹겹이 중첩되는
+   mypage 전 화면에서 좌우 여백이 과도하게 쌓이는 것을 막기 위해
+   기본 여백 토큰을 한 번 더 축소한다. */
+@media (max-width: 412px) {
+    :root {
+        --spacing: 14px;
+        --spacing-300: 10px;
+    }
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

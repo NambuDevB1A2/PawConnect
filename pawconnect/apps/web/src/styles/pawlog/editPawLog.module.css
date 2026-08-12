@@ -1,0 +1,38 @@
+.wrapper_edit {
+    flex: 1;
+    min-width: 0;
+}
+
+.wrapper_section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    justify-content: space-between;
+}
+
+.typo_info {
+    text-align: center;
+}
+
+.wrapper_pawlog_new {
+    padding: var(--spacing);
+}
+
+.box_pawlog_input {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    width: 100%;
+    max-width: 500px;
+}
+
+.btn_submit {
+    width: 100%;
+    max-width: 250px;
+}
+
+.empty {
+    text-align: center;
+}

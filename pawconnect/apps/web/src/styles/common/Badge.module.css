@@ -1,0 +1,64 @@
+/* Badges */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: var(--badge-radius);
+
+    font-size: var(--badge-font-size);
+    font-weight: var(--badge-font-weight);
+    line-height: var(--badge-line-height);
+}
+
+/* Size */
+
+.small {
+    height: var(--badge-small-height);
+    width: var(--badge-small-width);
+    padding: var(--badge-small-padding);
+}
+
+.medium {
+    height: var(--badge-medium-height);
+    width: var(--badge-medium-width);
+    padding: var(--badge-medium-padding);
+}
+
+/* Type */
+
+.success {
+    background-color: var(--color-badge-success-background-color);
+    color: var(--color-badge-success-text-color);
+}
+
+.warning {
+    background-color: var(--color-badge-warning-background-color);
+    color: var(--color-badge-warning-text-color);
+}
+
+.completed {
+    background-color: var(--color-badge-completed-background-color);
+    color: var(--color-badge-completed-text-color);
+}
+
+.error {
+    background-color: var(--color-badge-error-background-color);
+    color: var(--color-badge-error-text-color);
+}
+
+.info {
+    background-color: var(--color-badge-info-background-color);
+    color: var(--color-badge-info-text-color);
+}
+
+.dog {
+    background-color: var(--color-badge-dog-background-color);
+    color: var(--color-badge-dog-text-color);
+}
+
+.cat {
+    background-color: var(--color-badge-cat-background-color);
+    color: var(--color-badge-cat-text-color);
+}

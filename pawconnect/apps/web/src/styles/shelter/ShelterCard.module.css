@@ -1,0 +1,89 @@
+.wrapper_shelter_card {
+    position: relative;
+
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    min-height: 280px;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+
+    padding: var(--spacing-300);
+
+    background-color: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-medium);
+
+    border: 1px solid var(--color-surface);
+
+    cursor: pointer;
+
+    transition: 
+        border-color var(--transition-border-color);
+}
+
+.wrapper_shelter_card:hover {
+    border: 1px solid var(--color-primary);
+}
+
+.wrapper_shelter_card:active {
+    border: 1px solid var(--color-primary-pressed);
+}
+
+.img_shelter {
+    width: 100%;
+    height: 160px;
+    background-color: var(--color-border);
+
+    object-fit: cover;
+}
+
+.box_shelter_info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-050);
+}
+
+.box_shelter_title {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+
+    width: 100%;
+}
+
+.typo_shelter_name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    min-width: 0;
+}
+
+.typo_address {
+    color: var(--color-text-secondary);
+}
+
+.typo_animal_count {
+    color: var(--color-primary);
+}
+
+.box_icons {
+    flex: 1;
+    text-align: end;
+}
+
+.badge_my_shelter {
+    position: absolute;
+
+    top: var(--spacing);
+    left: var(--spacing);
+}
+
+@media (max-width: 768px) {
+    .wrapper_shelter_card {
+        max-width: none;
+    }
+}

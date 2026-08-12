@@ -21,7 +21,7 @@ model User {
   password   String     @db.VarChar(255) // 해시 저장
   nickname   String     @db.VarChar(20)
   role       Role
-  imgProfile String // 기본 이미지 사용
+  imgProfile String     @db.VarChar(100) // 기본 이미지 사용
   status     UserStatus @default(ACTIVE)
 
   createdAt DateTime @default(now())
@@ -29,7 +29,7 @@ model User {
 
   shelter        Shelter?        @relation(fields: [shelterId], references: [id])
   adoptions      Adoption[]
-  petPosts       PetPost[]
+  pawLogs        PawLog[]
   userAgreements UserAgreement[]
 
   @@index([shelterId])
@@ -41,15 +41,18 @@ model User {
 
 model Shelter {
   id             String @id @default(uuid()) @db.Uuid
-  name           String @db.VarChar(100)
-  adress         String @db.VarChar(255)
-  adressDetail   String @db.VarChar(255)
+  name           String @unique @db.VarChar(100)
+  address        String @db.VarChar(255)
+  addressDetail  String @db.VarChar(255)
   phone          String @db.VarChar(20) // - 없이 숫자만
   operatingHours String @db.VarChar(100)
   description    String @db.VarChar(500)
-  imgBanner      String // 기본 이미지 사용
+  imgBanner      String @db.VarChar(100) // 기본 이미지 사용
 
-  imges   ShelterImage[] // 이미지 필수 아님
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images  ShelterImage[] // 이미지 필수 아님
   animals Animal[]
   staff   User[] // 보호소 관리자 다수 등록 가능
 }
@@ -57,7 +60,7 @@ model Shelter {
 model ShelterImage {
   id        String @id @default(uuid()) @db.Uuid
   shelterId String @db.Uuid
-  img       String
+  img       String @db.VarChar(100)
 
   shelter Shelter @relation(fields: [shelterId], references: [id], onDelete: Cascade)
 
@@ -89,7 +92,7 @@ model AnimalBreed {
 }
 
 model Animal {
-  id             String       @id @default(uuid()) @db.Uuid
+  id             Int          @id @default(autoincrement())
   shelterId      String       @db.Uuid
   name           String       @db.VarChar(50)
   species        Int          @db.SmallInt
@@ -100,8 +103,7 @@ model Animal {
   isEstimatedAge Boolean
   animalStatus   AnimalStatus @default(PROTECTED)
   weight         Decimal      @db.Decimal(5, 2)
-  imgThumbnail   String // 이미지 필수
-  detailId       String       @unique @db.Uuid
+  imgThumbnail   String       @db.VarChar(100) // 이미지 필수
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -109,9 +111,9 @@ model Animal {
   shelter       Shelter       @relation(fields: [shelterId], references: [id])
   animalSpecies AnimalSpecies @relation(fields: [species], references: [id])
   animalBreed   AnimalBreed   @relation(fields: [breed, species], references: [id, species])
-  detail        AnimalDetail  @relation(fields: [detailId], references: [id])
   images        AnimalImage[] // 이미지 필수
   adoptions     Adoption[]
+  detail        AnimalDetail?
 
   @@index([shelterId])
   @@index([species])
@@ -120,6 +122,7 @@ model Animal {
 
 model AnimalDetail {
   id              String   @id @default(uuid()) @db.Uuid
+  animalId        Int      @unique
   noticeStartDate DateTime @db.Date
   noticeEndDate   DateTime @db.Date
   foundLocation   String   @db.VarChar(50)
@@ -128,13 +131,13 @@ model AnimalDetail {
   healthStatus    String   @db.VarChar(500)
   updatedAt       DateTime @updatedAt
 
-  animal Animal?
+  animal Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
 }
 
 model AnimalImage {
   id       String @id @default(uuid()) @db.Uuid
-  animalId String @db.Uuid
-  img      String
+  animalId Int
+  img      String @db.VarChar(100)
 
   animal Animal @relation(fields: [animalId], references: [id], onDelete: Cascade)
 
@@ -148,17 +151,16 @@ model AnimalImage {
 model Adoption {
   id             String         @id @default(uuid()) @db.Uuid
   userId         String         @db.Uuid
-  animalId       String         @db.Uuid
+  animalId       Int
   adoptionStatus AdoptionStatus @default(PENDING)
-  detailId       String         @unique @db.Uuid
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user       User                @relation(fields: [userId], references: [id])
   animal     Animal              @relation(fields: [animalId], references: [id])
-  detail     AdoptionDetail      @relation(fields: [detailId], references: [id])
   agreements AdoptionAgreement[]
+  detail     AdoptionDetail?
 
   @@index([userId])
   @@index([animalId])
@@ -166,11 +168,12 @@ model Adoption {
 
 model AdoptionDetail {
   id                             String               @id @default(uuid()) @db.Uuid
+  adoptionId                     String               @unique @db.Uuid
   userName                       String               @db.VarChar(30)
   email                          String               @db.VarChar(255)
   phone                          String               @db.VarChar(20) // - 없이 숫자만
-  adress                         String               @db.VarChar(255)
-  adressDetail                   String?              @db.VarChar(255)
+  address                        String               @db.VarChar(255)
+  addressDetail                  String?              @db.VarChar(255)
   petExperience                  PetExperience
   petsDescription                String?              @db.VarChar(100)
   petExperiencePeriod            PetExperiencePeriod?
@@ -187,7 +190,7 @@ model AdoptionDetail {
   additionalNotes                String               @db.VarChar(500)
   updatedAt                      DateTime             @updatedAt
 
-  adoption Adoption?
+  adoption Adoption @relation(fields: [adoptionId], references: [id], onDelete: Cascade)
 }
 
 //
@@ -232,10 +235,10 @@ model AdoptionAgreement {
 }
 
 //
-// PetPost (반려동물 자랑 게시글)
+// PawLog (반려동물 자랑 게시글)
 //
 
-model PetPost {
+model PawLog {
   id       Int    @id @default(autoincrement())
   authorId String @db.Uuid
   title    String @db.VarChar(50)
@@ -244,20 +247,20 @@ model PetPost {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  author User           @relation(fields: [authorId], references: [id])
-  images PetPostImage[]
+  author User          @relation(fields: [authorId], references: [id])
+  images PawLogImage[]
 
   @@index([authorId])
 }
 
-model PetPostImage {
-  id        String @id @default(uuid()) @db.Uuid
-  petPostId Int
-  img       String
+model PawLogImage {
+  id       String @id @default(uuid()) @db.Uuid
+  pawLogId Int
+  img      String @db.VarChar(100)
 
-  petPost PetPost @relation(fields: [petPostId], references: [id], onDelete: Cascade)
+  pawLog PawLog @relation(fields: [pawLogId], references: [id], onDelete: Cascade)
 
-  @@index([petPostId])
+  @@index([pawLogId])
 }
 
 // 
@@ -274,8 +277,8 @@ enum Role {
 // 회원 상태
 enum UserStatus {
   ACTIVE // 정상 이용
-  INACTIVE // 이용 정지
-  SUSPENDED // 휴먼 상태
+  SUSPENDED // 이용 정지
+  INACTIVE // 휴면 상태
   WITHDRAWN // 탈퇴
 }
 
