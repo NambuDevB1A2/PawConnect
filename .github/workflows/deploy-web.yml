@@ -4,13 +4,16 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/web/**'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
+      - 'pawconnect/apps/web/**'
+      - 'pawconnect/pnpm-lock.yaml'
+      - 'pawconnect/pnpm-workspace.yaml'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pawconnect
     steps:
       - uses: actions/checkout@v4
 
