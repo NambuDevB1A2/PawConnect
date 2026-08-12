@@ -7,5 +7,7 @@ dist
 .git
 .env
 .env.*
+**/.env
+**/.env.*
 *.log
 .DS_Store
