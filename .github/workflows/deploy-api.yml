@@ -8,6 +8,7 @@ on:
       - 'pawconnect/packages/**'
       - 'pawconnect/pnpm-lock.yaml'
       - 'pawconnect/pnpm-workspace.yaml'
+  workflow_dispatch:
 
 jobs:
   deploy:
