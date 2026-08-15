@@ -114,6 +114,8 @@ export default function BannerSlider({
               src={slide.backgroundImage}
               alt={slide.title}
               className={styles.slideImage}
+              width={1900}
+              height={800}
             />
             <div className={styles.overlay} />
             <div className={styles.content}>

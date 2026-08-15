@@ -1,12 +1,16 @@
 'use client';
 
 import { ENV } from "@/constants/env";
+import Image from "next/image";
 import { ImgHTMLAttributes, useEffect, useState } from "react";
 
 interface AppImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> {
     src?: string | null;
     fallbackSrc?: string;
     disabledDomain?: boolean;
+    width?: number,
+    height?: number,
+    fill?: boolean;
     alt?: string;
 }
 
@@ -22,6 +26,9 @@ export default function AppImage({
     src,
     fallbackSrc = "/images/placeholder.png",
     disabledDomain = false,
+    width = 400,
+    height = 400,
+    fill = false,
     alt,
     ...props
 }: AppImageProps) {
@@ -33,10 +40,26 @@ export default function AppImage({
 
     const resolvedSrc = !src || hasError ? fallbackSrc : resolveSrc(src, disabledDomain);
 
+    if (fill) {
+        return (
+            <Image
+                src={resolvedSrc}
+                fill
+                loading="lazy"
+                alt={alt ? alt : ""}
+                onError={() => setHasError(true)}
+                {...props}
+            />
+        );
+    }
+
     return (
-        <img
+        <Image
             src={resolvedSrc}
-            alt={alt}
+            width={width}
+            height={height}
+            loading="lazy"
+            alt={alt ? alt : ""}
             onError={() => setHasError(true)}
             {...props}
         />
