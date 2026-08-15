@@ -49,6 +49,7 @@ interface ModalParamsMap {
         onConfirm: () => void;
         imageUrls?: string[];
         content?: string;
+        subContent?: string;
     };
 
     aiGenerate: undefined;
