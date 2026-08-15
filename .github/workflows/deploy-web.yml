@@ -1,0 +1,46 @@
+name: Deploy Frontend (Web) to Azure
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pawconnect/apps/web/**'
+      - 'pawconnect/pnpm-lock.yaml'
+      - 'pawconnect/pnpm-workspace.yaml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pawconnect
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push frontend image
+        run: |
+          docker build -f apps/web/Dockerfile \
+            --build-arg NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} \
+            --build-arg NEXT_PUBLIC_AZURE_STORAGE_DOMAIN=${{ secrets.NEXT_PUBLIC_AZURE_STORAGE_DOMAIN }} \
+            --build-arg NEXT_PUBLIC_AZURE_PUBLIC_CONTAINER=${{ secrets.NEXT_PUBLIC_AZURE_PUBLIC_CONTAINER }} \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-web:${{ github.sha }} \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-web:latest \
+            .
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-web:${{ github.sha }}
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-web:latest
+
+      - name: Deploy to Azure App Service (staging slot)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: pawconnect-web
+          slot-name: staging
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_WEB_STAGING }}
+          images: ${{ secrets.ACR_LOGIN_SERVER }}/pawconnect-web:${{ github.sha }}
