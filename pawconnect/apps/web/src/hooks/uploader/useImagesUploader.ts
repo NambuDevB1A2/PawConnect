@@ -33,7 +33,6 @@ export function useImagesUploader(
     const [internalError, setInternalError] = useState<string | null>(null);
 
     const inputRef = useRef<HTMLInputElement>(null);
-    const isSyncingRef = useRef(false);
     const managedFilesRef = useRef<ManagedFile[]>([]); // 언마운트 시 최신 목록 참조용
 
     const displayError = errorText || internalError;
@@ -76,7 +75,6 @@ export function useImagesUploader(
         if (!inputRef.current) return;
         const dataTransfer = new DataTransfer();
         files.forEach((file) => dataTransfer.items.add(file));
-        isSyncingRef.current = true;
         inputRef.current.files = dataTransfer.files;
     }
 
@@ -139,10 +137,6 @@ export function useImagesUploader(
     }
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (isSyncingRef.current) {
-            isSyncingRef.current = false;
-            return;
-        }
         addFile(e.target.files);
     };
 
