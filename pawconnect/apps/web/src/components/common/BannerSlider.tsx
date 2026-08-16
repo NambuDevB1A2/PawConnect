@@ -70,6 +70,18 @@ export default function BannerSlider({
     };
   }, [resetTimer]);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (timerRef.current) clearInterval(timerRef.current);
+      } else {
+        resetTimer();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [resetTimer]);
+
   // 클론 슬라이드에 도달했을 때 애니메이션 없이 실제 슬라이드 위치로 점프
   const handleTransitionEnd = () => {
     if (!isLoopable) return;
