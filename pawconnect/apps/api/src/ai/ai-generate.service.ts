@@ -59,10 +59,10 @@ export class AiGenerateService {
             
             // 전송할 정보
             this.openAiService.buildUserMessage([
-                { type: 'text', text: `종류: ${animalSpecies?.name ?? '미설정'}` },
-                { type: 'text', text: `품종: ${animalBreed?.name ?? '미설정'}` },
-                { type: 'text', text: aiAnimalDto.description ?? '' },
-                { type: 'text', text: aiAnimalDto.healthStatus ?? '' },
+                // { type: 'text', text: `종류: ${animalSpecies?.name ?? '미설정'}` },
+                // { type: 'text', text: `품종: ${animalBreed?.name ?? '미설정'}` },
+                { type: 'text', text: `description: ${aiAnimalDto.description ?? ''}` },
+                { type: 'text', text: `healthStatus: ${aiAnimalDto.healthStatus ?? ''}` },
                 ...(imageContents ? imageContents : []),
             ]),
         ];
