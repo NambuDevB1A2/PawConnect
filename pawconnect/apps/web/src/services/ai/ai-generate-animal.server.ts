@@ -1,5 +1,8 @@
+'use server';
+
 import { ApiError } from "@/services/fetch/api-error";
-import { fetchClient } from "@/services/fetch/fetch.client";
+import { fetchServer } from "@/services/fetch/fetch.server";
+import { getAccessToken } from "@/services/auth/auth";
 import { GenerateAnimalState, ResponseGenerateAnimal } from "@/types/paw/generate-animal.type";
 
 export async function GenerateAnimal(prevState: GenerateAnimalState, formdata: FormData): Promise<GenerateAnimalState> {
@@ -20,8 +23,21 @@ export async function GenerateAnimal(prevState: GenerateAnimalState, formdata: F
         };
     }
 
+    // 인증이 필요한 API 요청을 위해 accessToken 가져오기
+    // (브라우저에서 API 서버로 직접 요청 시 httpOnly 쿠키가 전달되지 않으므로
+    // 서버 액션에서 토큰을 직접 조회해 Authorization 헤더로 전달해야 함)
+    const token = await getAccessToken();
+
+    if (!token) {
+        return {
+            description,
+            healthStatus,
+            descriptionError: "로그인이 필요합니다",
+        };
+    }
+
     try {
-        // FormData로 fetchClient 전송
+        // FormData로 fetchServer 전송
         const submitData = new FormData();
         submitData.append('description', description ?? '');
         submitData.append('healthStatus', healthStatus ?? '');
@@ -29,7 +45,15 @@ export async function GenerateAnimal(prevState: GenerateAnimalState, formdata: F
         if (breed) submitData.append('breed', breed);
         validImages.forEach((file) => submitData.append('images', file));
 
-        const result = await fetchClient.post<ResponseGenerateAnimal>('/ai/animals/generate', submitData);
+        const result = await fetchServer.post<ResponseGenerateAnimal>('/ai/animals/generate', token, submitData);
+
+        if (!result) {
+            return {
+                description,
+                healthStatus,
+                descriptionError: "로그인이 만료되었습니다. 다시 로그인해주세요",
+            };
+        }
 
         // Response를 state에 담아서 반환
         return { response: result };

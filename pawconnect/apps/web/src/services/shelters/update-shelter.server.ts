@@ -1,5 +1,8 @@
+'use server';
+
 import { ApiError } from "@/services/fetch/api-error";
-import { fetchClient } from "@/services/fetch/fetch.client";
+import { fetchServer } from "@/services/fetch/fetch.server";
+import { getAccessToken } from "@/services/auth/auth";
 import { UpdateShelterState } from "@/types/shelter/update-shelter.type";
 import { ApiResponse } from "@/types/response.type";
 import { validateShelterAddress, validateShelterPhone } from "@/utils/auth/auth.validator";
@@ -23,7 +26,7 @@ export async function UpdateShelter(prevState: UpdateShelterState, formdata: For
             addressError: "변경사항이 없습니다",
         };
     }
-    
+
     // 2. 유효성 검사
     const addressError = validateShelterAddress(address);
     const addressDetailError = validateShelterAddress(address);
@@ -38,7 +41,7 @@ export async function UpdateShelter(prevState: UpdateShelterState, formdata: For
     }
 
     try {
-        // FormData로 fetchClient 전송
+        // FormData로 fetchServer 전송
         const submitData = new FormData();
         submitData.append('address', address);
         submitData.append('addressDetail', addressDetail);
@@ -50,8 +53,9 @@ export async function UpdateShelter(prevState: UpdateShelterState, formdata: For
         if (imgShelter.length > 0) imgShelter.forEach((file) => { if (file.size > 0) submitData.append('imgShelter', file); });
         submitData.append('imgShelterKeeps', imgShelterKeeps.join(','));
 
-        const result = await fetchClient.patch<ApiResponse>('/shelters/me', submitData);
-        
+        const token = await getAccessToken();
+        const result = await fetchServer.patch<ApiResponse>('/shelters/me', token, submitData);
+
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {

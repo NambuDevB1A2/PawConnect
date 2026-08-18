@@ -1,5 +1,8 @@
+'use server';
+
 import { ApiError } from "@/services/fetch/api-error";
-import { fetchClient } from "@/services/fetch/fetch.client";
+import { fetchServer } from "@/services/fetch/fetch.server";
+import { getAccessToken } from "@/services/auth/auth";
 import { CreatePawLogSate, ResponseCreatePawLog } from "@/types/pawlog/create-pawlog.type";
 import { validateTitle } from "@/utils/pawlog/pawlog.validator";
 
@@ -14,10 +17,10 @@ export async function CreatePawLog(prevState: CreatePawLogSate, formdata: FormDa
             title,
             content,
 
-            titleError: !title ? "제목을 입력해주세요" : "", 
+            titleError: !title ? "제목을 입력해주세요" : "",
         };
     }
-    
+
     // 2. 유효성 검사
     const titleError = validateTitle(title);
 
@@ -30,14 +33,15 @@ export async function CreatePawLog(prevState: CreatePawLogSate, formdata: FormDa
     }
 
     try {
-        // FormData로 fetchClient 전송
+        // FormData로 fetchServer 전송
         const submitData = new FormData();
         submitData.append('title', title);
         submitData.append('content', content);
         if (imgPawLog.length > 0) imgPawLog.forEach((file) => { if (file.size > 0) submitData.append('imgPawLog', file); })
 
-        const result = await fetchClient.post<ResponseCreatePawLog>('/pawlogs', submitData);
-        
+        const token = await getAccessToken();
+        const result = await fetchServer.post<ResponseCreatePawLog>('/pawlogs', token, submitData);
+
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {

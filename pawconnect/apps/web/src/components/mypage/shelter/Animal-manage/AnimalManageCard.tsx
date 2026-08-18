@@ -8,7 +8,7 @@ import { formatDate } from "@/utils/format.util";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { ModalContext } from "@/providers/ModalProvider";
-import { DeleteAnimal } from "@/services/paw/delete-animal.client";
+import { DeleteAnimal } from "@/services/paw/delete-animal.server";
 import IconButton from "@/components/common/IconButton";
 
 

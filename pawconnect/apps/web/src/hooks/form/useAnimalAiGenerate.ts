@@ -1,7 +1,7 @@
 'use client';
 
 import { Dispatch, SetStateAction, startTransition, useActionState, useContext, useEffect, useRef, useState } from "react";
-import { GenerateAnimal } from "@/services/ai/ai-generate-animal.client";
+import { GenerateAnimal } from "@/services/ai/ai-generate-animal.server";
 import { GenerateAnimalState } from "@/types/paw/generate-animal.type";
 import { CreateAnimalForm } from "@/types/paw/animal.type";
 import { ModalContext } from "@/providers/ModalProvider";

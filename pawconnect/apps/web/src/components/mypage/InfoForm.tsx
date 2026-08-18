@@ -6,7 +6,7 @@ import Section from "@/components/common/Section";
 import Typography from "@/components/common/Typography";
 import ProfileImageUploader from "@/components/uploader/ProfileImageUploader";
 import { ModalContext } from "@/providers/ModalProvider";
-import { UpdateUser } from "@/services/users/update-user.client";
+import { UpdateUser } from "@/services/users/update-user.server";
 import styles from "@/styles/mypage/info.module.css"
 import { UpdateUserState } from "@/types/mypage/update-user.type";
 import { User } from "@/types/auth/user.type";
