@@ -14,6 +14,7 @@ import { validateAnimalForm } from "./ValidateAnimalForm";
 import { useState } from "react";
 import Typography from "@/components/common/Typography";
 import ImageUploader from "@/components/uploader/ImageUploader";
+import { useAnimalAiGenerate } from "@/hooks/form/useAnimalAiGenerate";
 
 
 interface AnimalFormProps {
@@ -28,6 +29,8 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
         handleChange, handleSelectChange, handleCheckboxChange,
         handleTextareaChange, handleThumbnailChange, handleImagesChange,
         handleGenderChange, handleSubmit, isPending } = useAnimalForm(mode, animal);
+
+    const { aiState, isAiPending, clientErrors: aiClientErrors, handleGenerateConfirm } = useAnimalAiGenerate(form, setForm);
 
     const [errors, setErrors] = useState({
         nameError: "",
@@ -82,6 +85,7 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                     name="images"
                     wrapperClassName={styles.wrapper_image_uploader}
                     labelText="보호동물 사진*"
+                    errorText={aiClientErrors.images || aiState.imagesError}
                     initialImageUrls={animal?.images}
                     onChange={handleImagesChange}
                 />
@@ -125,11 +129,6 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                         options={genderOptions}
                         onChange={handleGenderChange}
                     />
-                    {errors.genderError && (
-                        <Typography className={styles.error}>
-                            {errors.genderError}
-                        </Typography>
-                    )}
 
                     <div className={styles.age_box}>
                         <Input
@@ -202,21 +201,36 @@ export default function AnimalForm({ mode, animal }: AnimalFormProps) {
                     <TextArea
                         name="description"
                         labelText="소개말*"
+                        helperText="AI 자동 소개글 생성시 전송할 내용 혹은 소개말을 입력해주세요(최대 500자)"
                         maxLength={500}
                         value={form.description}
+                        errorText={aiState.descriptionError}
                         onChange={handleTextareaChange}
                     />
 
                     <TextArea
                         name="healthStatus"
                         labelText="건강상태*"
+                        helperText="AI 자동 소개글 생성시 전송할 내용 혹은 건강상태를 입력해주세요(최대 500자)"
                         maxLength={500}
                         value={form.healthStatus}
+                        errorText={aiState.healthStatusError}
                         onChange={handleTextareaChange}
                     />
 
+                {mode === "create" && (
+                    <Button
+                        className={styles.btn_submit}
+                        variant="secondary"
+                        type="button"
+                        onClick={handleGenerateConfirm}
+                        disabled={isAiPending || isPending}>
+                        {isAiPending ? "AI 분석 중..." : "AI 자동 소개글 생성하기"}
+                    </Button>
+                )}
+
                 {/* 등록/수정 버튼 */}
-                <Button className={styles.btn_submit} type="submit" disabled={isPending}>
+                <Button className={styles.btn_submit} type="submit" disabled={isPending || isAiPending}>
                     {mode === "create" ? "등록하기" : "수정하기"}</Button>
 
             </form>

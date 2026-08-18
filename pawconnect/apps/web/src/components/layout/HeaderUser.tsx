@@ -75,7 +75,7 @@ export default function HeaderUser({ user }: HeaderUserProps) {
         <div className={styles.box_mypage} ref={boxRef}>
         {user ?
             <div className={styles.box_user}>
-                <AppImage className={styles.img_profile} src={user?.imgProfile}/>
+                <AppImage className={styles.img_profile} src={user?.imgProfile} width={100} height={100} />
                 <Typography className={styles.nickname} weight="semibold">{user?.nickname}</Typography>
                 <IconButton 
                     className={`${styles.btn_menu} ${isOpen ? styles.icon_chevron_open : styles.icon_chevron}`} 

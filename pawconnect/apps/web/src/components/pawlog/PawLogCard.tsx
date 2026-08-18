@@ -27,7 +27,7 @@ export default function PawLogCard({ pawLog }: PawLogCardProps) {
 
             <div className={styles.box_pawlog}>
                 <div className={styles.box_author}>
-                    <AppImage className={styles.img_author_profile} src={pawLog.author.imgProfile} />
+                    <AppImage className={styles.img_author_profile} src={pawLog.author.imgProfile} width={100} height={100} />
                     <Typography>{pawLog.author.nickname}</Typography>
                     <Typography className={styles.typo_at} variant="caption">{formatDate(pawLog.updatedAt)}</Typography>
 

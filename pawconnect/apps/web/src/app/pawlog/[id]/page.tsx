@@ -25,7 +25,7 @@ export default async function Page({ params }: PageProps) {
         <div className={styles.wrapper_page}>
             <div className={styles.wrapper_detail}>
                 <div className={styles.box_author}>
-                    <AppImage className={styles.img_author_profile} src={pawLog?.author.imgProfile} />
+                    <AppImage className={styles.img_author_profile} src={pawLog?.author.imgProfile} width={100} height={100} />
                     <Typography variant="menutitle">{pawLog?.author.nickname}</Typography>
                     
                     <MyPawLogOptions pawLog={pawLog}/>

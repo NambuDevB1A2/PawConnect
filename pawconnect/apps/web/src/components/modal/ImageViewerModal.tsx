@@ -22,7 +22,7 @@ export default function ImageViewerModal({
     return (
         <Modal isOpen={isOpen} onClose={onClose} className={styles.modal}>
             <Modal.Body>
-                <AppImage className={styles.image} src={images[currentIndex]}/>
+                <AppImage className={styles.image} src={images[currentIndex]} width={1200} height={1200}/>
             </Modal.Body>
         </Modal>
     );

@@ -25,7 +25,7 @@ export default async function Page({ params }: PageProps) {
     return (
         <div className={styles.wrapper_page}>
             <div className={styles.box_banner}>
-                <AppImage className={styles.img_banner} src={shelter?.imgBanner} />
+                <AppImage className={styles.img_banner} src={shelter?.imgBanner} width={1800} height={600} />
             </div>
 
             <div className={styles.wrapper_detail}>

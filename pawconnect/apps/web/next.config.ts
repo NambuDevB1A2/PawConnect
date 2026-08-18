@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
         removeConsole:
             ENV.NODE_ENV === 'production',
     },
+    images: {
+        remotePatterns: [
+        {
+            protocol: 'https',
+            hostname: 'pawconnect.blob.core.windows.net',
+        },
+        // CDN 붙이면 CDN 도메인도 추가
+        ],
+    },
     output: 'standalone',
 };
 
