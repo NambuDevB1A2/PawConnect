@@ -7,8 +7,8 @@
 
 'use client'
 import { DOG_BREEDS, CAT_BREEDS, GENDER_OPTIONS, STATUS_OPTIONS, } from "@/constants/animal-filter.constants";
-import { CreateAnimal } from "@/services/paw/create-animal.client"
-import { updateAnimal } from "@/services/paw/update-animal.client";
+import { CreateAnimal } from "@/services/paw/create-animal.server"
+import { updateAnimal } from "@/services/paw/update-animal.server";
 import { AnimalDetail } from "@/types/paw/animal-detail.type";
 import { CreateAnimalForm } from "@/types/paw/animal.type";
 import { ApiError } from "@/services/fetch/api-error";

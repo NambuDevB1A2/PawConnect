@@ -7,7 +7,7 @@ import { MODAL_MESSAGES } from "@/constants/messages/Modal";
 import InputPassword from "@/components/common/InputPassword";
 import { ChangePasswordState } from "@/types/mypage/change-password.type";
 import { useActionState, useEffect } from "react";
-import { ChangePassword } from "@/services/users/change-password.client";
+import { ChangePassword } from "@/services/users/change-password.server";
 import styles from "@/styles/modal/Modal.module.css"
 
 interface ChangePasswordModalProps {

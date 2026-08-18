@@ -1,6 +1,6 @@
 'use client';
 
-import { CreatePawLog } from "@/services/pawlog/create-pawlog.client";
+import { CreatePawLog } from "@/services/pawlog/create-pawlog.server";
 import { CreatePawLogSate } from "@/types/pawlog/create-pawlog.type";
 import { useActionState, useEffect, useRef } from "react";
 import styles from "@/styles/pawlog/newPawLog.module.css"

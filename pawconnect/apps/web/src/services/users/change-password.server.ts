@@ -1,5 +1,8 @@
+'use server';
+
 import { ApiError } from "@/services/fetch/api-error";
-import { fetchClient } from "@/services/fetch/fetch.client";
+import { fetchServer } from "@/services/fetch/fetch.server";
+import { getAccessToken } from "@/services/auth/auth";
 import { ChangePasswordState } from "@/types/mypage/change-password.type";
 import { ApiResponse } from "@/types/response.type";
 import { validatePassword, validateRePassword } from "@/utils/auth/auth.validator";
@@ -36,12 +39,13 @@ export async function ChangePassword(prevState: ChangePasswordState, formdata: F
     }
 
     try {
-        const result = await fetchClient.patch<ApiResponse>('/users/password', {
+        const token = await getAccessToken();
+        const result = await fetchServer.patch<ApiResponse>('/users/password', token, {
             prevPassword,
             newPassword,
             newRePassword,
         });
-        
+
         return { response: result };
     } catch (error) {
         if (error instanceof ApiError && error.fields) {

@@ -15,7 +15,7 @@ import Typography from "@/components/common/Typography";
 import { TERMS_MESSAGES } from "@/constants/messages/Terms";
 import { AuthContext } from "@/providers/AuthProvider";
 import { ModalContext } from "@/providers/ModalProvider";
-import { CreateAdoption } from "@/services/adopt/create-adoption.client";
+import { CreateAdoption } from "@/services/adopt/create-adoption.server";
 import styles from "@/styles/adopt/adoptNew.module.css";
 import { CreateAdoptionState } from "@/types/adopt/create-adoption.type";
 import { AnimalDetail } from "@/types/paw/animal-detail.type";

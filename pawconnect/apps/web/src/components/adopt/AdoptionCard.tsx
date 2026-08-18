@@ -10,8 +10,8 @@ import { ADOPTION_STATUS_BADGE_STYLE, ADOPTION_STATUS_LABEL } from "@/constants/
 import { MODAL_MESSAGES } from "@/constants/messages/Modal";
 import { ANIMAL_STATUS_BADGE_STYLE, ANIMAL_STATUS_LABEL } from "@/constants/paw/animal-badge.constants";
 import { ModalContext } from "@/providers/ModalProvider";
-import { CancelAdoption } from "@/services/adopt/cancel-adoption.client";
-import { UpdateAdoptionStatus } from "@/services/adopt/update-adoption-status.client";
+import { CancelAdoption } from "@/services/adopt/cancel-adoption.server";
+import { UpdateAdoptionStatus } from "@/services/adopt/update-adoption-status.server";
 import styles from "@/styles/adopt/AdoptionCard.module.css"
 import { Adoption, AdoptionStatus } from "@/types/adopt/adoption.type";
 import { AnimalStatus } from "@/types/paw/animal.type";

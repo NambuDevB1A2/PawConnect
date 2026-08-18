@@ -2,7 +2,7 @@
 
 import { startTransition, useActionState, useContext, useEffect, useRef, useState } from "react";
 import { validateTitle } from "@/utils/pawlog/pawlog.validator";
-import { GeneratePawLog } from "@/services/ai/ai-generate-pawlog.client";
+import { GeneratePawLog } from "@/services/ai/ai-generate-pawlog.server";
 import { GeneratePawLogState } from "@/types/pawlog/gernerate-pawlog.type";
 import { ModalContext } from "@/providers/ModalProvider";
 import { formatAIResponseText } from "@/utils/text/format-ai-text";

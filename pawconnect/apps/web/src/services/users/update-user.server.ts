@@ -1,5 +1,8 @@
+'use server';
+
 import { ApiError } from "@/services/fetch/api-error";
-import { fetchClient } from "@/services/fetch/fetch.client";
+import { fetchServer } from "@/services/fetch/fetch.server";
+import { getAccessToken } from "@/services/auth/auth";
 import { UpdateUserState } from "@/types/mypage/update-user.type";
 import { ApiResponse } from "@/types/response.type";
 import { validateNickname } from "@/utils/auth/auth.validator";
@@ -31,10 +34,9 @@ export async function UpdateUser(prevState: UpdateUserState, formdata: FormData)
         if (imgProfile && imgProfile.size > 0) submitData.append('imgProfile', imgProfile);
         submitData.append('imgProfileRemoved', imgProfileRemoved ? "true" : "false");
 
-        const result = await fetchClient.patch<ApiResponse>('/users/me', submitData);
+        const token = await getAccessToken();
+        const result = await fetchServer.patch<ApiResponse>('/users/me', token, submitData);
 
-        console.log(result);
-        
         return { response: result };
     } catch (error) {
         if (error instanceof ApiError && error.fields) {

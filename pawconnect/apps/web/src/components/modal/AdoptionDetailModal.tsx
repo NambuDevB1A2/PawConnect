@@ -4,7 +4,7 @@ import Typography from "@/components/common/Typography";
 import Modal from "@/components/modal/Modal";
 import Button from "@/components/common/Button";
 import { MODAL_MESSAGES } from "@/constants/messages/Modal";
-import { GetAdoption } from "@/services/adopt/get-adoption.client";
+import { GetAdoption } from "@/services/adopt/get-adoption.server";
 import AdoptFormReadOnly from "@/components/adopt/AdoptFormReadOnly";
 import { useEffect, useState } from "react";
 import { Adoption } from "@/types/adopt/adoption.type";
