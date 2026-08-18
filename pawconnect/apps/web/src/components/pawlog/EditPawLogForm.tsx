@@ -9,7 +9,7 @@ import TextArea from "@/components/common/TextArea";
 import Button from "@/components/common/Button";
 import { useRouter } from "next/navigation";
 import { UpdatePawLogSate } from "@/types/pawlog/update-pawlog.type";
-import { UpdatePawLog } from "@/services/pawlog/update-pawlog.client";
+import { UpdatePawLog } from "@/services/pawlog/update-pawlog.server";
 import { PawLog } from "@/types/pawlog/pawlog.type";
 import { AuthContext } from "@/providers/AuthProvider";
 import NotFound from "@/components/common/NotFound";

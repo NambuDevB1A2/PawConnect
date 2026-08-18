@@ -8,7 +8,7 @@ import { AnimalDetail } from "@/types/paw/animal-detail.type";
 import { useRouter } from "next/navigation";
 import AnimalInfoCard from "./AnimalInfoCard";
 import IconButton from "@/components/common/IconButton";
-import { DeleteAnimal } from "@/services/paw/delete-animal.client";
+import { DeleteAnimal } from "@/services/paw/delete-animal.server";
 import { useContext } from "react";
 import { ModalContext } from "@/providers/ModalProvider";
 import { AuthContext } from "@/providers/AuthProvider";

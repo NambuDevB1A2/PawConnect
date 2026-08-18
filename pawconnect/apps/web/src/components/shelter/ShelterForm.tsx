@@ -10,7 +10,7 @@ import Input from "@/components/common/Input";
 import ImagesUploader from "@/components/uploader/ImagesUploader";
 import BannerImageUploader from "@/components/uploader/BannerUploader";
 import { useActionState, useEffect, useState } from "react";
-import { UpdateShelter } from "@/services/shelters/update-shelter.client";
+import { UpdateShelter } from "@/services/shelters/update-shelter.server";
 import { UpdateShelterState } from "@/types/shelter/update-shelter.type";
 import { validateShelterAddress, validateShelterPhone } from "@/utils/auth/auth.validator";
 import { useRouter } from "next/navigation";

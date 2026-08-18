@@ -3,7 +3,7 @@
 import IconButton from "@/components/common/IconButton";
 import { AuthContext } from "@/providers/AuthProvider";
 import { ModalContext } from "@/providers/ModalProvider";
-import { DeletePawLog } from "@/services/pawlog/delete-pawlog.client";
+import { DeletePawLog } from "@/services/pawlog/delete-pawlog.server";
 import { PawLog } from "@/types/pawlog/pawlog.type";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext } from "react";

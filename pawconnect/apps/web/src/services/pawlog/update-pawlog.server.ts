@@ -1,11 +1,14 @@
+'use server';
+
 import { ApiError } from "@/services/fetch/api-error";
-import { fetchClient } from "@/services/fetch/fetch.client";
+import { fetchServer } from "@/services/fetch/fetch.server";
+import { getAccessToken } from "@/services/auth/auth";
 import { ResponseUpdatePawLog, UpdatePawLogSate } from "@/types/pawlog/update-pawlog.type";
 import { validateTitle } from "@/utils/pawlog/pawlog.validator";
 
 export async function UpdatePawLog(
     pawLogId: number,
-    prevState: UpdatePawLogSate, 
+    prevState: UpdatePawLogSate,
     formdata: FormData
 ): Promise<UpdatePawLogSate> {
     const title = formdata.get('title') as string;
@@ -19,7 +22,7 @@ export async function UpdatePawLog(
             titleError: "변경사항이 없습니다",
         };
     }
-    
+
     // 2. 유효성 검사
     const titleError = validateTitle(title);
 
@@ -30,15 +33,16 @@ export async function UpdatePawLog(
     }
 
     try {
-        // FormData로 fetchClient 전송
+        // FormData로 fetchServer 전송
         const submitData = new FormData();
         submitData.append('title', title);
         submitData.append('content', content);
         if (imgPawLog.length > 0) imgPawLog.forEach((file) => { if (file.size > 0) submitData.append('imgPawLog', file); })
         submitData.append('imgPawLogKeeps', imgPawLogKeeps.join(','));
 
-        const result = await fetchClient.patch<ResponseUpdatePawLog>(`/pawlogs/${pawLogId}`, submitData);
-        
+        const token = await getAccessToken();
+        const result = await fetchServer.patch<ResponseUpdatePawLog>(`/pawlogs/${pawLogId}`, token, submitData);
+
         // Response를 state에 담아서 반환
         return { response: result };
     } catch (error) {
