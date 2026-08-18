@@ -69,6 +69,7 @@ export default function ModalRoot() {
                 onConfirm={modalState?.key === "confirmGenerate" ? modalState.params.onConfirm : undefined}
                 imageUrls={modalState?.key === "confirmGenerate" ? modalState.params.imageUrls : []}
                 content={modalState?.key === "confirmGenerate" ? modalState.params.content : ""}
+                subContent={modalState?.key === "confirmGenerate" ? modalState.params.subContent : ""}
                 />
 
             <AiGenerateModal

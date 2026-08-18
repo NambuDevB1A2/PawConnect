@@ -14,9 +14,10 @@ interface ConfirmGenerateModalProps {
     onConfirm?: () => void;
     imageUrls?: string[];
     content?: string;
+    subContent?: string;
 }
 
-export default function ConfirmGenerateModal({ isOpen, onClose, onConfirm, imageUrls, content }: ConfirmGenerateModalProps) {
+export default function ConfirmGenerateModal({ isOpen, onClose, onConfirm, imageUrls, content, subContent }: ConfirmGenerateModalProps) {
     const handleConfirm = () => {
         try {
             onConfirm?.();
@@ -39,6 +40,10 @@ export default function ConfirmGenerateModal({ isOpen, onClose, onConfirm, image
                 {content &&
                     <div className={styles.box_content}>
                         <Typography variant="body1">{content}</Typography>
+                    </div>}
+                {subContent &&
+                    <div className={styles.box_content}>
+                        <Typography variant="body1">{subContent}</Typography>
                     </div>}
             </Modal.Body>
             <Modal.Footer>

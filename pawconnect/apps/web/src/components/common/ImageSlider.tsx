@@ -60,7 +60,8 @@ export default function ImageSlider({
                         
                     {images.map((src, index) =>
                         <div className={styles.slide} key={`${src}-${index}`}>
-                            <AppImage src={src} className={styles.img_slide} onClick={handleClick} disabledDomain={disabledDomain}/>
+                            <AppImage src={src} className={styles.img_slide} onClick={handleClick} disabledDomain={disabledDomain}
+                            />
                         </div>
                     )}
 

@@ -59,9 +59,10 @@ export class AiGenerateService {
             
             // 전송할 정보
             this.openAiService.buildUserMessage([
-                { type: 'text', text: `종류: ${animalSpecies?.name ?? '미설정'}` },
-                { type: 'text', text: `품종: ${animalBreed?.name ?? '미설정'}` },
-                { type: 'text', text: aiAnimalDto.content ?? '' },
+                // { type: 'text', text: `종류: ${animalSpecies?.name ?? '미설정'}` },
+                // { type: 'text', text: `품종: ${animalBreed?.name ?? '미설정'}` },
+                { type: 'text', text: `description: ${aiAnimalDto.description ?? ''}` },
+                { type: 'text', text: `healthStatus: ${aiAnimalDto.healthStatus ?? ''}` },
                 ...(imageContents ? imageContents : []),
             ]),
         ];
@@ -76,8 +77,8 @@ export class AiGenerateService {
         const { speciesName, breedName, ...result } = await this.openAiService.parseJsonResponse(rawContent);
 
         let species, breed;
-        if (speciesName) species = await this.prisma.animalSpecies.findFirst({ where: { name: speciesName }});
-        if (breedName) breed = await this.prisma.animalBreed.findFirst({ where: { name: breedName }});
+        if (speciesName && speciesName !== "기타") species = await this.prisma.animalSpecies.findFirst({ where: { name: speciesName }});
+        if (breedName && breedName !== "기타") breed = await this.prisma.animalBreed.findFirst({ where: { name: breedName }});
 
         return { ...result, species, breed };
     }
