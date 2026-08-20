@@ -84,7 +84,7 @@
 | 기능 | 설명 |
 | --- | --- |
 | 회원 시스템 | 역할 기반 회원가입(일반 사용자 / 보호소 관리자), JWT 로그인·로그아웃, 마이페이지(정보 수정·비밀번호 변경) |
-| 보호동물 게시판 | 등록/조회/수정/삭제, 품종·성별·나이·상태별 필터링과 페이지네이션, 상태 관리(보호중/입양가능/입양완료/복귀/사망/안락사 등) |
+| 보호동물 게시판 | 등록/조회/수정/삭제, 품종·성별·나이·상태별 필터링과 페이지네이션, 상태 관리(보호중/입양가능/입양완료/복귀/사망/안락사 등), AI 자동 소개글 작성(이미지 기반 품종 추론 + 소개글·건강상태 자동 생성) |
 | 입양 신청 프로세스 | 신청서 작성 → 다단계 상태 진행(대기 → 상담 → 면접 → … → 승인/거절/취소), 사용자·보호소 양측 신청 내역 조회 |
 | 보호소 페이지 | 보호소 소개(위치, 연락처, 운영시간), 등록 동물 목록, 보호소 프로필 관리 |
 | PawLog 커뮤니티 | 반려동물 자랑 게시판(작성/수정/삭제, 이미지 최대 4장), AI 자동 글쓰기(이미지 기반 제목·본문 자동 생성) |
@@ -383,6 +383,11 @@ flowchart TD
     Role -- SHELTER --> SInfo["/mypage/shelter/info\n보호소 프로필 관리"]
     Role -- SHELTER --> SPaw["/mypage/shelter/paw\n보호동물 관리 목록"]
     SPaw --> SPawNew["/mypage/shelter/paw/new\n등록"]
+    SPawNew --> SPawAI{작성 방식}
+    SPawAI -- 수동 --> SPawSubmit[직접 입력 후 등록]
+    SPawAI -- AI 자동생성 --> SPawConfirm["ConfirmGenerateModal\n미리보기(품종 추론 포함)"]
+    SPawConfirm --> SPawLoading["AiGenerateModal\n로딩"]
+    SPawLoading --> SPawSubmit
     SPaw --> SPawEdit["/mypage/shelter/paw/edit/[id]\n수정"]
     SPaw --> SDelete["ConfirmDeleteModal\n삭제 확인"]
     SPawNew ~~~ SPawEdit ~~~ SDelete
@@ -392,6 +397,7 @@ flowchart TD
 
 - 비로그인 사용자가 `/mypage/*`에 접근하면 `middleware.ts`가 `/login`으로 리다이렉트합니다.
 - 삭제(PawLog, 보호동물)는 공통 `ConfirmDeleteModal`을 거쳐 확정되며, 입양 신청 확인은 사용자·보호소 양쪽 모두 동일한 `AdoptionDetailModal`을 재사용합니다.
+- AI 자동생성(`ConfirmGenerateModal` → `AiGenerateModal`)은 PawLog 작성과 보호동물 등록에서 동일한 모달 컴포넌트를 재사용하며, 보호동물 등록 쪽은 이미지 기반 품종·종 추론까지 함께 처리합니다.
 
 <br/><br/>
 
@@ -420,6 +426,7 @@ flowchart LR
 
 | 버전 | 날짜 | 내용 |
 | --- | --- | --- |
+| `v1.1.0` | 2026-08-19 | AI 동물 소개글 자동 작성 기능 추가, 이미지 렌더링을 `next/Image`로 전환 (커밋 `c39927f`) |
 | `v1.0.0` | 2026-08-12 | 첫 정식 릴리즈 태그. CI/CD(GitHub Actions → Docker → Azure) 파이프라인 안정화 시점에 생성 (커밋 `12ac37f`) |
 
 - 브랜치 전략: `main`(배포) / `develop`(통합) / `feature/*`, `refactor/*`(기능 단위) — PR 기반 워크플로우(`Merge pull request #N`)
